@@ -18,6 +18,9 @@ class Department(models.Model):
     created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return self.name
+    
     
 class Session(models.Model):
     from_year = models.IntegerField()
@@ -33,7 +36,7 @@ class Session(models.Model):
         return str(self)
     
     class Meta:
-        ordering = ["from_year"]
+        ordering = ["-from_year"]
 
 
 class Semester(models.Model):
@@ -56,7 +59,7 @@ class Semester(models.Model):
         ]
     )
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    drop_courses = models.ManyToManyField("Course", related_name="drop_courses")
+    drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
     

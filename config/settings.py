@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 MIN_COURSE_CREDIT = 1
 MAX_COURSE_CREDIT = 4
-ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png']
+ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png']
 INVITATION_VALIDITY_DAYS = 7
 
 INSTALLED_APPS = [
