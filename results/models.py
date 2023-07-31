@@ -9,7 +9,7 @@ from results.utils import get_ordinal_number
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=3)
+    name = models.CharField(max_length=3, unique=True)
     fullname = models.CharField(max_length=100)
     dept_logo = models.ImageField(upload_to="departments/logo/",
                                     null=True, 
@@ -19,7 +19,7 @@ class Department(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.name
+        return self.name.upper()
     
     
 class Session(models.Model):
@@ -58,6 +58,7 @@ class Semester(models.Model):
             MaxValueValidator(8, message="Semester number cannot be more than 8"),
         ]
     )
+    is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
