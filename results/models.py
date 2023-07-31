@@ -15,7 +15,7 @@ class Department(models.Model):
                                     null=True, 
                                     blank=True,
                                     validators=[FileExtensionValidator(allowed_extensions=settings.ALLOWED_IMAGE_EXTENSIONS)])
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
     added = models.DateTimeField(auto_now_add=True)
     
     
@@ -30,3 +30,5 @@ class Session(models.Model):
     
     class Meta:
         ordering = ["from_year"]
+
+

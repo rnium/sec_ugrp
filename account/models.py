@@ -62,10 +62,10 @@ class AdminAccount(BaseAccount):
     
 
 class StudentAccount(BaseAccount):
+    registration = models.IntegerField(primary_key=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
-    dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    registration = models.IntegerField()
-    
+    cgpa = models.FloatField(default=0)
+
     class Meta:
         ordering = ["registration"]
