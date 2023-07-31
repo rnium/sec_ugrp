@@ -7,8 +7,8 @@ from results.models import Department, Session
 
 
 class InviteToken(models.Model):
-    from_user = models.ForeignKey(User, related_name="from_user")
-    to_user = models.ForeignKey(User, related_name="to_user")
+    from_user = models.ForeignKey(User, null=True, blank=True, related_name="from_user", on_delete=models.SET_NULL)
+    to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
     user_email = models.EmailField()
     expiration = models.DateTimeField()
 
