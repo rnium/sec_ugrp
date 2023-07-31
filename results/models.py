@@ -56,7 +56,7 @@ class Semester(models.Model):
         ]
     )
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    drop_courses = models.ManyToManyField("Course")
+    drop_courses = models.ManyToManyField("Course", related_name="drop_courses")
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
     
