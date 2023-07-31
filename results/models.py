@@ -83,3 +83,37 @@ class Course(models.Model):
     def __str__(self):
         return f"{self.semester} Course: {self.code}"
     
+
+class CourseResult(models.Model):
+    student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    part_A_score = models.FloatField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Score cannot be less than 0")])
+    part_B_score = models.FloatField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Score cannot be less than 0")])
+    incourse_score = models.FloatField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Score cannot be less than 0")])
+    total_score = models.FloatField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Score cannot be less than 0")])
+    grade_point = models.FloatField(null=True, blank=True, validators=[
+        MinValueValidator(0, message="Score cannot be less than 0")])
+    letter_grade = models.CharField(max_length=2, null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    
+    @property
+    def course_points(self):
+        return (self.grade_point * self.course.course_credit)
+    
+    
+class Activity(models.Model):
+    ACTIVITY_TYPES = [
+        ("add", "Addition"),
+        ("update", "Modification"),
+        ("delete", "Deletion"),
+    ]
+    by = models.ForeignKey(User, on_delete=models.CASCADE)
+    at = models.DateTimeField(auto_now_add=True)
+    target_url = models.URLField(null=True, blank=True)
+    type = models.CharField(max_length=10, choices=ACTIVITY_TYPES)
+    message = models.CharField(max_length=200)
