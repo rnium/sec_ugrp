@@ -63,6 +63,13 @@ class Semester(models.Model):
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        ordering = ["year", "year_semester"]
+        constraints = [
+            models.UniqueConstraint(fields=["year", "year_semester", "session"], name="unique_session_semester")
+        ]
+        
+        
     def __str__(self) -> str:
         return f"{self.session}, {self.semester_name}"
     
