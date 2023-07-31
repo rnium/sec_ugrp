@@ -26,7 +26,7 @@ class Session(models.Model):
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"EEE {self.from_year}-{self.to_year % 2000}"
+        return f"{self.dept.name} {self.from_year}-{self.to_year % 2000}"
     
     @property
     def session_name(self):
@@ -95,6 +95,8 @@ class CourseResult(models.Model):
         MinValueValidator(0, message="Score cannot be less than 0")])
     total_score = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
+    part_A_code = models.CharField(max_length=20, null=True)
+    part_B_code = models.CharField(max_length=20, null=True)
     grade_point = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
     letter_grade = models.CharField(max_length=2, null=True, blank=True)
