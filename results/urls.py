@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.DashboardView.as_view(), name="dashboard"),
     path('departments/', views.departments_all, name="all_departments"),
     path('departments/<str:dept_name>', views.DepartmentView.as_view(), name="view_department"),
+    path('departments/<str:dept_name>/<str:from_year>/<str:to_year>', views.SessionView.as_view(), name="view_session"),
     path('staffs', views.pending_view, name="stuffs_view"),
     path('activities', views.pending_view, name="activities_view"),
     path('bin', views.pending_view, name="recycle_bin_view"),

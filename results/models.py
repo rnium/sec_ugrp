@@ -23,7 +23,7 @@ class Department(models.Model):
     
     @property
     def dept_title_short(self):
-        return f"Dept of {self.name.upper}"
+        return f"Dept of {self.name.upper()}"
     
     @property
     def dept_title_full(self):

@@ -1,0 +1,285 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>View Session</title>
+{% endblock head %}
+
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item active">
+        <a href="" class="nav-link">
+            <i class='bx bx-archive' ></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:activities_view' %}" class="nav-link">
+            <i class='bx bx-walk'></i>
+            <span>Activities</span>
+        </a>
+        <div class="tooltip">Activities</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:recycle_bin_view' %}" class="nav-link">
+            <i class='bx bxs-trash'></i>
+            <span>Recycle Bin</span>
+        </a>
+        <div class="tooltip">Bin</div>
+    </li>
+</ul>
+{% endblock nav %}
+
+{% block content %}
+<div class="view-session-container m-5 pt-4">
+    <div class="info">
+        <div class="batch-no fs-1 text-secondary">EEE 4th Batch</div>
+        <div class="session mt-1">
+            <div class="label me-2">Session</div>
+            <div class="value shadow-sm">
+                <span class="code">2018-19</span>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex flex-column  align-items-center mt-4">
+        <div class="semesters row col-md-9 bg-dar p-3 rounded-2 bg-material mt-3">
+            <div class="section-title text-center mb-2">Semesters</div>
+            <div class="col-md-6 p-0">
+                <a href="" class="semester-item m-1">
+                    <div class="sem-codename">
+                        <span class="year">4</span>
+                        <span>-</span>
+                        <span class="semester">1</span>
+                    </div>
+                    <div class="info">
+                        <div class="semester-no">4th year 1st semester</div>
+                        <div class="exam-start-month">
+                            <i class='bx bxs-calendar me-2 fs-5'></i>
+                            <div class="month fs-6">June 2023</div>
+                        </div>
+                    </div>    
+                </a>
+            </div>
+            <div class="col-md-6 p-0">
+                <a href="" class="semester-item m-1">
+                    <div class="sem-codename">
+                        <span class="year">4</span>
+                        <span>-</span>
+                        <span class="semester">1</span>
+                    </div>
+                    <div class="info">
+                        <div class="semester-no">4th year 1st semester</div>
+                        <div class="exam-start-month">
+                            <i class='bx bxs-calendar me-2 fs-5'></i>
+                            <div class="month fs-6">June 2023</div>
+                        </div>
+                    </div>    
+                </a>
+            </div>
+            <div class="col-md-6 p-0">
+                <a href="" class="semester-item m-1">
+                    <div class="sem-codename">
+                        <span class="year">4</span>
+                        <span>-</span>
+                        <span class="semester">1</span>
+                    </div>
+                    <div class="info">
+                        <div class="semester-no">4th year 1st semester</div>
+                        <div class="exam-start-month">
+                            <i class='bx bxs-calendar me-2 fs-5'></i>
+                            <div class="month fs-6">June 2023</div>
+                        </div>
+                    </div>    
+                </a>
+            </div>
+            <div class="col-md-6 p-0">
+                <a href="" class="semester-item running-semester m-1">
+                    <div class="sem-codename">
+                        <span class="year">4</span>
+                        <span>-</span>
+                        <span class="semester">1</span>
+                    </div>
+                    <div class="info">
+                        <div class="semester-no">4th year 1st semester</div>
+                        <div class="exam-start-month">
+                            <i class='bx bxs-calendar me-2 fs-5'></i>
+                            <div class="month fs-6">June 2023</div>
+                        </div>
+                    </div>    
+                </a>
+            </div>
+        </div>
+        <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
+            <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newSemesterEntryModal">
+                <i class='bx bx-list-plus me-1'></i>
+                <span class="roboto-font" style="font-size: 0.8rem;">Create New Semester</span>
+            </button>
+        </div>
+
+        <div class="students-list col-md-9 rounded-2 mt-3">
+            <div class="section-title text-center mb-2 d-flex justify-content-center align-items-center">
+                <span class="title-text me-2 section-title">Students</span>
+                <span class="num-students fs-6 bg-material px-4 py-2 rounded-5">
+                    <strong class="text-info">54</strong>
+                </span>
+            </div>
+            <div class="row">
+                <div class="col-md-4 p-0">
+                    <div class="student rounded-3">
+                        <img src="/images/blank-dp.svg" alt="" class="dp">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="reg-no">2018338514</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-0">
+                    <div class="student rounded-3">
+                        <img src="/images/blank-dp.svg" alt="" class="dp">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="reg-no">2018338514</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-0">
+                    <div class="student rounded-3">
+                        <img src="/images/blank-dp.svg" alt="" class="dp">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="reg-no">2018338514</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-0">
+                    <div class="student rounded-3">
+                        <img src="/images/blank-dp.svg" alt="" class="dp">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="reg-no">2018338514</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
+            <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newStudentEntryModal">
+                <i class='bx bx-user-plus me-1'></i>
+                <span class="roboto-font" style="font-size: 0.8rem;">Add Student</span>
+            </button>
+        </div>
+        <div class="delete-btn-container mt-4 w-100">
+            <button class="btn btn-outline-danger">Delete Session</button>
+        </div>
+    </div>
+    
+    <!-- New Semester Entry Modal -->
+    <div class="modal fade" id="newSemesterEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Create Semester</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>              
+                <div class="modal-body">
+                    <div class="form-container row p-0">
+                        <div class="col-md-6 mb-2 pe-1">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="yearInput" placeholder="">
+                                <label for="yearInput">Year No.</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-6 mb-2 ps-1">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="SemesterInput" placeholder="">
+                                <label for="SemesterInput">Semester No.</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="monthInput" placeholder="">
+                                <label for="monthInput">Month of Examination (e.g., March 2023)</label>
+                            </div>            
+                        </div>                                             
+                    </div>
+                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
+                    </div>   
+                </div>
+                <div class="d-flex p-3 pt-0 justify-content-end">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                        <i class='bx bx-list-plus me-1'></i>
+                        <span>Create</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- New Student Entry Modal -->
+    <div class="modal fade" id="newStudentEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Add New Student</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>              
+                <div class="modal-body">
+                    <div class="form-container row p-0">
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="firstNameInput" placeholder="">
+                                <label for="firstNameInput">First Name</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="lastNameInput" placeholder="">
+                                <label for="lastNameInput">Last Name</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="registrationNoInput" placeholder="">
+                                <label for="registrationNoInput">Registration Number</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-12">
+                            <label for="formFile" class="form-label">Student's Photo</label>
+                            <input class="form-control" type="file" id="formFile">
+                        </div>
+
+                    </div>
+                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
+                    </div>   
+                </div>
+                <div class="d-flex p-3 pt-0 justify-content-end">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                        <i class='bx bx-user-plus me-1'></i>
+                        <span>Add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'results/scripts/viewsession.js' %}"></script>
+{% endblock script %}

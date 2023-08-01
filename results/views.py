@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
-from results.models import (Semester, Department)
+from results.models import (Semester, Department, Session)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -24,7 +24,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     
 
 
-class DepartmentView(LoginRequiredMixin, TemplateView):
+class DepartmentView(LoginRequiredMixin, DetailView):
     template_name = "results/view_department.html"
     
     def get_object(self):
@@ -33,7 +33,7 @@ class DepartmentView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        context['department'] = self.get_object()
+        print(context)
         context['request'] = self.request
         return context
     
@@ -49,6 +49,25 @@ def departments_all(request):
         return render(request, "results/departments_all.html", context=context)
     else:
         return redirect('results:view_department', dept_name=request.user.adminaccount.dept.name)
+
+
+class SessionView(LoginRequiredMixin, DetailView):
+    template_name = "results/view_session.html"
+    
+    def get_object(self):
+        session = get_object_or_404(
+            Session, 
+            dept__name = self.kwargs.get("dept_name", ""),
+            from_year = self.kwargs.get("from_year", ""),
+            to_year = self.kwargs.get("to_year", ""),
+        )
+        return session
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
+
 
 @login_required 
 def pending_view(request):
