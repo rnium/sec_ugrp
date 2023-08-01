@@ -60,6 +60,14 @@ class AdminAccount(BaseAccount):
     dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
     invitation = models.ForeignKey(InviteToken, on_delete=models.CASCADE)
     
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check = models.Q(is_super_admin=True, dept__isnull=True) | models.Q(is_super_admin=False, dept__isnull=False),
+                name = "admin_user_is_not_a_dept_user"
+            )
+        ]
+    
 
 class StudentAccount(BaseAccount):
     registration = models.IntegerField(primary_key=True)
