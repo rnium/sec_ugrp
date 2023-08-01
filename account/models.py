@@ -79,3 +79,10 @@ class StudentAccount(BaseAccount):
 
     class Meta:
         ordering = ["registration"]
+        
+    @property
+    def student_name(self):
+        if self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        else:
+            return self.first_name
