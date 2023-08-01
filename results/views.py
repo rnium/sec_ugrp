@@ -33,7 +33,6 @@ class DepartmentView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        print(context)
         context['request'] = self.request
         return context
     
@@ -68,6 +67,25 @@ class SessionView(LoginRequiredMixin, DetailView):
         context['request'] = self.request
         return context
 
+
+class SemesterView(LoginRequiredMixin, DetailView):
+    template_name = "results/view_semester.html"
+    def get_object(self):
+        semester = get_object_or_404(
+            Semester, 
+            session__dept__name = self.kwargs.get("dept_name", ""),
+            session__from_year = self.kwargs.get("from_year", ""),
+            session__to_year = self.kwargs.get("to_year", ""),
+            year = self.kwargs.get("year", ""),
+            year_semester = self.kwargs.get("semester", ""),
+        )
+        return semester
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
+    
 
 @login_required 
 def pending_view(request):

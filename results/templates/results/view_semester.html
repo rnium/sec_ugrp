@@ -1,0 +1,473 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>View Session</title>
+{% endblock head %}
+
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item active">
+        <a href="" class="nav-link">
+            <i class='bx bx-archive' ></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:activities_view' %}" class="nav-link">
+            <i class='bx bx-walk'></i>
+            <span>Activities</span>
+        </a>
+        <div class="tooltip">Activities</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:recycle_bin_view' %}" class="nav-link">
+            <i class='bx bxs-trash'></i>
+            <span>Recycle Bin</span>
+        </a>
+        <div class="tooltip">Bin</div>
+    </li>
+</ul>
+{% endblock nav %}
+
+{% block content %}
+<div class="view-semester-container m-5 pt-4">
+    <div class="running-sem-badge">
+        <div class="inner">
+            <span class="circle"></span>
+            <span class="title">Running</span>
+        </div>
+    </div>
+    <div class="info">
+        <div class="title fs-1 text-secondary">4th Year 1st Semester</div>
+        <a class="session mt-1" href="">
+            <div class="label me-2">Session</div>
+            <div class="value shadow-sm">
+                <span class="code">2018-19</span>
+                <span class="batch-no">EEE 4th Batch</span>
+            </div>
+        </a>
+        <div class="exam-month mt-2">
+            <div class="inner d-flex">
+                <i class='bx bx-calendar fs-4 me-1 text-info'></i>
+                <span class="fs-6 text-info">March 2023</span>
+            </div>
+        </div>
+    </div>
+    <div class="all-courses bg-material p-3 mt-4 rounded-3 border-b-1">
+        <div class="header text-center">All Courses</div>
+        <div class="courses row p-4">
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3 course-container">
+                <a class="course drop-course" href="">
+                    <div class="course-code text-center">EEE 701</div>
+                    <div class="course-title text-center">Lorem ipsum dolor</div>
+                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
+                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
+                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="course-adder-container mt-2 d-flex justify-content-end border-top pt-3">
+            <button class="btn btn-primary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#newEntryModal">
+                <i class='bx bx-list-plus me-2'></i>
+                <span class="roboto-font">Create Regular Course</span>
+            </button>
+            <button class="btn btn-secondary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#dropCourseModal">
+                <i class='bx bx-paperclip me-2'></i>
+                <span class="roboto-font">Include Drop Course</span>
+            </button>
+        </div>
+    </div>
+    <div class="tabulation bg-material p-4 mt-4 rounded-3 shadow-sm border-b-1">
+        <div class="section-title text-center mb-4 text-info">Tabulation Sheet</div>
+        <div class="card mb-3 bg-material-1 shadow-sm" >
+            <div class="row g-0">
+              <div class="col-md-5">
+                <img src="/images/sample_ts.png" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-7">
+                <div class="card-body p-5 d-flex flex-column h-100 justify-content-center align-items-center">
+                  <p class="h4 card-title">7th_Semester_2018-19.pdf</p>
+                  <div class="btn-container d-flex">
+                    <a class="download-btn" href="">
+                        <i class='bx bxs-download'></i>
+                        <span>Download</span>
+                    </a>
+                  </div>
+                  <p class="card-text mt-3"><small class="text-body-secondary">Last render: 3 mins ago by Ashraful Alam</small></p>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="render-config mt-5">
+            <div class="title d-flex justify-content-center">
+                <i class='bx bx-cog fs-3 me-2'></i>
+                <span>Render Configuration</span>
+            </div>
+            <div class="layout-config mt-3">
+                <!-- <div class="label left-border-cyan">Layout</div> -->
+                <div class="row mt-1">
+                    <div class="col-md-3 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">Rows/Page</span>
+                            <input type="text" class="form-control py-2">
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">
+                                Font Offset
+                                <i class=' ms-1 text-secondary fs-4 bx bx-info-circle' data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="An offset value from the default font size (-5 to +5)"></i>
+                            </span>
+                            <input type="text" class="form-control py-2">
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">Margin X</span>
+                            <input type="text" class="form-control py-2">
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">Margin Y</span>
+                            <input type="text" class="form-control py-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-config mt-3 px-5 pt-3 pb-5 border rounded bg-material-1">
+                <div class="label text-center">Name Signature & Date</div>
+                <div class="row mt-3">
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="chairman" placeholder="">
+                            <label for="chairman">Chairman of Exam Committe</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="controller" placeholder="">
+                            <label for="controller">Controller of Examination</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="member1" placeholder="">
+                            <label for="member1">Exam Committe Member 1</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="member2" placeholder="">
+                            <label for="member2">Exam Committe Member 2</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="member3" placeholder="">
+                            <label for="member3">Exam Committe Member 3</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="member4" placeholder="">
+                            <label for="member4">Exam Committe Member 4</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="tabulator1" placeholder="">
+                            <label for="tabulator1">Tabulator 1</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="tabulator2" placeholder="">
+                            <label for="tabulator2">Tabulator 2</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="tabulator3" placeholder="">
+                            <label for="tabulator3">Tabulator 3</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="tabulator4" placeholder="">
+                            <label for="tabulator4">Tabulator 4</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 btn-container d-flex justify-content-end">
+                <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                    <div class="d-flex align-items-center ">
+                        <i class='bx bx-rename me-2 py-1'></i>
+                        <span class="roboto-font ">Render</span>
+                    </div>
+                    <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="semester-info bg-dark p-3 mt-5 rounded-3 shadow">
+        <i class='bx bx-info-circle bg' ></i>
+        <div class="d-flex justify-content-center align-items-center mt-4">
+            <i class='bx bx-history me-1 fs-5 text-secondary'></i>
+            <span class="roboto-font">Created on: 23 July 2023</span>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <i class='bx bx-user-check me-1 fs-4 text-secondary'></i>
+            <span class="roboto-font">Admin Name</span>
+        </div>
+        <div class="btn-container mt-2 d-flex justify-content-center">
+            <!-- <button class="btn btn-outline-danger me">Delete Semester</button> -->
+            <button class="btn btn-secondary btn-iconized mb-2 px-4 shadow-sm">
+                <i class='bx bx-lock-alt me-2 py-1'></i>
+                <span class="roboto-font ">Close This Semester</span>
+            </button>
+        </div>
+    </div>
+    
+    
+
+    <!-- New Course Entry Modal -->
+    <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material shadow">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Add New Course</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseCodeInput" placeholder="">
+                                    <label for="courseCodeInput">Course Code</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseTitleInput" placeholder="">
+                                    <label for="courseTitleInput">Course Title</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="totalMarksInput" placeholder="">
+                                    <label for="totalMarksInput">Total Marks</label>
+                                </div>
+                            </div> 
+                            <div class="col-md-6 ps-1">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseCreditsInput" placeholder="">
+                                    <label for="courseCreditsInput">Credits</label>
+                                </div>
+                            </div> 
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="partAmarksInput" placeholder="">
+                                    <label for="partAmarksInput">Part A marks</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-6 ps-1">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="partBmarksInput" placeholder="">
+                                    <label for="partBmarksInput">Part B marks</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="inCourseMarksInput" placeholder="">
+                                    <label for="inCourseMarksInput">In Course marks</label>
+                                </div>   
+                                <div class="alert alert-info mt-1 text-center roboto-font" role="alert" style="font-size: 0.8rem;">
+                                    In course marks will be converted into <span class="text-white">40</span>
+                                </div>           
+                            </div>
+                            <div class="col-md-12" id="error-alert-container" style="display: none;">
+                                <div class="alert alert-danger" role="alert">
+                                    Cannot Create Course
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
+                    <button type="button" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drop Course Modal -->
+    <div class="modal fade" id="dropCourseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content bg-material shadow">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Select Drop Courses</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="container p-0">
+                        <div>
+                            <input type="text" class="form-control bg-material-1 py-2 fs-3 text-center" placeholder="Name of Running Semester" aria-label="Username" aria-describedby="basic-addon1">
+                            <div class="loader text-center mt-1" style="display: none;">Loading...</div>
+                        </div>
+                        <div class="semester-container p-2 my-4 mb-1 container" style="display: none;"> 
+                            <div class="row g-3 p-1 border-b- bg-dark rounded shadow">
+                                <a href="" class="semester-title my-2 text-center">3rd Year 1st Semester (EEE 2018-19)</a>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-1" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-1">EEE 501</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-2" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-2">EEE 505</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
+                                </div>
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="alert alert-warning text-center mt-2" role="alert" id="dropCourseModal-alert" style="display: none;">
+                            No Semester found!
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
+                    <button class="btn btn-primary btn-iconized px-4 shadow" style="display: none;">
+                        <i class='bx bx-check me-1'></i>
+                        <span class="roboto-font" style="font-size: 0.8rem;">Confirm Selection</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <h1 class="modal-title text-info fs-5 text-center w-100" id="exampleModalLabel">Info</h1>
+                </div>
+                <div class="modal-body text-center" id="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'results/viewsemester.js' %}"></script>
+{% endblock script %}
+

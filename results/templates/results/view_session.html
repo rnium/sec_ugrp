@@ -60,7 +60,7 @@
             {% if session.semester_set.count %}
             {% for semester in session.semester_set.all %}
             <div class="col-md-6 p-0">
-                <a href="" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
+                <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
                     <div class="sem-codename">
                         <span class="year">4</span>
                         <span>-</span>
