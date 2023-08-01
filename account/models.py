@@ -51,7 +51,7 @@ class BaseAccount(models.Model):
         if bool(self.profile_picture):
             return self.profile_picture.url
         else:
-            return static('accounts/images/blank-dp.svg')
+            return static('results/images/blank-dp.svg')
 
 
 class AdminAccount(BaseAccount):

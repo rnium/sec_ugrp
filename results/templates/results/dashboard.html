@@ -1,7 +1,7 @@
-{% extends 'results/base.html' %}
-{% block title %}
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
 <title>Dashboard</title>
-{% endblock title %}
+{% endblock head %}
 {% block nav %}
 <ul class="nav">
     <li class="nav-item active">
@@ -41,3 +41,217 @@
     </li>
 </ul>
 {% endblock nav %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="sys-info text-center">
+        <img src="{% static 'results/images/lg.svg' %}" alt="">
+        <div class="h2">Result Administration System</div>
+        <div class="h4">Sylhet Engineering College</div>
+    </div>
+    <div class="row dashboard-content py-4 px-5">
+        <div class="col-lg-5 live-semesters title-box  me-3">
+            <!-- <div class="grad-top"><div class="grad-con"></div></div> -->
+            <div class="title">Recent Semesters</div>
+            <div class="content">
+                <div class="no-content d-flex flex-column justify-content-center align-items-center">
+                    <i class='bx bx-info-circle fs-1 text-warning'></i>
+                    <div class="info fs-3 mt-2 text-secondary">Not Enough Data</div>
+                </div>
+                <ul style="display: none;">
+                    <li>
+                    <a href="" class="semester-item">
+                        <div class="sem-codename">
+                            <span class="year">4</span>
+                            <span>-</span>
+                            <span class="semester">1</span>
+                        </div>
+                        <div class="info">
+                            <div class="session">
+                                <span class="label">Session:&nbsp;</span>
+                                <span class="val">2018-19</span>
+                                <span class="dept eee">EEE 4th batch</span>
+                            </div>
+                            <!-- <div class="semester-no">4th year 1st semester</div> -->
+                            <div class="exam-start-month">
+                                <i class='bx bxs-calendar me-2'></i>
+                                <div class="month">June 2023</div>
+                            </div>
+                        </div>
+                    </a>
+                    </li>
+
+                    <li>
+                    <a href="" class="semester-item">
+                        <div class="sem-codename">
+                            <span class="year">3</span>
+                            <span>-</span>
+                            <span class="semester">1</span>
+                        </div>
+                        <div class="info">
+                            <div class="session">
+                                <span class="label">Session:&nbsp;</span>
+                                <span class="val">2019-20</span>
+                                <span class="dept cse">CSE 13th batch</span>
+                            </div>
+                            <!-- <div class="semester-no">3rd year 1st semester</div> -->
+                            <div class="exam-start-month">
+                                <i class='bx bxs-calendar me-2'></i>
+                                <div class="month">June 2023</div>
+                            </div>
+                        </div>
+                    </a>
+                    </li>
+
+                    <li>
+                    <a href="" class="semester-item">
+                        <div class="sem-codename">
+                            <span class="year">2</span>
+                            <span>-</span>
+                            <span class="semester">1</span>
+                        </div>
+                        <div class="info">
+                            <div class="session">
+                                <span class="label">Session:&nbsp;</span>
+                                <span class="val">2020-21</span>
+                                <span class="dept ce">CE 7th batch</span>
+                            </div>
+                            <!-- <div class="semester-no">2nd year 1st semester</div> -->
+                            <div class="exam-start-month">
+                                <i class='bx bxs-calendar me-2'></i>
+                                <div class="month">June 2023</div>
+                            </div>
+                        </div>
+                    </a>
+                    </li>
+                    <li>
+                    <a href="" class="semester-item">
+                        <div class="sem-codename">
+                            <span class="year">2</span>
+                            <span>-</span>
+                            <span class="semester">1</span>
+                        </div>
+                        <div class="info">
+                            <div class="session">
+                                <span class="label">Session:&nbsp;</span>
+                                <span class="val">2020-21</span>
+                                <span class="dept ce">CE 7th batch</span>
+                            </div>
+                            <!-- <div class="semester-no">2nd year 1st semester</div> -->
+                            <div class="exam-start-month">
+                                <i class='bx bxs-calendar me-2'></i>
+                                <div class="month">June 2023</div>
+                            </div>
+                        </div>
+                    </a>
+                    </li>
+        
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-5 activities title-box bg-material">
+            <div class="title w-100 bg-material-1">Admin Activities</div>
+            <div class="content">
+                <div class="no-content d-flex flex-column justify-content-center align-items-center">
+                    <i class='bx bx-info-circle fs-1 text-warning'></i>
+                    <div class="info fs-3 mt-2 text-secondary">Not Enough Data</div>
+                </div>
+                <ul style="display: none;">
+                    <li>
+                        <a href="" class="activity-item">
+                            <!-- <i class='bx bx-refresh label update'></i> -->
+                            <img src="/images/create-file.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="activity-item">
+                            <!-- <i class='bx bx-refresh label update'></i> -->
+                            <img src="/images/create-file.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="activity-item">
+                            <!-- <i class='bx bx-refresh label update'></i> -->
+                            <img src="/images/create-file.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" class="activity-item">
+                            <!-- <i class='bx bx-refresh label update'></i> -->
+                            <img src="/images/add.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" class="activity-item">
+                            <!-- <i class='bx bx-refresh label update'></i> -->
+                            <img src="/images/add.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="" class="activity-item">
+                            <img src="/images/rejected.png" alt="">
+                            <div class="details">
+                                <div class="info">
+                                    <span class="username">Rafiqul Islam</span> deleted 1 course from <span class="semester">4-1 [2018-19]</span>
+                                    <div class="time-info">
+                                        <i class='bx bx-history' ></i>
+                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
