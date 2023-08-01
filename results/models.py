@@ -37,6 +37,13 @@ class Session(models.Model):
     batch_no = models.IntegerField()
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     
+    class Meta:
+        ordering = ["-from_year"]
+        constraints = [
+            models.UniqueConstraint(fields=["from_year", "dept"], name="unique_dept_session"),
+            models.UniqueConstraint(fields=["batch_no", "dept"], name="unique_dept_batch"),
+        ]
+        
     def __str__(self):
         return f"{self.dept.name} {self.session_code}"
     
@@ -48,8 +55,6 @@ class Session(models.Model):
     def batch_name(self):
         return f"{self.dept.name.upper()} {get_ordinal_number(self.batch_no)} batch"
     
-    class Meta:
-        ordering = ["-from_year"]
 
 
 class Semester(models.Model):

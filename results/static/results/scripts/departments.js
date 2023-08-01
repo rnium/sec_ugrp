@@ -7,7 +7,16 @@ function getSessionData() {
     let batchNo = parseInt(batchInput)
     if (isNaN(batchNo) | isNaN(from_year_no) | isNaN(to_year_no)) {
         $("#createSessionAlert").text("Invalid Input");
+        $("#createSessionAlert").show()
         return false;
+    }
+    if ((to_year_no % 2000) - (from_year_no % 2000) != 1) {
+        $("#createSessionAlert").text("Invalid Session Code");
+        $("#createSessionAlert").show()
+        return false;
+    }
+    else {
+        $("#createSessionAlert").hide()
     }
     data = {
         "from_year": from_year_no,
@@ -44,6 +53,7 @@ function createSession() {
             dataType: "json",
             contentType: "application/json",
             beforeSend: function(xhr){
+                $("#createSessionAlert").hide()
                 $("addSessionBtn").attr("disabled", true)
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
             },
@@ -54,9 +64,10 @@ function createSession() {
                 hideModal("newEntryModal");
                 renderAndInsertNewSession(response, "sessionContainer")
             },
-            error: function() {
-                alert("Something went wrong")
+            error: function(xhr, status, error) {
                 $("#addSessionBtn").removeAttr("disabled");
+                $("#createSessionAlert").text(error)
+                $("#createSessionAlert").show()
             },
         });
     }
