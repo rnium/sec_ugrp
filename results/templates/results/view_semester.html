@@ -1,6 +1,6 @@
 {% extends 'results/base.html' %} {% load static %}
 {% block head %}
-<title>View Session</title>
+<title>View Semester</title>
 {% endblock head %}
 
 {% block nav %}
@@ -45,12 +45,14 @@
 
 {% block content %}
 <div class="view-semester-container m-5 pt-4">
+    {% if semester.is_running %}
     <div class="running-sem-badge">
         <div class="inner">
             <span class="circle"></span>
             <span class="title">Running</span>
         </div>
     </div>
+    {% endif %}
     <div class="info">
         <div class="title fs-1 text-secondary">4th Year 1st Semester</div>
         <a class="session mt-1" href="">
@@ -70,8 +72,10 @@
     <div class="all-courses bg-material p-3 mt-4 rounded-3 border-b-1">
         <div class="header text-center">All Courses</div>
         <div class="courses row p-4">
+            {% if semester.has_courses %}
+            {% for course in semester.course_set.all %}
             <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
+                <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}">
                     <div class="course-code text-center">EEE 701</div>
                     <div class="course-title text-center">Lorem ipsum dolor</div>
                     <div class="credits mt-1 d-flex justify-content-center align-items-center">
@@ -80,8 +84,10 @@
                     </div>
                 </a>
             </div>
+            {% comment %} Drop Courses {% endcomment %}
+            {% for course in semester.drop_courses.all %}
             <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
+                <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester course.code %}">
                     <div class="course-code text-center">EEE 701</div>
                     <div class="course-title text-center">Lorem ipsum dolor</div>
                     <div class="credits mt-1 d-flex justify-content-center align-items-center">
@@ -90,56 +96,16 @@
                     </div>
                 </a>
             </div>
-            <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
-                    <div class="course-code text-center">EEE 701</div>
-                    <div class="course-title text-center">Lorem ipsum dolor</div>
-                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
-                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
-                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
-                    </div>
-                </a>
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            <div class="no-content py-3 d-flex flex-column justify-content-center align-items-center">
+                <i class='bx bx-info-circle fs-1 text-warning'></i>
+                <div class="info fs-3 mt-2 text-secondary">No Courses</div>
             </div>
-            <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
-                    <div class="course-code text-center">EEE 701</div>
-                    <div class="course-title text-center">Lorem ipsum dolor</div>
-                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
-                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
-                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
-                    <div class="course-code text-center">EEE 701</div>
-                    <div class="course-title text-center">Lorem ipsum dolor</div>
-                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
-                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
-                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-lg-3 course-container">
-                <a class="course" href="">
-                    <div class="course-code text-center">EEE 701</div>
-                    <div class="course-title text-center">Lorem ipsum dolor</div>
-                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
-                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
-                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-lg-3 course-container">
-                <a class="course drop-course" href="">
-                    <div class="course-code text-center">EEE 701</div>
-                    <div class="course-title text-center">Lorem ipsum dolor</div>
-                    <div class="credits mt-1 d-flex justify-content-center align-items-center">
-                        <i class='bx bx-unite text-gray fs-6 me-1'></i>
-                        <span class="roboto-font text-gray" style="font-size: 0.8rem;">3.00 Credits</span>
-                    </div>
-                </a>
-            </div>
+            {% endif %}
+            
+            
         </div>
         <div class="course-adder-container mt-2 d-flex justify-content-end border-top pt-3">
             <button class="btn btn-primary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#newEntryModal">

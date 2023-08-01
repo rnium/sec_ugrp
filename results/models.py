@@ -91,6 +91,12 @@ class Semester(models.Model):
     def semester_name(self):
         return f"{get_ordinal_number(self.year)} Year {get_ordinal_number(self.year_semester)} Semester"
     
+    @property
+    def has_courses(self):
+        num_courses = self.course_set.count() + self.drop_courses.count()
+        print(num_courses)
+        return bool(num_courses)
+    
     
 class Course(models.Model):
     semester = models.ForeignKey("Semester", on_delete=models.CASCADE)

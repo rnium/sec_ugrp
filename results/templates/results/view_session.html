@@ -62,15 +62,15 @@
             <div class="col-md-6 p-0">
                 <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
                     <div class="sem-codename">
-                        <span class="year">4</span>
+                        <span class="year">{{semester.year}}</span>
                         <span>-</span>
-                        <span class="semester">1</span>
+                        <span class="semester">{{semester.year_semester}}</span>
                     </div>
                     <div class="info">
-                        <div class="semester-no">4th year 1st semester</div>
+                        <div class="semester-no">{{semester.semester_name}}</div>
                         <div class="exam-start-month">
                             <i class='bx bxs-calendar me-2 fs-5'></i>
-                            <div class="month fs-6">June 2023</div>
+                            <div class="month fs-6">{{semester.start_month}}</div>
                         </div>
                     </div>    
                 </a>

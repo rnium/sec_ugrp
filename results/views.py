@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
-from results.models import (Semester, Department, Session)
+from results.models import (Semester, Department, Session, Course)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -80,6 +80,26 @@ class SemesterView(LoginRequiredMixin, DetailView):
             year_semester = self.kwargs.get("semester", ""),
         )
         return semester
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['request'] = self.request
+        return context
+    
+
+class CourseView(LoginRequiredMixin, DetailView):
+    template_name = "results/view_course.html"
+    def get_object(self):
+        course = get_object_or_404(
+            Course, 
+            semester__session__dept__name = self.kwargs.get("dept_name", ""),
+            semester__session__from_year = self.kwargs.get("from_year", ""),
+            semester__session__to_year = self.kwargs.get("to_year", ""),
+            semester__year = self.kwargs.get("year", ""),
+            semester__year_semester = self.kwargs.get("semester", ""),
+            code = self.kwargs.get("course_code", ""),
+        )
+        return course
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
