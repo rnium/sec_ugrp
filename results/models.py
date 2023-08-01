@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
 from results.utils import get_ordinal_number
+from os.path import join, basename
 
 
 class Department(models.Model):
@@ -101,7 +102,15 @@ class Semester(models.Model):
         print(num_courses)
         return bool(num_courses)
     
-    
+
+class SemesterDocument(models.Model):
+    def filepath(self, filename):
+        return join(str(self.semester.session.dept.name), str(self.semester.session.session_code), str(self.semester.semester_code), filename)
+    semester = models.OneToOneField(Semester, on_delete=models.CASCADE)
+    tabulation_sheet = models.FileField(upload_to=filepath)
+    tabulation_thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
+
+
 class Course(models.Model):
     semester = models.ForeignKey("Semester", on_delete=models.CASCADE)
     code = models.CharField(max_length=20)
