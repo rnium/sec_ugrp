@@ -14,7 +14,7 @@
 </head>
 <body data-bs-theme="dark">
     <header>
-        <div class="navbar {{nav}}">
+        <div class="navbar {% if is_navActive %}active{% endif %}">
             <div class="title">
                 <div class="logo">
                     <img src="{% static 'results/images/lg.svg' %}" alt="">
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-    <main>
+    <main style="{% if is_navActive %}margin-left:250px{% else %}margin-left:100px{% endif %}">
         <div class="profile">
             <a href="#">
                 <img class="dp" src="{{request.user.adminaccount.avatar_url}}" alt="avatar">

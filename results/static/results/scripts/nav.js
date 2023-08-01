@@ -1,10 +1,11 @@
 function setNavCookie(value) {
     let date = new Date()
+    let path = "path=/"
     date.setTime(date.getTime() + (3600 * 1000 * 24 * 7))
     let expires = "expires=" + date.toUTCString();
-    console.log(expires);
-    let path = "path=\\"
-    document.cookie = `nav=${value};${expires};${path}`; 
+    let cookiestr = `nav=${value};${expires};${path};sameSite=lax`;
+    document.cookie = cookiestr;
+    console.log(cookiestr); 
 }
 
 
