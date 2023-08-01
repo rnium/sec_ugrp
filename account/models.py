@@ -71,6 +71,8 @@ class AdminAccount(BaseAccount):
 
 class StudentAccount(BaseAccount):
     registration = models.IntegerField(primary_key=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     cgpa = models.FloatField(default=0)
