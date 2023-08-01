@@ -13,6 +13,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        nav = self.request.COOKIES.get("nav", "")
+        context["nav"] = nav
         semesters = []
         if self.request.user.adminaccount.is_super_admin:
             semesters = Semester.objects.all()[:4]
