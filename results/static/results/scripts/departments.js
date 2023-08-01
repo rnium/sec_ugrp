@@ -66,7 +66,8 @@ function createSession() {
             },
             error: function(xhr, status, error) {
                 $("#addSessionBtn").removeAttr("disabled");
-                $("#createSessionAlert").text(error)
+                $("#createSessionAlert").text(xhr.responseJSON['detail'])
+                console.log(xhr);
                 $("#createSessionAlert").show()
             },
         });
