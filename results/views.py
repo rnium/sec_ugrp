@@ -32,7 +32,9 @@ class DepartmentView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
+        context['department'] = self.get_object()
         context['request'] = self.request
+        print(context)
         return context
     
 
