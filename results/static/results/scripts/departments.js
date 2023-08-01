@@ -34,7 +34,7 @@ function hideModal(modalId) {
 
 function renderAndInsertNewSession(response, containerId) {
     let session = `<div class="col-md-4 p-0">
-                        <a href="${response['view_url']}" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                        <a href="${response['view_url']}" class="session new d-block shadow-sm text-center p-3 m-1 rounded-3">
                             <div class="session-year fs-4">${response['session_code']}</div>
                             <div class="batch text-info">${response['batch_name']}</div>
                             <i class='bg bx bxs-group'></i>
