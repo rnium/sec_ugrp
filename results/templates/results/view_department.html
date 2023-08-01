@@ -7,7 +7,7 @@
 {% block nav %}
 <ul class="nav">
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
             <i class='bx bxs-dashboard'></i>
             <span>Dashboard</span>
         </a>
@@ -21,21 +21,21 @@
         <div class="tooltip">Department</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
             <i class='bx bx-user'></i>
             <span>Staffs</span>
         </a>
         <div class="tooltip">Staffs</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:activities_view' %}" class="nav-link">
             <i class='bx bx-walk'></i>
             <span>Activities</span>
         </a>
         <div class="tooltip">Activities</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:recycle_bin_view' %}" class="nav-link">
             <i class='bx bxs-trash'></i>
             <span>Recycle Bin</span>
         </a>
@@ -50,46 +50,20 @@
         <div class="logo-container d-flex flex-column align-items-center">
             <img src="{{department.dept_logo.url}}" class="dept-logo">
         </div>
-        <div class="dept-title fs-3 text-center mt-2">Department of Electrical and Electronic Engineering</div>
+        <div class="dept-title fs-3 text-center mt-2">{{department.dept_title_full}}</div>
         <div class=" mt-2">
             <div class="sessions shadow-sm mt-5 bg-material px-4 py-3 rounded-3">
                 <div class="title section-title mb-2 text-center">Sessions</div>
                 <div class="row content">
+                    {% for session in department.session_set.all %}
                     <div class="col-md-4 p-0">
                         <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
-                            <div class="session-year fs-4">2015-16</div>
-                            <div class="batch text-info">EEE 1st batch</div>
+                            <div class="session-year fs-4">{{session.session_code}}</div>
+                            <div class="batch text-info">{{session.batch_name}}</div>
                             <i class='bg bx bxs-group'></i>
                         </a>
                     </div>
-                    <div class="col-md-4 p-0">
-                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
-                            <div class="session-year fs-4">2015-16</div>
-                            <div class="batch text-info">EEE 1st batch</div>
-                            <i class='bg bx bxs-group'></i>
-                        </a>
-                    </div>
-                    <div class="col-md-4 p-0">
-                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
-                            <div class="session-year fs-4">2015-16</div>
-                            <div class="batch text-info">EEE 1st batch</div>
-                            <i class='bg bx bxs-group'></i>
-                        </a>
-                    </div>
-                    <div class="col-md-4 p-0">
-                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
-                            <div class="session-year fs-4">2015-16</div>
-                            <div class="batch text-info">EEE 1st batch</div>
-                            <i class='bg bx bxs-group'></i>
-                        </a>
-                    </div>
-                    <div class="col-md-4 p-0">
-                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
-                            <div class="session-year fs-4">2015-16</div>
-                            <div class="batch text-info">EEE 1st batch</div>
-                            <i class='bg bx bxs-group'></i>
-                        </a>
-                    </div>
+                    {% endfor %}
                     
                     
                     

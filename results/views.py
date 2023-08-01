@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from typing import Any, Dict
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
@@ -34,7 +35,6 @@ class DepartmentView(LoginRequiredMixin, TemplateView):
         context =  super().get_context_data(**kwargs)
         context['department'] = self.get_object()
         context['request'] = self.request
-        print(context)
         return context
     
 
@@ -48,4 +48,8 @@ def departments_all(request):
         }
         return render(request, "results/departments_all.html", context=context)
     else:
-        return redirect('results:view_department', dept_name=request.adminaccount.dept.name)
+        return redirect('results:view_department', dept_name=request.user.adminaccount.dept.name)
+
+@login_required 
+def pending_view(request):
+    return HttpResponse("<h1 style='text-align: center;margin-top:10rem'>This Section is Under Development</h1>")

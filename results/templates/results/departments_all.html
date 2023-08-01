@@ -7,7 +7,7 @@
 {% block nav %}
 <ul class="nav">
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
             <i class='bx bxs-dashboard'></i>
             <span>Dashboard</span>
         </a>
@@ -21,21 +21,21 @@
         <div class="tooltip">Department</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
             <i class='bx bx-user'></i>
             <span>Staffs</span>
         </a>
         <div class="tooltip">Staffs</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:activities_view' %}" class="nav-link">
             <i class='bx bx-walk'></i>
             <span>Activities</span>
         </a>
         <div class="tooltip">Activities</div>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link">
+        <a href="{% url 'results:recycle_bin_view' %}" class="nav-link">
             <i class='bx bxs-trash'></i>
             <span>Recycle Bin</span>
         </a>
