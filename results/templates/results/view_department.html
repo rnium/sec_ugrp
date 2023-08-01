@@ -54,7 +54,7 @@
         <div class=" mt-2">
             <div class="sessions shadow-sm mt-5 bg-material px-4 py-3 rounded-3">
                 <div class="title section-title mb-2 text-center">Sessions</div>
-                <div class="row content">
+                <div class="row content" id="sessionContainer">
                     {% for session in department.session_set.all %}
                     <div class="col-md-4 p-0">
                         <a href="{% url 'results:view_session' session.dept.name session.from_year session.to_year %}" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
@@ -95,14 +95,13 @@
                                     <label for="batchNoInput">EEE Batch Number</label>
                                 </div>              
                             </div>
-                            <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
+                            <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;" id="createSessionAlert">
                             </div>                                                
                         </div>
                     </div>
                     <div class="d-flex justify-center p-3 justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary" id="addSessionBtn">Add</button>
                     </div>
                 </div>
             </div>
@@ -110,3 +109,13 @@
     </div>
 </div>
 {% endblock content %}
+{% block script %}
+<script src="{% static 'results/scripts/departments.js' %}"></script>
+<script>
+    const create_session_api = "{% url 'results:create_session' %}";
+    const dept_id = {{department.id}};
+    const csrftoken = "{{csrf_token}}";
+</script>
+
+{% endblock script %}
+
