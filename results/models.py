@@ -88,6 +88,10 @@ class Semester(models.Model):
         return f"{self.session}, {self.semester_name}"
     
     @property
+    def semester_code(self):
+        return f"{self.year}-{self.year_semester} [{self.session.session_code}]"
+    
+    @property
     def semester_name(self):
         return f"{get_ordinal_number(self.year)} Year {get_ordinal_number(self.year_semester)} Semester"
     

@@ -46,18 +46,20 @@
 {% block content %}
 <div class="view-course-container m-5 pt-4">
     <div class="info">
-        <div class="semester running">
-            <a href="">4-1 (2018-19)</a>
+        <div class="semester {% if course.semester.is_running %}running{% endif %}">
+            <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}">
+                {{course.semester.semester_code}}
+            </a>
         </div>
         <div class="course-info h4  text-center">
-            <div class="course-code">EEE 715</div>
+            <div class="course-code">{{course.code}}</div>
             <div class="title">
-                Power Electronics
+                {{course.title}}
             </div>
         </div>
         <div class="credits mt-1 d-flex justify-content-center align-items-center">
             <i class='bx bx-unite text-gray fs-5 me-1'></i>
-            <span class="roboto-font text-gray" style="font-size: 0.9rem;">3.00 Credits</span>
+            <span class="roboto-font text-gray" style="font-size: 0.9rem;">{{course.course_credit}} Credits</span>
         </div>
         
         <div class="row mt-3 bg-dark py-1 rounded" style="display: none;">
