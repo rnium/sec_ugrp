@@ -62,6 +62,7 @@ class Semester(models.Model):
             MaxValueValidator(8, message="Semester number cannot be more than 8"),
         ]
     )
+    start_month = models.CharField(max_length=15)
     is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")
@@ -134,3 +135,6 @@ class Activity(models.Model):
     target_url = models.URLField(null=True, blank=True)
     type = models.CharField(max_length=10, choices=ACTIVITY_TYPES)
     message = models.CharField(max_length=200)
+    
+    class Meta:
+        ordering = ['at']
