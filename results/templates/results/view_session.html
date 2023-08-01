@@ -46,19 +46,21 @@
 {% block content %}
 <div class="view-session-container m-5 pt-4">
     <div class="info">
-        <div class="batch-no fs-1 text-secondary">EEE 4th Batch</div>
+        <div class="batch-no fs-1 text-secondary">{{session.batch_name}}</div>
         <div class="session mt-1">
             <div class="label me-2">Session</div>
             <div class="value shadow-sm">
-                <span class="code">2018-19</span>
+                <span class="code">{{session.session_code}}</span>
             </div>
         </div>
     </div>
     <div class="container d-flex flex-column  align-items-center mt-4">
         <div class="semesters row col-md-9 bg-dar p-3 rounded-2 bg-material mt-3">
             <div class="section-title text-center mb-2">Semesters</div>
+            {% if session.semester_set.count %}
+            {% for semester in session.semester_set.all %}
             <div class="col-md-6 p-0">
-                <a href="" class="semester-item m-1">
+                <a href="" class="semester-item m-1 {% if semester.is_running %}running-semester{% endif %}">
                     <div class="sem-codename">
                         <span class="year">4</span>
                         <span>-</span>
@@ -73,54 +75,13 @@
                     </div>    
                 </a>
             </div>
-            <div class="col-md-6 p-0">
-                <a href="" class="semester-item m-1">
-                    <div class="sem-codename">
-                        <span class="year">4</span>
-                        <span>-</span>
-                        <span class="semester">1</span>
-                    </div>
-                    <div class="info">
-                        <div class="semester-no">4th year 1st semester</div>
-                        <div class="exam-start-month">
-                            <i class='bx bxs-calendar me-2 fs-5'></i>
-                            <div class="month fs-6">June 2023</div>
-                        </div>
-                    </div>    
-                </a>
+            {% endfor %}
+            {% else %}
+            <div class="no-content py-4 d-flex flex-column justify-content-center align-items-center">
+                <i class='bx bx-info-circle fs-1 text-warning'></i>
+                <div class="info fs-3 mt-2 text-secondary">No Semesters</div>
             </div>
-            <div class="col-md-6 p-0">
-                <a href="" class="semester-item m-1">
-                    <div class="sem-codename">
-                        <span class="year">4</span>
-                        <span>-</span>
-                        <span class="semester">1</span>
-                    </div>
-                    <div class="info">
-                        <div class="semester-no">4th year 1st semester</div>
-                        <div class="exam-start-month">
-                            <i class='bx bxs-calendar me-2 fs-5'></i>
-                            <div class="month fs-6">June 2023</div>
-                        </div>
-                    </div>    
-                </a>
-            </div>
-            <div class="col-md-6 p-0">
-                <a href="" class="semester-item running-semester m-1">
-                    <div class="sem-codename">
-                        <span class="year">4</span>
-                        <span>-</span>
-                        <span class="semester">1</span>
-                    </div>
-                    <div class="info">
-                        <div class="semester-no">4th year 1st semester</div>
-                        <div class="exam-start-month">
-                            <i class='bx bxs-calendar me-2 fs-5'></i>
-                            <div class="month fs-6">June 2023</div>
-                        </div>
-                    </div>    
-                </a>
-            </div>
+            {% endif %}
         </div>
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
             <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newSemesterEntryModal">
