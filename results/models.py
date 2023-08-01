@@ -29,11 +29,15 @@ class Session(models.Model):
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.dept.name} {self.from_year}-{self.to_year % 2000}"
+        return f"{self.dept.name} {self.session_code}"
     
     @property
-    def session_name(self):
-        return str(self)
+    def session_code(self):
+        return f"{self.from_year}-{self.to_year % 2000}"
+
+    @property
+    def batch_name(self):
+        return f"{self.dept.name.upper()} {get_ordinal_number(self.batch_no)} batch"
     
     class Meta:
         ordering = ["-from_year"]
