@@ -1,0 +1,141 @@
+{% extends 'results/base.html' %}
+{% load static %}
+{% block head %}
+<title>Department</title>
+{% endblock head %}
+
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item active">
+        <a href="" class="nav-link">
+            <i class='bx bx-archive' ></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item">
+        <a href="" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="" class="nav-link">
+            <i class='bx bx-walk'></i>
+            <span>Activities</span>
+        </a>
+        <div class="tooltip">Activities</div>
+    </li>
+    <li class="nav-item">
+        <a href="" class="nav-link">
+            <i class='bx bxs-trash'></i>
+            <span>Recycle Bin</span>
+        </a>
+        <div class="tooltip">Bin</div>
+    </li>
+</ul>
+{% endblock nav %}
+
+{% block content %}
+<div class="dept-tab-container w-100 px-3">
+    <div class="department-main m-5 ">
+        <div class="logo-container d-flex flex-column align-items-center">
+            <img src="./images/seceee2.png" class="dept-logo">
+        </div>
+        <div class="dept-title fs-3 text-center mt-2">Department of Electrical and Electronic Engineering</div>
+        <div class=" mt-2">
+            <div class="sessions shadow-sm mt-5 bg-material px-4 py-3 rounded-3">
+                <div class="title section-title mb-2 text-center">Sessions</div>
+                <div class="row content">
+                    <div class="col-md-4 p-0">
+                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                            <div class="session-year fs-4">2015-16</div>
+                            <div class="batch text-info">EEE 1st batch</div>
+                            <i class='bg bx bxs-group'></i>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-0">
+                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                            <div class="session-year fs-4">2015-16</div>
+                            <div class="batch text-info">EEE 1st batch</div>
+                            <i class='bg bx bxs-group'></i>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-0">
+                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                            <div class="session-year fs-4">2015-16</div>
+                            <div class="batch text-info">EEE 1st batch</div>
+                            <i class='bg bx bxs-group'></i>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-0">
+                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                            <div class="session-year fs-4">2015-16</div>
+                            <div class="batch text-info">EEE 1st batch</div>
+                            <i class='bg bx bxs-group'></i>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-0">
+                        <a href="" class="session d-block shadow-sm text-center bg-material-1 p-3 m-1 rounded-3">
+                            <div class="session-year fs-4">2015-16</div>
+                            <div class="batch text-info">EEE 1st batch</div>
+                            <i class='bg bx bxs-group'></i>
+                        </a>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+            <div class="add-semester d-flex justify-content-end mt-4">
+                <button class="btn btn-outline-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newEntryModal">
+                    <i class='bx bx-list-plus me-1 py-1'></i>
+                    <span>Add New Session</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- New Entry Modal -->
+        <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-material">
+                    <div class="header">
+                        <div class="modal-title fs-6 text-center py-3 fs-5 text-info-emphasis" id="staticBackdropLabel"><strong class="text-info-emphasis">Add New Session</strong></div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-container">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="yearInput" placeholder="">
+                                    <label for="yearInput">Session Code (e.g. 2018-19)</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="batchNoInput" placeholder="">
+                                    <label for="batchNoInput">EEE Batch Number</label>
+                                </div>              
+                            </div>
+                            <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
+                            </div>                                                
+                        </div>
+                    </div>
+                    <div class="d-flex justify-center p-3 justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

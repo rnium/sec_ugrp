@@ -1,10 +1,11 @@
 from django.urls import path
 from results import views
-from django.conf.urls.static import static
-from django.conf import settings
+
+app_name = "results"
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name="admin_dashboard"),
+    path('departments/', views.departments_all, name="all_departments"),
+    path('departments/<str:dept_name>', views.DepartmentView.as_view(), name="view_department"),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

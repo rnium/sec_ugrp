@@ -21,6 +21,14 @@ class Department(models.Model):
     def __str__(self):
         return self.name.upper()
     
+    @property
+    def dept_title_short(self):
+        return f"Dept of {self.name.upper}"
+    
+    @property
+    def dept_title_full(self):
+        return f"Department of {self.fullname}"
+    
     
 class Session(models.Model):
     from_year = models.IntegerField()
