@@ -11,7 +11,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
-        semesters = Semester.objects.all()[:4]
+        semesters = []
+        if self.request.user.adminaccount.is_super_admin:
+            semesters = Semester.objects.all()[:4]
+        else:
+            semesters = Semester.objects.filter(session__dept=self.request.user.adminaccount.dept)[:4]
         if (len(semesters) > 0):
             context['semesters'] = semesters
         return context
