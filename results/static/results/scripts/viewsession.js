@@ -58,7 +58,7 @@ function getSemesterData() {
 
 function renderAndInsertNewSemester(response, containerId) {
     let session = `<div class="col-md-6 p-0">
-                        <a href="${response['view_url']}" class="running-semester">
+                        <a href="${response['view_url']}" class="semester-item shadow-sm m-1 running-semester">
                             <div class="sem-codename">
                                 <span class="year">${response['year']}</span>
                                 <span>-</span>
