@@ -113,6 +113,7 @@
             
             
         </div>
+        {% if semester.is_running %}
         <div class="course-adder-container mt-2 d-flex justify-content-end border-top pt-3">
             <button class="btn btn-primary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#newEntryModal">
                 <i class='bx bx-list-plus me-2'></i>
@@ -123,6 +124,7 @@
                 <span class="roboto-font">Include Drop Course</span>
             </button>
         </div>
+        {% endif %}
     </div>
     <div class="tabulation bg-material p-4 mt-4 rounded-3 shadow-sm border-b-1">
         <div class="section-title text-center mb-4 text-info">Tabulation Sheet</div>
@@ -284,7 +286,8 @@
     </div>
     
     
-
+    {% if semester.is_running %}
+    
     <!-- New Course Entry Modal -->
     <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -366,52 +369,30 @@
                 </div> 
                 <div class="modal-body">
                     <div class="container p-0">
-                        <div>
-                            <input type="text" class="form-control bg-material-1 py-2 fs-3 text-center" placeholder="Name of Running Semester" aria-label="Username" aria-describedby="basic-addon1">
-                            <div class="loader text-center mt-1" style="display: none;">Loading...</div>
-                        </div>
-                        <div class="semester-container p-2 my-4 mb-1 container" style="display: none;"> 
+                        <div class="semester-container p-2 mt-2 mb-1 container"> 
+                            {% for d_semester in drop_semesters %}
                             <div class="row g-3 p-1 border-b- bg-dark rounded shadow">
-                                <a href="" class="semester-title my-2 text-center">3rd Year 1st Semester (EEE 2018-19)</a>
+                                <a href="" class="semester-title my-2 text-center">
+                                    {{d_semester.semester_name}} <span class="roboto-font">{{d_semester.session.session_code}}</span>
+                                </a>
+                                {% for course in d_semester.course_set.all %}
                                 <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-1" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-1">EEE 501</label><br>
+                                    <input type="checkbox" class="btn-check" id="{{course.id}}" autocomplete="off">
+                                    <label class="btn btn-outline-success w-100" for="{{course.id}}">{{course.code}}</label><br>
                                 </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-2" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-2">EEE 505</label><br>
-                                </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
-                                </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
-                                </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
-                                </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
-                                </div>
-                                <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="courseId-3" autocomplete="off">
-                                    <label class="btn btn-outline-success w-100" for="courseId-3">EEE 507</label><br>
-                                </div>
+                                {% endfor %}
+                                
 
                             </div>
+                            {% endfor %}
                         </div>
                         <div class="alert alert-warning text-center mt-2" role="alert" id="dropCourseModal-alert" style="display: none;">
-                            No Semester found!
                         </div>
                     </div>
                     
                 </div>
                 <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
-                    <button class="btn btn-primary btn-iconized px-4 shadow" style="display: none;">
+                    <button class="btn btn-primary btn-iconized px-4 shadow">
                         <i class='bx bx-check me-1'></i>
                         <span class="roboto-font" style="font-size: 0.8rem;">Confirm Selection</span>
                     </button>
@@ -419,6 +400,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     
 
     <!-- Notification Modal -->

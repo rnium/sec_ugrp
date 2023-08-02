@@ -84,6 +84,17 @@ class SemesterView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        # drop courses semester for current semester
+        semester = context['semester']
+        if semester.is_running:
+            drop_semesters = Semester.objects.filter(is_running = True, 
+                                                     year__lt = semester.year, 
+                                                     session__from_year__gt = semester.session.from_year, 
+                                                     session__dept = semester.session.dept).order_by("session__from_year")
+            if len(drop_semesters) > 0:
+                context["drop_semesters"] = drop_semesters
+            print(drop_semesters)
+            
         return context
     
 
