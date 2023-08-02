@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="container d-flex flex-column  align-items-center mt-4">
-        <div class="semesters row col-md-9 bg-dar p-3 rounded-2 bg-material mt-3">
+        <div class="semesters row col-md-9 bg-dar p-3 rounded-2 bg-material mt-3" id="semesterContainer">
             <div class="section-title text-center mb-2">Semesters</div>
             {% if session.semester_set.count %}
             {% for semester in session.semester_set.all %}
@@ -77,7 +77,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <div class="no-content py-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="no-content py-4 d-flex flex-column justify-content-center align-items-center" id="no-content-semesters">
                 <i class='bx bx-info-circle fs-1 text-warning'></i>
                 <div class="info fs-3 mt-2 text-secondary">No Semesters</div>
             </div>

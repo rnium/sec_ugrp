@@ -2,6 +2,22 @@ const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 
+function hideModal(modalId) {
+    $(`#${modalId}`).modal('hide');
+    
+}
+
+
+function showError(errorContainer, msg) {
+    $(`#${errorContainer}`).text(msg)
+    $(`#${errorContainer}`).show(1200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 3000)
+    })
+}
+
+
 function getSemesterData() {
     let exam_month = $("#monthInput").val().trim();
     let yearInput = $("#yearInput").val().trim();
@@ -40,29 +56,57 @@ function getSemesterData() {
     return data;
 }
 
+function renderAndInsertNewSemester(response, containerId) {
+    let session = `<div class="col-md-6 p-0">
+                        <a href="${response['view_url']}" class="running-semester">
+                            <div class="sem-codename">
+                                <span class="year">${response['year']}</span>
+                                <span>-</span>
+                                <span class="semester">${response['year_semester']}</span>
+                            </div>
+                            <div class="info">
+                                <div class="semester-no">${response['semester_name']}</div>
+                                <div class="exam-start-month">
+                                    <i class='bx bxs-calendar me-2 fs-5'></i>
+                                    <div class="month fs-6">${response['start_month']}</div>
+                                </div>
+                            </div>    
+                        </a>
+                    </div>`
+    $(`#${containerId}`).append(session);
+    console.log(session);
+}
 
-function createAPI(api_url, payload, csrftoken, beforeCall, callback_success, callback_error) {
-    payload = getSessionData()
+function createSemester() {
+    payload = getSemesterData()
     if (payload) {
         $.ajax({
             type: "post",
-            url: api_url,
+            url: create_semester_api,
             dataType: "json",
             contentType: "application/json",
             beforeSend: function(xhr){
+                $("#createSemesterAlert").hide()
+                $("#create_sem_btn").attr("disabled", true)
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
-                beforeCall()
             },
             data: JSON.stringify(payload),
             cache: false,
-            success: callback_success,
-            error: callback_error,
+            success: function(response) {
+                $("#create_sem_btn").removeAttr("disabled");
+                hideModal("newSemesterEntryModal");
+                renderAndInsertNewSemester(response, "semesterContainer")
+            },
+            error: function(xhr, status, error) {
+                $("#create_sem_btn").removeAttr("disabled");
+                showError("createSemesterAlert", xhr.responseJSON['detail'])
+            },
         });
     }
 }
 
+
+
 $(document).ready(function () {
-    $("#create_sem_btn").on('click', ()=>{
-        console.log(getSemesterData());
-    })
+    $("#create_sem_btn").on('click', createSemester)
 });

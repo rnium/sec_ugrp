@@ -54,7 +54,7 @@ function createSession() {
             contentType: "application/json",
             beforeSend: function(xhr){
                 $("#createSessionAlert").hide()
-                $("addSessionBtn").attr("disabled", true)
+                $("#addSessionBtn").attr("disabled", true)
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
             },
             data: JSON.stringify(payload),

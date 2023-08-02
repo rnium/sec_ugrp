@@ -37,7 +37,7 @@ class SemesterSerializer(ModelSerializer):
         
     def get_view_url(self, obj):
         return reverse(
-            "results:view_session",
+            "results:view_semester",
             kwargs = {
                 'dept_name':obj.session.dept.name,
                 'from_year':obj.session.from_year,
