@@ -54,18 +54,18 @@
     </div>
     {% endif %}
     <div class="info">
-        <div class="title fs-1 text-secondary">4th Year 1st Semester</div>
-        <a class="session mt-1" href="">
+        <div class="title fs-1 text-secondary">{{semester.semester_name}}</div>
+        <a class="session mt-1" href="{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}">
             <div class="label me-2">Session</div>
             <div class="value shadow-sm">
-                <span class="code">2018-19</span>
-                <span class="batch-no">EEE 4th Batch</span>
+                <span class="code">{{semester.session.session_code}}</span>
+                <span class="batch-no">{{semester.session.batch_name}}</span>
             </div>
         </a>
         <div class="exam-month mt-2">
             <div class="inner d-flex">
                 <i class='bx bx-calendar fs-4 me-1 text-info'></i>
-                <span class="fs-6 text-info">March 2023</span>
+                <span class="fs-6 text-info">{{semester.start_month}}</span>
             </div>
         </div>
     </div>

@@ -46,7 +46,7 @@
 {% block content %}
 <div class="view-session-container m-5 pt-4">
     <div class="info">
-        <div class="batch-no fs-1 text-secondary">{{session.batch_name}}</div>
+        <a href="{% url 'results:view_department' session.dept.name %}" class="batch-no fs-1 text-secondary">{{session.batch_name}}</a>
         <div class="session mt-1">
             <div class="label me-2">Session</div>
             <div class="value shadow-sm">

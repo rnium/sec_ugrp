@@ -73,8 +73,8 @@ function renderAndInsertNewSemester(response, containerId) {
                             </div>    
                         </a>
                     </div>`
+    $("#no-content-semesters").remove();
     $(`#${containerId}`).append(session);
-    console.log(session);
 }
 
 function createSemester() {
