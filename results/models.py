@@ -149,13 +149,17 @@ class CourseResult(models.Model):
         MinValueValidator(0, message="Score cannot be less than 0")])
     total_score = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
-    part_A_code = models.CharField(max_length=20, null=True)
-    part_B_code = models.CharField(max_length=20, null=True)
+    part_A_code = models.CharField(max_length=20, null=True, blank=True)
+    part_B_code = models.CharField(max_length=20, null=True, blank=True)
     grade_point = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
     letter_grade = models.CharField(max_length=2, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["student", "course"], name="unique_courseresult_student")
+        ]
     
     @property
     def course_points(self):
