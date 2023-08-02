@@ -37,7 +37,7 @@ function getNewCourseData() {
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
     
-    if (isNaN(totalMarksIn) | isNaN(creditsIn) | isNaN(partAMarksIn) | isNaN(partBMarksIn | isNaN(incourseMarksIn))) {
+    if (isNaN(totalMarksIn) | isNaN(creditsIn) | isNaN(partAMarksIn) | isNaN(partBMarksIn) | isNaN(incourseMarksIn)) {
         $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
         $("#createCourseAlert").show()
         return false;
@@ -86,5 +86,25 @@ function getNewCourseData() {
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', ()=>{
         console.log(getNewCourseData());
+    })
+    $(".marksinput").on('keyup', function(){
+        let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
+        let partAMarksIn = parseInt($("#partAmarksInput").val().trim());
+        let partBMarksIn = parseInt($("#partBmarksInput").val().trim());
+        let incourseMarksIn = parseInt($("#inCourseMarksInput").val().trim());
+        if (isNaN(totalMarksIn) | isNaN(partAMarksIn) | isNaN(partBMarksIn) | isNaN(incourseMarksIn)) {
+            $("#incourseInfoAlert").hide()
+        }
+        else {
+            let marksDiff = totalMarksIn - (partAMarksIn+partBMarksIn);
+            if (marksDiff != incourseMarksIn) {
+                $("#incourseInfoAlert .from").text(incourseMarksIn)
+                $("#incourseInfoAlert .to").text(marksDiff)
+                $("#incourseInfoAlert").show()
+            }
+            else {
+                $("#incourseInfoAlert").hide()
+            }
+        }
     })
 });

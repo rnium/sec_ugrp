@@ -304,7 +304,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="totalMarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput" id="totalMarksInput" placeholder="">
                                     <label for="totalMarksInput">Total Marks</label>
                                 </div>
                             </div> 
@@ -316,24 +316,24 @@
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="partAmarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput" id="partAmarksInput" placeholder="">
                                     <label for="partAmarksInput">Part A marks</label>
                                 </div>              
                             </div>
                             <div class="col-md-6 ps-1">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="partBmarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput" id="partBmarksInput" placeholder="">
                                     <label for="partBmarksInput">Part B marks</label>
                                 </div>              
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="inCourseMarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput" id="inCourseMarksInput" placeholder="">
                                     <label for="inCourseMarksInput">In Course marks</label>
                                 </div>   
-                                {% comment %} <div class="alert alert-info mt-1 text-center roboto-font" role="alert" style="font-size: 0.8rem;">
-                                    In course marks will be converted into <span class="text-white">40</span>
-                                </div>            {% endcomment %}
+                                <div class="alert alert-info mt-1 text-center roboto-font" role="alert" style="font-size: 0.8rem;display:none;" id="incourseInfoAlert">
+                                    In course marks will be converted from <span class="text-white from">40</span> into <span class="text-white to">40</span>
+                                </div>   
                             </div>
                             <div class="col-md-12 mt-2" id="error-alert-container">
                                 <div id="createCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
