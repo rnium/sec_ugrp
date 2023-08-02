@@ -26,3 +26,27 @@ class SessionSerializer(ModelSerializer):
         
     def get_batch_name(self, obj):
         return obj.batch_name
+
+
+class SemesterSerializer(ModelSerializer):
+    view_url = serializers.SerializerMethodField(read_only=True)
+    semester_name = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Semester
+        fields = "__all__"
+        
+    def get_view_url(self, obj):
+        return reverse(
+            "results:view_session",
+            kwargs = {
+                'dept_name':obj.session.dept.name,
+                'from_year':obj.session.from_year,
+                'to_year':obj.session.to_year,
+                'year':obj.year,
+                'semester':obj.year_semester,
+            }
+        )
+        
+    def get_semester_name(self, obj):
+        return obj.semester_name
+        
