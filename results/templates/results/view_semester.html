@@ -331,12 +331,12 @@
                                     <input type="text" class="form-control" id="inCourseMarksInput" placeholder="">
                                     <label for="inCourseMarksInput">In Course marks</label>
                                 </div>   
-                                <div class="alert alert-info mt-1 text-center roboto-font" role="alert" style="font-size: 0.8rem;">
+                                {% comment %} <div class="alert alert-info mt-1 text-center roboto-font" role="alert" style="font-size: 0.8rem;">
                                     In course marks will be converted into <span class="text-white">40</span>
-                                </div>           
+                                </div>            {% endcomment %}
                             </div>
-                            <div class="col-md-12" id="error-alert-container" style="display: none;">
-                                <div class="alert alert-danger" role="alert">
+                            <div class="col-md-12 mt-2" id="error-alert-container">
+                                <div id="createCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
                                     Cannot Create Course
                                 </div>
                             </div>
@@ -345,7 +345,7 @@
                     
                 </div>
                 <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
-                    <button type="button" class="btn btn-primary">Add</button>
+                    <button type="button" id="createCourseAddBtn" class="btn btn-primary">Add</button>
                 </div>
             </div>
         </div>
@@ -434,6 +434,13 @@
 </div>
 {% endblock content %}
 {% block script %}
+<script>
+    {% comment %} const create_semester_api = "{% url 'results:create_semester' session.id %}"; {% endcomment %}
+    const semesterId = {{semester.id}};
+    const semesterNthNumber = {{semester.semester_no}};
+    const userId = {{request.user.id}};
+    const csrftoken = "{{csrf_token}}";
+</script>
 <script src="{% static 'results/scripts/viewsemester.js' %}"></script>
 {% endblock script %}
 
