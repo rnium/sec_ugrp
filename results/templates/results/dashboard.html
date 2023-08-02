@@ -57,7 +57,7 @@
                 <ul>
                     {% for semester in semesters %}
                     <li>
-                        <a href="" class="semester-item">
+                        <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item">
                             <div class="sem-codename">
                                 <span class="year">{{semester.year}}</span>
                                 <span>-</span>

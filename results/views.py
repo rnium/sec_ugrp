@@ -15,9 +15,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['request'] = self.request
         semesters = []
         if self.request.user.adminaccount.is_super_admin:
-            semesters = Semester.objects.all()[:4]
+            semesters = Semester.objects.all().order_by("is_running", "added_in")[:4]
         else:
-            semesters = Semester.objects.filter(session__dept=self.request.user.adminaccount.dept)[:4]
+            semesters = Semester.objects.filter(session__dept=self.request.user.adminaccount.dept).order_by("-is_running", "added_in")[:4]
         if (len(semesters) > 0):
             context['semesters'] = semesters
         return context
