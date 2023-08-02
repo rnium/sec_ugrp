@@ -19,7 +19,22 @@ function showDevModal(id) {
     mBootstrap.show()
 }
 
-showDevModal("newEntryModal")
+
+function showError(errorContainer, msg) {
+    $(`#${errorContainer}`).text(msg)
+    $(`#${errorContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
+
+function hideModal(modalId) {
+    $(`#${modalId}`).modal('hide'); 
+}
+
+
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -77,16 +92,41 @@ function getNewCourseData() {
         "part_A_marks": partAMarksIn,
         "part_B_marks": partBMarksIn,
         "incourse_marks": incourseMarksIn,
-        "added_by": userId,
     }
 
     return data;
 }
 
+function createCourse() {
+    payload = getNewCourseData()
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: create_course_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#createCourseAlert").hide()
+                $("#createCourseAddBtn").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $("#createCourseAddBtn").removeAttr("disabled");
+                hideModal("newSemesterEntryModal");
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                $("#createCourseAddBtn").removeAttr("disabled");
+                showError("createCourseAlert", error);
+            },
+        });
+    }
+}
+
 $(document).ready(function () {
-    $("#createCourseAddBtn").on('click', ()=>{
-        console.log(getNewCourseData());
-    })
+    $("#createCourseAddBtn").on('click', createCourse)
     $(".marksinput").on('keyup', function(){
         let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
         let partAMarksIn = parseInt($("#partAmarksInput").val().trim());

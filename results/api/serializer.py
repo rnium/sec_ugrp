@@ -50,3 +50,24 @@ class SemesterSerializer(ModelSerializer):
     def get_semester_name(self, obj):
         return obj.semester_name
         
+
+class CourseSerializer(ModelSerializer):
+    view_url = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Course
+        fields = "__all__"
+        
+    def get_view_url(self, obj):
+        return reverse(
+            "results:view_course",
+            kwargs = {
+                'dept_name':obj.semester.session.dept.name,
+                'from_year':obj.semester.session.from_year,
+                'to_year':obj.semester.session.to_year,
+                'year':obj.semester.year,
+                'semester':obj.semester.year_semester,
+                'course_code':obj.code,
+            }
+        )
+   
+        

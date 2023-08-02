@@ -130,6 +130,12 @@ class Course(models.Model):
     
     def __str__(self):
         return f"{self.semester} Course: {self.code}"
+
+    class Meta:
+        ordering = ["code"]
+        constraints = [
+            models.UniqueConstraint(fields=["semester", "code"], name="unique_course_semester")
+        ]
     
 
 class CourseResult(models.Model):

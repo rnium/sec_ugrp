@@ -20,7 +20,29 @@ class BaseAccount(models.Model):
                                         validators=[FileExtensionValidator(allowed_extensions=settings.ALLOWED_IMAGE_EXTENSIONS)])
     class Meta:
         abstract = True
+
+    @property
+    def avatar_url(self):
+        if bool(self.profile_picture):
+            return self.profile_picture.url
+        else:
+            return static('results/images/blank-dp.svg')
+
+
+class AdminAccount(BaseAccount):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_super_admin = models.BooleanField(default=False)
+    dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
+    invitation = models.ForeignKey(InviteToken, on_delete=models.CASCADE)
     
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check = models.Q(is_super_admin=True, dept__isnull=True) | models.Q(is_super_admin=False, dept__isnull=False),
+                name = "admin_user_is_not_a_dept_user"
+            )
+        ]
+        
     def __str__(self):
         return self.user.username
     
@@ -45,28 +67,6 @@ class BaseAccount(models.Model):
                 return last_name
         else:
             return self.user.username
-
-    @property
-    def avatar_url(self):
-        if bool(self.profile_picture):
-            return self.profile_picture.url
-        else:
-            return static('results/images/blank-dp.svg')
-
-
-class AdminAccount(BaseAccount):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_super_admin = models.BooleanField(default=False)
-    dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
-    invitation = models.ForeignKey(InviteToken, on_delete=models.CASCADE)
-    
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check = models.Q(is_super_admin=True, dept__isnull=True) | models.Q(is_super_admin=False, dept__isnull=False),
-                name = "admin_user_is_not_a_dept_user"
-            )
-        ]
     
 
 class StudentAccount(BaseAccount):
@@ -79,7 +79,10 @@ class StudentAccount(BaseAccount):
 
     class Meta:
         ordering = ["registration"]
-        
+    
+    def __str__(self):
+        return str(self.registration)
+    
     @property
     def student_name(self):
         if self.last_name:

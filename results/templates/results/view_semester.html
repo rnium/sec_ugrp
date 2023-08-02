@@ -304,14 +304,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput" id="totalMarksInput" placeholder="">
-                                    <label for="totalMarksInput">Total Marks</label>
-                                </div>
-                            </div> 
-                            <div class="col-md-6 ps-1">
-                                <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="courseCreditsInput" placeholder="">
                                     <label for="courseCreditsInput">Credits</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 ps-1">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput" id="totalMarksInput" placeholder="">
+                                    <label for="totalMarksInput">Total Marks</label>
                                 </div>
                             </div> 
                             <div class="col-md-6">
@@ -337,7 +337,6 @@
                             </div>
                             <div class="col-md-12 mt-2" id="error-alert-container">
                                 <div id="createCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
-                                    Cannot Create Course
                                 </div>
                             </div>
                         </div>
@@ -435,10 +434,9 @@
 {% endblock content %}
 {% block script %}
 <script>
-    {% comment %} const create_semester_api = "{% url 'results:create_semester' session.id %}"; {% endcomment %}
+    const create_course_api = "{% url 'results:create_course' %}";
     const semesterId = {{semester.id}};
     const semesterNthNumber = {{semester.semester_no}};
-    const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/viewsemester.js' %}"></script>
