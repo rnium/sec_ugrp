@@ -10,10 +10,10 @@ function hideModal(modalId) {
 
 function showError(errorContainer, msg) {
     $(`#${errorContainer}`).text(msg)
-    $(`#${errorContainer}`).show(1200,()=>{
+    $(`#${errorContainer}`).show(200,()=>{
         setTimeout(()=>{
             $(`#${errorContainer}`).hide()
-        }, 3000)
+        }, 60000)
     })
 }
 
