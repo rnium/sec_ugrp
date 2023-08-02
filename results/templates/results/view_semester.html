@@ -372,7 +372,7 @@
                         <div class="semester-container p-2 mt-2 mb-1 container"> 
                             {% for d_semester in drop_semesters %}
                             <div class="row g-3 p-1 border-b- bg-dark rounded shadow">
-                                <a href="" class="semester-title my-2 text-center">
+                                <a href="{% url 'results:view_semester' d_semester.session.dept.name d_semester.session.from_year d_semester.session.to_year d_semester.year d_semester.year_semester %}" class="semester-title my-2 text-center" target="_blank">
                                     {{d_semester.semester_name}} <span class="roboto-font">{{d_semester.session.session_code}}</span>
                                 </a>
                                 {% for course in d_semester.course_set.all %}
@@ -392,7 +392,7 @@
                     
                 </div>
                 <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
-                    <button class="btn btn-primary btn-iconized px-4 shadow">
+                    <button class="btn btn-primary btn-iconized px-4 shadow" id="selectionConfirmBtn" disabled>
                         <i class='bx bx-check me-1'></i>
                         <span class="roboto-font" style="font-size: 0.8rem;">Confirm Selection</span>
                     </button>

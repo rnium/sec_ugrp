@@ -1,3 +1,32 @@
+const DropCourses = {
+    addition:[],
+    removal:[],
+    is_empty: function() {
+        return ((this.addition.length + this.removal.length) == 0);
+    },
+    indexAtAddlist: function(value) {
+        return this.addition.findIndex(i => i == value);
+    },
+    indexAtRemlist: function(value) {
+        return this.removal.findIndex(i => i == value);
+    },
+    add2addition: function(value) {
+        this.addition.push(value)
+    },
+    add2removal: function(value) {
+        this.removal.push(value);
+    },
+    deleteXaddition: function(value) {
+        let idx = this.indexAtAddlist(value)
+        this.addition.splice(idx, 1);
+    },
+    deleteXremoval: function(value) {
+        let idx = this.indexAtRemlist(value);
+        this.removal.splice(idx, 1);
+    }
+}
+
+
 function showNotification(msg) {
     const elem = document.getElementById('notificationModal')
     const toastBody = document.getElementById('modal-body');
@@ -158,6 +187,28 @@ $(document).ready(function () {
             else {
                 $("#incourseInfoAlert").hide()
             }
+        }
+    })
+    $(".btn-check").on("change", function(){
+        let checked_status = $(this).prop("checked");
+        let course_id = $(this).attr("id");;
+        if (checked_status) {
+            // todo: if a course is already present in the semester drop course, do not add to addlist
+            if (DropCourses.indexAtRemlist(course_id) >= 0) {
+                DropCourses.deleteXremoval(course_id);
+            }
+            DropCourses.add2addition(course_id)
+        } else {
+            if (DropCourses.indexAtAddlist(course_id) >= 0) {
+                DropCourses.deleteXaddition(course_id);
+            }
+            // todo: if a course is already present in the semester drop course, add to removelist
+            // DropCourses.remListAdd(course_id)
+        }
+        if (DropCourses.is_empty()) {
+            $("#selectionConfirmBtn").attr('disabled', true);
+        } else {
+            $("#selectionConfirmBtn").removeAttr("disabled");
         }
     })
 });
