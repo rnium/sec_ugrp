@@ -152,12 +152,11 @@
                             </div>            
                         </div>                                             
                     </div>
-                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
+                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;" id="createSemesterAlert">
                     </div>   
                 </div>
                 <div class="d-flex p-3 pt-0 justify-content-end">
-                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="create_sem_btn">
                         <i class='bx bx-list-plus me-1'></i>
                         <span>Create</span>
                     </button>
@@ -217,5 +216,11 @@
 {% endblock content %}
 
 {% block script %}
+<script>
+    const create_semester_api = "{% url 'results:create_semester' session.id %}";
+    const sessionId = {{session.id}};
+    const userId = {{request.user.id}};
+    const csrftoken = "{{csrf_token}}";
+</script>
 <script src="{% static 'results/scripts/viewsession.js' %}"></script>
 {% endblock script %}
