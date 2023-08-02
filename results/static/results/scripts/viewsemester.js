@@ -20,9 +20,22 @@ function showDevModal(id) {
 }
 
 
-function showError(errorContainer, msg) {
-    $(`#${errorContainer}`).text(msg)
-    $(`#${errorContainer}`).show(200,()=>{
+function showError(alertContainer, msg) {
+    $(`#${alertContainer}`).removeClass("alert-success");
+    $(`#${alertContainer}`).addClass("alert-danger");
+    $(`#${alertContainer}`).text(msg)
+    $(`#${alertContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
+function showInfo(alertContainer, msg) {
+    $(`#${alertContainer}`).removeClass("alert-danger");
+    $(`#${alertContainer}`).addClass("alert-success");
+    $(`#${alertContainer}`).text(msg)
+    $(`#${alertContainer}`).show(200,()=>{
         setTimeout(()=>{
             $(`#${errorContainer}`).hide()
         }, 60000)
@@ -113,9 +126,9 @@ function createCourse() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                $("#createCourseAddBtn").removeAttr("disabled");
                 hideModal("newSemesterEntryModal");
-                console.log(response);
+                showInfo("createCourseAlert", "New course created successfully! Reloading page in a moments")
+                setTimeout(()=>{location.reload()}, 3000)
             },
             error: function(xhr, status, error) {
                 $("#createCourseAddBtn").removeAttr("disabled");
