@@ -376,10 +376,17 @@
                                     {{d_semester.semester_name}} <span class="roboto-font">{{d_semester.session.session_code}}</span>
                                 </a>
                                 {% for course in d_semester.course_set.all %}
+                                {% if course in semester.drop_courses.all %}
+                                <div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check existing" id="{{course.id}}" autocomplete="off" checked>
+                                    <label class="btn btn-outline-success w-100" for="{{course.id}}">{{course.code}}</label><br>
+                                </div>
+                                {% else %}
                                 <div class="col-md-4 py-2 m-0">
                                     <input type="checkbox" class="btn-check" id="{{course.id}}" autocomplete="off">
                                     <label class="btn btn-outline-success w-100" for="{{course.id}}">{{course.code}}</label><br>
                                 </div>
+                                {% endif %}
                                 {% endfor %}
                                 
 
