@@ -2,11 +2,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializer import (SessionSerializer, SemesterSerializer, CourseSerializer)
+from .serializer import (SessionSerializer, SemesterSerializer,
+                         CourseSerializer, CourseResultSerializer)
 from .permission import IsCampusAdmin
 from results.models import Session, Semester, Course, CourseResult
 from .utils import create_course_results
@@ -27,6 +28,7 @@ class SessionCreate(CreateAPIView):
             super().perform_create(serializer)
         except Exception as e:
             raise BadrequestException(str(e))
+
 
 class SemesterCreate(CreateAPIView):
     serializer_class = SemesterSerializer
@@ -92,3 +94,20 @@ def updateDropCourses(request, pk):
             if course in semester.drop_courses.all():
                 semester.drop_courses.remove(course)
         return Response(data={"details": "complete"})
+    
+
+class CourseResultList(ListAPIView):
+    serializer_class = CourseResultSerializer
+    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    def get_object(self):
+        # get the course object first before getting queryset
+        pk = self.kwargs.get('pk')
+        course = get_object_or_404(Course, pk=pk)
+        self.check_object_permissions(self.request, course.semester.session)
+        return course
+    
+    def get_queryset(self):
+        course = self.get_object()
+        course_results = CourseResult.objects.filter(course=course)
+        return course_results
+        

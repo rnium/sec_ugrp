@@ -2,6 +2,7 @@ from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from results.models import Department, Session, Semester, Course, CourseResult
+from account.models import StudentAccount
 
 class SessionSerializer(ModelSerializer):
     view_url = serializers.SerializerMethodField(read_only=True)
@@ -69,5 +70,23 @@ class CourseSerializer(ModelSerializer):
                 'course_code':obj.code,
             }
         )
+
+
+class StudentSerializer(ModelSerializer):
+    name = serializers.SerializerMethodField(read_only=True)
+    profile_picture_url = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = StudentAccount
+        fields = '__all__'
+        read_only_fields = ['registration']
    
-        
+    def get_name(self, obj):
+        return obj.student_name
+    def get_profile_picture_url(self, obj):
+        return obj.avatar_url
+   
+class CourseResultSerializer(ModelSerializer):
+    student = StudentSerializer(read_only=True)
+    class Meta:
+        model = CourseResult
+        exclude = ['updated', 'course']
