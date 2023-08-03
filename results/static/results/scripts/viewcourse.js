@@ -43,6 +43,47 @@ function calculate_Incourse(score) {
     return convertFloat(result);
 }
 
+function updateTotalMarks(registration) {
+    let a_score = parseFloat($(`#part-A-${registration}`).val().trim());
+    let b_score = parseFloat($(`#part-B-${registration}`).val().trim());
+    let incourse_score = parseFloat($(`#incourse-converted-${registration}`).text().trim());
+    if ((!isNaN(a_score)) && (!isNaN(b_score)) && (!isNaN(incourse_score))) {
+        let total = (a_score + b_score + incourse_score);
+        if (total > course_total_marks) {
+            $(`#total-${registration}`).text("Invalid");
+            $(`#total-${registration}`).addClass('pending');
+        } else {
+            $(`#total-${registration}`).text(total);
+            $(`#total-${registration}`).removeClass("pending");
+        }
+    } else {
+        $(`#total-${registration}`).text("Pending");
+        $(`#total-${registration}`).addClass('pending');
+    }
+}
+
+function activateScoreInputs() {
+    $(".score-inp").on('keyup', function(){
+        let registration = $(this).data('registration');
+        // check for incourse marks
+        if ($(this).hasClass('incourse-score')) {
+            let new_converted_marks = calculate_Incourse($(this).val());
+            $(`#incourse-converted-${registration}`).text(new_converted_marks)
+            if (isNaN(new_converted_marks) | (new_converted_marks > required_inCourse_marks) ) {
+                $(`#incourse-converted-${registration}`).text("Invalid")
+                $(`#incourse-converted-${registration}`).removeClass("text-info");
+                $(`#incourse-converted-${registration}`).addClass("text-warning");
+            } else {
+                $(`#incourse-converted-${registration}`).addClass("text-info");
+                $(`#incourse-converted-${registration}`).removeClass("text-warning");
+            }
+        }
+        // update total marks after all other changes
+        updateTotalMarks(registration)
+    })
+}
+
+
 function generateRowElements(record) {
     const registration = record.student.registration;
     const partAscore = record.part_A_score;
@@ -51,17 +92,17 @@ function generateRowElements(record) {
     const required_inCourse_score = calculate_Incourse(record.incourse_score);
     let totalContainer = "";
     if ((!isNaN(partAscore)) && (!isNaN(partBscore)) && (!isNaN(required_inCourse_score))) {
-        totalContainer = `<td>${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
+        totalContainer = `<td id="total-${registration}">${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
     } else {
-        totalContainer = `<td class="pending">Pending</td>`
+        totalContainer = `<td id="total-${registration}" class="pending">Pending</td>`
     }
     const elements = {
-        partAcode: `<input type="text" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
-        partBcode: `<input type="text" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
-        partAscore: `<input type="text" ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
-        partBscore: `<input type="text" ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
-        inCourseScore: `<input type="text" ${incourseScore != null ? `value="${incourseScore}" class="score-inp"` : 'class="score-inp empty"'} >`,
-        convertedInCourse: `<td class="${ isNaN(required_inCourse_score) ? 'text-warning' : "text-info"}">${required_inCourse_score}</td>`,
+        partAcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
+        partBcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
+        partAscore: `<input type="text" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
+        partBscore: `<input type="text" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
+        inCourseScore: `<input type="text" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} >`,
+        convertedInCourse: `<td id="incourse-converted-${registration}" class="${ isNaN(required_inCourse_score) ? 'text-warning' : "text-info"}">${required_inCourse_score}</td>`,
         totalContainer: totalContainer
     }
     return elements;
@@ -130,7 +171,10 @@ function insertTable(response) {
 
     $("#tableContainer").html(table);
     $("#tablePlaceholder").hide(0, ()=>{
-        $("#scoreBoard").show(0, activateProfileCard)
+        $("#scoreBoard").show(0, function(){
+            activateProfileCard()
+            activateScoreInputs()
+        })
     });
 }
 
@@ -142,7 +186,6 @@ function loadCourseResults() {
         dataType: "json",
         success: function (response) {
             insertTable(response);
-            console.log(generateRowElements(response[0]).inCourseScore);
         },
         error: function(xhr, status, error) {
             alert(error)
