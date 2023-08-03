@@ -69,3 +69,26 @@ class CourseCreate(CreateAPIView):
             super().perform_create(serializer)
         except Exception as e:
             raise BadrequestException(str(e))
+
+
+@api_view(["POST"])
+def updateDropCourses(request, pk):
+    try:
+        semester = Semester.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
+    if request.user.adminaccount.is_super_admin or request.user.adminaccount.dept == semester.session.dept:
+        try:
+            add_courses = request.data['add_courses']
+            remove_courses = request.data['remove_courses']
+        except Exception as e:
+            return Response(data={"details": "Invalid data format"}, status=status.HTTP_400_BAD_REQUEST)
+        for course_id in add_courses:
+            course = get_object_or_404(Course, pk=course_id)
+            if course not in semester.drop_courses.all():
+                semester.drop_courses.add(course)
+        for course_id in remove_courses:
+            course = get_object_or_404(Course, pk=course_id)
+            if course in semester.drop_courses.all():
+                semester.drop_courses.remove(course)
+        return Response(data={"details": "complete"})

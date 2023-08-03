@@ -90,6 +90,7 @@
                     </div>
                 </a>
             </div>
+            {% endfor %}
             {% comment %} Drop Courses {% endcomment %}
             {% for course in semester.drop_courses.all %}
             <div class="col-md-6 col-lg-4 course-container">
@@ -102,7 +103,6 @@
                     </div>
                 </a>
             </div>
-            {% endfor %}
             {% endfor %}
             {% else %}
             <div class="no-content py-3 d-flex flex-column justify-content-center align-items-center">
@@ -386,7 +386,7 @@
                             </div>
                             {% endfor %}
                         </div>
-                        <div class="alert alert-warning text-center mt-2" role="alert" id="dropCourseModal-alert" style="display: none;">
+                        <div class="alert alert-warning text-center mt-2" role="alert" id="dropCourseModalAlert" style="display: none;">
                         </div>
                     </div>
                     
@@ -423,6 +423,7 @@
 {% block script %}
 <script>
     const create_course_api = "{% url 'results:create_course' %}";
+    const drop_course_update_api = "{% url 'results:drop_course_update' semester.id %}";
     const semesterId = {{semester.id}};
     const semesterNthNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";

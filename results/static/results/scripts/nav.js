@@ -5,7 +5,6 @@ function setNavCookie(value) {
     let expires = "expires=" + date.toUTCString();
     let cookiestr = `nav=${value};${expires};${path};sameSite=lax`;
     document.cookie = cookiestr;
-    console.log(cookiestr); 
 }
 
 

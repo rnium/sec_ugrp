@@ -1,6 +1,9 @@
 const DropCourses = {
     addition:[],
     removal:[],
+    get_data: function() {
+        return {"add_courses": this.addition, "remove_courses":this.removal}
+    },
     is_empty: function() {
         return ((this.addition.length + this.removal.length) == 0);
     },
@@ -167,6 +170,35 @@ function createCourse() {
     }
 }
 
+function updateDropcourse() {
+    if (DropCourses.is_empty()) {
+        return
+    }
+    $.ajax({
+        type: "post",
+        url: drop_course_update_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $("#dropCourseModalAlert").hide()
+            $("#selectionConfirmBtn").attr("disabled", true)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(DropCourses.get_data()),
+        cache: false,
+        success: function(response) {
+            // hideModal("dropCourseModal");
+            console.log(response);
+            // showInfo("createCourseAlert", "New course created successfully! Reloading page in a moments")
+            // setTimeout(()=>{location.reload()}, 3000)
+        },
+        error: function(xhr, status, error) {
+            $("#selectionConfirmBtn").removeAttr("disabled");
+            showError("dropCourseModalAlert", error);
+        },
+    });
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse)
     $(".marksinput").on('keyup', function(){
@@ -189,6 +221,7 @@ $(document).ready(function () {
             }
         }
     })
+    $("#selectionConfirmBtn").on('click', updateDropcourse)
     $(".btn-check").on("change", function(){
         let checked_status = $(this).prop("checked");
         let course_id = $(this).attr("id");;
