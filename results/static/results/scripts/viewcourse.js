@@ -65,6 +65,18 @@ function updateTotalMarks(registration) {
 function activateScoreInputs() {
     $(".score-inp").on('keyup', function(){
         let registration = $(this).data('registration');
+        // update class
+        const newValue = $(this).val();
+        const maxValue = $(this).data('max');
+        if (newValue.length == 0) {
+            $(this).addClass("empty");
+        }
+        else if (isNaN(newValue) | (newValue > maxValue)) {
+            $(this).addClass("error")
+        } else {
+            $(this).removeClass('error');
+            $(this).removeClass('empty');
+        }
         // check for incourse marks
         if ($(this).hasClass('incourse-score')) {
             let new_converted_marks = calculate_Incourse($(this).val());
@@ -100,9 +112,9 @@ function generateRowElements(record) {
     const elements = {
         partAcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
         partBcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
-        partAscore: `<input type="text" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
-        partBscore: `<input type="text" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
-        inCourseScore: `<input type="text" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} >`,
+        partAscore: `<input type="text" data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
+        partBscore: `<input type="text" data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
+        inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} >`,
         convertedInCourse: `<td id="incourse-converted-${registration}" class="${ isNaN(required_inCourse_score) ? 'text-warning' : "text-info"}">${required_inCourse_score}</td>`,
         totalContainer: totalContainer
     }
