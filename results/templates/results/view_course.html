@@ -180,7 +180,14 @@
 {% block script %}
 <script>
     const course_result_api = "{% url 'results:course_results' course.id %}";
+    const course_total_marks = {{course.total_marks}};
+    const course_partA_marks = {{course.part_A_marks}};
+    const course_partB_marks = {{course.part_B_marks}};
+    const course_incourse_marks = {{course.incourse_marks}};
+    const required_inCourse_marks = course_total_marks - (course_partA_marks + course_incourse_marks);
+    const inCourse_needs_conversion = (required_inCourse_marks != course_incourse_marks);
     const csrftoken = "{{csrf_token}}";
+    console.log(inCourse_needs_conversion);
 </script>
 <script src="{% static 'results/scripts/viewcourse.js' %}"></script>
 {% endblock script %}

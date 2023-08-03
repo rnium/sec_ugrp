@@ -6,6 +6,27 @@ function showNotification(msg) {
     mBootstrap.show()
 }
 
+function convertFloat(num) {
+    if (num === null || isNaN(num)) {
+        return 0;
+    }
+    
+    if (Number.isInteger(num)) { // Check if the number is already an integer
+        return num;
+    } else if (typeof num === 'number') {
+        const decimal = num.toFixed(1); // Get the number rounded to one decimal place
+        const lastDigit = decimal.charAt(decimal.length - 1); // Get the last character of the decimal
+        if (lastDigit === "0") {
+            return parseInt(decimal); // If the last digit is 0, return the integer value
+        } else {
+            return parseFloat(num.toFixed(2)); // Otherwise, return the original floating point number
+        }
+    } else {
+        return 0; // Return 0 for any other non-numeric input
+    }
+}
+
+
 
 function activateProfileCard() {
     $(".profile-link").on("mouseover", function() {
@@ -16,21 +37,41 @@ function activateProfileCard() {
     })
 }
 
-function prepareInputs(record) {
-    const InpObj = {
+function calculate_Incourse(score) {
+    if (score == null) {
+        return "--";
+    }
+    let result = (required_inCourse_marks/course_incourse_marks) * score;
+    return convertFloat(result);
+}
+
+function generateRowElements(record) {
+    const partAscore = record.part_A_score;
+    const partBscore = record.part_B_score;
+    const incourseScore = record.incourse_score;
+    const required_inCourse_score = calculate_Incourse(record.incourse_score);
+    let totalContainer = "";
+    if ((!isNaN(partAscore)) && (!isNaN(partBscore)) && (!isNaN(required_inCourse_score))) {
+        totalContainer = `<td>${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
+    } else {
+        totalContainer = `<td class="pending">Pending</td>`
+    }
+    const elements = {
         partAcode: `<input type="text" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
         partBcode: `<input type="text" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
-        partAscore: `<input type="text" class="score-inp ${record.part_A_score == null ? 'empty' : ''}" ${record.part_A_score != null ? `value="${record.part_A_score}"` : ''} >`,
-        partBscore: `<input type="text" class="score-inp ${record.part_B_score == null ? 'empty' : ''}" ${record.part_B_score != null ? `value="${record.part_B_score}"` : ''}>`,
-        inCourseScore: `<input type="text" class="score-inp ${record.incourse_score == null ? 'empty' : ''}" ${record.incourse_score != null ? `value="${record.incourse_score}"` : ''}>`,
+        partAscore: `<input type="text" ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
+        partBscore: `<input type="text" ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
+        inCourseScore: `<input type="text" ${incourseScore != null ? `value="${incourseScore}" class="score-inp"` : 'class="score-inp empty"'} >`,
+        convertedInCourse: `<td class="${ isNaN(required_inCourse_score) ? 'text-warning' : "text-info"}">${required_inCourse_score}</td>`,
+        totalContainer: totalContainer
     }
-    return InpObj;
+    return elements;
 }
 
 function render_rows(response) {
     let rows = ""
     for (record of response) {
-        let inputs = prepareInputs(record);
+        let fields = generateRowElements(record);
         let row = `<tr>
                         <td class="student-info">
                             <a href="#" class="profile-link" data-id="${record.student.registration}">${record.student.registration}</a>
@@ -46,24 +87,22 @@ function render_rows(response) {
                             </div>
                         </td>
                         <td class="code-inp-con">
-                            ${inputs.partAcode}
+                            ${fields.partAcode}
                         </td>
                         <td class="inp-con">
-                            ${inputs.partAscore}
+                            ${fields.partAscore}
                         </td>
                         <td class="code-inp-con">
-                            ${inputs.partBcode}
+                            ${fields.partBcode}
                         </td>
                         <td class="inp-con">
-                            ${inputs.partBscore}
+                            ${fields.partBscore}
                         </td>
                         <td class="inp-con">
-                            ${inputs.inCourseScore}
+                            ${fields.inCourseScore}
                         </td>
-                        <td class="text-info">
-                            40
-                        </td>
-                        <td class="">Pending</td>
+                        ${inCourse_needs_conversion ? fields.convertedInCourse : ""}
+                        ${fields.totalContainer}
                     </tr>`;
         rows += row;
     }
@@ -81,7 +120,7 @@ function insertTable(response) {
                             <th>Part B Code</th>
                             <th>Part B [30]</th>
                             <th>In Course [30]</th>
-                            <th>In Course [40]</th>
+                            ${inCourse_needs_conversion ? `<th>In Course [${required_inCourse_marks}]</th>` : ``}
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -104,7 +143,7 @@ function loadCourseResults() {
         dataType: "json",
         success: function (response) {
             insertTable(response);
-            console.log(prepareInputs(response[0]).partBcode);
+            console.log(generateRowElements(response[0]).inCourseScore);
         },
         error: function(xhr, status, error) {
             alert(error)
