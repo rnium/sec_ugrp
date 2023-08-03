@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.conf import settings
@@ -160,6 +161,12 @@ class CourseResult(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["student", "course"], name="unique_courseresult_student")
         ]
+    def clean(self) -> None:
+        if (self.part_A_score > self.course.part_A_marks or
+            self.part_B_score > self.course.part_B_marks or
+            self.incourse_score > self.course.incourse_marks):
+            raise ValidationError("Score cannot be more than defined marks")
+        
     
     @property
     def course_points(self):
