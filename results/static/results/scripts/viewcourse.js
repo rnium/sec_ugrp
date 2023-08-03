@@ -26,8 +26,6 @@ function convertFloat(num) {
     }
 }
 
-
-
 function activateProfileCard() {
     $(".profile-link").on("mouseover", function() {
         $(this).next(".profile-card").show(200)
@@ -46,6 +44,7 @@ function calculate_Incourse(score) {
 }
 
 function generateRowElements(record) {
+    const registration = record.student.registration;
     const partAscore = record.part_A_score;
     const partBscore = record.part_B_score;
     const incourseScore = record.incourse_score;
@@ -116,10 +115,10 @@ function insertTable(response) {
                         <tr>
                             <th>Registration No</th>
                             <th>Part A Code</th>
-                            <th>Part A [30]</th>
+                            <th>Part A [${course_partA_marks}]</th>
                             <th>Part B Code</th>
-                            <th>Part B [30]</th>
-                            <th>In Course [30]</th>
+                            <th>Part B [${course_partB_marks}]</th>
+                            <th>In Course [${course_incourse_marks}]</th>
                             ${inCourse_needs_conversion ? `<th>In Course [${required_inCourse_marks}]</th>` : ``}
                             <th>Total</th>
                         </tr>
