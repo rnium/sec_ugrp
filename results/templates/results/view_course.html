@@ -78,7 +78,7 @@
         </div>
     </div>
     
-    <div class="placeholder-container mt-4 px-5" style="display: none;">
+    <div class="placeholder-container mt-4 px-5" id="tablePlaceholder">
         <div class="row">
             <p class="col col-8 placeholder-glow">
                 <span class="placeholder placeholder-lg col-12"></span>
@@ -113,72 +113,8 @@
               
         </div>
     </div>
-    <div class="score-board p-3 mt-4" >
-        <table>
-            <thead>
-                <tr>
-                    <th>Registration No</th>
-                    <th>Part A Code</th>
-                    <th>Part A [30]</th>
-                    <th>Part B Code</th>
-                    <th>Part B [30]</th>
-                    <th>In Course [30]</th>
-                    <th>In Course [40]</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="student-info">
-                        <a href="#" class="profile-link" data-id="2018338514">33333434324</a>
-                        <div class="profile-card" id="2018338514-profile" style="display: none;">
-                            <div class="inner">
-                                <img src="./images/dp3.jpg" alt="" class="dp">
-                                <div class="info mt-2">
-                                    <div class="name">MD Saiful Islam Rony</div>
-                                    <div class="reg-no">2018338514</div>
-                                    <div class="session"><span class="dept me-1">EEE</span><span>2018-19</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="code-inp-con">
-                        <input type="text" class="code-inp">
-                    </td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp empty">
-                    </td>
-                    <td class="code-inp-con">
-                        <input type="text" class="code-inp">
-                    </td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp empty">
-                    </td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp empty">
-                    </td>
-                    <td class="text-info">
-                        40
-                    </td>
-                    <td class="">Pending</td>
-                </tr>
-                <tr style="display: none;">
-                    <td>Atikur Rahman</td>
-                    <td>3018338514</td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp empty">
-                    </td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp error">
-                    </td>
-                    <td class="inp-con">
-                        <input type="text" class="score-inp error">
-                    </td>
-                    <td class="pending">Pending</td>
-                </tr>
-                
-            </tbody>
-        </table>
+    <div class="score-board p-3 mt-4" style="display: none;" id="scoreBoard">
+        <div id="tableContainer"></div>
         <div class="col-md-12 mt-3 btn-container">
             <div class="d-flex justify-content-between">
                 <button class="add-new-btn btn btn-outline-secondary px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newEntryModal">
@@ -242,6 +178,10 @@
 
 
 {% block script %}
-<script src="{% static 'results/viewcourse.js' %}"></script>
+<script>
+    const course_result_api = "{% url 'results:course_results' course.id %}";
+    const csrftoken = "{{csrf_token}}";
+</script>
+<script src="{% static 'results/scripts/viewcourse.js' %}"></script>
 {% endblock script %}
 

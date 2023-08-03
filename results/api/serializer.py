@@ -75,6 +75,7 @@ class CourseSerializer(ModelSerializer):
 class StudentSerializer(ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     profile_picture_url = serializers.SerializerMethodField(read_only=True)
+    dept = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = StudentAccount
         fields = '__all__'
@@ -84,6 +85,8 @@ class StudentSerializer(ModelSerializer):
         return obj.student_name
     def get_profile_picture_url(self, obj):
         return obj.avatar_url
+    def get_dept(self, obj):
+        return {"dept": str(obj.session.dept), "session_code":obj.session.session_code}
    
 class CourseResultSerializer(ModelSerializer):
     student = StudentSerializer(read_only=True)
