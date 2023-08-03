@@ -53,7 +53,7 @@ function showDevModal(id) {
 
 
 function showError(alertContainer, msg) {
-    $(`#${alertContainer}`).removeClass("alert-success");
+    $(`#${alertContainer}`).removeClass("alert-warning");
     $(`#${alertContainer}`).addClass("alert-danger");
     $(`#${alertContainer}`).text(msg)
     $(`#${alertContainer}`).show(200,()=>{
@@ -65,7 +65,7 @@ function showError(alertContainer, msg) {
 
 function showInfo(alertContainer, msg) {
     $(`#${alertContainer}`).removeClass("alert-danger");
-    $(`#${alertContainer}`).addClass("alert-success");
+    $(`#${alertContainer}`).addClass("alert-warning");
     $(`#${alertContainer}`).text(msg)
     $(`#${alertContainer}`).show(200,()=>{
         setTimeout(()=>{
@@ -187,10 +187,8 @@ function updateDropcourse() {
         data: JSON.stringify(DropCourses.get_data()),
         cache: false,
         success: function(response) {
-            // hideModal("dropCourseModal");
-            console.log(response);
-            // showInfo("createCourseAlert", "New course created successfully! Reloading page in a moments")
-            // setTimeout(()=>{location.reload()}, 3000)
+            showInfo("dropCourseModalAlert", "Drop courses updated successfully! Reloading page in a moments")
+            setTimeout(()=>{location.reload()}, 3000)
         },
         error: function(xhr, status, error) {
             $("#selectionConfirmBtn").removeAttr("disabled");
@@ -224,20 +222,31 @@ $(document).ready(function () {
     $("#selectionConfirmBtn").on('click', updateDropcourse)
     $(".btn-check").on("change", function(){
         let checked_status = $(this).prop("checked");
-        let course_id = $(this).attr("id");;
+        let course_id = $(this).attr("id");
+        let if_existing_drop_course = $(this).hasClass('existing');
         if (checked_status) {
-            // todo: if a course is already present in the semester drop course, do not add to addlist
             if (DropCourses.indexAtRemlist(course_id) >= 0) {
                 DropCourses.deleteXremoval(course_id);
             }
-            DropCourses.add2addition(course_id)
+            // if a course is not in the semester drop course, add to addlist
+            if (!if_existing_drop_course) {
+                DropCourses.add2addition(course_id)
+            }
         } else {
             if (DropCourses.indexAtAddlist(course_id) >= 0) {
                 DropCourses.deleteXaddition(course_id);
             }
-            // todo: if a course is already present in the semester drop course, add to removelist
-            // DropCourses.remListAdd(course_id)
+            // if a course is already present in the semester drop course, add to removelist
+            if (if_existing_drop_course) {
+                DropCourses.add2removal(course_id)
+            }
+            
+            
         }
+        console.log("addlist:");
+        console.log(DropCourses.addition);
+        console.log("remlist:");
+        console.log(DropCourses.removal);
         if (DropCourses.is_empty()) {
             $("#selectionConfirmBtn").attr('disabled', true);
         } else {

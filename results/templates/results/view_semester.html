@@ -95,7 +95,7 @@
             {% for course in semester.drop_courses.all %}
             <div class="col-md-6 col-lg-4 course-container">
                 <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester course.code %}">
-                    <div class="course-code text-center">{{course.code}}</div>
+                    <div class="course-code text-center">{{course.code|upper}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:35}}</div>
                     <div class="credits mt-1 d-flex justify-content-center align-items-center">
                         <i class='bx bx-unite text-gray fs-6 me-1'></i>
@@ -393,7 +393,7 @@
                             </div>
                             {% endfor %}
                         </div>
-                        <div class="alert alert-warning text-center mt-2" role="alert" id="dropCourseModalAlert" style="display: none;">
+                        <div class="alert text-center mt-2" role="alert" id="dropCourseModalAlert" style="display: none;">
                         </div>
                     </div>
                     
