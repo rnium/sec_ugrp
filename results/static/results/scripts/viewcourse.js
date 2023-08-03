@@ -36,7 +36,7 @@ function activateProfileCard() {
 }
 
 function calculate_Incourse(score) {
-    if (score == null) {
+    if (score == null | isNaN(score)) {
         return "--";
     }
     let result = (required_inCourse_marks/course_incourse_marks) * score;
@@ -68,14 +68,15 @@ function activateScoreInputs() {
         // check for incourse marks
         if ($(this).hasClass('incourse-score')) {
             let new_converted_marks = calculate_Incourse($(this).val());
-            $(`#incourse-converted-${registration}`).text(new_converted_marks)
+            let converted_marks_container = `#incourse-converted-${registration}`;
+            $(converted_marks_container).text(new_converted_marks)
             if (isNaN(new_converted_marks) | (new_converted_marks > required_inCourse_marks) ) {
-                $(`#incourse-converted-${registration}`).text("Invalid")
-                $(`#incourse-converted-${registration}`).removeClass("text-info");
-                $(`#incourse-converted-${registration}`).addClass("text-warning");
+                $(converted_marks_container).text("--")
+                $(converted_marks_container).removeClass("text-info");
+                $(converted_marks_container).addClass("text-warning");
             } else {
-                $(`#incourse-converted-${registration}`).addClass("text-info");
-                $(`#incourse-converted-${registration}`).removeClass("text-warning");
+                $(converted_marks_container).addClass("text-info");
+                $(converted_marks_container).removeClass("text-warning");
             }
         }
         // update total marks after all other changes
