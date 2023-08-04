@@ -133,26 +133,7 @@ function processData() {
             dataset[registration]['part_B_code'] = value;
         }
     });
-    // third: total Field. NOTE: This field is not an input field
-    let totalContainers = $(".total-score");
-    $.each(totalContainers, function (indexInArray, valueOfElement) { 
-        const elem_id = valueOfElement.id;
-        const elem_selector = `#${elem_id}`;
-        const registration = $(elem_selector).data('registration')
-        const value = $(elem_selector).text().trim()
-        let score = null;
-        if (value.length > 0) {
-            let score_number = Number(value);
-            if (!isNaN(score_number)) {
-                score = score_number;
-            }
-        }
-        // create the entry for the registration_no
-        if (!(registration in dataset)) {
-            dataset[registration] = {}
-        }
-        dataset[registration]['total_score'] = score;
-    }); 
+    
     return dataset
 }
 

@@ -164,17 +164,25 @@ class CourseResult(models.Model):
     
     
     def save(self, *args, **kwargs):
-        if ((self.part_A_score is not None and self.part_A_score > self.course.part_A_marks) or
-            (self.part_B_score is not None and self.part_B_score > self.course.part_B_marks )or
-            (self.incourse_score is not None and self.incourse_score > self.course.incourse_marks) or
-            (self.total_score is not None and self.total_score > self.course.total_marks)):
-            raise ValidationError("Score cannot be more than defined marks")
+        if (self.part_A_score is not None and
+            self.part_B_score is not None and
+            self.incourse_score is not None):
+            # check if all three scores are within maximum marks
+            if ((self.part_A_score > self.course.part_A_marks) or
+                (self.part_B_score > self.course.part_B_marks )or
+                (self.incourse_score > self.course.incourse_marks)):
+                raise ValidationError("Score cannot be more than defined marks")
+            # saving total marks
+            incourse_actual = ((self.course.total_marks - 
+                                (self.course.part_A_marks + self.course.part_B_marks))/self.course.incourse_marks) * self.incourse_score
+            self.total_score = (self.part_A_score + self.part_B_score + incourse_actual)
+        else:
+            self.total_score = None
+            
         # Saving grade point
-        if self.total_score:
-            self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
-            self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
-            print(self.letter_grade)
-        super().save(args, kwargs)
+        self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
+        self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
+        super().save(*args, **kwargs)
         
     
     @property

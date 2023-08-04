@@ -24,6 +24,8 @@ def get_ordinal_number(value):
 
 
 def calculate_grade_point(obtained_score, max_marks):
+    if obtained_score is None:
+        return None
     score = (obtained_score/max_marks) * 100
     for LG, schema in SEC_GRADING_SCHEMA.items():
         if schema['min'] <= score <= schema['max']:
@@ -31,6 +33,8 @@ def calculate_grade_point(obtained_score, max_marks):
 
 
 def calculate_letter_grade(obtained_score, max_marks):
+    if obtained_score is None:
+        return None
     score = (obtained_score/max_marks) * 100
     for LG, schema in SEC_GRADING_SCHEMA.items():
         if schema['min'] <= score <= schema['max']:
