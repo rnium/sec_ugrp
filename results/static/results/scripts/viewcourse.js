@@ -35,7 +35,6 @@ function activateProfileCard() {
     })
 }
 
-
 function check_input(inp_id) {
     inp_selector = `#${inp_id}`
     let score_raw = $(inp_selector).val();
@@ -63,6 +62,61 @@ function check_input(inp_id) {
         return null
     }
 }
+
+function validate_inputs() {
+    inp_fields = $(".score-inp");
+    for (let index = 0; index < inp_fields.length; index++) {
+        let element = inp_fields[index].id;
+        check_input(element)
+    }
+    let error_fields = $(".error");
+    if (error_fields.length > 0) {
+        $(`#${error_fields[0].id}`).focus()
+        return false
+    } else {
+        return true
+    }
+}
+
+
+function processData() {
+    let dataset = {}
+    // first: score input field values
+    let inp_fields = $(".score-inp");
+    $.each(inp_fields, function (indexInArray, valueOfElement) { 
+        const elem_id = valueOfElement.id;
+        const elem_selector = `#${elem_id}`;
+        const registration = $(elem_selector).data('registration')
+        const value = $(elem_selector).val()
+        let score = null;
+        if (value.length > 0) {
+            let score_number = Number(value);
+            if (!isNaN(score_number)) {
+                score = score_number;
+            }
+        }
+        const partA_id = `part-A-${registration}`;
+        const partB_id = `part-B-${registration}`;
+        const inCourse_id = `incourse-raw-${registration}`;
+        // create the entry for the registration_no
+        if (!(registration in dataset)) {
+            dataset[registration] = {}
+        }
+
+        if (elem_id == partA_id) {
+            dataset[registration]['part_A_score'] = score;
+        } else if (elem_id == partB_id) {
+            dataset[registration]['part_B_score'] = score;
+        } else if (elem_id == inCourse_id) {
+            dataset[registration]['incourse_score'] = score;
+        }
+    });
+    // second: Code inputs
+    
+    
+    return dataset
+}
+
 
 function calculate_Incourse(score) {
     if (score == null | isNaN(score)) {
@@ -130,8 +184,8 @@ function generateRowElements(record) {
         totalContainer = `<td id="total-${registration}" class="pending">Pending</td>`
     }
     const elements = {
-        partAcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
-        partBcode: `<input type="text" data-registration=${registration} class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
+        partAcode: `<input type="text" data-registration=${registration} id="code-part-A-${registration}" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
+        partBcode: `<input type="text" data-registration=${registration} id="code-part-B-${registration}" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} >`,
         partAscore: `<input type="text" data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'}  >`,
         partBscore: `<input type="text" data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} >`,
         inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} >`,
