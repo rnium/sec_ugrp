@@ -35,6 +35,35 @@ function activateProfileCard() {
     })
 }
 
+
+function check_input(inp_id) {
+    inp_selector = `#${inp_id}`
+    let score_raw = $(inp_selector).val();
+    let marks = $(inp_selector).data('max');
+    if (score_raw.length > 0) {
+        let score = Number(score_raw);
+        if (isNaN(score)) {
+            $(inp_selector).removeClass("empty")
+            $(inp_selector).addClass("error")
+            return false
+        } else {
+            if (score > marks) {
+                $(inp_selector).removeClass("empty")
+                $(inp_selector).addClass("error")
+                return false
+            } else {
+                $(inp_selector).removeClass("error")
+                $(inp_selector).removeClass("empty")
+                return true
+            }
+        }
+    } else {
+        $(inp_selector).removeClass("error")
+        $(inp_selector).addClass("empty")
+        return null
+    }
+}
+
 function calculate_Incourse(score) {
     if (score == null | isNaN(score)) {
         return "--";
@@ -65,18 +94,9 @@ function updateTotalMarks(registration) {
 function activateScoreInputs() {
     $(".score-inp").on('keyup', function(){
         let registration = $(this).data('registration');
-        // update class
-        const newValue = $(this).val();
-        const maxValue = $(this).data('max');
-        if (newValue.length == 0) {
-            $(this).addClass("empty");
-        }
-        else if (isNaN(newValue) | (newValue > maxValue)) {
-            $(this).addClass("error")
-        } else {
-            $(this).removeClass('error');
-            $(this).removeClass('empty');
-        }
+        const inp_id = $(this).attr('id');
+        // update input class based on values
+        check_input(inp_id)
         // check for incourse marks
         if ($(this).hasClass('incourse-score')) {
             let new_converted_marks = calculate_Incourse($(this).val());
@@ -91,7 +111,7 @@ function activateScoreInputs() {
                 $(converted_marks_container).removeClass("text-warning");
             }
         }
-        // update total marks after all other changes
+        // update total marks after all other checkings
         updateTotalMarks(registration)
     })
 }
