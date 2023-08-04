@@ -112,8 +112,47 @@ function processData() {
         }
     });
     // second: Code inputs
-    
-    
+    let code_inp_fields = $(".code-inp");
+    $.each(code_inp_fields, function (indexInArray, valueOfElement) { 
+        const elem_id = valueOfElement.id;
+        const elem_selector = `#${elem_id}`;
+        const registration = $(elem_selector).data('registration')
+        let value = $(elem_selector).val().trim()
+        if (value.length == 0) {
+            value = null
+        }
+        const partAcode_id = `code-part-A-${registration}`;
+        const partBcode_id = `code-part-B-${registration}`;
+        // create the entry for the registration_no
+        if (!(registration in dataset)) {
+            dataset[registration] = {}
+        }
+        if (elem_id == partAcode_id) {
+            dataset[registration]['part_A_code'] = value;
+        } else if (elem_id == partBcode_id) {
+            dataset[registration]['part_B_code'] = value;
+        }
+    });
+    // third: total Field. NOTE: This field is not an input field
+    let totalContainers = $(".total-score");
+    $.each(totalContainers, function (indexInArray, valueOfElement) { 
+        const elem_id = valueOfElement.id;
+        const elem_selector = `#${elem_id}`;
+        const registration = $(elem_selector).data('registration')
+        const value = $(elem_selector).text().trim()
+        let score = null;
+        if (value.length > 0) {
+            let score_number = Number(value);
+            if (!isNaN(score_number)) {
+                score = score_number;
+            }
+        }
+        // create the entry for the registration_no
+        if (!(registration in dataset)) {
+            dataset[registration] = {}
+        }
+        dataset[registration]['total_score'] = score;
+    }); 
     return dataset
 }
 
@@ -179,9 +218,9 @@ function generateRowElements(record) {
     const required_inCourse_score = calculate_Incourse(record.incourse_score);
     let totalContainer = "";
     if ((!isNaN(partAscore)) && (!isNaN(partBscore)) && (!isNaN(required_inCourse_score))) {
-        totalContainer = `<td id="total-${registration}">${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
+        totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
     } else {
-        totalContainer = `<td id="total-${registration}" class="pending">Pending</td>`
+        totalContainer = `<td data-registration=${registration} id="total-${registration}" class="total-score pending">Pending</td>`
     }
     const elements = {
         partAcode: `<input type="text" data-registration=${registration} id="code-part-A-${registration}" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} >`,
@@ -283,4 +322,14 @@ function loadCourseResults() {
 
 $(document).ready( function() {
     loadCourseResults()
+    $("#table-save-btn").on('click', function(){
+        let validated = validate_inputs()
+        if (!validated) {
+            return;
+        } else {
+            let data = processData()
+            // post_data(data)
+            console.log(data);
+        }
+    })
 })
