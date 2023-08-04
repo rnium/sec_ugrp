@@ -308,17 +308,19 @@ function post_data(data) {
         type: "POST",
         beforeSend: function(xhr){
             $("#table-save-btn").attr("disabled", true)
+            $("#table-save-btn span").text("Saving")
             xhr.setRequestHeader("X-CSRFToken", csrftoken)
         },
         data: payload,
         cache: false,
         success: function(response){
-            alert("complete")
+            showNotification("Data Saved Successfully!")
         },
         error: function(xhr,status,error){
-            alert('something went wrong')
+            showNotification("Sorry, something went wrong!")
         },
         complete: function(){
+            $("#table-save-btn span").text("Save")
             $("#table-save-btn").removeAttr("disabled");
         }
     })
