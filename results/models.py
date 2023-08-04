@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.utils import get_ordinal_number
+from results.utils import get_ordinal_number, calculate_grade_point, calculate_letter_grade
 from os.path import join, basename
 
 
@@ -154,7 +154,7 @@ class CourseResult(models.Model):
     part_B_code = models.CharField(max_length=20, null=True, blank=True)
     grade_point = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
-    letter_grade = models.CharField(max_length=2, null=True, blank=True)
+    letter_grade = models.CharField(max_length=5, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     
     class Meta:
@@ -169,7 +169,11 @@ class CourseResult(models.Model):
             (self.incourse_score is not None and self.incourse_score > self.course.incourse_marks) or
             (self.total_score is not None and self.total_score > self.course.total_marks)):
             raise ValidationError("Score cannot be more than defined marks")
-        
+        # Saving grade point
+        if self.total_score:
+            self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
+            self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
+            print(self.letter_grade)
         super().save(args, kwargs)
         
     
