@@ -236,11 +236,11 @@ function render_rows(response) {
                         <td class="code-inp-con">
                             ${fields.partAcode}
                         </td>
-                        <td class="inp-con">
-                            ${fields.partAscore}
-                        </td>
                         <td class="code-inp-con">
                             ${fields.partBcode}
+                        </td>
+                        <td class="inp-con">
+                            ${fields.partAscore}
                         </td>
                         <td class="inp-con">
                             ${fields.partBscore}
@@ -263,8 +263,8 @@ function insertTable(response) {
                         <tr>
                             <th>Registration No</th>
                             <th>Part A Code</th>
-                            <th>Part A [${course_partA_marks}]</th>
                             <th>Part B Code</th>
+                            <th>Part A [${course_partA_marks}]</th>
                             <th>Part B [${course_partB_marks}]</th>
                             <th>In Course [${course_incourse_marks}]</th>
                             ${inCourse_needs_conversion ? `<th>In Course [${required_inCourse_marks}]</th>` : ``}
