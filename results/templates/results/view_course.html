@@ -180,6 +180,7 @@
 {% block script %}
 <script>
     const course_result_api = "{% url 'results:course_results' course.id %}";
+    const update_course_results_api = "{% url 'results:update_course_results' course.id %}";
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
     const course_partB_marks = {{course.part_B_marks}};

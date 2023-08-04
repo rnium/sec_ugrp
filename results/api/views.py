@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
@@ -110,4 +111,25 @@ class CourseResultList(ListAPIView):
         course = self.get_object()
         course_results = CourseResult.objects.filter(course=course)
         return course_results
-        
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_course_results(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    if (hasattr(request.user, 'adminaccount')):
+        return Response(status=status.HTTP_307_TEMPORARY_REDIRECT)
+    # else:
+    #     for a_data in request.data:
+    #         assessment = get_object_or_404(Assessment, pk=a_data, meta__classroom=classroom)
+    #         for attr, value in request.data[a_data].items():
+    #             if attr == 'attendance_score':
+    #                 if (value > assessment.meta.attendance_marks) or (value < 0):
+    #                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    #                 setattr(assessment, attr, value)
+    #             elif attr == 'classtest_score':
+    #                 if (value > assessment.meta.classtest_marks) or (value < 0):
+    #                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    #                 setattr(assessment, attr, value)
+    #         assessment.save()
+    return Response(status=status.HTTP_200_OK)

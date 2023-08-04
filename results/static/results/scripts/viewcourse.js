@@ -319,6 +319,30 @@ function loadCourseResults() {
     });
 }
 
+function post_data(data) {
+    let payload = JSON.stringify(data)
+    $.ajax({
+        url: update_course_results_api,
+        contentType: "application/json",
+        type: "POST",
+        beforeSend: function(xhr){
+            $("#table-save-btn").attr("disabled", true)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: payload,
+        cache: false,
+        success: function(response){
+            alert("complete")
+        },
+        error: function(xhr,status,error){
+            alert('something went wrong')
+        },
+        complete: function(){
+            $("#table-save-btn").removeAttr("disabled");
+        }
+    })
+}
+
 
 $(document).ready( function() {
     loadCourseResults()
@@ -328,8 +352,7 @@ $(document).ready( function() {
             return;
         } else {
             let data = processData()
-            // post_data(data)
-            console.log(data);
+            post_data(data)
         }
     })
 })
