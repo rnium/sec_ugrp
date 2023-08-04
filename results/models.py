@@ -108,13 +108,30 @@ class Semester(models.Model):
         print(num_courses)
         return bool(num_courses)
     
+    @property
+    def has_tabulation_sheet(self):
+        if self.semesterdocument and self.semesterdocument.tabulation_sheet:
+            return True
+    @property
+    def tabluation_data(self):
+        return {
+            'tabulation_sheet_name': "",
+            'tabulation_sheet_url': "",
+            'tabulation_sheet_thumbnail': "",
+            'tabulation_sheet_rendertime': "",
+            'tabulation_sheet_renderer': "",
+        }
+    
 
 class SemesterDocument(models.Model):
     def filepath(self, filename):
         return join(str(self.semester.session.dept.name), str(self.semester.session.session_code), str(self.semester.semester_code), filename)
     semester = models.OneToOneField(Semester, on_delete=models.CASCADE)
-    tabulation_sheet = models.FileField(upload_to=filepath)
-    tabulation_thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
+    tabulation_sheet = models.FileField(upload_to=filepath, null=True, blank=True)
+    tabulation_thumbnail = models.ImageField(upload_to=filepath, null=True, blank=True)
+    tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
+    tabulation_sheet_render_by = models.DateTimeField(User, null=True, blank=True)
+    
 
 
 class Course(models.Model):
