@@ -117,19 +117,18 @@ class CourseResultList(ListAPIView):
 @permission_classes([IsAuthenticated])
 def update_course_results(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    if (hasattr(request.user, 'adminaccount')):
-        return Response(status=status.HTTP_307_TEMPORARY_REDIRECT)
-    # else:
-    #     for a_data in request.data:
-    #         assessment = get_object_or_404(Assessment, pk=a_data, meta__classroom=classroom)
-    #         for attr, value in request.data[a_data].items():
-    #             if attr == 'attendance_score':
-    #                 if (value > assessment.meta.attendance_marks) or (value < 0):
-    #                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-    #                 setattr(assessment, attr, value)
-    #             elif attr == 'classtest_score':
-    #                 if (value > assessment.meta.classtest_marks) or (value < 0):
-    #                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-    #                 setattr(assessment, attr, value)
-    #         assessment.save()
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != course.semester.session.dept):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    for registration in request.data:
+        course_result = get_object_or_404(CourseResult, course=course, student__registration=registration)
+        for attr, value in request.data[registration].items():
+            setattr(course_result, attr, value)
+        try:
+            course_result.save()
+        except Exception as e:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response(status=status.HTTP_200_OK)
