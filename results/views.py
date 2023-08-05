@@ -93,7 +93,6 @@ class SemesterView(LoginRequiredMixin, DetailView):
                                                      session__dept = semester.session.dept).order_by("session__from_year")
             if len(drop_semesters) > 0:
                 context["drop_semesters"] = drop_semesters
-            print(drop_semesters)
             
         return context
     
