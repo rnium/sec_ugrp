@@ -88,11 +88,11 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 function getNewCourseData() {
     let courseCodeIn = $("#courseCodeInput").val().trim();
     let courseTitleIn = $("#courseTitleInput").val().trim();
-    let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
-    let creditsIn = parseInt($("#courseCreditsInput").val().trim());
-    let partAMarksIn = parseInt($("#partAmarksInput").val().trim());
-    let partBMarksIn = parseInt($("#partBmarksInput").val().trim());
-    let incourseMarksIn = parseInt($("#inCourseMarksInput").val().trim());
+    let totalMarksIn = parseFloat($("#totalMarksInput").val().trim());
+    let creditsIn = parseFloat($("#courseCreditsInput").val().trim());
+    let partAMarksIn = parseFloat($("#partAmarksInput").val().trim());
+    let partBMarksIn = parseFloat($("#partBmarksInput").val().trim());
+    let incourseMarksIn = parseFloat($("#inCourseMarksInput").val().trim());
     
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])

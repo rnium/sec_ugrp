@@ -130,6 +130,5 @@ def update_course_results(request, pk):
         try:
             course_result.save()
         except Exception as e:
-            print(e)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response(status=status.HTTP_200_OK)

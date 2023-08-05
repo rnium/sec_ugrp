@@ -140,9 +140,9 @@ class Course(models.Model):
     title = models.CharField(max_length=200)
     course_credit = models.FloatField(validators=[MinValueValidator(settings.MIN_COURSE_CREDIT), MaxValueValidator(settings.MAX_COURSE_CREDIT)])
     total_marks = models.FloatField(validators=[MinValueValidator(1, "Total Marks must be greater than 0")])
-    part_A_marks = models.FloatField(validators=[MinValueValidator(1, "Marks must be greater than 0")])
-    part_B_marks = models.FloatField(validators=[MinValueValidator(1, "Marks must be greater than 0")])
-    incourse_marks = models.FloatField(validators=[MinValueValidator(1, "Marks must be greater than 0")])
+    part_A_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
+    part_B_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
+    incourse_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
     
