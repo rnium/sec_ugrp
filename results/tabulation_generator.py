@@ -4,7 +4,7 @@ from results.utils import get_ordinal_number
 
 def generate_table_header_data(semester: Semester) -> List[List]:
     """
-    will return a list of three list for top three rows of the tabulation
+    will return a list of three lists for top three rows of the tabulation table
     """
     regular_courses = semester.course_set.all()
     drop_courses = semester.drop_courses.all()
