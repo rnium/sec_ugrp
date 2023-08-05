@@ -1,5 +1,5 @@
 from results.models import Semester, CourseResult
-from typing import List
+from typing import List, Int
 from results.utils import get_ordinal_number
 
 class SemesterDataContainer:
@@ -37,36 +37,42 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
     return [row1, row2, row3]
 
 
-def generate_table_student_data(dataContainer: SemesterDataContainer) -> List[List]:
+def generate_table_student_data(dataContainer: SemesterDataContainer, recordPerPage: Int) -> List[List]:
     pageWise_student_data = []
     sl_number = 1
-    for student in dataContainer.students:
-        # two row per record, top and bottom
-        # staring with student info
-        row_top = [sl_number, student.registration, '','']
-        row_bottom = ["", student.student_name, '','']
-        #courses
-        total_credits = 0
-        total_points = 0
-        for course in dataContainer.course_list:
-            try:
-                course_result = CourseResult.objects.get(student=student, course=course)
-            except CourseResult.DoesNotExist:
-                row_top.append("")
-                row_bottom.append("")
-            gp = course_result.grade_point
-            lg = course_result.letter_grade
-            # if grade point or letter grade is not set, append a blank string to leave it empty in tabulation
-            if gp is None:
-                row_top.append("")
-            if lg is None:
-                row_bottom.append("")
-            row_top.append(gp)
-            row_bottom.append(lg)
-            if gp > 0:
-                total_credits += course.course_credit
-                total_points += (course.course_credit * gp)
-        # append semester result
-        # append upto this semester result (the overall result)
+    for i in range(0, dataContainer.num_students, recordPerPage):
+        singlePageData = []
+        for student in dataContainer.students[i:i+recordPerPage]:
+            # two row per record, top and bottom
+            # staring with student info
+            row_top = [sl_number, student.registration, '','']
+            row_bottom = ["", student.student_name, '','']
+            sl_number += 1
+            #courses
+            total_credits = 0
+            total_points = 0
+            for course in dataContainer.course_list:
+                try:
+                    course_result = CourseResult.objects.get(student=student, course=course)
+                except CourseResult.DoesNotExist:
+                    row_top.append("")
+                    row_bottom.append("")
+                gp = course_result.grade_point
+                lg = course_result.letter_grade
+                # if grade point or letter grade is not set, append a blank string to leave it empty in tabulation
+                if gp is None:
+                    row_top.append("")
+                if lg is None:
+                    row_bottom.append("")
+                row_top.append(gp)
+                row_bottom.append(lg)
+                if gp > 0:
+                    total_credits += course.course_credit
+                    total_points += (course.course_credit * gp)
+            # append semester result
+            # append upto this semester result (the overall result)
+            singlePageData.append(row_top)
+            singlePageData.append(row_bottom)
+        pageWise_student_data.append(singlePageData)
             
             
