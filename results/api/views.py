@@ -12,6 +12,7 @@ from .serializer import (SessionSerializer, SemesterSerializer,
 from .permission import IsCampusAdmin
 from results.models import Session, Semester, Course, CourseResult
 from .utils import create_course_results
+from results.tabulation_generator import test_generator
  
     
 class BadrequestException(APIException):
@@ -132,3 +133,17 @@ def update_course_results(request, pk):
         except Exception as e:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def render_tabulation(request, pk):
+    try:
+        semester = Semester.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
+    render_config = request.data['render_config']
+    footer_data_raw = request.data['footer_data_raw']
+    test_generator(semester, render_config, footer_data_raw)
+    return Response(data={"details":"ok"})
+    

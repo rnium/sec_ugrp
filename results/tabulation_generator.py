@@ -6,7 +6,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from io import BytesIO
 from results.models import Semester, CourseResult
-from typing import List, Int, Tuple, Dict
+from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade
 
 TABLE_FONT_SIZE = 9
@@ -70,7 +70,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
 def generate_table_student_data(dataContainer: SemesterDataContainer, render_config: Dict) -> List[List]:
     pageWise_student_data = []
     semester = dataContainer.semester
-    recordPerPage = render_config["record_per_page"]
+    recordPerPage = render_config["rows_per_page"]
     sl_number = 1
     for i in range(0, dataContainer.num_students, recordPerPage):
         singlePageData = []
@@ -89,13 +89,17 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 except CourseResult.DoesNotExist:
                     row_top.append("")
                     row_bottom.append("")
+                    continue
                 gp = course_result.grade_point
                 lg = course_result.letter_grade
                 # if grade point or letter grade is not set, append a blank string to leave it empty in tabulation
-                if gp is None:
-                    row_top.append("")
-                if lg is None:
-                    row_bottom.append("")
+                
+                if gp is None or lg is None:
+                    if gp is None:
+                        row_top.append("")
+                    if lg is None:
+                        row_bottom.append("")
+                    continue
                 row_top.append(gp)
                 row_bottom.append(lg)
                 if gp > 0:
@@ -126,11 +130,12 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             singlePageData.append(row_top)
             singlePageData.append(row_bottom)
         pageWise_student_data.append(singlePageData)
+    return pageWise_student_data
             
 
 def get_table_data(dataContainer: SemesterDataContainer, render_config: Dict):
     header = generate_table_header_data(dataContainer)
-    student_data_of_pages = generate_table_student_data(dataContainer)
+    student_data_of_pages = generate_table_student_data(dataContainer, render_config)
     table_data = []
     for records_of_page in student_data_of_pages:
         page_data = [*header, *records_of_page]
@@ -342,5 +347,14 @@ def get_tabulation_pdf(semester: Semester, render_config: Dict, footer_data_raw:
     # filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.upper()} {semester.session.session_code}).pdf"
     buffer = build_doc_buffer(dataset, footer_data)
     return buffer.getvalue()
+
+
+def test_generator(semester: Semester, render_config: Dict, footer_data_raw: Dict):
+    datacontainer = SemesterDataContainer(semester)
+    dataset = get_table_data(datacontainer, render_config)
+    # footer_data = get_footer_data(footer_data_raw)
+    with open("testOut.txt", "w") as f:
+        f.write(str(dataset))
+    
     
 

@@ -38,11 +38,11 @@ function showNotification(msg) {
     mBootstrap.show()
 }
 
-const saveBtn = document.getElementById("save-btn")
-saveBtn.addEventListener('click', ()=>{
-    // do some saving stuff
-    showNotification("Saved Successfully!")
-})
+// const saveBtn = document.getElementById("save-btn")
+// saveBtn.addEventListener('click', ()=>{
+//     // do some saving stuff
+//     showNotification("Saved Successfully!")
+// })
 
 
 function showDevModal(id) {
@@ -142,6 +142,24 @@ function getNewCourseData() {
     return data;
 }
 
+function getRenderTabulationData() {
+    let data = {
+        render_config: {
+            rows_per_page: 10,
+            font_offset: 0,
+            margin_x: 1, // 1cm
+            margin_y: 1,
+        },
+        footer_data_raw: {
+            chairman: "Chairman Name",
+            controller: "Controller Name",
+            committee: ["Committee member 1", "Committee member 2", "Committee member 3", "Committee member 4"],
+            tabulators: ["Tabulator 1", "Tabulator 2", "Tabulator 3"],
+        }
+    }
+    return data;
+}
+
 function createCourse() {
     payload = getNewCourseData()
     if (payload) {
@@ -197,8 +215,37 @@ function updateDropcourse() {
     });
 }
 
+function createCourse() {
+    payload = getRenderTabulationData()
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: render_tabulation_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#render-tabulation-btn").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                alert("render complete")
+            },
+            error: function(xhr, status, error) {
+                alert(error)
+            },
+            complete: function() {
+                $("#render-tabulation-btn").removeAttr("disabled");
+            }
+        });
+    }
+}
+
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse)
+    $("#render-tabulation-btn").on('click', createCourse)
     $(".marksinput").on('keyup', function(){
         let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
         let partAMarksIn = parseInt($("#partAmarksInput").val().trim());
