@@ -161,7 +161,7 @@ def get_footer_data(footer_data_raw: Dict):
         [f"Chairman of the Exam. Committee: {'.' * 100}", "", "", f"Controller of Examination: {'.'*100}", ""],
         ["", chairman_name, "", "", controller_name],
         ["Member of the Exam. Committee", *[f"0{i}) {'.'*50}" for i in range(1,len(exam_committee_members)+1)], *exam_committee_blanks],
-        ["", *exam_committee_members *exam_committee_blanks],
+        ["", *exam_committee_members, *exam_committee_blanks],
         ["Tabulators:", *[f"0{i}) {'.'*50}" for i in range(1,len(tabulators)+1)], *tabulator_blanks],
         ["", *tabulators, *tabulator_blanks],
     ]
@@ -317,12 +317,12 @@ def insert_footer(footer_data: List[List], flowables: List):
     return
 
 
-def build_doc_buffer(dataset, footer_data) -> BytesIO:
+def build_doc_buffer(semesterData:SemesterDataContainer, dataset, footer_data) -> BytesIO:
     flowables = []
     for data in dataset:
-        insert_header(flowables)
+        insert_header(flowables, semesterData)
         flowables.append(Spacer(1, 0.5*cm))
-        insert_table(data, flowables, 3)
+        insert_table(data, flowables, semesterData.semester.semester_no)
         flowables.append(Spacer(1, 0.5*cm))
         insert_footer(footer_data, flowables)
         flowables.append(PageBreak())
@@ -345,16 +345,15 @@ def get_tabulation_pdf(semester: Semester, render_config: Dict, footer_data_raw:
     dataset = get_table_data(datacontainer, render_config)
     footer_data = get_footer_data(footer_data_raw)
     # filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.upper()} {semester.session.session_code}).pdf"
-    buffer = build_doc_buffer(dataset, footer_data)
+    buffer = build_doc_buffer(datacontainer, dataset, footer_data)
     return buffer.getvalue()
 
 
 def test_generator(semester: Semester, render_config: Dict, footer_data_raw: Dict):
-    datacontainer = SemesterDataContainer(semester)
-    dataset = get_table_data(datacontainer, render_config)
-    # footer_data = get_footer_data(footer_data_raw)
-    with open("testOut.txt", "w") as f:
-        f.write(str(dataset))
+    pdf = get_tabulation_pdf(semester, render_config, footer_data_raw)
+    filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.name.upper()} {semester.session.session_code}).pdf"
+    with open(filename, 'wb') as f:
+        f.write(pdf)
     
     
 

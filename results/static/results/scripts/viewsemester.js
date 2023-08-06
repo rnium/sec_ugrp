@@ -153,8 +153,8 @@ function getRenderTabulationData() {
         footer_data_raw: {
             chairman: "Chairman Name",
             controller: "Controller Name",
-            committee: ["Committee member 1", "Committee member 2", "Committee member 3", "Committee member 4"],
-            tabulators: ["Tabulator 1", "Tabulator 2", "Tabulator 3"],
+            committee: ["Committee member 1"],
+            tabulators: ["Tabulator 1", "Tabulator 2"],
         }
     }
     return data;
