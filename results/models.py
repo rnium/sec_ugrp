@@ -51,6 +51,10 @@ class Session(models.Model):
     @property
     def session_code(self):
         return f"{self.from_year}-{self.to_year % 2000}"
+    
+    @property
+    def session_code_formal(self):
+        return f"{(self.from_year % 2000) + 2000}-{(self.to_year % 2000) + 2000}"
 
     @property
     def batch_name(self):
