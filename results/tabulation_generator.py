@@ -40,9 +40,11 @@ def cumulative_semester_result(student, semesters):
                 total_points += (grade_point * course.course_credit)
     overall_grade_point = (total_points/total_credits)
     overall_letter_grade = get_letter_grade(overall_grade_point)
-    result = {'grade_point':round(overall_grade_point, 2), 
-              'letter_grade':overall_letter_grade,
-              'total_credits':total_credits},
+    result = {}
+    result['grade_point'] = round(overall_grade_point, 2)
+    result['letter_grade'] = overall_letter_grade
+    result['total_credits'] = total_credits
+    # {'grade_point':round(overall_grade_point, 2), 'letter_grade':overall_letter_grade, 'total_credits':total_credits},
     return result
 
  
@@ -110,6 +112,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             # append semester result
             semester_result = cumulative_semester_result(student, [semester]) # passing semester in a list beacuse the function expects an iterable
             if semester_result:
+                row_top.append(semester_result['total_credits'])
                 row_top.append(semester_result['grade_point'])
                 row_bottom.append("") # for the span
                 row_bottom.append(semester_result['letter_grade'])
@@ -121,6 +124,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             semesters_upto_now = Semester.objects.filter(semester_no__lte=semester.semester_no, session=semester.session)
             semester_result_all = cumulative_semester_result(student, semesters_upto_now)
             if semester_result:
+                row_top.append(semester_result_all['total_credits'])
                 row_top.append(semester_result_all['grade_point'])
                 row_bottom.append("") # for the span
                 row_bottom.append(semester_result_all['letter_grade'])
