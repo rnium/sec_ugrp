@@ -139,7 +139,6 @@ def get_table_data(dataContainer: SemesterDataContainer, render_config: Dict):
     
 def get_footer_data(footer_data_raw: Dict):
     style = getSampleStyleSheet()
-    normal = style["Normal"]
     main_label = Paragraph("<b>Name, Signature & Date:</b>")
     chairman_name = ""
     if footer_data_raw["chairman"] is not None:
@@ -147,19 +146,19 @@ def get_footer_data(footer_data_raw: Dict):
     controller_name = ""
     if footer_data_raw["controller"] is not None:
         controller_name = footer_data_raw["controller"]
-    exam_committee_members = footer_data_raw["committee"][:4]
-    row__committee_members_sign_placeholders = []
-    row__committee_members_name = [""] # first column has span
-    if len(exam_committee_members) < 4:
-        row__committee_members_sign_placeholders
+    exam_committee_members = footer_data_raw.get("committee", [])[:4]
+    exam_committee_blanks = ["" for i in range(4-len(exam_committee_members))]
+    tabulators = footer_data_raw.get("tabulators", [])[:4]
+    tabulator_blanks = ["" for i in range(4-len(tabulators))]
+    
     footer_data = [
         [main_label, "", "", "", ""],
         [f"Chairman of the Exam. Committee: {'.' * 100}", "", "", f"Controller of Examination: {'.'*100}", ""],
         ["", chairman_name, "", "", controller_name],
-        ["Member of the Exam. Committee", *[f"0{i}) {'.'*50}" for i in range(1,5)]],
-        ["", "Md. Shahid Iqbal", "Md. Ashraful Alam", "Salman Fazle Rabby", "Nayan Kumar Nat"],
-        ["Tabulators:", *[f"0{i}) {'.'*50}" for i in range(1,4)], ""],
-        ["", "Md. Shahid Iqbal", "Md. Ashraful Alam", "Salman Fazle Rabby", ""],
+        ["Member of the Exam. Committee", *[f"0{i}) {'.'*50}" for i in range(1,len(exam_committee_members)+1)], *exam_committee_blanks],
+        ["", *exam_committee_members *exam_committee_blanks],
+        ["Tabulators:", *[f"0{i}) {'.'*50}" for i in range(1,len(tabulators)+1)], *tabulator_blanks],
+        ["", *tabulators, *tabulator_blanks],
     ]
     return footer_data
   
