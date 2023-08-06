@@ -1,6 +1,6 @@
 from results.models import Semester, CourseResult
 from typing import List, Int
-from results.utils import get_ordinal_number
+from results.utils import get_ordinal_number, get_letter_grade
 
 class SemesterDataContainer:
     def __init__(self, semester: Semester):
@@ -14,6 +14,26 @@ class SemesterDataContainer:
         self.has_overall_result_coulumn = (semester.semester_no >= 1)
         
 
+def cumulative_semester_result(student, semesters):
+    total_credits = 0
+    total_points = 0
+    for semester in semesters:
+        regular_courses = semester.course_set.all()
+        drop_courses = semester.drop_courses.all()
+        # course_list = [*list(semester.drop_courses), *list(semester.regular_courses)]
+        for course in regular_courses:
+            try:
+                course_result = CourseResult.objects.get(student=student, course=course)
+            except CourseResult.DoesNotExist:
+                continue
+            if (course_result.grade_point is not None) and (gp := course_result.grade_point > 0):
+                total_credits += course.course_credit
+                total_points += (gp * course.course_credit)
+    overall_grade_point = (total_points/total_credits)
+    overall_letter_grade = get_letter_grade(overall_grade_point)
+    return {'grade_point':overall_grade_point, 'letter_grade':overall_letter_grade}
+
+ 
 def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[List]:
     """
     will return a list of three lists for top three rows of the tabulation table
@@ -39,6 +59,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
 
 def generate_table_student_data(dataContainer: SemesterDataContainer, recordPerPage: Int) -> List[List]:
     pageWise_student_data = []
+    semester = dataContainer.semester
     sl_number = 1
     for i in range(0, dataContainer.num_students, recordPerPage):
         singlePageData = []
@@ -70,9 +91,29 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, recordPerP
                     total_credits += course.course_credit
                     total_points += (course.course_credit * gp)
             # append semester result
+            semester_result = cumulative_semester_result(student, [semester]) # passing semester in a list beacuse the function expects an iterable
+            if semester_result:
+                row_top.append(semester_result['grade_point'])
+                row_bottom.append("") # for the span
+                row_bottom.append(semester_result['letter_grade'])
+            else:
+                row_top.append("")
+                row_bottom.append("") # for the span
+                row_bottom.append("")
             # append upto this semester result (the overall result)
+            semesters_upto_now = Semester.objects.filter(semester_no__lte=semester.semester_no, session=semester.session)
+            semester_result_all = cumulative_semester_result(student, semesters_upto_now)
+            if semester_result:
+                row_top.append(semester_result_all['grade_point'])
+                row_bottom.append("") # for the span
+                row_bottom.append(semester_result_all['letter_grade'])
+            else:
+                row_top.append("")
+                row_bottom.append("") # for the span
+                row_bottom.append("")
+                
             singlePageData.append(row_top)
             singlePageData.append(row_bottom)
         pageWise_student_data.append(singlePageData)
             
-            
+

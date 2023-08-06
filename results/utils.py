@@ -39,4 +39,10 @@ def calculate_letter_grade(obtained_score, max_marks):
     for LG, schema in SEC_GRADING_SCHEMA.items():
         if schema['min'] <= score <= schema['max']:
             return LG
-    
+
+def get_letter_grade(grade_point):
+    if grade_point is None:
+        return None
+    for LG, schema in SEC_GRADING_SCHEMA.items():
+        if grade_point >= schema['grade_point']:
+            return LG
