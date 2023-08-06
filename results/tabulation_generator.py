@@ -28,20 +28,22 @@ def cumulative_semester_result(student, semesters):
     total_credits = 0
     total_points = 0
     for semester in semesters:
-        regular_courses = semester.course_set.all()
-        drop_courses = semester.drop_courses.all()
-        # course_list = [*list(semester.drop_courses), *list(semester.regular_courses)]
-        for course in regular_courses:
+        course_list = [*list(semester.drop_courses.all()), *list(semester.course_set.all())]
+        for course in course_list:
             try:
                 course_result = CourseResult.objects.get(student=student, course=course)
             except CourseResult.DoesNotExist:
                 continue
-            if (course_result.grade_point is not None) and (gp := course_result.grade_point > 0):
+            grade_point = course_result.grade_point
+            if (grade_point is not None) and (grade_point > 0):
                 total_credits += course.course_credit
-                total_points += (gp * course.course_credit)
+                total_points += (grade_point * course.course_credit)
     overall_grade_point = (total_points/total_credits)
     overall_letter_grade = get_letter_grade(overall_grade_point)
-    return {'grade_point':overall_grade_point, 'letter_grade':overall_letter_grade}
+    result = {'grade_point':round(overall_grade_point, 2), 
+              'letter_grade':overall_letter_grade,
+              'total_credits':total_credits},
+    return result
 
  
 def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[List]:
