@@ -149,7 +149,12 @@ function calculate_Incourse(score) {
 function updateTotalMarks(registration) {
     let a_score = parseFloat($(`#part-A-${registration}`).val().trim());
     let b_score = parseFloat($(`#part-B-${registration}`).val().trim());
-    let incourse_score = parseFloat($(`#incourse-converted-${registration}`).text().trim());
+    let incourse_score;
+    if (inCourse_needs_conversion) {
+        incourse_score = parseFloat($(`#incourse-converted-${registration}`).text().trim());
+    } else {
+        incourse_score = parseFloat($(`#incourse-raw-${registration}`).val().trim())
+    }
     if ((!isNaN(a_score)) && (!isNaN(b_score)) && (!isNaN(incourse_score))) {
         let total = (a_score + b_score + incourse_score);
         if (total > course_total_marks) {
