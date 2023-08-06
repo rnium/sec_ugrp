@@ -312,7 +312,7 @@ def insert_footer(footer_data: List[List], flowables: List):
     return
 
 
-def build_doc_buffer(dataset, footer_data, filename) -> BytesIO:
+def build_doc_buffer(dataset, footer_data) -> BytesIO:
     flowables = []
     for data in dataset:
         insert_header(flowables)
@@ -337,5 +337,10 @@ def build_doc_buffer(dataset, footer_data, filename) -> BytesIO:
 
 def get_tabulation_pdf(semester: Semester, render_config: Dict, footer_data_raw: Dict) -> SemesterDataContainer:
     datacontainer = SemesterDataContainer(semester)
+    dataset = get_table_data(datacontainer, render_config)
+    footer_data = get_footer_data(footer_data_raw)
+    # filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.upper()} {semester.session.session_code}).pdf"
+    buffer = build_doc_buffer(dataset, footer_data)
+    return buffer.getvalue()
     
 
