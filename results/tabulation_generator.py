@@ -52,10 +52,10 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
     title_semester_from_to = ""
     if has_overall_result:
         semester_from = dataContainer.semester.session.semester_set.all().first()
-        title_semester_from_to = f"{get_ordinal_number(semester_from)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
-    row1 = [ *['Course Number --> \nCredit of the course -->', '', '', ''] ,
+        title_semester_from_to = f"{get_ordinal_number(semester_from.semester_no)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
+    row1 = [ *['Course Number \u2192\nCredit of the course \u2192', '', '', ''] ,
             *[course.code.upper() for course in dataContainer.course_list], # Drop courses
-            *[f"{dataContainer.semester.semester_no} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
+            *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     
     row2 = [*["SL\nNO.", "Registration", '',''], 
             *['GP' for i in range(dataContainer.num_courses)], 
