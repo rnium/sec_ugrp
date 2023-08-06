@@ -230,7 +230,7 @@ function createCourse() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                alert("render complete")
+                showNotification("Render Complete")
             },
             error: function(xhr, status, error) {
                 alert(error)

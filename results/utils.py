@@ -1,14 +1,14 @@
 SEC_GRADING_SCHEMA = {
     "A+" : {"min": 80, "max":100, "grade_point":4.0},
-    "A" : {"min": 75, "max":79, "grade_point":3.75},
-    "A-" : {"min": 70, "max":74, "grade_point":3.50},
-    "B+" : {"min": 65, "max":69, "grade_point":3.25},
-    "B" : {"min": 60, "max":64, "grade_point":3.00},
-    "B-" : {"min": 55, "max":59, "grade_point":2.75},
-    "C+" : {"min": 50, "max":54, "grade_point":2.50},
-    "C" : {"min": 45, "max":49, "grade_point":2.25},
-    "C-" : {"min": 40, "max":44, "grade_point":2.00},
-    "F" : {"min": 0, "max":39, "grade_point":0.00},
+    "A" : {"min": 75, "max":79.999, "grade_point":3.75},
+    "A-" : {"min": 70, "max":74.999, "grade_point":3.50},
+    "B+" : {"min": 65, "max":69.999, "grade_point":3.25},
+    "B" : {"min": 60, "max":64.999, "grade_point":3.00},
+    "B-" : {"min": 55, "max":59.999, "grade_point":2.75},
+    "C+" : {"min": 50, "max":54.999, "grade_point":2.50},
+    "C" : {"min": 45, "max":49.999, "grade_point":2.25},
+    "C-" : {"min": 40, "max":44.999, "grade_point":2.00},
+    "F" : {"min": 0, "max":39.999, "grade_point":0.00},
 }
 
 def get_ordinal_number(value):

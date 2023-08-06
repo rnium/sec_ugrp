@@ -196,7 +196,7 @@ class CourseResult(models.Model):
             # saving total marks
             incourse_actual = ((self.course.total_marks - 
                                 (self.course.part_A_marks + self.course.part_B_marks))/self.course.incourse_marks) * self.incourse_score
-            self.total_score = (self.part_A_score + self.part_B_score + incourse_actual)
+            self.total_score = round((self.part_A_score + self.part_B_score + incourse_actual), 3)
         else:
             self.total_score = None
             
