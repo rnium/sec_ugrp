@@ -24,7 +24,7 @@
             {% block nav %}
             {% endblock nav %}
             <div class="user">
-                <a href="" class="logout">
+                <a href="{% url 'account:user_logout' %}" class="logout">
                     <i class='bx bx-log-out'></i>
                     <div class="label">Logout</div>
                 </a>
