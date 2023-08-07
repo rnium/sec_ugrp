@@ -126,30 +126,28 @@
         </div>
         {% endif %}
     </div>
-    <div class="tabulation bg-material p-4 mt-4 rounded-3 shadow-sm border-b-1">
+    <div class="tabulation bg-material p-4 mt-4 rounded-3 shadow-sm border-b-1" id="tabulation-main">
         <div class="section-title text-center mb-4 text-info">Tabulation Sheet</div>
         <div class="tabulation-card-container">
-            {% if semester.has_tabulation_sheet %}
-            <div class="card mb-3 bg-material-1 shadow-sm" >
+            <div id="tabulation-card" class="card mb-3 bg-material-1 shadow-sm" {% if not semester.has_tabulation_sheet %} style="display: none" {% endif %} >
                 <div class="row g-0">
                   <div class="col-md-5">
-                    <img src="{{semester.semesterdocument.tabulation_thumbnail.url}}" class="img-fluid rounded-start" alt="...">
+                    <img src="{{semester.semesterdocument.tabulation_thumbnail.url}}" id="tabulation-thumb" class="img-fluid rounded-start" alt="...">
                   </div>
                   <div class="col-md-7">
                     <div class="card-body p-5 d-flex flex-column h-100 justify-content-center align-items-center">
-                      <p class="h4 card-title">{{semester.semesterdocument.tabulation_filename}}</p>
+                      <p class="h4 card-title" id="tabulation-filename">{{semester.semesterdocument.tabulation_filename}}</p>
                       <div class="btn-container d-flex">
-                        <a class="download-btn" href="">
+                        <a class="download-btn" href="" id="tabulation-download">
                             <i class='bx bxs-download'></i>
                             <span>Download</span>
                         </a>
                       </div>
-                      <p class="card-text mt-3"><small class="text-body-secondary">Last render: 3 mins ago by Ashraful Alam</small></p>
+                      <p class="card-text mt-3"><small class="text-body-secondary" id="render_info">Last render: 3 mins ago by Ashraful Alam</small></p>
                     </div>
                   </div>
                 </div>
             </div>
-            {% endif %}
         </div>
         <div class="render-config mt-5">
             <div class="title d-flex justify-content-center">

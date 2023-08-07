@@ -215,6 +215,18 @@ function updateDropcourse() {
     });
 }
 
+function setTabulationCardProps(response) {
+    $("#tabulation-thumb").attr('src', response['thumbnail']);
+    $("#tabulation-filename").text(response['tabulation_name']);
+    $("#tabulation-download").attr('href', response['download_url']);
+    let render_time = new Date(response['render_time'])
+    let render_info = `Last render: ${render_time.toLocaleString()} by ${response['renderer_user']}`
+    $('#render_info').text(render_info);
+    let targetElement = document.getElementById("tabulation-main");
+    targetElement.scrollIntoView({ behavior: 'smooth' });
+    $("#tabulation-card").show(200)
+}
+
 function createCourse() {
     payload = getRenderTabulationData()
     if (payload) {
@@ -233,7 +245,7 @@ function createCourse() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                showNotification("Render Complete")
+                setTabulationCardProps(response)
             },
             error: function(xhr, status, error) {
                 alert(error)
