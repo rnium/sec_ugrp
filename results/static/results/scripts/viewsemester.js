@@ -225,6 +225,9 @@ function createCourse() {
             contentType: "application/json",
             beforeSend: function(xhr){
                 $("#render-tabulation-btn").attr("disabled", true)
+                $("#render-tabulation-btn .content").hide(0, ()=>{
+                    $("#render-tabulation-btn .spinner").show()
+                });
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
             },
             data: JSON.stringify(payload),
@@ -237,6 +240,9 @@ function createCourse() {
             },
             complete: function() {
                 $("#render-tabulation-btn").removeAttr("disabled");
+                $("#render-tabulation-btn .spinner").hide(0, ()=>{
+                    $("#render-tabulation-btn .content").show()
+                });
             }
         });
     }
