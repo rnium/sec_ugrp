@@ -148,7 +148,10 @@ def render_tabulation(request, pk):
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
     render_config = request.data['render_config']
     footer_data_raw = request.data['footer_data_raw']
-    files = get_tabulation_files(semester, render_config, footer_data_raw)
+    try:
+        files = get_tabulation_files(semester, render_config, footer_data_raw)
+    except Exception as e:
+        return Response(data={'details': e}, status=status.HTTP_400_BAD_REQUEST)
     if hasattr(semester, 'semesterdocument'):
         semesterdoc = semester.semesterdocument
     else:
