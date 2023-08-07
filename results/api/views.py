@@ -12,7 +12,7 @@ from .serializer import (SessionSerializer, SemesterSerializer,
 from .permission import IsCampusAdmin
 from results.models import Session, Semester, Course, CourseResult
 from .utils import create_course_results
-from results.tabulation_generator import test_generator
+from results.tabulation_generator import get_tabulation_files
  
     
 class BadrequestException(APIException):
@@ -144,6 +144,7 @@ def render_tabulation(request, pk):
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
     render_config = request.data['render_config']
     footer_data_raw = request.data['footer_data_raw']
-    test_generator(semester, render_config, footer_data_raw)
+    files = get_tabulation_files(semester, render_config, footer_data_raw)
+    if hasattr(semester, '')
     return Response(data={"details":"ok"})
     

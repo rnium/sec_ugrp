@@ -5,6 +5,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from io import BytesIO
+import fitz
+from PIL import Image
 from results.models import Semester, CourseResult
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade
@@ -345,21 +347,29 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, footer_data) -
     doc.build(flowables)
     return buffer
 
+def get_thumnail_image(pdf_file: BytesIO) -> bytes:
+    doc = fitz.open(stream=pdf_file, filetype="pdf")
+    page = doc[0]
+    zoom_scale = {'x':2.0, 'y':2.0}
+    mat = fitz.Matrix(*zoom_scale.values())
+    img_pixmap = page.get_pixmap(matrix=mat)
+    img = Image.frombytes("RGB", (img_pixmap.width, img_pixmap.height), img_pixmap.samples)
+    img_buffer = BytesIO()
+    img.save(img_buffer, format="PNG")
+    return img_buffer.getvalue()
 
-def get_tabulation_pdf(semester: Semester, render_config: Dict, footer_data_raw: Dict) -> SemesterDataContainer:
+
+def get_tabulation_files(semester: Semester, render_config: Dict, footer_data_raw: Dict) -> Dict[str,bytes]:
     datacontainer = SemesterDataContainer(semester)
     dataset = get_table_data(datacontainer, render_config)
     footer_data = get_footer_data(footer_data_raw)
     # filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.upper()} {semester.session.session_code}).pdf"
     buffer = build_doc_buffer(datacontainer, dataset, footer_data)
-    return buffer.getvalue()
+    files = {}
+    files['pdf_file'] = buffer.getvalue()
+    files['thumbnail_file'] = get_thumnail_image(files['pdf_file'])
+    return files
 
 
-def test_generator(semester: Semester, render_config: Dict, footer_data_raw: Dict):
-    pdf = get_tabulation_pdf(semester, render_config, footer_data_raw)
-    filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.name.upper()} {semester.session.session_code}).pdf"
-    with open(filename, 'wb') as f:
-        f.write(pdf)
-    
     
 
