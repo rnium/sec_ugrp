@@ -161,5 +161,12 @@ def render_tabulation(request, pk):
     semesterdoc.tabulation_sheet_render_by = request.user
     semesterdoc.tabulation_sheet_render_time = timezone.now()
     semesterdoc.save()
-    return Response(data={"details":"ok"})
+    doc_data = {
+        'thumbnail': semesterdoc.tabulation_thumbnail.url,
+        'tabulation_name': semesterdoc.tabulation_filename,
+        'download_url': "#",
+        'render_time': semesterdoc.tabulation_sheet_render_time,
+        'renderer_user': semesterdoc.tabulation_sheet_render_by.adminaccount.user_full_name,
+    }
+    return Response(data=doc_data)
     
