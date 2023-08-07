@@ -38,15 +38,20 @@
                     </div>
                     <div class="col-md-6 text-right">
                       <div class="d-flex justify-content-md-end">
-                          <button class="btn btn-primary" id="create-sem-btn">Login</button>
+                          <button class="btn btn-primary" id="login-btn">Login</button>
                       </div>
                     </div>
                 </div>
                   
             </div>
-            <div class="alert alert-danger text-center mt-3" style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing.</div>
+            <div class="alert alert-warning text-center mt-3 w-100" id="error-info-text" style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing.</div>
         </div>
 
     </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> 
+    <script>
+        const login_url = "{% url 'account:user_login_get' %}";
+    </script>
+    <script src="{% static 'account/scripts/login.js' %}"></script>
 </body>
 </html>
