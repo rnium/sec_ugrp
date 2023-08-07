@@ -158,7 +158,7 @@ def render_tabulation(request, pk):
     semesterdoc.tabulation_sheet.delete(save=True)
     semesterdoc.tabulation_thumbnail.delete(save=True)
     semesterdoc.tabulation_sheet.save(filename+'.pdf', ContentFile(files["pdf_file"]))
-    semesterdoc.tabulation_thumbnail.save(filename+'.png', ContentFile(files["thumbnail_file"]))
+    semesterdoc.tabulation_thumbnail.save('thumbnail.png', ContentFile(files["thumbnail_file"]))
     semesterdoc.tabulation_sheet_render_by = request.user
     semesterdoc.tabulation_sheet_render_time = timezone.now()
     semesterdoc.save()

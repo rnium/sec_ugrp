@@ -143,7 +143,7 @@
                             <span>Download</span>
                         </a>
                       </div>
-                      <p class="card-text mt-3"><small class="text-body-secondary" id="render_info">Last render: 3 mins ago by Ashraful Alam</small></p>
+                      <p class="card-text mt-3"><small class="text-body-secondary" id="render_info">Last render: {{semester.semesterdocument.tabulation_sheet_render_time|date:"g:i:s A, j M o"}} by {{semester.semesterdocument.tabulation_sheet_render_by.adminaccount.user_full_name}}</small></p>
                     </div>
                   </div>
                 </div>
