@@ -136,6 +136,11 @@ class SemesterDocument(models.Model):
     tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
     tabulation_sheet_render_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     
+    @property
+    def tabulation_filename(self):
+        name_str = basename(self.tabulation_sheet.name)
+        return name_str
+    
 
 
 class Course(models.Model):
