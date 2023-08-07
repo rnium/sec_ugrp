@@ -1,4 +1,6 @@
+from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
@@ -10,8 +12,9 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer)
 from .permission import IsCampusAdmin
-from results.models import Session, Semester, Course, CourseResult
+from results.models import Session, Semester, Course, CourseResult, SemesterDocument
 from .utils import create_course_results
+from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
  
     
@@ -145,6 +148,18 @@ def render_tabulation(request, pk):
     render_config = request.data['render_config']
     footer_data_raw = request.data['footer_data_raw']
     files = get_tabulation_files(semester, render_config, footer_data_raw)
-    if hasattr(semester, '')
+    if hasattr(semester, 'semesterdocument'):
+        semesterdoc = semester.semesterdocument
+    else:
+        semesterdoc = SemesterDocument.objects.create(semester=semester)
+    filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.name.upper()} {semester.session.session_code})"
+    # erasing before saving
+    semesterdoc.tabulation_sheet.delete(save=True)
+    semesterdoc.tabulation_thumbnail.delete(save=True)
+    semesterdoc.tabulation_sheet.save(filename+'.pdf', ContentFile(files["pdf_file"]))
+    semesterdoc.tabulation_thumbnail.save(filename+'.png', ContentFile(files["thumbnail_file"]))
+    semesterdoc.tabulation_sheet_render_by = request.user
+    semesterdoc.tabulation_sheet_render_time = timezone.now()
+    semesterdoc.save()
     return Response(data={"details":"ok"})
     

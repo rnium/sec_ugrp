@@ -367,7 +367,7 @@ def get_tabulation_files(semester: Semester, render_config: Dict, footer_data_ra
     buffer = build_doc_buffer(datacontainer, dataset, footer_data)
     files = {}
     files['pdf_file'] = buffer.getvalue()
-    files['thumbnail_file'] = get_thumnail_image(files['pdf_file'])
+    files['thumbnail_file'] = get_thumnail_image(files['pdf_file']) #thumbnail is in png format
     return files
 
 
