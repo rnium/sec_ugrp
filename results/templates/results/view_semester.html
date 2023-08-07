@@ -138,7 +138,7 @@
                     <div class="card-body p-5 d-flex flex-column h-100 justify-content-center align-items-center">
                       <p class="h4 card-title" id="tabulation-filename">{{semester.semesterdocument.tabulation_filename}}</p>
                       <div class="btn-container d-flex">
-                        <a class="download-btn" href="" id="tabulation-download">
+                        <a class="download-btn" href="{% url 'results:download_semester_tabulation' semester.id %}" target="_blank" id="tabulation-download">
                             <i class='bx bxs-download'></i>
                             <span>Download</span>
                         </a>

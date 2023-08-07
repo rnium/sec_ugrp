@@ -1,6 +1,7 @@
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
@@ -164,7 +165,7 @@ def render_tabulation(request, pk):
     doc_data = {
         'thumbnail': semesterdoc.tabulation_thumbnail.url,
         'tabulation_name': semesterdoc.tabulation_filename,
-        'download_url': "#",
+        'download_url': reverse('results:download_semester_tabulation', kwargs={'pk':semester.id}),
         'render_time': semesterdoc.tabulation_sheet_render_time,
         'renderer_user': semesterdoc.tabulation_sheet_render_by.adminaccount.user_full_name,
     }

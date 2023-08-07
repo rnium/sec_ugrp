@@ -116,15 +116,6 @@ class Semester(models.Model):
     def has_tabulation_sheet(self):
         if self.semesterdocument and self.semesterdocument.tabulation_sheet:
             return True
-    @property
-    def tabluation_data(self):
-        return {
-            'tabulation_sheet_name': "",
-            'tabulation_sheet_url': "",
-            'tabulation_sheet_thumbnail': "",
-            'tabulation_sheet_rendertime': "",
-            'tabulation_sheet_renderer': "",
-        }
     
 
 class SemesterDocument(models.Model):

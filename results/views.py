@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
+from django.http.response import FileResponse
 from results.models import (Semester, Department, Session, Course)
 
 
@@ -116,6 +117,17 @@ class CourseView(LoginRequiredMixin, DetailView):
         context['request'] = self.request
         return context
     
+
+@login_required
+def download_semester_tabulation(request, pk):
+    semester = get_object_or_404(Semester, pk=pk)
+    if semester.has_tabulation_sheet:
+        filepath = semester.semesterdocument.tabulation_sheet.path
+        filename = semester.semesterdocument.tabulation_filename
+        return FileResponse(open(filepath, 'rb'), filename=filename)
+    else:
+        HttpResponse("No Tabulation sheet")
+        
 
 @login_required 
 def pending_view(request):
