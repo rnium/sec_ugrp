@@ -51,7 +51,7 @@ function submitForm() {
     let payload = JSON.stringify(data)
     $.ajax({
         type: "post",
-        url: login_url,
+        url: login_api,
         dataType: "json",
         contentType: "application/json",
         beforeSend: function(xhr){
@@ -64,9 +64,7 @@ function submitForm() {
             window.location = response['succes_url']
         },
         error: function(xhr, error, status) {
-            showError("Booo..")
-            console.log(xhr);
-
+            showError(xhr.responseJSON.status)
         }
     });
 

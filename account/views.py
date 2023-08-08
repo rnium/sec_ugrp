@@ -27,4 +27,4 @@ def api_login(request):
         success_url = reverse("results:dashboard")
         return Response({'status':'logged in', 'succes_url': success_url}, status=HTTP_200_OK)
     else:
-        return Response({'status':'login failed'}, status=HTTP_401_UNAUTHORIZED)
+        return Response({'status':'Invalid Credentials'}, status=HTTP_401_UNAUTHORIZED)
