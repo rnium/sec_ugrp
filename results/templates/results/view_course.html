@@ -108,6 +108,7 @@
     </div>
     <div class="score-board p-3 mt-4" style="display: none;" id="scoreBoard">
         <div id="tableContainer"></div>
+        {% if course.semester.is_running %}
         <div class="col-md-12 mt-3 btn-container">
             <div class="d-flex justify-content-between">
                 <button class="add-new-btn btn btn-outline-secondary px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newEntryModal">
@@ -120,10 +121,13 @@
                 </button>
             </div>
         </div>
+        {% endif %}
     </div>
+    {% if course.semester.is_running %}
     <div class="delete-btn-container mt-4">
         <button class="btn btn-outline-danger">Delete Course</button>
     </div>
+    {% endif %}
 
     <!-- New Entry Modal -->
     <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -174,6 +178,7 @@
 <script>
     const course_result_api = "{% url 'results:course_results' course.id %}";
     const update_course_results_api = "{% url 'results:update_course_results' course.id %}";
+    const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
     const course_partB_marks = {{course.part_B_marks}};
