@@ -76,12 +76,19 @@ class StudentAccount(BaseAccount):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     cgpa = models.FloatField(default=0)
-
+    is_regular = models.BooleanField(default=True)
+    
     class Meta:
-        ordering = ["registration"]
+        ordering = ["-is_regular", "registration"]
     
     def __str__(self):
         return str(self.registration)
+    
+    def save(self, *args, **kwargs):
+        session_from = str(self.session.from_year)
+        if not str(self.registration).startswith(session_from):
+            self.is_regular = False
+        super().save(*args, **kwargs)
     
     @property
     def student_name(self):
