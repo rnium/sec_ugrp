@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.models import Department, Session
+from results.models import Department, Session, CourseResult
 
 
 class InviteToken(models.Model):
@@ -75,7 +75,8 @@ class StudentAccount(BaseAccount):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    cgpa = models.FloatField(default=0)
+    credits_completed = models.FloatField(default=0)
+    total_points = models.FloatField(default=0)
     is_regular = models.BooleanField(default=True)
     
     class Meta:
@@ -89,6 +90,20 @@ class StudentAccount(BaseAccount):
         if not str(self.registration).startswith(session_from):
             self.is_regular = False
         super().save(*args, **kwargs)
+        
+    def update_stats(self):
+        course_results = CourseResult.objects.filter(student=self)
+        total_credit = 0
+        total_points = 0
+        for course_r in course_results:
+            grade_p = course_r.grade_point
+            if (grade_p is not None) and (grade_p > 0):
+                course_credit = course_r.course.course_credit
+                total_credit += course_credit
+                total_points += (course_credit * grade_p)
+        self.credits_completed = total_credit
+        self.total_points = total_points
+        self.save()
     
     @property
     def student_name(self):

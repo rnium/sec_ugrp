@@ -26,11 +26,11 @@
         <div class="tooltip">Staffs</div>
     </li>
     <li class="nav-item">
-        <a href="{% url 'results:activities_view' %}" class="nav-link">
-            <i class='bx bx-walk'></i>
-            <span>Activities</span>
+        <a href="#" class="nav-link">
+            <i class='bx bxs-spray-can'></i>
+            <span>Profile</span>
         </a>
-        <div class="tooltip">Activities</div>
+        <div class="tooltip">Profile</div>
     </li>
 </ul>
 {% endblock nav %}
@@ -42,7 +42,7 @@
         <div class="h4">Sylhet Engineering College</div>
     </div>
     <div class="row dashboard-content py-4 px-5">
-        <div class="col-lg-5 live-semesters title-box  me-3">
+        <div class="col-lg-6 live-semesters title-box  me-3 bg-material">
             <!-- <div class="grad-top"><div class="grad-con"></div></div> -->
             <div class="title">Recent Semesters</div>
             <div class="content">
@@ -80,7 +80,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-lg-5 activities title-box bg-material">
+        <div class="col-lg-5 activities title-box bg-material" style="display: none">
             <div class="title w-100 bg-material-1">Admin Activities</div>
             <div class="content">
                 <div class="no-content d-flex flex-column justify-content-center align-items-center">
