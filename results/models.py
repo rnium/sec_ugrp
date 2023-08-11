@@ -118,6 +118,39 @@ class Semester(models.Model):
             return True
     
 
+class SemesterEnroll(models.Model):
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
+    courses = models.ManyToManyField("Course", related_name='enrolled_courses')
+    semester_credits = models.FloatField(default=0)
+    semester_points = models.FloatField(default=0)
+    semester_gpa = models.FloatField(default=0)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['semester', 'student'], name="one_enroll_per_semester")
+        ]
+    
+    def update_stats(self):
+        """Updates the stats field of the object.
+        Dont call this function within SemesterEnroll.save()
+        """
+        credits_count = 0
+        points_count = 0
+        for course in self.courses:
+            course_result = CourseResult.objects.filter(course=course, student=self.student).first()
+            if course_result:
+                credits_count += course_result.course.course_credit
+                points_count += (course_result.grade_point * course.course_credit)
+        # calculation and store values
+        self.semester_credits = credits_count
+        self.semester_points = points_count
+        self.semester_gpa = round(points_count/credits_count, 3)
+        self.save()
+        
+    
+
+
 class SemesterDocument(models.Model):
     def filepath(self, filename):
         return join(str(self.semester.session.dept.name), str(self.semester.session.session_code), str(self.semester.semester_code), filename)
