@@ -145,10 +145,8 @@ function getNewCourseData() {
 function getRenderTabulationData() {
     let data = {
         render_config: {
-            rows_per_page: 10,
-            font_offset: 0,
-            margin_x: 1, // 1cm
-            margin_y: 1,
+            tabulation_title: "",
+            tabulation_exam_time: "",
         },
         footer_data_raw: {
             chairman: "",

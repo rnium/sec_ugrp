@@ -111,6 +111,14 @@ class Semester(models.Model):
         return f"{get_ordinal_number(self.year)} Year {get_ordinal_number(self.year_semester)} Semester"
     
     @property
+    def exam_year(self):
+        exam_month_lst = self.start_month.split(" ")
+        if len(exam_month_lst) == 2 and exam_month_lst[1].isdecimal():
+            return int(exam_month_lst[1])
+        else:
+            return ""
+            
+    @property
     def has_courses(self):
         num_courses = self.course_set.count() + self.drop_courses.count()
         print(num_courses)
@@ -158,7 +166,6 @@ class SemesterEnroll(models.Model):
         
     
 
-
 class SemesterDocument(models.Model):
     def filepath(self, filename):
         return join(str(self.semester.session.dept.name), str(self.semester.session.session_code), str(self.semester.semester_code), filename)
@@ -167,6 +174,7 @@ class SemesterDocument(models.Model):
     tabulation_thumbnail = models.ImageField(upload_to=filepath, null=True, blank=True)
     tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
     tabulation_sheet_render_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    tabulation_sheet_render_config = models.JSONField(null=True, blank=True)
     
     @property
     def tabulation_filename(self):
