@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.models import Department, Session, CourseResult
+from results.models import Department, Session, CourseResult, SemesterEnroll
 
 
 class InviteToken(models.Model):
@@ -92,18 +92,16 @@ class StudentAccount(BaseAccount):
         super().save(*args, **kwargs)
         
     def update_stats(self):
-        course_results = CourseResult.objects.filter(student=self)
-        total_credit = 0
-        total_points = 0
-        for course_r in course_results:
-            grade_p = course_r.grade_point
-            if (grade_p is not None) and (grade_p > 0):
-                course_credit = course_r.course.course_credit
-                total_credit += course_credit
-                total_points += (course_credit * grade_p)
-        self.credits_completed = total_credit
-        self.total_points = total_points
+        enrollments = SemesterEnroll.objects.filter(student=self)
+        credits_count = 0
+        points_count = 0
+        for enroll in enrollments:
+            credits_count += enroll.semester_credits
+            points_count += enroll.semester_points
+        self.credits_completed = credits_count
+        self.total_points = points_count
         self.save()
+        
     
     @property
     def student_name(self):
