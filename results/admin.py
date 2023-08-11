@@ -5,6 +5,7 @@ from results import models
 admin.site.register(models.Department)
 admin.site.register(models.Session)
 admin.site.register(models.Semester)
+admin.site.register(models.SemesterEnroll)
 admin.site.register(models.SemesterDocument)
 admin.site.register(models.Course)
 admin.site.register(models.CourseResult)

@@ -98,9 +98,10 @@ class StudentAccount(BaseAccount):
         for enroll in enrollments:
             credits_count += enroll.semester_credits
             points_count += enroll.semester_points
-        self.credits_completed = credits_count
-        self.total_points = points_count
-        self.save()
+        if points_count > 0:
+            self.credits_completed = credits_count
+            self.total_points = points_count
+            self.save()
         
     
     @property

@@ -227,7 +227,7 @@ function setTabulationCardProps(response) {
     $("#tabulation-card").show(200)
 }
 
-function createCourse() {
+function renderTabulation() {
     payload = getRenderTabulationData()
     if (payload) {
         $.ajax({
@@ -263,7 +263,7 @@ function createCourse() {
 
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse)
-    $("#render-tabulation-btn").on('click', createCourse)
+    $("#render-tabulation-btn").on('click', renderTabulation)
     $(".marksinput").on('keyup', function(){
         let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
         let partAMarksIn = parseInt($("#partAmarksInput").val().trim());

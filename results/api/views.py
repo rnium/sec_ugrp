@@ -14,7 +14,7 @@ from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer)
 from .permission import IsCampusAdmin
 from results.models import Session, Semester, Course, CourseResult, SemesterDocument
-from .utils import create_course_enrollments, create_course_results
+from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
  
@@ -51,7 +51,7 @@ class SemesterCreate(CreateAPIView):
             # create enrollments. this sould be removed in future version
             pk = serializer.data.get('id')
             semester = Semester.objects.get(pk=pk)
-            create_course_enrollments(semester)
+            utils.create_course_enrollments(semester)
         except Exception as e:
             raise BadrequestException(str(e))
 
@@ -70,7 +70,8 @@ class CourseCreate(CreateAPIView):
             self.perform_create(serializer)
             course_id = serializer.data.get('id')
             course = Course.objects.get(id=course_id)
-            create_course_results(course=course)
+            utils.add_course_to_enrollments(course=course)
+            utils.create_course_results(course=course)
             return Response(serializer.data, status=201)
         else:
             return Response(serializer.errors, status=400)

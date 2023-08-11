@@ -143,11 +143,12 @@ class SemesterEnroll(models.Model):
                 credits_count += course_result.course.course_credit
                 points_count += (course_result.grade_point * course.course_credit)
         # calculation and store values
-        self.semester_credits = credits_count
-        self.semester_points = points_count
-        self.semester_gpa = round(points_count/credits_count, 3)
-        self.save()
-        self.student.update_stats()
+        if points_count > 0:
+            self.semester_credits = credits_count
+            self.semester_points = points_count
+            self.semester_gpa = round(points_count/credits_count, 3)
+            self.save()
+            self.student.update_stats()
         
     
 

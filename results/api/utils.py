@@ -9,7 +9,10 @@ def create_course_enrollments(semester: Semester):
     
     SemesterEnroll.objects.bulk_create(object_prototypes)
     
-
+def add_course_to_enrollments(course: Course):
+    enrollments = SemesterEnroll.objects.filter(semester=course.semester)
+    for enroll in enrollments:
+        enroll.courses.add(course)
 
 def create_course_results(course: Course):
     object_prototypes = []
