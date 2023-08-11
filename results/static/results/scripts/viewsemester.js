@@ -151,12 +151,38 @@ function getRenderTabulationData() {
             margin_y: 1,
         },
         footer_data_raw: {
-            chairman: "Chairman Name",
-            controller: "Controller Name",
-            committee: ["Committee member 1"],
-            tabulators: ["Tabulator 1", "Tabulator 2"],
+            chairman: "",
+            controller: "",
+            committee: [],
+            tabulators: [],
         }
     }
+    let chairman_name = $("#chairman").val().trim()
+    let controller_name = $("#controller").val().trim()
+    if (chairman_name.length > 0) {
+        data.footer_data_raw.chairman = chairman_name
+    }
+    if (controller_name.length > 0) {
+        data.footer_data_raw.chairman = controller_name
+    }
+    // exam committee members
+    let committee_arr = $("input.member")
+    $.each(committee_arr, function (indexInArray, valueOfElement) { 
+        let val = $(valueOfElement).val().trim()
+        if (val.length > 0) {
+            data.footer_data_raw.committee.push(val)
+        }
+
+    });
+    // tabulators
+    let tabulators_arr = $("input.tabulator")
+    $.each(tabulators_arr, function (indexInArray, valueOfElement) { 
+        let val = $(valueOfElement).val().trim()
+        if (val.length > 0) {
+            data.footer_data_raw.tabulators.push(val)
+        }
+
+    });
     return data;
 }
 
@@ -229,6 +255,8 @@ function setTabulationCardProps(response) {
 
 function renderTabulation() {
     payload = getRenderTabulationData()
+    console.log(payload);
+    return;
     if (payload) {
         $.ajax({
             type: "post",
