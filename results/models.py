@@ -174,12 +174,16 @@ class SemesterDocument(models.Model):
     tabulation_thumbnail = models.ImageField(upload_to=filepath, null=True, blank=True)
     tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
     tabulation_sheet_render_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    tabulatiobn_sheet_render_config = models.JSONField(null=True, blank=True)    
     
     @property
     def tabulation_filename(self):
         name_str = basename(self.tabulation_sheet.name)
         return name_str
     
+    @property
+    def default_tabulation_title(self):
+        return f"{self.semester.semester_name} Final Examination {self.semester.exam_year}"
 
 
 class Course(models.Model):

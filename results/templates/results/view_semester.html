@@ -142,6 +142,7 @@
                 </div>
             </div>
         </div>
+        {% with semester.semesterdocument.tabulatiobn_sheet_render_config as config %}
         <div class="render-config mt-5">
             <div class="title d-flex justify-content-center">
                 <i class='bx bx-cog fs-3 me-2'></i>
@@ -149,10 +150,24 @@
             </div>
             <div class="layout-config mt-3">
                 <div class="row mt-1">
+                    {% if config %}
                     <div class="col-md-6 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
-                            <input type="text" class="form-control py-2" value="{{semester.semester_name}} Final Examination {{semester.exam_year}}" id="tabulation-title">
+                            <input type="text" class="form-control py-2" value="{{config.render_config.tabulation_title}}" id="tabulation-title">
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">Exam Held in</span>
+                            <input type="text" class="form-control py-2" value="{{config.render_config.tabulation_exam_time}}" id="tabulation-exam-time">
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6 p-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
+                            <input type="text" class="form-control py-2" value="{{semester.semesterdocument.default_tabulation_title}}" id="tabulation-title">
                         </div>
                     </div>
                     <div class="col-md-6 p-2">
@@ -161,6 +176,7 @@
                             <input type="text" class="form-control py-2" value="{{semester.start_month}}" id="tabulation-exam-time">
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="footer-config mt-3 px-5 pt-3 pb-5 border rounded bg-material-1">
@@ -168,13 +184,13 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="chairman" placeholder="">
+                            <input type="text" class="form-control" id="chairman" placeholder="" value="{{config.footer_data_raw.chairman}}">
                             <label for="chairman">Chairman of Exam Committe</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="controller" placeholder="">
+                            <input type="text" class="form-control" id="controller" placeholder="" value="{{config.footer_data_raw.controller}}">
                             <label for="controller">Controller of Examination</label>
                         </div>
                     </div>
@@ -246,6 +262,7 @@
                 </button>
             </div>
         </div>
+        {% endwith %}
     </div>
     <div class="semester-info bg-dark p-3 mt-5 rounded-3 shadow">
         <i class='bx bx-info-circle bg' ></i>
