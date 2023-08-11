@@ -7,7 +7,7 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from io import BytesIO
 import fitz
 from PIL import Image
-from results.models import Semester, CourseResult
+from results.models import Semester, SemesterEnroll, CourseResult
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade
 
@@ -30,16 +30,11 @@ def cumulative_semester_result(student, semesters):
     total_credits = 0
     total_points = 0
     for semester in semesters:
-        course_list = [*list(semester.drop_courses.all()), *list(semester.course_set.all())]
-        for course in course_list:
-            try:
-                course_result = CourseResult.objects.get(student=student, course=course)
-            except CourseResult.DoesNotExist:
-                continue
-            grade_point = course_result.grade_point
-            if (grade_point is not None) and (grade_point > 0):
-                total_credits += course.course_credit
-                total_points += (grade_point * course.course_credit)
+        enrollment = SemesterEnroll.objects.filter(semester=semester, student=student).first()
+        if enrollment:
+            total_credits += enrollment.semester_credits
+            total_points += enrollment.semester_points
+           
     overall_grade_point = (total_points/total_credits)
     overall_letter_grade = get_letter_grade(overall_grade_point)
     result = {}
