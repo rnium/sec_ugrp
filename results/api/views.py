@@ -141,6 +141,8 @@ def update_course_results(request, pk):
             course_result.save()
         except Exception as e:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    # updating stats data: credits, points and gpa for each enrolls
+    course.semester.update_enrollments()
     return Response(status=status.HTTP_200_OK)
 
 

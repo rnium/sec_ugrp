@@ -98,6 +98,10 @@ class Semester(models.Model):
     def __str__(self) -> str:
         return f"{self.session}, {self.semester_name}"
     
+    def update_enrollments(self):
+        for enroll in self.semesterenroll_set.all():
+            enroll.update_stats()
+    
     @property
     def semester_code(self):
         return f"{self.year}-{self.year_semester} [{self.session.session_code}]"
@@ -135,13 +139,15 @@ class SemesterEnroll(models.Model):
         """Updates the stats field of the object.
         Dont call this function within SemesterEnroll.save()
         """
+        
         credits_count = 0
         points_count = 0
-        for course in self.courses:
+        for course in self.courses.all():
             course_result = CourseResult.objects.filter(course=course, student=self.student).first()
-            if course_result:
+            grade_point = course_result.grade_point
+            if course_result and grade_point:
                 credits_count += course_result.course.course_credit
-                points_count += (course_result.grade_point * course.course_credit)
+                points_count += (grade_point * course.course_credit)
         # calculation and store values
         if points_count > 0:
             self.semester_credits = credits_count
@@ -235,7 +241,6 @@ class CourseResult(models.Model):
         self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
         self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
         super().save(*args, **kwargs)
-        self.student.update_stats()
         
     
     @property
