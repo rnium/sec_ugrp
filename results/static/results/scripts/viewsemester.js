@@ -147,6 +147,10 @@ function getRenderTabulationData() {
         render_config: {
             tabulation_title: "",
             tabulation_exam_time: "",
+            rows_per_page: 10,
+            font_offset: 0,
+            margin_x: 1, // 1cm
+            margin_y: 1,
         },
         footer_data_raw: {
             chairman: "",
@@ -161,7 +165,7 @@ function getRenderTabulationData() {
         data.footer_data_raw.chairman = chairman_name
     }
     if (controller_name.length > 0) {
-        data.footer_data_raw.chairman = controller_name
+        data.footer_data_raw.controller = controller_name
     }
     // exam committee members
     let committee_arr = $("input.member")
@@ -253,8 +257,6 @@ function setTabulationCardProps(response) {
 
 function renderTabulation() {
     payload = getRenderTabulationData()
-    console.log(payload);
-    return;
     if (payload) {
         $.ajax({
             type: "post",

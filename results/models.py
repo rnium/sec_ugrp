@@ -174,7 +174,6 @@ class SemesterDocument(models.Model):
     tabulation_thumbnail = models.ImageField(upload_to=filepath, null=True, blank=True)
     tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
     tabulation_sheet_render_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    tabulation_sheet_render_config = models.JSONField(null=True, blank=True)
     
     @property
     def tabulation_filename(self):

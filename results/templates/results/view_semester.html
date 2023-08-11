@@ -149,20 +149,6 @@
             </div>
             <div class="layout-config mt-3">
                 <div class="row mt-1">
-                    {% if semester.semesterdocument.tabulation_sheet_render_config %}
-                    <div class="col-md-6 p-2">
-                        <div class="input-group">
-                            <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
-                            <input type="text" class="form-control py-2" value="{{semester.semesterdocument.tabulation_sheet_render_config.tabulation_title}}" id="tabulation-title">
-                        </div>
-                    </div>
-                    <div class="col-md-6 p-2">
-                        <div class="input-group">
-                            <span class="input-group-text bg-material-1 roboto-font">Exam Held in</span>
-                            <input type="text" class="form-control py-2" value="{{semester.semesterdocument.tabulation_sheet_render_config.tabulation_exam_time}}" id="tabulation-exam-time">
-                        </div>
-                    </div>
-                    {% else %}
                     <div class="col-md-6 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
@@ -175,7 +161,6 @@
                             <input type="text" class="form-control py-2" value="{{semester.start_month}}" id="tabulation-exam-time">
                         </div>
                     </div>
-                    {% endif %}
                 </div>
             </div>
             <div class="footer-config mt-3 px-5 pt-3 pb-5 border rounded bg-material-1">
