@@ -159,6 +159,10 @@ function getRenderTabulationData() {
             tabulators: [],
         }
     }
+    // render config
+    data.render_config.tabulation_title = $("#tabulation-title").val().trim()
+    data.render_config.tabulation_exam_time = $("#tabulation-exam-time").val().trim()
+    // footer data
     let chairman_name = $("#chairman").val().trim()
     let controller_name = $("#controller").val().trim()
     if (chairman_name.length > 0) {
