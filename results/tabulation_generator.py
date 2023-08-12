@@ -209,7 +209,7 @@ def calculate_column_widths(num_columns):
     return [column_width] * num_columns
 
 
-def insert_header(flowables: list, semesterData: SemesterDataContainer):
+def insert_header(flowables: list, semesterData: SemesterDataContainer, render_config):
     semester = semesterData.semester
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("topTitle", 
@@ -256,9 +256,9 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer):
     title_text = "SHAHJALAL UNIVERSITY OF SCIENCE & TECHNOLOGY, SYLHET"
     tablulatio_title = "TABULATION SHEET"
     institute_title = "NAME OF INSTITUTE: SYLHET ENGINEERING COLLEGE, SYLHET"
-    exam_title = f"{semester.semester_name} Final Examination 2022"
+    exam_title = render_config.get('tabulation_title', f"{semester.semester_name} Final Examination 2022")
     dept_title = f"Name of the Department: {semester.session.dept.fullname}"
-    exam_held_month = f"Examination Held in {semester.start_month}"
+    exam_held_month = render_config.get('tabulation_exam_time', f"Examination Held in {semester.start_month}")
     session = f"Session: {semester.session.session_code_formal}"
     label_data = [[
         Paragraph(dept_title, style=styles["bottom_row_paragraph1"]),
@@ -320,10 +320,10 @@ def insert_footer(footer_data: List[List], flowables: List):
     return
 
 
-def build_doc_buffer(semesterData:SemesterDataContainer, dataset, footer_data) -> BytesIO:
+def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config, footer_data) -> BytesIO:
     flowables = []
     for data in dataset:
-        insert_header(flowables, semesterData)
+        insert_header(flowables, semesterData, render_config)
         flowables.append(Spacer(1, 0.5*cm))
         insert_table(data, flowables, semesterData.semester.semester_no)
         flowables.append(Spacer(1, 0.5*cm))
@@ -359,7 +359,7 @@ def get_tabulation_files(semester: Semester, render_config: Dict, footer_data_ra
     dataset = get_table_data(datacontainer, render_config)
     footer_data = get_footer_data(footer_data_raw)
     # filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.upper()} {semester.session.session_code}).pdf"
-    buffer = build_doc_buffer(datacontainer, dataset, footer_data)
+    buffer = build_doc_buffer(datacontainer, dataset, render_config, footer_data)
     files = {}
     files['pdf_file'] = buffer.getvalue()
     files['thumbnail_file'] = get_thumnail_image(files['pdf_file']) #thumbnail is in png format
