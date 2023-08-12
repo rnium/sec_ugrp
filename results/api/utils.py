@@ -28,7 +28,7 @@ def format_render_config(request):
         'footer_data': {
             'chairman': request.data['footer_data_raw']['chairman'],
             'controller': request.data['footer_data_raw']['controller'],
-            
+            # member and tabulators
         }
     }
     members = request.data['footer_data_raw']['committee']
