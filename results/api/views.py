@@ -171,7 +171,7 @@ def render_tabulation(request, pk):
     semesterdoc.tabulation_thumbnail.save('thumbnail.png', ContentFile(files["thumbnail_file"]))
     semesterdoc.tabulation_sheet_render_by = request.user
     semesterdoc.tabulation_sheet_render_time = timezone.now()
-    semesterdoc.tabulatiobn_sheet_render_config = request.data
+    semesterdoc.tabulatiobn_sheet_render_config = utils.format_render_config(request)
     semesterdoc.save()
     doc_data = {
         'thumbnail': semesterdoc.tabulation_thumbnail.url,
