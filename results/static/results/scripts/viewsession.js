@@ -116,7 +116,7 @@ function setupAvatar(image_file, registration) {
         contentType: false,
         processData: false,
         error: function(xhr, error, status) {
-            showError("createStudentAlert", xhr.responseJSON)
+            showError("createStudentAlert", JSON.stringify(xhr.responseJSON))
         },
         complete: function() {
             location.reload()
