@@ -274,8 +274,14 @@
             <i class='bx bx-user-check me-1 fs-4 text-secondary'></i>
             <span class="roboto-font">{{request.user.adminaccount.user_full_name}}</span>
         </div>
-        <div class="btn-container mt-2 d-flex justify-content-center">
-            <!-- <button class="btn btn-outline-danger me">Delete Semester</button> -->
+        <div class="btn-container mt-2 d-flex justify-content-center ">
+            {% comment %} If it does not has courses it is deletale, otherwise it can be changed within is_running ststus {% endcomment %}
+            {% if not semester.has_courses %}
+            <button class="btn btn-danger btn-iconized my-4 px-4 shadow-sm">
+                <i class='bx bxs-trash-alt me-2 py-1'></i>
+                <span class="roboto-font ">Delete This Semester</span>
+            </button>
+            {% else %}
             {% if semester.is_running %}
             <button class="btn btn-secondary btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
                 <i class='bx bx-lock-alt me-2 py-1'></i>
@@ -287,7 +293,7 @@
                 <span class="roboto-font ">Run This Semester</span>
             </button>
             {% endif %}
-            
+            {% endif %}
         </div>
     </div>
     
