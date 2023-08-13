@@ -105,8 +105,57 @@ function createSemester() {
     }
 }
 
+function checkStudentForm() {
+    let input_fields = $(".studentinput-must")
+    for (let field of input_fields) {
+        field_val = $(field).val()
+        if (field_val.length < 1) {
+            $(field).focus()
+            showError("Please fill the field")
+            return false
+        }
+    }
+    return true
+}
+
+
+function createStudentAccount(){
+    let form_is_valid = checkStudentForm()
+    if (!form_is_valid) {
+        return false
+    }
+    let data = {
+        registration: $("#registrationNoInput").val().trim(),
+        first_name: $("#firstNameInput").val().trim(),
+        last_name: $("#lastNameInput").val().trim(),
+        session: sessionId
+    }
+    
+    let payload = JSON.stringify(data)
+    $.ajax({
+        type: "post",
+        url: create_student_account_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            $("#create-student-btn").attr('disabled', true);
+        },
+        data: payload,
+        cache: false,
+        success: function(response) {
+            location.reload()
+        },
+        error: function(xhr, status, error) {
+            $("#create-student-btn").removeAttr("disabled");
+            showError("createStudentAlert", error)
+        },
+    });
+}
+
 
 
 $(document).ready(function () {
     $("#create_sem_btn").on('click', createSemester)
+    $("#create-student-btn").on('click', createStudentAccount)
 });

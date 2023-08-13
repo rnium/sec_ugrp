@@ -170,7 +170,7 @@
                     <div class="form-container row p-0">
                         <div class="col-md-12 mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="firstNameInput" placeholder="">
+                                <input type="text" class="form-control studentinput-must" id="firstNameInput" placeholder="">
                                 <label for="firstNameInput">First Name</label>
                             </div>              
                         </div>
@@ -182,7 +182,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="registrationNoInput" placeholder="">
+                                <input type="text" class="form-control studentinput-must" id="registrationNoInput" placeholder="">
                                 <label for="registrationNoInput">Registration Number</label>
                             </div>              
                         </div>
@@ -192,12 +192,10 @@
                         </div>
 
                     </div>
-                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
-                    </div>   
+                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" id="createStudentAlert" style="display: none;"></div>   
                 </div>
                 <div class="d-flex p-3 pt-0 justify-content-end">
-                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="create-student-btn">
                         <i class='bx bx-user-plus me-1'></i>
                         <span>Add</span>
                     </button>
@@ -211,6 +209,7 @@
 {% block script %}
 <script>
     const create_semester_api = "{% url 'results:create_semester' session.id %}";
+    const create_student_account_api = "{% url 'account:create_student_account' %}";
     const sessionId = {{session.id}};
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
