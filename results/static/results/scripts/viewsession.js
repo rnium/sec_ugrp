@@ -105,6 +105,26 @@ function createSemester() {
     }
 }
 
+function setupAvatar(image_file, registration) {
+    let image_form = new FormData
+    image_form.append("dp", image_file)
+    image_form.append("registration", registration)
+    $.ajax({
+        type: "post",
+        url: set_student_avatar_api,
+        data: image_form,
+        contentType: false,
+        processData: false,
+        error: function(xhr, error, status) {
+            showError("createStudentAlert", xhr.responseJSON)
+        },
+        complete: function() {
+            location.reload()
+        }
+    });
+
+}
+
 function checkStudentForm() {
     let input_fields = $(".studentinput-must")
     for (let field of input_fields) {
@@ -144,11 +164,16 @@ function createStudentAccount(){
         data: payload,
         cache: false,
         success: function(response) {
-            location.reload()
+            avatar_files = $("#dp")[0].files
+            if (avatar_files.length > 0) {
+                setupAvatar(avatar_files[0], response.registration)
+            } else {
+                location.reload()
+            }
         },
         error: function(xhr, status, error) {
             $("#create-student-btn").removeAttr("disabled");
-            showError("createStudentAlert", error)
+            showError("createStudentAlert", JSON.stringify(xhr.responseJSON));
         },
     });
 }

@@ -188,7 +188,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="formFile" class="form-label">Student's Photo</label>
-                            <input class="form-control" type="file" id="formFile">
+                            <input class="form-control" type="file" id="dp">
                         </div>
 
                     </div>
@@ -210,6 +210,7 @@
 <script>
     const create_semester_api = "{% url 'results:create_semester' session.id %}";
     const create_student_account_api = "{% url 'account:create_student_account' %}";
+    const set_student_avatar_api = "{% url 'account:set_student_avatar' %}";
     const sessionId = {{session.id}};
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";

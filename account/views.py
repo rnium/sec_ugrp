@@ -63,12 +63,14 @@ class StudentAccountCreate(CreateAPIView):
 
 
 @csrf_exempt
-def set_avatar(request, registration):
+def set_student_avatar(request):
     if request.method == "POST":
         if not request.user.is_authenticated:
             return JsonResponse(data={'details': 'Unauthorized'}, status=403)
         # get student account
         try:
+            registration = request.POST.get('registration')
+            print(registration)
             account = StudentAccount.objects.get(registration=registration)
         except StudentAccount.DoesNotExist:
             return JsonResponse(data={'details': "Account not found"}, status=400)

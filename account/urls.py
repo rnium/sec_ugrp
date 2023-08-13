@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/login', views.api_login, name="user_login_api"),
     path('logout/', views.LogoutView.as_view(), name="user_logout"),
     path('createstudentaccount/', views.StudentAccountCreate.as_view(), name="create_student_account"),
+    path('setstudentavatar/', views.set_student_avatar, name="set_student_avatar"),
     # path('profile/', views.ProfileView.as_view(), name="user_profile"),
     # path('signup/', SignupView.as_view(), name="user_signup_get"),
     # path('api/verify/sendmail', send_verification_email_api, name="send_verification_email_api"),

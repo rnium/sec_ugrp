@@ -10,7 +10,7 @@ from io import BytesIO
 
 
 def validate_image_extension(value):
-    valid_extensions = settings.ALLOWED_IMAGE_EXTENSIONS
+    valid_extensions = map(lambda f: "."+f, settings.ALLOWED_IMAGE_EXTENSIONS) # adding a dot(.) before extension
     ext = Path(value.name).suffix
     if not ext.lower() in valid_extensions:
         raise ValidationError('Invalid file type. Allowed file types are: {}'.format(', '.join(valid_extensions)))
