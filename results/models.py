@@ -3,6 +3,7 @@ from django.db import models
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
@@ -197,15 +198,27 @@ class Course(models.Model):
     incourse_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"{self.semester} Course: {self.code}"
 
     class Meta:
         ordering = ["code"]
         constraints = [
             models.UniqueConstraint(fields=["semester", "code"], name="unique_course_semester")
         ]
+    
+    def __str__(self):
+        return f"{self.semester} Course: {self.code}"
+    
+    @property
+    def num_nonempty_records(self):
+        filled_records = self.courseresult_set.filter(
+            Q(part_A_score__isnull=False) | Q(part_B_score__isnull=False) | Q(incourse_score__isnull=False)
+        )
+        return filled_records.count()
+    
+    @property
+    def is_deletable(self):
+        return self.num_nonempty_records == 0
+    
     
 
 class CourseResult(models.Model):

@@ -360,7 +360,7 @@ function delete_course() {
             success: function(response) {
                 $('#deleteCourseModal .alert').removeClass('alert-warning');
                 $('#deleteCourseModal .alert').addClass('alert-info');
-                showAlert("Complete")
+                showAlert("Deleted Successfully")
                 setTimeout(()=>{
                     window.location.href = response.semester_url
                 }, 1000)

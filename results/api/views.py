@@ -253,9 +253,12 @@ def delete_course(request, pk):
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
-    # checking if it has records
-    # if course.has_records:
-    #     return Response(data={"details": "This course cannot be deleted while it has records"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    # checking if it has non empty records
+    if bool(num := course.num_nonempty_records):
+        return Response(
+            data={"details": f"This course cannot be deleted while it has {num} non empty records"}, 
+            status=status.HTTP_406_NOT_ACCEPTABLE
+        )
     # url to be redirected after deletion
     semester_url = reverse('results:view_semester', kwargs={
         'dept_name': course.semester.session.dept.name,
