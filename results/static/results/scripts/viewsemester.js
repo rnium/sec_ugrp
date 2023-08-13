@@ -320,7 +320,12 @@ function change_running_status() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                location.reload()
+                $('#changeWithPasswordModal .alert').removeClass('alert-warning');
+                $('#changeWithPasswordModal .alert').addClass('alert-info');
+                showAlert("Complete")
+                setTimeout(()=>{
+                    location.reload()
+                }, 1000)
             },
             error: function(xhr, status, error) {
                 showAlert(xhr.responseJSON.details)
