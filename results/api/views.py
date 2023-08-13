@@ -17,7 +17,6 @@ from results.models import Session, Semester, Course, CourseResult, SemesterDocu
 from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
- 
     
 class BadrequestException(APIException):
     status_code = 403

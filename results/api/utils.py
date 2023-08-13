@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from results.models import Course, CourseResult, Semester, SemesterEnroll
 
 
+
 def create_course_enrollments(semester: Semester):
     object_prototypes = []
     for student in semester.session.studentaccount_set.all():
