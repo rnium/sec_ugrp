@@ -642,6 +642,30 @@ body main .view-semester-container .running-sem-badge .inner {
   border-radius: 180px;
 }
 
+@-webkit-keyframes glowAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.30;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glowAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.30;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 body main .view-semester-container .running-sem-badge .inner .circle {
   display: inline-block;
   width: 15px;
@@ -649,6 +673,8 @@ body main .view-semester-container .running-sem-badge .inner .circle {
   background-color: #00ffbf;
   margin-right: 5px;
   border-radius: 180px;
+  -webkit-animation: glowAnimation 2s infinite;
+          animation: glowAnimation 2s infinite;
 }
 
 body main .view-semester-container .running-sem-badge .inner .title {
