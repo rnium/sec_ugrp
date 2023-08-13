@@ -335,6 +335,48 @@ function change_running_status() {
     }
 }
 
+function delete_semester() {
+    let showAlert = (msg)=>{
+        $("#deleteSemesterModal .alert").text(msg)
+        $("#deleteSemesterModal .alert").show()
+    }
+    let password = $(`#deleteSemesterModal input[type="password"]`).val().trim()
+    if (password.length == 0) {
+        showAlert("Please enter your password");
+        return
+    }
+    payload = {
+        password: password
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: delete_semester_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#confirm-del-btn").attr("disabled", true)
+                $("#deleteSemesterModal .alert").hide()
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $('#deleteSemesterModal .alert').removeClass('alert-warning');
+                $('#deleteSemesterModal .alert').addClass('alert-info');
+                showAlert("Complete")
+                setTimeout(()=>{
+                    window.location.href = response.session_url
+                }, 1000)
+            },
+            error: function(xhr, status, error) {
+                showAlert(xhr.responseJSON.details)
+                $("#confirm-del-btn").removeAttr('disabled');
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -394,4 +436,6 @@ $(document).ready(function () {
     });
     // change running status button
     $("#confirm-change-btn").on('click', change_running_status);
+    // delete semester
+    $("#confirm-del-btn").on('click', delete_semester)
 });

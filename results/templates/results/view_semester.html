@@ -500,6 +500,7 @@
     const drop_course_update_api = "{% url 'results:drop_course_update' semester.id %}";
     const render_tabulation_api = "{% url 'results:render_tabulation' semester.id %}";
     const change_running_status_api = "{% url 'results:change_running_status' semester.id %}";
+    const delete_semester_api = "{% url 'results:delete_semester' semester.id %}";
     const semesterId = {{semester.id}};
     const semesterNthNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";

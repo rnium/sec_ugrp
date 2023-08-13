@@ -202,4 +202,35 @@ def toggle_semester_is_running(request, pk):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
     semester.is_running = not semester.is_running
     semester.save()
-    return Response(data={"status": "ok"})
+    return Response(data={"status": "ok"})    
+    
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_semester(request, pk):
+    try:
+        semester = Semester.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != semester.session.dept):
+            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking password
+    if not utils.is_confirmed_user(request, username=request.user.username):
+        return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
+    # checking if it has courses
+    if semester.has_courses:
+        return Response(data={"details": "This semester cannot be deleted while it has courses"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    # url to be redirected after deletion
+    session_url = reverse('results:view_session', kwargs={
+        'dept_name': semester.session.dept.name,
+        'from_year': semester.session.from_year,
+        'to_year': semester.session.to_year
+    })
+    # delete
+    semester.delete()
+    return Response(data={"session_url": session_url})
