@@ -1,5 +1,5 @@
+from django.contrib.auth import authenticate
 from results.models import Course, CourseResult, Semester, SemesterEnroll
-
 
 
 def create_course_enrollments(semester: Semester):
@@ -38,6 +38,10 @@ def format_render_config(request):
     for i, tabulator in enumerate(tabulators):
         data['footer_data'][f'tabulator_{i+1}'] = tabulator
     return data
-        
-        
+
+
+def is_confirmed_user(request, username):
+    password = request.data.get('password')
+    user = authenticate(request, username=username, password=password)
+    return ((user is not None) and (request.user == user))
     
