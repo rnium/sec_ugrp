@@ -5,11 +5,24 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout, authenticate
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.exceptions import APIException
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from rest_framework.generics import CreateAPIView
 from . import utils
 from .models import StudentAccount
+from .serializer import StudentAccountSerializer
+
+class UnauthorizedException(APIException):
+    status_code = 403
+    default_detail = 'Unauthorized'
+    
+class BadrequestException(APIException):
+    status_code = 400
+    default_detail = 'Bad Request'
+    
 
 def login_page(request):
     if request.user.is_authenticated:
@@ -34,6 +47,19 @@ def api_login(request):
         return Response({'status':'Invalid Credentials'}, status=HTTP_401_UNAUTHORIZED)
 
 
+class StudentAccountCreate(CreateAPIView):
+    # To be used by admin user
+    serializer_class = StudentAccountSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = StudentAccount.objects.all()
+    
+    def perform_create(self, serializer):
+        if not hasattr(self.request.user, 'adminaccount'):
+            raise UnauthorizedException("User not authorized")
+        try:
+            super().perform_create(serializer)
+        except Exception as e:
+            raise BadrequestException(str(e))
 
 
 @csrf_exempt
@@ -43,7 +69,7 @@ def set_avatar(request, registration):
             return JsonResponse(data={'details': 'Unauthorized'}, status=403)
         # get student account
         try:
-            account = StudentAccount.objects.get()
+            account = StudentAccount.objects.get(registration=registration)
         except StudentAccount.DoesNotExist:
             return JsonResponse(data={'details': "Account not found"}, status=400)
         # check if user has permission
