@@ -331,6 +331,47 @@ function post_data(data) {
     })
 }
 
+function delete_course() {
+    let showAlert = (msg)=>{
+        $("#deleteCourseModal .alert").text(msg)
+        $("#deleteCourseModal .alert").show()
+    }
+    let password = $(`#deleteCourseModal input[type="password"]`).val().trim()
+    if (password.length == 0) {
+        showAlert("Please enter your password");
+        return
+    }
+    payload = {
+        password: password
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: delete_course_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#confirm-del-btn").attr("disabled", true)
+                $("#deleteCourseModal .alert").hide()
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $('#deleteCourseModal .alert').removeClass('alert-warning');
+                $('#deleteCourseModal .alert').addClass('alert-info');
+                showAlert("Complete")
+                setTimeout(()=>{
+                    window.location.href = response.semester_url
+                }, 1000)
+            },
+            error: function(xhr, status, error) {
+                showAlert(xhr.responseJSON.details)
+                $("#confirm-del-btn").removeAttr('disabled');
+            }
+        });
+    }
+}
 
 $(document).ready( function() {
     loadCourseResults()
@@ -343,4 +384,6 @@ $(document).ready( function() {
             post_data(data)
         }
     })
+    //  course del button
+    $("#confirm-del-btn").on('click', delete_course)
 })

@@ -233,4 +233,37 @@ def delete_semester(request, pk):
     })
     # delete
     semester.delete()
-    return Response(data={"session_url": session_url})
+    return Response(data={"session_url": session_url})    
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_course(request, pk):
+    try:
+        course = Course.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != course.semester.session.dept):
+            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking password
+    if not utils.is_confirmed_user(request, username=request.user.username):
+        return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
+    # checking if it has records
+    # if course.has_records:
+    #     return Response(data={"details": "This course cannot be deleted while it has records"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    # url to be redirected after deletion
+    semester_url = reverse('results:view_semester', kwargs={
+        'dept_name': course.semester.session.dept.name,
+        'from_year': course.semester.session.from_year,
+        'to_year': course.semester.session.to_year,
+        'year': course.semester.year,
+        'semester': course.semester.year_semester,
+    })
+    # delete
+    course.delete()
+    return Response(data={"semester_url": semester_url})
