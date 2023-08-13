@@ -276,10 +276,18 @@
         </div>
         <div class="btn-container mt-2 d-flex justify-content-center">
             <!-- <button class="btn btn-outline-danger me">Delete Semester</button> -->
+            {% if semester.is_running %}
             <button class="btn btn-secondary btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
                 <i class='bx bx-lock-alt me-2 py-1'></i>
                 <span class="roboto-font ">Close This Semester</span>
             </button>
+            {% else %}
+            <button class="btn btn-success btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
+                <i class='bx bx-play me-2 py-1'></i>
+                <span class="roboto-font ">Run This Semester</span>
+            </button>
+            {% endif %}
+            
         </div>
     </div>
     
@@ -443,9 +451,7 @@
                                                 
                 </div>
                 <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
-                    <button class="ms-auto btn btn-warning roboto-font btn-iconized px-3 shadow-sm" id="confirm-del-btn">
-                        Confirm
-                    </button>
+                    <button class="ms-auto btn btn-warning roboto-font btn-iconized px-3 shadow-sm" id="confirm-change-btn">Confirm</button>
                 </div>
             </div>
         </div>
@@ -458,6 +464,7 @@
     const create_course_api = "{% url 'results:create_course' %}";
     const drop_course_update_api = "{% url 'results:drop_course_update' semester.id %}";
     const render_tabulation_api = "{% url 'results:render_tabulation' semester.id %}";
+    const change_running_status_api = "{% url 'results:change_running_status' semester.id %}";
     const semesterId = {{semester.id}};
     const semesterNthNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";

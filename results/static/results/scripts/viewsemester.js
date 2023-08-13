@@ -260,7 +260,7 @@ function setTabulationCardProps(response) {
 }
 
 function renderTabulation() {
-    payload = getRenderTabulationData()
+    let payload = getRenderTabulationData()
     if (payload) {
         $.ajax({
             type: "post",
@@ -293,9 +293,46 @@ function renderTabulation() {
 }
 
 
+function change_running_status() {
+    let showAlert = (msg)=>{
+        $("#changeWithPasswordModal .alert").text(msg)
+        $("#changeWithPasswordModal .alert").show()
+    }
+    let password = $(`#changeWithPasswordModal input[type="password"]`).val().trim()
+    if (password.length == 0) {
+        showAlert("Please enter your password");
+        return
+    }
+    payload = {
+        password: password
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: change_running_status_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#confirm-change-btn").attr("disabled", true)
+                $("#changeWithPasswordModal .alert").hide()
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                location.reload()
+            },
+            error: function(xhr, status, error) {
+                showAlert(xhr.responseJSON.details)
+                $("#confirm-change-btn").removeAttr('disabled');
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
-    $("#createCourseAddBtn").on('click', createCourse)
-    $("#render-tabulation-btn").on('click', renderTabulation)
+    $("#createCourseAddBtn").on('click', createCourse);
+    $("#render-tabulation-btn").on('click', renderTabulation);
     $(".marksinput").on('keyup', function(){
         let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
         let partAMarksIn = parseInt($("#partAmarksInput").val().trim());
@@ -315,8 +352,8 @@ $(document).ready(function () {
                 $("#incourseInfoAlert").hide()
             }
         }
-    })
-    $("#selectionConfirmBtn").on('click', updateDropcourse)
+    });
+    $("#selectionConfirmBtn").on('click', updateDropcourse);
     $(".btn-check").on("change", function(){
         let checked_status = $(this).prop("checked");
         let course_id = $(this).attr("id");
@@ -349,5 +386,7 @@ $(document).ready(function () {
         } else {
             $("#selectionConfirmBtn").removeAttr("disabled");
         }
-    })
+    });
+    // change running status button
+    $("#confirm-change-btn").on('click', change_running_status);
 });
