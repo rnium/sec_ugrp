@@ -190,6 +190,14 @@ def toggle_semester_is_running(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != semester.session.dept):
+            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
     semester.is_running = not semester.is_running
