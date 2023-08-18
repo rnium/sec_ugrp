@@ -92,14 +92,14 @@
             </div>
             <div class="row">
                 {% for student in session.studentaccount_set.all %}
-                <div class="col-md-4 p-0">
-                    <div class="student rounded-3">
+                <div class="col-lg-6 p-0">
+                    <a href="" class="student rounded-3">
                         <img src="{{student.avatar_url}}" alt="" class="dp">
                         <div class="info">
-                            <div class="name fs-6" data-bs-toggle="tooltip" data-bs-title="{{student.student_name}}">{{student.student_name|truncatechars:17}}</div>
+                            <div class="name fs-6" data-bs-toggle="tooltip">{{student.student_name|truncatechars:25}}</div>
                             <div class="reg-no">{{student.registration}}</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
