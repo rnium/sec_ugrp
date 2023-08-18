@@ -44,8 +44,8 @@
             <div class="col">
               <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4 d-flex justify-content-center">
                 <ol class="breadcrumb mb-0">
-                  <li class="breadcrumb-item"><a href="#">EEE</a></li>
-                  <li class="breadcrumb-item"><a href="#">2018-19</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'results:view_department' student.session.dept.name %}">{{student.session.dept.name|upper}}</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'results:view_session' student.session.dept.name student.session.from_year student.session.to_year %}">{{student.session.session_code}}</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Student Profile</li>
                 </ol>
               </nav>
@@ -56,11 +56,11 @@
             <div class="col-lg-7 left-col">
               <div class="card mb-4 bg-material profile-card">
                 <div class="card-body text-center">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                    class="rounded-circle img-fluid" style="width: 150px;">
-                  <h5 class="my-3">student.</h5>
-                  <p class="text-muted mb-1">Full Stack Developer</p>
-                  <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  <img src="{{student.avatar_url}}" alt="avatar"
+                    class="rounded-5 img-fluid mt-3" style="width: 150px;">
+                  <h5 class="mt-3 mb-1">{{student.first_name}}</h5>
+                  <p class="text-white roboto-font mb-1">{{student.registration}}</p>
+                  <p class="text-muted mb-4">CGPA: <span class='text-warning fs-4'>{{student.student_cgpa}}</span></p>
                   <!-- <div class="d-flex justify-content-center mb-2">
                     <button type="button" class="btn btn-primary">Follow</button>
                     <button type="button" class="btn btn-outline-primary ms-1">Message</button>

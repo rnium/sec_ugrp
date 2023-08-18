@@ -103,10 +103,17 @@ class StudentAccount(BaseAccount):
             self.total_points = points_count
             self.save()
         
-    
     @property
     def student_name(self):
         if self.last_name:
             return f"{self.first_name} {self.last_name}"
         else:
             return self.first_name
+    
+    @property
+    def student_cgpa(self):
+        if points:= self.total_points:
+            cgpa = points / self.credits_completed
+            return "{:.2f}".format(cgpa)
+        else:
+            return "--"
