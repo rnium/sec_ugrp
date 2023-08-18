@@ -116,4 +116,4 @@ class StudentAccount(BaseAccount):
             cgpa = points / self.credits_completed
             return "{:.2f}".format(cgpa)
         else:
-            return "--"
+            return None
