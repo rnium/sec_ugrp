@@ -182,9 +182,7 @@ class SemesterDocument(models.Model):
         name_str = basename(self.tabulation_sheet.name)
         return name_str
     
-    @property
-    def default_tabulation_title(self):
-        return f"{self.semester.semester_name} Final Examination {self.semester.exam_year}"
+    
 
 
 class Course(models.Model):
