@@ -117,3 +117,13 @@ class StudentAccount(BaseAccount):
             return "{:.2f}".format(cgpa)
         else:
             return None
+    
+    @property
+    def gradesheet_years(self):
+        years = []
+        for year in range(1, 5):
+            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__year=year, semester__is_running=False, semester_gpa__isnull=False)
+            if year_enrolls.count() == 2:
+                years.append(year)
+        return years
+        
