@@ -75,7 +75,7 @@ def get_grading_scheme_table() -> Table:
  
  
 def build_header(flowables, student) -> None:
-    logo = Image('results\\static\\results\\images\\sust.png', width=45.5, height=50)
+    logo = Image(settings.BASE_DIR/'results/static/results/images/sust.png', width=45.5, height=50)
     bold_paragraph_style = ParagraphStyle(
         name='bold_paragraph_style',
         fontSize=10,  # Set the font size to 14 points

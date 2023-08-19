@@ -141,7 +141,7 @@ def download_year_gradesheet(request, registration, year):
         year_first_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=1, semester__is_running=False, semester_gpa__isnull=False)
         year_second_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
     except:
-        return HttpResponse("Gradesheet not available!")
+        return HttpResponse("<h1 style='text-align: center;margin-top:10rem'>GradeSheet not available!</h1>")
     sheet_pdf = get_gradesheet(
         student = student,
         year_first_sem_enroll = year_first_semester,
