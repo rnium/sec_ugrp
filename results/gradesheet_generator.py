@@ -18,7 +18,7 @@ w, h = A4
 margin_X = 0.5*inch
 margin_Y = 0.5*inch
 
-pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-italic', settings.BASE_DIR/'results/static/results/fonts/Roboto-MediumItalic.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-m', settings.BASE_DIR/'results/static/results/fonts/Roboto-Medium.ttf'))
@@ -118,22 +118,33 @@ def build_header(flowables, student) -> None:
     flowables.append(tbl)
 
 
+def get_courses_data(semester_enroll, blank_list):
+    dataset = []
+    courses = semester_enroll.courses.all()
+    for course in courses:
+        record = course.courseresult_set.filter(student=semester_enroll.student).first()
+        data = [
+            course.code,
+            course.title,
+            *blank_list,
+            course.course_credit if record.grade_point else 0,
+            record.grade_point,
+            record.letter_grade
+        ]
+        dataset.append(data)
+    return dataset
+
 def build_semester(flowables, semester_enroll) -> None:
-    num_courses = 8
     course_title_extras = ['', '', '', '']
+    course_dataset = get_courses_data(semester_enroll, course_title_extras)
+    num_courses = len(course_dataset)
+    
     data = [
         ['Fourth Year First Semester', *course_title_extras, 'Held in: March 2022', '', '', ''],
         ['Course No.', 'Course Title', *course_title_extras, 'Credit', 'Grade Obtained', ''],
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses
-        ['EEE 701', 'Solid State Devices', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
-        ['EEE 703', 'Microprocessor and Microcontrollers', *course_title_extras, '3', '3.25', 'B+'],
+        *course_dataset,
         [*course_title_extras, 'This Semester Total:', '', '21', '3.75', 'A'],
         [*course_title_extras, 'Cumulative:', '', '143', '3.76', 'A'],
     ]

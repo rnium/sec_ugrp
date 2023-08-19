@@ -198,7 +198,7 @@ class Course(models.Model):
     added_in = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["code"]
+        ordering = ["-course_credit", "code"]
         constraints = [
             models.UniqueConstraint(fields=["semester", "code"], name="unique_course_semester")
         ]

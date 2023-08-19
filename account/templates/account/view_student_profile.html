@@ -131,7 +131,7 @@
                         <div class="card-body p-3 d-flex flex-column h-100 justify-content-center align-items-center">
                           <p class="h5 card-title">{{year|ordinal_num}} Year GradeSheet</p>
                           <div class="mt-3 btn-container d-flex justify-content-center">
-                            <a href="{% url 'results:download_year_gradesheet' student.registration year %}" class="ms-auto btn btn-primary print-btn px-4 shadow-sm" id="save-btn">
+                            <a href="{% url 'results:download_year_gradesheet' student.registration year %}" target="_blank" class="ms-auto btn btn-primary print-btn px-4 shadow-sm" id="save-btn">
                                 <div class="d-flex align-items-center ">
                                     <i class='bx bx-printer me-2'></i>
                                     <span class="roboto-font ">Print</span>
