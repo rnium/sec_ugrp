@@ -125,7 +125,6 @@ def cumulative_semester_data(student, semester_upto):
     enrolls = SemesterEnroll.objects.filter(semester__semester_no__lte=semester_upto, student=student)
     credits_count = 0
     points_count = 0
-    print(enrolls)
     for enroll in enrolls:
         credits_count += enroll.semester_credits
         points_count += enroll.semester_points
