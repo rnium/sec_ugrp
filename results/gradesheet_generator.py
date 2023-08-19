@@ -20,6 +20,9 @@ w, h = A4
 margin_X = 0.5*inch
 margin_Y = 0.5*inch
 
+CARDINAL_NUMBERS = {1: "First", 2: "Second", 3: "Third", 4: "Fourth"}
+cardinal_repr = lambda n: CARDINAL_NUMBERS.get(n) # Cardinal representation
+
 pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-italic', settings.BASE_DIR/'results/static/results/fonts/Roboto-MediumItalic.ttf'))
@@ -151,13 +154,14 @@ def get_courses_data(semester_enroll, blank_list):
         dataset.append(data)
     return dataset
 
+
 def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     course_title_extras = ['', '', '', '']
     course_dataset = get_courses_data(semester_enroll, course_title_extras)
     num_courses = len(course_dataset)
     
     data = [
-        ['Fourth Year First Semester', *course_title_extras, 'Held in: March 2022', '', '', ''],
+        [f'{cardinal_repr(semester_enroll.semester.year)} Year {cardinal_repr(semester_enroll.semester.year_semester)} Semester', *course_title_extras, f'Held in: {semester_enroll.semester.start_month}', '', '', ''],
         ['Course No.', 'Course Title', *course_title_extras, 'Credit', 'Grade Obtained', ''],
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses
