@@ -11,7 +11,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
 from io import BytesIO
 from django.conf import settings
-from results.utils import get_letter_grade
+from results.utils import get_letter_grade, get_ordinal_number
 from results.models import SemesterEnroll
 
 DEBUG_MODE = False
@@ -263,7 +263,7 @@ def add_footer(canvas, doc, second_sem_cumulative):
 
 def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> bytes:
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title="Grade Sheet")
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title=f"{student.registration} - {get_ordinal_number(year_first_sem_enroll.semester.year)} year gradesheet")
     story = []
     
     build_header(story, student)
