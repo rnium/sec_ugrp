@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
 from typing import Any, Dict
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,6 +9,7 @@ from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course)
 from account.models import StudentAccount
 from results.gradesheet_generator import get_gradesheet
+from results.utils import get_ordinal_number
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -140,9 +142,13 @@ def download_year_gradesheet(request, registration, year):
         year_second_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
     except:
         return HttpResponse("Gradesheet not available!")
-    # sheet_pdf = get_gradesheet()
-    
-    return HttpResponse("Done")     
+    sheet_pdf = get_gradesheet(
+        student = student,
+        year_first_sem_enroll = year_first_semester,
+        year_second_sem_enroll = year_second_semester
+    )
+    filename = f"{get_ordinal_number(year)} year gradesheet - {student.registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
 @login_required 
 def pending_view(request):
