@@ -11,6 +11,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
 from io import BytesIO
 from django.conf import settings
+from results.utils import get_letter_grade
+from results.models import SemesterEnroll
 
 DEBUG_MODE = False
 
@@ -118,6 +120,22 @@ def build_header(flowables, student) -> None:
     flowables.append(tbl)
 
 
+def cumulative_semester_data(student, semester_upto):
+    data = {}
+    enrolls = SemesterEnroll.objects.filter(semester__semester_no__lte=semester_upto, student=student)
+    credits_count = 0
+    points_count = 0
+    print(enrolls)
+    for enroll in enrolls:
+        credits_count += enroll.semester_credits
+        points_count += enroll.semester_points
+    if points_count:
+        data['credit'] = credits_count
+        data['grade_point'] = points_count / credits_count
+        data['letter_grade'] = get_letter_grade(data['grade_point'])
+    return data
+        
+
 def get_courses_data(semester_enroll, blank_list):
     dataset = []
     courses = semester_enroll.courses.all()
@@ -134,7 +152,7 @@ def get_courses_data(semester_enroll, blank_list):
         dataset.append(data)
     return dataset
 
-def build_semester(flowables, semester_enroll) -> None:
+def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     course_title_extras = ['', '', '', '']
     course_dataset = get_courses_data(semester_enroll, course_title_extras)
     num_courses = len(course_dataset)
@@ -145,8 +163,8 @@ def build_semester(flowables, semester_enroll) -> None:
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses
         *course_dataset,
-        [*course_title_extras, 'This Semester Total:', '', '21', '3.75', 'A'],
-        [*course_title_extras, 'Cumulative:', '', '143', '3.76', 'A'],
+        [*course_title_extras, 'This Semester Total:', '', semester_enroll.semester_credits, f'{semester_enroll.semester_gpa:.2f}', get_letter_grade(semester_enroll.semester_gpa)],
+        [*course_title_extras, 'Cumulative:', '', cumulative_data['credit'], f"{cumulative_data['grade_point']:.2f}", cumulative_data['letter_grade']],
     ]
     header_row_heights = [15] * 3
     course_row_heights = [14] * num_courses
@@ -189,7 +207,7 @@ def build_semester(flowables, semester_enroll) -> None:
     flowables.append(table)
   
     
-def get_footer():
+def get_footer(second_sem_cumulative):
     header_style = ParagraphStyle(
         name='bold_paragraph_style',
         fontName='roboto-bold',  # Specify the bold font
@@ -199,7 +217,7 @@ def get_footer():
     footer_top_data = [
         ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', 'With Distinction'],
         ['', 'Cumulative', 'Credit', 'CGPA', 'Letter Grade', ''],
-        ['', 'Final Result', '161', '3.77', 'A', '']
+        ['', 'Final Result', second_sem_cumulative['credit'], f"{second_sem_cumulative['grade_point']:.2f}", second_sem_cumulative['letter_grade'], '']
     ]
     footer_top_style_config = [
         ('SPAN', (1, 0), (-2, 0)),
@@ -239,8 +257,8 @@ def get_footer():
     ])
     return footer_table
     
-def add_footer(canvas, doc):
-    footer = get_footer()
+def add_footer(canvas, doc, second_sem_cumulative):
+    footer = get_footer(second_sem_cumulative)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=cm)
 
@@ -251,9 +269,11 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> by
     
     build_header(story, student)
     story.append(Spacer(1, 20))
-    build_semester(story, year_first_sem_enroll)
+    first_sem_cumulative = cumulative_semester_data(student, year_first_sem_enroll.semester.semester_no)
+    second_sem_cumulative = cumulative_semester_data(student, year_second_sem_enroll.semester.semester_no)
+    build_semester(story, year_first_sem_enroll, first_sem_cumulative)
     story.append(Spacer(1, 20))
-    build_semester(story, year_second_sem_enroll)
-    doc.build(story, onFirstPage=add_footer)
+    build_semester(story, year_second_sem_enroll, second_sem_cumulative)
+    doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative))
     return buffer.getvalue()
     
