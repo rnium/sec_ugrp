@@ -137,7 +137,7 @@ class SemesterEnroll(models.Model):
     courses = models.ManyToManyField("Course", related_name='enrolled_courses')
     semester_credits = models.FloatField(default=0)
     semester_points = models.FloatField(default=0)
-    semester_gpa = models.FloatField(default=0)
+    semester_gpa = models.FloatField(null=True, blank=True)
     
     class Meta:
         constraints = [
