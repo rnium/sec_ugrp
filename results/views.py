@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse
-from results.models import (Semester, Department, Session, Course)
+from results.models import (Semester, SemesterEnroll, Department, Session, Course)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -127,7 +127,16 @@ def download_semester_tabulation(request, pk):
         return FileResponse(open(filepath, 'rb'), filename=filename)
     else:
         HttpResponse("No Tabulation sheet")
-        
+
+@login_required
+def download_year_gradesheet(request, registration, year):
+    try:
+        year_first_semester = SemesterEnroll.objects.get(student__regitration=registration, semester__year=year, semester__year_semester=1, semester__is_running=False, semester_gpa__isnull=False)
+        year_second_semester = SemesterEnroll.objects.get(student__regitration=registration, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
+    except:
+        return HttpResponse("Gradesheet not available!")
+    
+    return HttpResponse("Done")     
 
 @login_required 
 def pending_view(request):
