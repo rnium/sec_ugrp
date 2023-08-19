@@ -6,6 +6,8 @@ from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course)
+from account.models import StudentAccount
+from results.gradesheet_generator import get_gradesheet
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -130,11 +132,15 @@ def download_semester_tabulation(request, pk):
 
 @login_required
 def download_year_gradesheet(request, registration, year):
+    # student
+    student = get_object_or_404(StudentAccount, registration=registration)
+    # semester enrolls
     try:
-        year_first_semester = SemesterEnroll.objects.get(student__regitration=registration, semester__year=year, semester__year_semester=1, semester__is_running=False, semester_gpa__isnull=False)
-        year_second_semester = SemesterEnroll.objects.get(student__regitration=registration, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
+        year_first_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=1, semester__is_running=False, semester_gpa__isnull=False)
+        year_second_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
     except:
         return HttpResponse("Gradesheet not available!")
+    # sheet_pdf = get_gradesheet()
     
     return HttpResponse("Done")     
 

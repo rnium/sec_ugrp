@@ -9,6 +9,8 @@ from reportlab.platypus import Image
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
+from io import BytesIO
+from django.conf import settings
 
 DEBUG_MODE = False
 
@@ -16,10 +18,10 @@ w, h = A4
 margin_X = 0.5*inch
 margin_Y = 0.5*inch
 
-pdfmetrics.registerFont(TTFont('roboto', "results\\static\\results\\fontsRoboto-Regular.ttf"))
-pdfmetrics.registerFont(TTFont('roboto-bold', "results\\static\\results\\Roboto-Bold.ttf"))
-pdfmetrics.registerFont(TTFont('roboto-italic', "results\\static\\results\\Roboto-MediumItalic.ttf"))
-pdfmetrics.registerFont(TTFont('roboto-m', "results\\static\\results\\Roboto-Medium.ttf"))
+pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-italic', settings.BASE_DIR/'results/static/results/fonts/Roboto-MediumItalic.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-m', settings.BASE_DIR/'results/static/results/fonts/Roboto-Medium.ttf'))
 
 
 def calculate_column_widths(num_columns, container_width, margin):
@@ -70,7 +72,7 @@ def get_grading_scheme_table() -> Table:
     return tbl
  
  
-def build_header(flowables) -> None:
+def build_header(flowables, student) -> None:
     logo = Image('results\\static\\results\\images\\sust.png', width=45.5, height=50)
     bold_paragraph_style = ParagraphStyle(
         name='bold_paragraph_style',
@@ -83,18 +85,18 @@ def build_header(flowables) -> None:
         alignment=0,  # Center alignment
     )
     university = Paragraph('SHAHJALAL UNIVERSITY OF SCIENCE AND TECHNOLOGY, SYLHET, BANGLADESH.', univ_style)
-    dept_name_paragraph = Paragraph(": <b>Electrical & Electronic Engineering</b>", style=bold_paragraph_style)
+    dept_name_paragraph = Paragraph(f": <b>{student.session.dept.fullname}</b>", style=bold_paragraph_style)
     grading_scheme_table = get_grading_scheme_table()
     table_data = [
         [logo, university, '', ''],
         ['', 'Grade Certificate', '', grading_scheme_table],
         ['', "B. Sc. (Engg.) Examination", ''],
-        ['', "Session", ": 2017-18", ''],
+        ['', "Session", f": {student.session.session_code}", ''],
         ['Name of the College', '', ": Sylhet Engineering College, Sylhet", ''],
         ['Department', '', dept_name_paragraph, ''],
         [Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), ''],
-        ['Registration No.', '', ": 2017338503", ''],
-        ['Name of the Student', '', ": IFTAKAR ALAM SAMIN", ''],
+        ['Registration No.', '', f": {student.registration}", ''],
+        ['Name of the Student', '', f": {student.student_name.upper()}", ''],
     ]
     tblstyle_config = [
         ('SPAN', (0, 0), (0, 2)),
@@ -116,7 +118,7 @@ def build_header(flowables) -> None:
     flowables.append(tbl)
 
 
-def build_semester(flowables) -> None:
+def build_semester(flowables, semester_enroll) -> None:
     num_courses = 8
     course_title_extras = ['', '', '', '']
     data = [
@@ -231,8 +233,9 @@ def add_footer(canvas, doc):
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=cm)
 
-def build_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll):
-    doc = SimpleDocTemplate("gradesheet.pdf", pagesize=A4, topMargin=margin_Y, title="Grade Sheet")
+def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> bytes:
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title="Grade Sheet")
     story = []
     
     build_header(story, student)
@@ -241,4 +244,5 @@ def build_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll):
     story.append(Spacer(1, 20))
     build_semester(story, year_second_sem_enroll)
     doc.build(story, onFirstPage=add_footer)
+    return buffer.getvalue()
     
