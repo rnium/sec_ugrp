@@ -1,3 +1,4 @@
+import uuid
 from django.core.validators import FileExtensionValidator
 from django.conf import settings
 from django.db import models
@@ -7,6 +8,15 @@ from results.models import Department, Session, CourseResult, SemesterEnroll
 
 
 class InviteToken(models.Model):
+    def get_uuid():
+        return uuid.uuid4().hex
+
+    id = models.CharField(
+        max_length=50,
+        primary_key = True,
+        default = get_uuid,
+        editable = False,
+    )
     from_user = models.ForeignKey(User, null=True, blank=True, related_name="from_user", on_delete=models.SET_NULL)
     to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
     user_email = models.EmailField()
