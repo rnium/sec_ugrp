@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course)
-from account.models import StudentAccount
+from account.models import StudentAccount, AdminAccount
 from results.gradesheet_generator import get_gradesheet
 from results.utils import get_ordinal_number
 
@@ -119,6 +119,15 @@ class CourseView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        return context
+    
+
+class StaffsView(LoginRequiredMixin, TemplateView):
+    template_name = "results/view_staffs.html"
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['superadmins'] = AdminAccount.objects.filter(is_super_admin=True) 
+        context['deptadmins'] = AdminAccount.objects.filter(is_super_admin=False).order_by('dept') 
         return context
     
 
