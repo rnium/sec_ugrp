@@ -128,6 +128,7 @@ class StaffsView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['superadmins'] = AdminAccount.objects.filter(is_super_admin=True) 
         context['deptadmins'] = AdminAccount.objects.filter(is_super_admin=False).order_by('dept') 
+        context['request'] = self.request
         return context
     
 
