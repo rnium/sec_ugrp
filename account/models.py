@@ -33,7 +33,7 @@ class AdminAccount(BaseAccount):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_super_admin = models.BooleanField(default=False)
     dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
-    invitation = models.ForeignKey(InviteToken, on_delete=models.CASCADE)
+    invitation = models.ForeignKey(InviteToken, null=True, blank=True, on_delete=models.CASCADE)
     
     class Meta:
         constraints = [
