@@ -122,7 +122,6 @@ class Semester(models.Model):
     @property
     def has_courses(self):
         num_courses = self.course_set.count() + self.drop_courses.count()
-        print(num_courses)
         return bool(num_courses)
     
     @property
