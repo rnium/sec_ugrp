@@ -3,10 +3,45 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import FileExtensionValidator
+from django.template.loader import render_to_string
+from django.urls import reverse
 from pathlib import Path
 from PIL import Image
 from io import BytesIO
+from email.message import EmailMessage
+from email.utils import formataddr
+import ssl
+import smtplib
 
+def send_html_email(receiver, subject, body):
+    sender = settings.EMAIL_HOST_USER
+    password = settings.EMAIL_HOST_PASSWORD
+    host = settings.EMAIL_HOST
+    port = settings.EMAIL_PORT
+    
+    em = EmailMessage()
+    em['From'] = formataddr(("SEC Results", sender))
+    em['To'] = receiver
+    em['Subject'] = subject
+    em.set_content(body, subtype='html')
+    
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(host, port, context=context) as smtp:
+        smtp.login(sender, password)
+        smtp.sendmail(sender, receiver, em.as_string())
+
+
+# def send_signup_email(request, user, invitation):
+#     email_subject = "Signup Invitation"
+#     receiver = 
+#     signup_url = request.build_absolute_uri(reverse("accounts:verify_user", args=(uid, token)))
+#     email_body = render_to_string('accounts/verification_mail.html', context={
+#         "user": user,
+#         "signup_url": signup_url,
+#     })
+#     send_html_email(receiver, email_subject, email_body)
+    
 
 
 def validate_image_extension(value):
