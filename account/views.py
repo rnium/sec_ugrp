@@ -1,4 +1,6 @@
 from typing import Any, Dict
+from datetime import timedelta
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +15,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.generics import CreateAPIView
 from . import utils
@@ -130,7 +133,8 @@ def set_student_avatar(request):
 
 @api_view(['POST'])
 def send_signup_token(request):
-    if not hasattr('request.user', 'adminaccount'):
+    if not hasattr(request.user, 'adminaccount'):
+        print("no admin")
         return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
     try:
         to_user_email = request.data['to_email']
@@ -138,18 +142,25 @@ def send_signup_token(request):
         return Response(data={'details': "No email provided"}, status=HTTP_400_BAD_REQUEST)
     to_user_dept = None
     if request.user.adminaccount.is_super_admin:
-        if request.data.get('is_to_user_superadmin', False):
+        if not request.data.get('is_to_user_superadmin', True):
             try:
                 to_user_dept = request.data['to_user_dept']
             except KeyError:
                 return Response(data={'details': "No department provided"}, status=HTTP_400_BAD_REQUEST)
     else:
         to_user_dept = request.user.adminaccount.dept
+    expiration = timezone.now() + timedelta(days=7)
     invite_token = InviteToken(
         from_user = request.user,
         user_email = to_user_email,
         to_user_dept_id = to_user_dept,
+        expiration = expiration
     )
+    return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
     invite_token.save()
-    utils.send_signup_email(request, invite_token)
-    return Response(data="status: Invitation email sent", status=HTTP_200_OK)
+    try:
+        utils.send_signup_email(request, invite_token)
+    except Exception as e:
+        return Response(data={'details': str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+    
+    

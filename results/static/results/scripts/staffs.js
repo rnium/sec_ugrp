@@ -56,28 +56,29 @@ function getInvitationData() {
 
 function sendInvite() {
     payload = getInvitationData();
-    console.log(payload);
     if (payload) {
         $.ajax({
             type: "post",
-            url: create_course_api,
+            url: send_staff_signup_token_api,
             dataType: "json",
             contentType: "application/json",
             beforeSend: function(xhr){
                 $("#createCourseAlert").hide()
-                $("#createCourseAddBtn").attr("disabled", true)
+                $("#send-invite").attr("disabled", true)
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
             },
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                hideModal("newSemesterEntryModal");
-                showInfo("createCourseAlert", "New course created successfully! Reloading page in a moments")
-                setTimeout(()=>{location.reload()}, 3000)
+                $("#invitationModal .alert").removeClass('alert-warning');
+                $("#invitationModal .alert").addClass('alert-info');
+                $("#invitationModal .alert").text(response['status']);
+                $("#invitationModal .alert").show();
             },
             error: function(xhr, status, error) {
-                $("#createCourseAddBtn").removeAttr("disabled");
-                showError("createCourseAlert", error);
+                $("#send-invite").attr("disabled", false);
+                $("#invitationModal .alert").text(xhr.responseJSON.details);
+                $("#invitationModal .alert").show();
             },
         });
     }
