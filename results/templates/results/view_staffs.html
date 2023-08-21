@@ -102,23 +102,23 @@
                     <p class="text-center mt-2 roboto-font text-muted mb-4">Send signup invitation token via email</p>
                     <div class="input-group px-2">
                         <span class="input-group-text bg-material-1" id="basic-addon1"><i class='bx bxs-envelope fs-3' ></i></span>
-                        <input type="email" class="form-control" placeholder="Enter email address" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="email" id="emailInput" class="form-control" placeholder="Enter email address" aria-label="Username" aria-describedby="basic-addon1">
                     </div>
                     {% if request.user.adminaccount.is_super_admin %}
                     <div class="row ps-3 pe-2 mt-3 align-items-center">
                         <!-- <p class="text-muted">Account type</p> -->
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                                <label class="form-check-label small" for="gridRadios1">
+                                <input class="form-check-input" type="radio" name="adminTypeRadios" id="superAdminRadio" value="super" checked>
+                                <label class="form-check-label small" for="superAdminRadio">
                                   Super Admin
                                 </label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                                <label class="form-check-label small" for="gridRadios2">
+                                <input class="form-check-input" type="radio" name="adminTypeRadios" id="deptAdminRadio" value="dept">
+                                <label class="form-check-label small" for="deptAdminRadio">
                                   Department
                                 </label>
                             </div>
@@ -141,14 +141,13 @@
                         <div class="alert alert-warning mx-2 mt-4 text-center small" role="alert">
                             Inviting user will be an admin of {{request.user.adminaccount.dept.name|upper}} Department
                         </div>
-                        {% endif %}
-                        <div class="api-alert alert alert-info mx-2 mt-4 text-center" role="alert" style="display: none;">
-                            <div class="alert-text text-info">A simple info alert—check it out!</div>
-                            <span class="join-link small roboto-font">https://getbootstrap.com/docs/5.3/components/alerts/</span>
+                        {% else %}
+                        <div class="alert alert-warning mx-2 mt-4 text-center small" role="alert" style="display: none;">
                         </div>
+                        {% endif %}
                     </div>
                     <div class="btn-container mt-4 mb-1 pe-2 d-flex justify-content-end ">
-                        <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                        <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="send-invite">
                             <div class="d-flex align-items-center ">
                                 <i class='bx bx-mail-send me-2'></i>
                                 <span class="roboto-font ">Send</span>
@@ -198,7 +197,7 @@
 
 {% block script %}
 <script>
-    {% comment %} const create_semester_api = "{% url 'results:create_semester' session.id %}"; {% endcomment %}
+    const send_staff_signup_token_api = "{% url 'account:send_staff_signup_token' %}";
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/staffs.js' %}"></script>
