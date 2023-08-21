@@ -22,6 +22,7 @@ from rest_framework.generics import CreateAPIView
 from . import utils
 from .models import StudentAccount, InviteToken
 from .serializer import StudentAccountSerializer
+from results.utils import render_error
 
     
 
@@ -56,6 +57,17 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         return context
 
 def signup_admin(request):
+    tokenId = request.GET.get('token')
+    if tokenId == None:
+        return render_error(request, "Signup Requires an Invitation Token")
+    try:
+        token = InviteToken.objects.get(id=tokenId, to_user=None)
+    except InviteToken.DoesNotExist:
+        return render_error(request, "Invalid Token")
+    # checking expiration
+    timenow = timezone.now()
+    if token.expiration <= timenow:
+        return render_error(request, "This Invitation Has Expired", "You can request for a new one to existing admins")
     return render(request, "account/staff_signup.html")
 
 

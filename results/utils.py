@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 SEC_GRADING_SCHEMA = {
     "A+" : {"min": 80, "max":100, "grade_point":4.0},
     "A" : {"min": 75, "max":79.999, "grade_point":3.75},
@@ -46,3 +48,11 @@ def get_letter_grade(grade_point):
     for LG, schema in SEC_GRADING_SCHEMA.items():
         if grade_point >= schema['grade_point']:
             return LG
+        
+def render_error(request, msg=None, secondary_msg=None):
+    context = {
+        "error" : msg if msg is not None else "An Error Occurred!"
+    }
+    if secondary_msg:
+        context['secondary_msg'] = secondary_msg
+    return render(request, "results/error_details.html", context=context)
