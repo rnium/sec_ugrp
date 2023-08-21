@@ -12,6 +12,7 @@ from email.message import EmailMessage
 from email.utils import formataddr
 import ssl
 import smtplib
+from urllib.parse import urlencode
 
 def send_html_email(receiver, subject, body):
     sender = settings.EMAIL_HOST_USER
@@ -32,15 +33,16 @@ def send_html_email(receiver, subject, body):
         smtp.sendmail(sender, receiver, em.as_string())
 
 
-# def send_signup_email(request, user, invitation):
-#     email_subject = "Signup Invitation"
-#     receiver = 
-#     signup_url = request.build_absolute_uri(reverse("accounts:verify_user", args=(uid, token)))
-#     email_body = render_to_string('accounts/verification_mail.html', context={
-#         "user": user,
-#         "signup_url": signup_url,
-#     })
-#     send_html_email(receiver, email_subject, email_body)
+def send_signup_email(request, invitation):
+    email_subject = "Signup Invitation"
+    receiver = invitation.to_user
+    app_admin_signup = request.build_absolute_uri(reverse("account:signupadmin"))
+    url_params = {"token":invitation.id}
+    signup_url = f"{app_admin_signup}?{urlencode(url_params)}"
+    email_body = render_to_string('account/invitation.html', context={
+        "signup_url": signup_url,
+    })
+    send_html_email(receiver, email_subject, email_body)
     
 
 
