@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.generics import CreateAPIView
 from . import utils
-from .models import StudentAccount
+from .models import StudentAccount, InviteToken
 from .serializer import StudentAccountSerializer
 
     
@@ -126,3 +126,30 @@ def set_student_avatar(request):
             return JsonResponse(data={'details': 'No image uploaded'}, status=400)
     else:
         return JsonResponse(data={'details': 'Method not allowed'}, status=400)
+    
+
+@api_view(['POST'])
+def send_signup_token(request):
+    if not hasattr('request.user', 'adminaccount'):
+        return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
+    try:
+        to_user_email = request.data['to_email']
+    except KeyError:
+        return Response(data={'details': "No email provided"}, status=HTTP_400_BAD_REQUEST)
+    to_user_dept = None
+    if request.user.adminaccount.is_super_admin:
+        if request.data.get('is_to_user_superadmin', False):
+            try:
+                to_user_dept = request.data['to_user_dept']
+            except KeyError:
+                return Response(data={'details': "No department provided"}, status=HTTP_400_BAD_REQUEST)
+    else:
+        to_user_dept = request.user.adminaccount.dept
+    invite_token = InviteToken(
+        from_user = request.user,
+        user_email = to_user_email,
+        to_user_dept_id = to_user_dept,
+    )
+    invite_token.save()
+    utils.send_signup_email(request, invite_token)
+    return Response(data="status: Invitation email sent", status=HTTP_200_OK)

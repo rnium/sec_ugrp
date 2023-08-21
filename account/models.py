@@ -18,7 +18,8 @@ class InviteToken(models.Model):
         editable = False,
     )
     from_user = models.ForeignKey(User, null=True, blank=True, related_name="from_user", on_delete=models.SET_NULL)
-    to_user = models.ForeignKey(User, related_name="to_user", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, null=True, blank=True, related_name="to_user", on_delete=models.CASCADE)
+    to_user_dept_id = models.IntegerField(null=True, blank=True)
     user_email = models.EmailField()
     expiration = models.DateTimeField()
 
