@@ -2,9 +2,9 @@
 <html lang="en">
 <body>
     {% autoescape off %}
-    <p>Hello sir, you've been invited to signup for SEC Result Administration. Please click the link below to complete registration</p>
+    <p>Hello Sir, you've been invited to signup for SEC Result Administration. Please click the link below to complete registration</p>
     <p><a href="{{signup_url}}">{{signup_url}}</a></p>
-    <p>Please note: this link will expire after seven days from now!</p>
+    <p>Please note: this link will expire in: {{invitation.expiration|date:"l, j M Y, g:i:s a"}}</p>
     {% endautoescape %}
 </body>
 </html>

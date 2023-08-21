@@ -1,5 +1,6 @@
 from typing import Any, Dict
 from datetime import timedelta
+from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
@@ -9,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout, authenticate
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import APIException
@@ -54,7 +55,8 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         context['request'] = self.request
         return context
 
-
+def signup_admin(request):
+    return HttpResponse("workin")
 
 
 # REST API SECTION BELOW
@@ -156,11 +158,11 @@ def send_signup_token(request):
         to_user_dept_id = to_user_dept,
         expiration = expiration
     )
-    return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
     invite_token.save()
     try:
         utils.send_signup_email(request, invite_token)
     except Exception as e:
         return Response(data={'details': str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+    return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
     
     

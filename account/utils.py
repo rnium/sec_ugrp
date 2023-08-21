@@ -41,6 +41,7 @@ def send_signup_email(request, invitation):
     signup_url = f"{app_admin_signup}?{urlencode(url_params)}"
     email_body = render_to_string('account/invitation.html', context={
         "signup_url": signup_url,
+        "invitation": invitation
     })
     send_html_email(receiver, email_subject, email_body)
     
