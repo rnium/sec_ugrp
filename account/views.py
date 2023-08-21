@@ -56,7 +56,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         return context
 
 def signup_admin(request):
-    return HttpResponse("workin")
+    return render(request, "account/staff_signup.html")
 
 
 # REST API SECTION BELOW
