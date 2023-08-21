@@ -57,6 +57,10 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         return context
 
 def signup_admin(request):
+    # checking if user logged in or not
+    if request.user is not None:
+        return render_error(request, "Logged In User Cannot Perform Signup")
+    # token id
     tokenId = request.GET.get('token')
     if tokenId == None:
         return render_error(request, "Signup Requires an Invitation Token")
