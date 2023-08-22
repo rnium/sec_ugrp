@@ -135,16 +135,42 @@
                             </div>                                    
                         </div>
                     </div>
+                    {% else %}
+                    <div class="row ps-3 pe-2 mt-3 align-items-center">
+                        <!-- <p class="text-muted">Account type</p> -->
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="adminTypeRadios" id="superAdminRadio" value="super" disabled>
+                                <label class="form-check-label small" for="superAdminRadio">
+                                  Super Admin
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="adminTypeRadios" id="deptAdminRadio" value="dept" checked>
+                                <label class="form-check-label small" for="deptAdminRadio">
+                                  Department
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="col-auto">
+                                <label class="visually-hidden" for="deptSelect">Preference</label>
+                                <select class="form-select bg-material-1" id="deptSelect">
+                                  {% for dept in departments %}
+                                  {% if request.user.adminaccount.dept == dept %}
+                                  <option value="{{dept.id}}" selected>{{dept.name|upper}}</option>
+                                  {% endif %}
+                                  {% endfor %}
+                                </select>
+                            </div>                                    
+                        </div>
+                    </div>
                     {% endif %}
                     <div class="alerts-container">
-                        {% if not request.user.adminaccount.is_super_admin %}
-                        <div class="alert alert-warning mx-2 mt-4 text-center small" role="alert">
-                            Inviting user will be an admin of {{request.user.adminaccount.dept.name|upper}} Department
-                        </div>
-                        {% else %}
                         <div class="alert alert-warning mx-2 mt-4 text-center small" role="alert" style="display: none;">
                         </div>
-                        {% endif %}
                     </div>
                     <div class="btn-container mt-4 mb-1 pe-2 d-flex justify-content-end ">
                         <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="send-invite">
