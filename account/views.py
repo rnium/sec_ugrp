@@ -110,6 +110,10 @@ def api_login(request):
         return Response({'status':'Invalid Credentials'}, status=HTTP_401_UNAUTHORIZED)
 
 
+@api_view(['POST'])
+def create_admin_account(request):
+    return Response(data={'status': "Account Created"})
+
 class StudentAccountCreate(CreateAPIView):
     # To be used by admin user
     serializer_class = StudentAccountSerializer

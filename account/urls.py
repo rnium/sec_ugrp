@@ -12,6 +12,7 @@ urlpatterns = [
     path('student/<int:registration>/', views.StudentProfileView.as_view(), name="view_student_profile"),
     path('sendstaffsignuptoken', views.send_signup_token, name="send_staff_signup_token"),
     path('admin/signup/', views.signup_admin, name="signupadmin"),
+    path('admin/signup/createaccount', views.create_admin_account, name="create_admin_account"),
     # path('profile/', views.ProfileView.as_view(), name="user_profile"),
     # path('signup/', SignupView.as_view(), name="user_signup_get"),
     # path('api/verify/sendmail', send_verification_email_api, name="send_verification_email_api"),

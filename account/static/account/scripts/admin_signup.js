@@ -1,6 +1,13 @@
-const showError = (msg) => {
+const showError = msg => {
     $("#signupAlert").removeClass('alert-info');
     $("#signupAlert").addClass('alert-warning');
+    $("#signupAlert").text(msg);
+    $("#signupAlert").show();
+}
+
+const showInfo = msg => {
+    $("#signupAlert").removeClass('alert-warning');
+    $("#signupAlert").addClass('alert-info');
     $("#signupAlert").text(msg);
     $("#signupAlert").show();
 }
@@ -35,31 +42,24 @@ function getFormData() {
 
 function performSignnup() {
     payload = getFormData();
-    console.log(payload);
-    return;
     if (payload) {
         $.ajax({
             type: "post",
-            url: send_staff_signup_token_api,
+            url: create_admin_account_api,
             dataType: "json",
             contentType: "application/json",
             beforeSend: function(xhr){
-                $("#createCourseAlert").hide()
-                $("#send-invite").attr("disabled", true)
-                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                $("#create-ac-btn").attr("disabled", true);
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
             },
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                $("#invitationModal .alert").removeClass('alert-warning');
-                $("#invitationModal .alert").addClass('alert-info');
-                $("#invitationModal .alert").text(response['status']);
-                $("#invitationModal .alert").show();
+                showInfo(response['status']);
             },
             error: function(xhr, status, error) {
-                $("#send-invite").attr("disabled", false);
-                $("#invitationModal .alert").text(xhr.responseJSON.details);
-                $("#invitationModal .alert").show();
+                $("#create-ac-btn").attr("disabled", false);
+                showError(xhr.responseJSON.details);
             },
         });
     }
