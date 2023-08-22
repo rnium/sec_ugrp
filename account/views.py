@@ -24,6 +24,7 @@ from . import utils
 from .models import StudentAccount, InviteToken
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
+from results.models import Department
 
     
 
@@ -66,14 +67,26 @@ def signup_admin(request):
     if tokenId == None:
         return render_error(request, "Signup Requires an Invitation Token")
     try:
-        token = InviteToken.objects.get(id=tokenId, to_user=None)
+        token = InviteToken.objects.get(id=tokenId)
     except InviteToken.DoesNotExist:
         return render_error(request, "Invalid Token")
     # checking expiration
     timenow = timezone.now()
     if token.expiration <= timenow:
         return render_error(request, "This Invitation Has Expired", "You can request for a new one to existing admins")
-    return render(request, "account/staff_signup.html")
+    # context dict
+    context = {
+        "token": token
+    }
+    # to user dept (if specified in the invitation)
+    if token.to_user_dept_id:
+        try:
+            print(token.to_user_dept_id)
+            dept = Department.objects.get(id=token.to_user_dept_id)
+        except Department.DoesNotExist:
+            return render_error(request, "This Invitation Is Corrupted", "Request for a new invitation to existing admins")
+        context['dept'] = dept
+    return render(request, "account/staff_signup.html", context=context)
 
 
 # REST API SECTION BELOW
