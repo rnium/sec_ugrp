@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
@@ -21,7 +22,7 @@ from rest_framework import status
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.generics import CreateAPIView
 from . import utils
-from .models import StudentAccount, InviteToken
+from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
 from results.models import Department
@@ -111,7 +112,51 @@ def api_login(request):
 
 
 @api_view(['POST'])
-def create_admin_account(request):
+def create_admin_account(request, tokenId):
+    try:
+        token = InviteToken.objects.get(id=tokenId)
+    except InviteToken.DoesNotExist:
+        return Response(data={"details": "Invalid Token"}, status=HTTP_400_BAD_REQUEST)
+    # checking expiration
+    timenow = timezone.now()
+    if token.expiration <= timenow:
+        return Response(data={"details": "Token Expired"}, status=HTTP_400_BAD_REQUEST)
+    # to user dept (if specified in the invitation)
+    admin_account_data = {
+        'invited_by': token.from_user
+    }
+    if token.to_user_dept_id:
+        try:
+            print(token.to_user_dept_id)
+            dept = Department.objects.get(id=token.to_user_dept_id)
+        except Department.DoesNotExist:
+            return Response(data={"details": "Corrupted token"}, status=HTTP_400_BAD_REQUEST)
+        admin_account_data['dept'] = dept
+        admin_account_data['is_super_admin'] = False
+    else:
+        admin_account_data['is_super_admin'] = True
+    # user cration
+    user_data = {
+        "username": token.user_email,
+        "email": token.user_email
+    }
+    try:
+        user_data['first_name'] = request.data['first_name']
+        password = request.data['password']
+        if last_name:= request.data.get('last_name', False):
+            user_data['last_name'] = last_name
+    except KeyError:
+        return Response(data={"details": "Data Missing"}, status=HTTP_400_BAD_REQUEST)
+    user = User(**user_data)
+    user.set_password(password)
+    user.save()
+    admin_account_data['user'] = user
+    # creating adminaccount
+    admin = AdminAccount(**admin_account_data)
+    admin.save()
+    login(request, user)
+    # deleting token
+    token.delete()
     return Response(data={'status': "Account Created"})
 
 class StudentAccountCreate(CreateAPIView):
