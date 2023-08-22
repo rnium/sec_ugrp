@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import AnonymousUser
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -58,7 +59,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
 
 def signup_admin(request):
     # checking if user logged in or not
-    if request.user is not None:
+    if not isinstance(request.user, AnonymousUser):
         return render_error(request, "Logged In User Cannot Perform Signup")
     # token id
     tokenId = request.GET.get('token')
