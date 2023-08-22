@@ -18,7 +18,6 @@ class InviteToken(models.Model):
         editable = False,
     )
     from_user = models.ForeignKey(User, null=True, blank=True, related_name="from_user", on_delete=models.SET_NULL)
-    to_user = models.ForeignKey(User, null=True, blank=True, related_name="to_user", on_delete=models.CASCADE)
     to_user_dept_id = models.IntegerField(null=True, blank=True)
     user_email = models.EmailField()
     expiration = models.DateTimeField()
@@ -44,7 +43,7 @@ class AdminAccount(BaseAccount):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_super_admin = models.BooleanField(default=False)
     dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
-    invitation = models.ForeignKey(InviteToken, null=True, blank=True, on_delete=models.CASCADE)
+    invited_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="inviting_user")
     
     class Meta:
         constraints = [
