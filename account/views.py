@@ -234,7 +234,7 @@ def send_signup_token(request):
     invite_token = InviteToken(
         from_user = request.user,
         user_email = to_user_email,
-        to_user_dept_id = to_user_dept,
+        to_user_dept_id = to_user_dept.id,
         expiration = expiration
     )
     invite_token.save()
