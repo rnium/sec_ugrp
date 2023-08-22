@@ -54,16 +54,16 @@
                         </div>
                     </div>
                     {% if dept  %}
-                    <div class="alert alert-info text-center" role="alert">
+                    <div class="alert alert-info text-center" role="alert" id="signupAlert">
                         You're signing up as an admin of {{dept.name|upper}} department
                     </div>
                     {% else %}
-                    <div class="alert alert-warning text-center" role="alert" style="display:none">
+                    <div class="alert alert-warning text-center" role="alert" id="signupAlert" style="display:none">
                     </div>
                     {% endif %}
                       
                     <div class="d-flex justify-content-md-end">
-                        <button class="btn btn-primary" id="create-sem-btn">Sign Up</button>
+                        <button class="btn btn-primary" id="create-ac-btn">Sign Up</button>
                     </div>
                       
                 </div>
