@@ -253,6 +253,10 @@ def send_signup_token(request):
         to_user_email = request.data['to_email']
     except KeyError:
         return Response(data={'details': "No email provided"}, status=HTTP_400_BAD_REQUEST)
+    # checking if user exists with this email
+    users = User.objects.filter(email=to_user_email)
+    if users.count():
+        return Response(data={'details': "User with this email already exists!"}, status=HTTP_400_BAD_REQUEST)
     to_user_dept = None
     if request.user.adminaccount.is_super_admin:
         if not request.data.get('is_to_user_superadmin', True):
@@ -266,7 +270,7 @@ def send_signup_token(request):
     invite_token = InviteToken(
         from_user = request.user,
         user_email = to_user_email,
-        to_user_dept_id = to_user_dept.id,
+        to_user_dept_id = to_user_dept,
         expiration = expiration
     )
     invite_token.save()

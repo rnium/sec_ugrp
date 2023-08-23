@@ -27,7 +27,10 @@ function setupAvatar(image_file, registration) {
         },
         complete: function() {
             setTimeout(()=>{
-                location.reload()
+                // Get the base URL
+                let baseUrl = window.location.protocol + "//" + window.location.host;
+                // Redirect to the base URL
+                window.location.href = baseUrl;
             }, 1000)
         }
     });
@@ -82,7 +85,11 @@ function performSignnup() {
                 if (avatar_files.length > 0) {
                     setupAvatar(avatar_files[0], response.registration);
                 } else {
-                    location.reload();
+                    // Get the base URL
+                    let baseUrl = window.location.protocol + "//" + window.location.host;
+                    // Redirect to the base URL
+                    window.location.href = baseUrl;
+
                 }
             },
             error: function(xhr, status, error) {
