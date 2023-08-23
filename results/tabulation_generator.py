@@ -182,7 +182,7 @@ def render_spans(num_rows: int, num_cols: int, nth_semester: int) -> List[Tuple]
     for i in range(1, num_rows, 2):
         spans.append(('SPAN', (0, i), (0, i+1)))
         spans.append(('SPAN', (-2, i), (-2, i+1))) # 2nd rightmost col
-        if (nth_semester > 2):
+        if (nth_semester > 1):
             spans.append(('SPAN', (-4, i), (-4, i+1))) # 4th rightmost col
     # col-wise spans
     for i in range(1, num_rows):
