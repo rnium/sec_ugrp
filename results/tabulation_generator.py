@@ -258,7 +258,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     institute_title = "NAME OF INSTITUTE: SYLHET ENGINEERING COLLEGE, SYLHET"
     exam_title = render_config.get('tabulation_title', f"{semester.semester_name} Final Examination 2022")
     dept_title = f"Name of the Department: {semester.session.dept.fullname}"
-    exam_held_month = render_config.get('tabulation_exam_time', f"Examination Held in {semester.start_month}")
+    exam_held_month = f"Examination Held in {render_config.get('tabulation_exam_time', semester.start_month)}"
     session = f"Session: {semester.session.session_code_formal}"
     label_data = [[
         Paragraph(dept_title, style=styles["bottom_row_paragraph1"]),
