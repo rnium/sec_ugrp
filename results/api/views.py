@@ -284,8 +284,8 @@ def add_new_entry_to_course(request, pk):
     # course
     try:
         course = Course.objects.get(pk=pk)
-    except StudentAccount.DoesNotExist:
-        return Response(data={"details":"Invalid Registration Number"}, status=status.HTTP_400_BAD_REQUEST)
+    except Course.DoesNotExist:
+        return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
     # finding student
     try:
         student = StudentAccount.objects.get(registration=reg_no)
@@ -296,5 +296,16 @@ def add_new_entry_to_course(request, pk):
         enroll = SemesterEnroll.objects.get(semester__id=semester_id, student=student)
     except SemesterEnroll.DoesNotExist:
         return Response(data={"details":"Student has not enrolled for this semester"}, status=status.HTTP_400_BAD_REQUEST)
-    # ToDo: checking wheather this semester has included this course in the drop courses
+    # checking wheather this semester has included this course in the drop courses, then add it if not included
+    if course not in enroll.semester.drop_courses.all():
+        enroll.semester.drop_courses.add(course)
+    # adding course to enrollment
+    enroll.courses.add(course)
+    # creating course result
+    CourseResult.objects.create(
+        student = student,
+        course = course,
+        is_drop_course = True
+    )
+    return Response(data={'status': 'Course Result for the student has been created'})
     

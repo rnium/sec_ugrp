@@ -234,6 +234,7 @@ class CourseResult(models.Model):
     grade_point = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0, message="Score cannot be less than 0")])
     letter_grade = models.CharField(max_length=5, null=True, blank=True)
+    is_drop_course = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     
     class Meta:
