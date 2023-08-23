@@ -13,7 +13,8 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer)
 from .permission import IsCampusAdmin
-from results.models import Session, Semester, Course, CourseResult, SemesterDocument
+from results.models import Session, Semester, Course, CourseResult, SemesterDocument, SemesterEnroll
+from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
@@ -269,3 +270,31 @@ def delete_course(request, pk):
     # delete
     course.delete()
     return Response(data={"semester_url": semester_url})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_new_entry_to_course(request, pk):
+    # checking posted data
+    try:
+        reg_no = request.data['registration']
+        semester_id = request.data['semester_id']
+    except KeyError:
+        return Response(data={"details":"Data is missing"}, status=status.HTTP_400_BAD_REQUEST)
+    # course
+    try:
+        course = Course.objects.get(pk=pk)
+    except StudentAccount.DoesNotExist:
+        return Response(data={"details":"Invalid Registration Number"}, status=status.HTTP_400_BAD_REQUEST)
+    # finding student
+    try:
+        student = StudentAccount.objects.get(registration=reg_no)
+    except StudentAccount.DoesNotExist:
+        return Response(data={"details":"Invalid Registration Number"}, status=status.HTTP_400_BAD_REQUEST)
+    # finding enrollment of the specified semester
+    try:
+        enroll = SemesterEnroll.objects.get(semester__id=semester_id, student=student)
+    except SemesterEnroll.DoesNotExist:
+        return Response(data={"details":"Student has not enrolled for this semester"}, status=status.HTTP_400_BAD_REQUEST)
+    # ToDo: checking wheather this semester has included this course in the drop courses
+    
