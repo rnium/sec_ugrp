@@ -141,19 +141,18 @@
                     <div class="col-md-12 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1" id="basic-addon1">Reg. No.</span>
-                            <input type="text" class="form-control text-center" placeholder="" aria-label="Registration">
+                            <input type="text" class="form-control text-center" placeholder="" aria-label="Registration" id="new_entry_registration">
                         </div>
-                        <select class="form-select mt-3 bg-material-1" aria-label="Default select example">
+                        <select class="form-select mt-3 bg-material-1" aria-label="Default select example" id="new_entry_semester_selection">
                             <option selected>Select Running Semester</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                         </select>
-                        <!-- <div class="alert alert-danger mt-3 text-center" role="alert">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure iste quam distinctio minima at obcaecati laborum officiis minus iusto tenetur.
-                        </div>                                              -->
+                        <div class="alert alert-danger mt-3 text-center" role="alert" style="display: none;" id="new_entry_alert">
+                        </div>
                         <div class="d-flex justify-center pt-3 justify-content-end">
-                            <button type="button" class="btn btn-primary px-4">Add</button>
+                            <button type="button" class="btn btn-primary px-4" id="new_entry_add_button">Add</button>
                         </div>
                     </div>
                 </div>
@@ -214,6 +213,7 @@
     const course_result_api = "{% url 'results:course_results' course.id %}";
     const update_course_results_api = "{% url 'results:update_course_results' course.id %}";
     const delete_course_api = "{% url 'results:delete_course' course.id %}";
+    const add_new_entry_to_course_api = "{% url 'results:add_new_entry_to_course' course.id %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};

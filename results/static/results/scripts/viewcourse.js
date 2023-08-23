@@ -373,6 +373,65 @@ function delete_course() {
     }
 }
 
+// add new entry for student
+function get_entry_data() {
+    const show_error = msg => {
+        $("#new_entry_alert").removeClass("alert-info");
+        $("#new_entry_alert").addClass("alert-danger");
+        $("#new_entry_alert").text(msg);
+        $("#new_entry_alert").show();
+    }
+    let registration = parseInt($("#new_entry_registration").val().trim());
+    let semester = parseInt($("#new_entry_semester_selection").val());
+    if ( isNaN(registration) | registration.length == 0) {
+        show_error("Enter valid registration number");
+        return false;
+    }
+    if (isNaN(semester)) {
+        show_error("Select a semester");
+        return false;
+    } else {
+        $("#new_entry_alert").hide()
+    }
+    data = {
+        registration: registration,
+        semester_id: semester
+    }
+    return data;
+}
+
+function addNewEntry() {
+    const show_error = msg => {
+        $("#new_entry_alert").removeClass("alert-info");
+        $("#new_entry_alert").addClass("alert-danger");
+        $("#new_entry_alert").text(msg);
+        $("#new_entry_alert").show();
+    }
+    let payload = get_entry_data()
+    $.ajax({
+        url: add_new_entry_to_course_api,
+        contentType: "application/json",
+        type: "POST",
+        beforeSend: function(xhr){
+            $("#new_entry_add_button").attr("disabled", true)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(payload),
+        cache: false,
+        success: function(response){
+            location.reload()
+        },
+        error: function(xhr,status,error_thrown){
+            try {
+                show_error(xhr.responseJSON.details);
+            } catch (error) {
+                show_error(error_thrown);
+            }
+            $("#new_entry_add_button").removeAttr("disabled");
+        }
+    })
+}
+
 $(document).ready( function() {
     loadCourseResults()
     $("#table-save-btn").on('click', function(){
@@ -386,4 +445,6 @@ $(document).ready( function() {
     })
     //  course del button
     $("#confirm-del-btn").on('click', delete_course)
+    // new entry button
+    $("#new_entry_add_button").on('click', addNewEntry)
 })
