@@ -12,6 +12,28 @@ const showInfo = msg => {
     $("#signupAlert").show();
 }
 
+function setupAvatar(image_file, registration) {
+    let image_form = new FormData
+    image_form.append("dp", image_file)
+    image_form.append("registration", registration)
+    $.ajax({
+        type: "post",
+        url: set_admin_avatar_api,
+        data: image_form,
+        contentType: false,
+        processData: false,
+        error: function(xhr, error, status) {
+            showError(JSON.stringify(xhr.responseJSON))
+        },
+        complete: function() {
+            setTimeout(()=>{
+                location.reload()
+            }, 1000)
+        }
+    });
+}
+
+
 function getFormData() {
     data = {};
     let first_name = $("#firstNameInput").val().trim();
@@ -55,7 +77,13 @@ function performSignnup() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                showInfo(response['status']);
+                showInfo("Account created successfully. Uploading profile picture..");
+                avatar_files = $("#dp")[0].files
+                if (avatar_files.length > 0) {
+                    setupAvatar(avatar_files[0], response.registration);
+                } else {
+                    location.reload();
+                }
             },
             error: function(xhr, status, error) {
                 $("#create-ac-btn").attr("disabled", false);

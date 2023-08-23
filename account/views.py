@@ -90,6 +90,76 @@ def signup_admin(request):
     return render(request, "account/staff_signup.html", context=context)
 
 
+@csrf_exempt
+def set_admin_avatar(request):
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return JsonResponse(data={'details': 'Unauthorized'}, status=403)
+        # check if user has permission
+        if not hasattr(request.user, 'adminaccount'):
+            return JsonResponse(data={'details': 'Unauthorized'}, status=403)
+        else:
+            account = request.user.adminaccount
+        # Saving file
+        if len(request.FILES) > 0:
+            try:
+                image_file = request.FILES.get('dp')
+                compressed_image = utils.compress_image(image_file)
+            except ValidationError as e:
+                return JsonResponse(data={'details': e.message}, status=400)
+            if account.profile_picture is not None:
+                account.profile_picture.delete(save=True)
+            try:
+                account.profile_picture = compressed_image
+                account.save()
+            except Exception as e:
+                return JsonResponse(data={'details': 'Cannot save image'}, status=400)
+
+            return JsonResponse({'status':'profile picture set'})
+        else:
+            return JsonResponse(data={'details': 'No image uploaded'}, status=400)
+    else:
+        return JsonResponse(data={'details': 'Method not allowed'}, status=400)
+ 
+ 
+@csrf_exempt
+def set_student_avatar(request):
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return JsonResponse(data={'details': 'Unauthorized'}, status=403)
+        # get student account
+        try:
+            registration = request.POST.get('registration')
+            print(registration)
+            account = StudentAccount.objects.get(registration=registration)
+        except StudentAccount.DoesNotExist:
+            return JsonResponse(data={'details': "Account not found"}, status=400)
+        # check if user has permission
+        if not hasattr(request.user, 'adminaccount'):
+            if not (hasattr(request.user, 'studentaccount') and (request.user.studentaccount == account)):
+                return JsonResponse(data={'details': 'Unauthorized'}, status=403)
+        # Saving file
+        if len(request.FILES) > 0:
+            try:
+                image_file = request.FILES.get('dp')
+                compressed_image = utils.compress_image(image_file)
+            except ValidationError as e:
+                return JsonResponse(data={'details': e.message}, status=400)
+            if account.profile_picture is not None:
+                account.profile_picture.delete(save=True)
+            try:
+                account.profile_picture = compressed_image
+                account.save()
+            except Exception as e:
+                return JsonResponse(data={'details': 'Cannot save image'}, status=400)
+
+            return JsonResponse({'status':'profile picture set'})
+        else:
+            return JsonResponse(data={'details': 'No image uploaded'}, status=400)
+    else:
+        return JsonResponse(data={'details': 'Method not allowed'}, status=400)
+ 
+ 
 # REST API SECTION BELOW
 
 class UnauthorizedException(APIException):
@@ -172,45 +242,7 @@ class StudentAccountCreate(CreateAPIView):
             super().perform_create(serializer)
         except Exception as e:
             raise BadrequestException(str(e))
-
-
-@csrf_exempt
-def set_student_avatar(request):
-    if request.method == "POST":
-        if not request.user.is_authenticated:
-            return JsonResponse(data={'details': 'Unauthorized'}, status=403)
-        # get student account
-        try:
-            registration = request.POST.get('registration')
-            print(registration)
-            account = StudentAccount.objects.get(registration=registration)
-        except StudentAccount.DoesNotExist:
-            return JsonResponse(data={'details': "Account not found"}, status=400)
-        # check if user has permission
-        if not hasattr(request.user, 'adminaccount'):
-            if not (hasattr(request.user, 'studentaccount') and (request.user.studentaccount == account)):
-                return JsonResponse(data={'details': 'Unauthorized'}, status=403)
-        # Saving file
-        if len(request.FILES) > 0:
-            try:
-                image_file = request.FILES.get('dp')
-                compressed_image = utils.compress_image(image_file)
-            except ValidationError as e:
-                return JsonResponse(data={'details': e.message}, status=400)
-            if account.profile_picture is not None:
-                account.profile_picture.delete(save=True)
-            try:
-                account.profile_picture = compressed_image
-                account.save()
-            except Exception as e:
-                return JsonResponse(data={'details': 'Cannot save image'}, status=400)
-
-            return JsonResponse({'status':'profile picture set'})
-        else:
-            return JsonResponse(data={'details': 'No image uploaded'}, status=400)
-    else:
-        return JsonResponse(data={'details': 'Method not allowed'}, status=400)
-    
+   
 
 @api_view(['POST'])
 def send_signup_token(request):

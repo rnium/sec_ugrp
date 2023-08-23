@@ -122,7 +122,6 @@ function setupAvatar(image_file, registration) {
             location.reload()
         }
     });
-
 }
 
 function checkStudentForm() {
