@@ -145,9 +145,9 @@
                         </div>
                         <select class="form-select mt-3 bg-material-1" aria-label="Default select example" id="new_entry_semester_selection">
                             <option selected>Select Running Semester</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {% for semester in running_semesters %}
+                            <option value="{{semester.id}}">{{semester}}</option>
+                            {% endfor %}
                         </select>
                         <div class="alert alert-danger mt-3 text-center" role="alert" style="display: none;" id="new_entry_alert">
                         </div>

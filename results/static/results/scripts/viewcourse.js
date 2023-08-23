@@ -408,28 +408,30 @@ function addNewEntry() {
         $("#new_entry_alert").show();
     }
     let payload = get_entry_data()
-    $.ajax({
-        url: add_new_entry_to_course_api,
-        contentType: "application/json",
-        type: "POST",
-        beforeSend: function(xhr){
-            $("#new_entry_add_button").attr("disabled", true)
-            xhr.setRequestHeader("X-CSRFToken", csrftoken)
-        },
-        data: JSON.stringify(payload),
-        cache: false,
-        success: function(response){
-            location.reload()
-        },
-        error: function(xhr,status,error_thrown){
-            try {
-                show_error(xhr.responseJSON.details);
-            } catch (error) {
-                show_error(error_thrown);
+    if (payload) {
+        $.ajax({
+            url: add_new_entry_to_course_api,
+            contentType: "application/json",
+            type: "POST",
+            beforeSend: function(xhr){
+                $("#new_entry_add_button").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response){
+                location.reload()
+            },
+            error: function(xhr,status,error_thrown){
+                try {
+                    show_error(xhr.responseJSON.details);
+                } catch (error) {
+                    show_error(error_thrown);
+                }
+                $("#new_entry_add_button").removeAttr("disabled");
             }
-            $("#new_entry_add_button").removeAttr("disabled");
-        }
-    })
+        })
+    }
 }
 
 $(document).ready( function() {

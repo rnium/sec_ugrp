@@ -296,6 +296,9 @@ def add_new_entry_to_course(request, pk):
         enroll = SemesterEnroll.objects.get(semester__id=semester_id, semester__is_running=True, student=student)
     except SemesterEnroll.DoesNotExist:
         return Response(data={"details":"Student didn't enrolled for this semester, or the semester is not running"}, status=status.HTTP_400_BAD_REQUEST)
+    # checking if this course is already in the enrollment
+    if course in enroll.courses.all():
+        return Response(data={"details":"Student already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
     # checking wheather this semester has included this course in the drop courses, then add it if not included
     if course not in enroll.semester.drop_courses.all():
         enroll.semester.drop_courses.add(course)

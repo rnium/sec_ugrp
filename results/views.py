@@ -119,6 +119,12 @@ class CourseView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        course = context['course']
+        dept_running_semesters = Semester.objects.filter(
+            is_running = True,
+            session__dept = course.semester.session.dept,
+        ).order_by('session__from_year')
+        context['running_semesters'] = dept_running_semesters.exclude(pk=course.semester.id)
         return context
     
 
