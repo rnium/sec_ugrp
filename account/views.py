@@ -265,7 +265,7 @@ def send_signup_token(request):
             except KeyError:
                 return Response(data={'details': "No department provided"}, status=HTTP_400_BAD_REQUEST)
     else:
-        to_user_dept = request.user.adminaccount.dept
+        to_user_dept = request.user.adminaccount.dept.id
     expiration = timezone.now() + timedelta(days=7)
     invite_token = InviteToken(
         from_user = request.user,
