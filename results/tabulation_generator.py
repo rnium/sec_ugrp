@@ -23,7 +23,7 @@ class SemesterDataContainer:
         self.num_courses = len(self.course_list)
         self.students = semester.session.studentaccount_set.all()
         self.num_students = self.students.count()
-        self.has_overall_result_coulumn = (semester.semester_no >= 1)
+        self.has_overall_result_coulumn = (semester.semester_no > 1)
         
 
 def cumulative_semester_result(student, semesters):
@@ -117,18 +117,19 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 row_top.append("")
                 row_bottom.append("") # for the span
                 row_bottom.append("")
-            # append upto this semester result (the overall result)
-            semesters_upto_now = Semester.objects.filter(semester_no__lte=semester.semester_no, session=semester.session)
-            semester_result_all = cumulative_semester_result(student, semesters_upto_now)
-            if semester_result:
-                row_top.append(semester_result_all['total_credits'])
-                row_top.append(semester_result_all['grade_point'])
-                row_bottom.append("") # for the span
-                row_bottom.append(semester_result_all['letter_grade'])
-            else:
-                row_top.append("")
-                row_bottom.append("") # for the span
-                row_bottom.append("")
+            # append upto this semester result (the overall result) (except first semester)
+            if dataContainer.semester.semester_no > 1:
+                semesters_upto_now = Semester.objects.filter(semester_no__lte=semester.semester_no, session=semester.session)
+                semester_result_all = cumulative_semester_result(student, semesters_upto_now)
+                if semester_result:
+                    row_top.append(semester_result_all['total_credits'])
+                    row_top.append(semester_result_all['grade_point'])
+                    row_bottom.append("") # for the span
+                    row_bottom.append(semester_result_all['letter_grade'])
+                else:
+                    row_top.append("")
+                    row_bottom.append("") # for the span
+                    row_bottom.append("")
                 
             singlePageData.append(row_top)
             singlePageData.append(row_bottom)
