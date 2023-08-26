@@ -352,7 +352,7 @@ def process_course_excel(request, pk):
             'errors': [],
         }
         # data saving
-        if 'total' in header:
+        if 'total' in header: 
             total_col_idx = header.index('total')
             for r in range(len(data_rows)):
                 try:
@@ -362,8 +362,7 @@ def process_course_excel(request, pk):
                     logs['errors'].append(f'Cannot parse data for row number: {r+2}')
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
-                    setattr(course_res, course_props['total'], total)
-                    course_res.
+                    course_res.total_score = total
                     try:
                         course_res.save()
                         logs['success'].append(f'Data saved for reg. number: {reg_no}')
