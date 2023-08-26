@@ -244,7 +244,8 @@ class CourseResult(models.Model):
     
     
     def save(self, *args, **kwargs):
-        if (self.part_A_score is not None and
+        # Calculates total marks before saving
+        if (self.part_A_score is not None and   # Case 1: If component scores are provided, calculating
             self.part_B_score is not None and
             self.incourse_score is not None):
             # check if all three scores are within maximum marks
@@ -256,8 +257,11 @@ class CourseResult(models.Model):
             incourse_actual = ((self.course.total_marks - 
                                 (self.course.part_A_marks + self.course.part_B_marks))/self.course.incourse_marks) * self.incourse_score
             self.total_score = round((self.part_A_score + self.part_B_score + incourse_actual), 3)
-        else:
-            self.total_score = None
+        else:          # Case 2: If total marks are provided
+            if self.total_score != None:
+                if self.total_score > self.course.total_marks:
+                    raise ValidationError("Score cannot be more than defined marks")
+                
             
         # Saving grade point
         self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
