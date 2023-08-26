@@ -216,6 +216,14 @@ class Course(models.Model):
     def is_deletable(self):
         return self.num_nonempty_records == 0
     
+    @property
+    def num_regular_results(self):
+        return self.courseresult_set.filter(is_drop_course=False).count()
+
+    @property
+    def num_pending_course(self):
+        return self.courseresult_set.filter(total_score=None).count()
+    
     
 
 class CourseResult(models.Model):
