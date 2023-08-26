@@ -318,13 +318,6 @@ def add_new_entry_to_course(request, pk):
 
 @csrf_exempt
 def process_course_excel(request, pk):
-    course_props = {
-        'code_a': 'part_A_code',
-        'marks_a': 'part_A_score',
-        'code_b': 'part_B_code',
-        'marks_b': 'part_B_score',
-        'marks_tt': 'incourse_score',
-    }
     try:
         course = Course.objects.get(pk=pk)
         course_results = course.courseresult_set.all()
@@ -360,16 +353,53 @@ def process_course_excel(request, pk):
                     total = float(data_rows[r][total_col_idx].value)
                 except Exception as e:
                     logs['errors'].append(f'Cannot parse data for row number: {r+2}')
+                    continue
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
                     course_res.total_score = total
                     try:
                         course_res.save()
-                        logs['success'].append(f'Data saved for reg. number: {reg_no}')
                     except Exception as e:
                         logs['errors'].append(f'Cannot save data for row number: {r+2}. Error: {e}')
+                        continue
+                    logs['success'].append(f'Data saved for reg. number: {reg_no}')
         else:
-                 
+            course_props = {
+                'code_a': 'part_A_code',
+                'marks_a': 'part_A_score',
+                'code_b': 'part_B_code',
+                'marks_b': 'part_B_score',
+                'marks_tt': 'incourse_score',
+            }
+            for r in range(len(data_rows)):
+                try:
+                    reg_no = int(data_rows[r][reg_col_idx].value)
+                except Exception as e:
+                    logs['errors'].append(f'Cannot parse registration no. for row number: {r+2}.')
+                    continue
+                course_res = course_results.filter(student__registration=reg_no).first()
+                if course_res:
+                    for col, prop_name in course_props.items():
+                        try:
+                            title_idx = header.index(col)
+                        except Exception as e:
+                            continue
+                        try:
+                            value = data_rows[r][title_idx].value
+                            if col not in ['code_a', 'code_b']:
+                                value = float(value)
+                        except Exception as e:
+                            logs['errors'].append(f'Cannot parse {col} for reg. number: {reg_no}. Error: {e}.')
+                            continue
+                        setattr(course_res, prop_name, value)
+                    try:
+                        course_res.save()
+                    except Exception as e:
+                        logs['errors'].append(f'Cannot save data for row number: {r+2}. Error: {e}.')
+                        continue
+                    logs['success'].append(f'Data saved for reg. number: {reg_no}.')
+                else:
+                    logs['errors'].append(f'No matching record for row number: {r+2}.')
             print(logs)
                     
                     
