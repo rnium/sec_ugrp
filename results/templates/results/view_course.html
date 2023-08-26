@@ -160,6 +160,77 @@
         </div>
     </div>
 
+    <!-- Excel Modal -->
+    <div class="modal fade" id="excelUploadModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">
+                        Upload Data in Excel
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="instructions container">
+                        <div class="infotext alert alert-warning">
+                            <div class="text-white text-center roboto-font mb-2">Please note before uploading</div>
+                            <ul>
+                                <li class="small text-warning">Column Names:</li>
+                                <ul>
+                                    <li class="roboto-font small">reg <span class="text-muted small">(Registration number of the students)</span> </li>
+                                    <li class="roboto-font small">code_a <span class="text-muted small">(<strong class="small text-muted">Part A</strong> code number)</span> </li>
+                                    <li class="roboto-font small">marks_a <span class="text-muted small">(<strong class="small text-muted">Part A</strong> marks of the students)</span> </li>
+                                    <li class="roboto-font small">code_b <span class="text-muted small">(<strong class="small text-muted">Part B</strong> code number)</span> </li>
+                                    <li class="roboto-font small">marks_b <span class="text-muted small">(<strong class="small text-muted">Part B</strong> marks of the students)</span> </li>
+                                    <li class="roboto-font small">marks_tt <span class="text-muted small">(<strong class="small text-muted">Termtest</strong> marks of the students)</span> </li>
+                                    <li class="roboto-font small">total <span class="text-muted small">(<strong class="small text-muted">Total</strong> marks obtained by the students)</span> </li>
+                                </ul>
+                            </ul>
+                            <ul>
+                                <li class="small text-warning">Allowed Combinations of columns:</li>
+                                <ol>
+                                    <li class="roboto-font text-info small">reg, code_a, marks_a, code_b, marks_b, marks_t</li>
+                                    <li class="roboto-font text-info small">reg, total</li>
+                                </ol>
+                            </ul>
+                            <ul class="mb-0">
+                                <li class="text-warning small">Order of the columns are not necessary.</li>
+                                <li class="text-warning small">Missing columns will be ignored.</li>
+                                <li class="text-warning small">Only the matching records from the spreadsheet will be updated, others will remain as is.</li>
+                                <li class="text-warning small">Verify the data and the specified formatting before uploading.</li>
+                            </ul>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Select Excel File</label>
+                            <input class="form-control" type="file" id="formFile">
+                        </div>
+                        <div class="col-md-12 mt-3 btn-container">
+                            <div class="d-flex justify-content-end" >
+                                <button class="btn btn-success btn-iconized px-4" id="save-btn">
+                                    <i class='bx bxs-chevrons-up me-1 py-1'></i>
+                                    <span class="roboto-font">Upload</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="action-summery alert alert-info mt-3" style="display: none;">
+                            <p class="text-center text-white roboto-font">Process Summery</p>
+                            <ul>
+                                <li class="text-info roboto-font small">
+                                    10 Lorem ipsum dolor sit amet.
+                                </li>
+                                <li class="text-danger roboto-font small">
+                                    Cannot parse data of row 12
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Modal -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
