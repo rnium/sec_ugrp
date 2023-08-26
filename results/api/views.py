@@ -2,6 +2,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
@@ -311,4 +313,12 @@ def add_new_entry_to_course(request, pk):
         is_drop_course = True
     )
     return Response(data={'status': 'Course Result for the student has been created'})
-    
+
+@csrf_exempt
+def process_course_excel(request, pk):
+    if request.method == "POST":
+        excel_file = request.POST.get('excel')
+        print(excel_file)
+        return JsonResponse({'status':'Complete'})
+    else:
+        return JsonResponse({'details': 'Method not allowed!'}, status=405)

@@ -435,6 +435,32 @@ function addNewEntry() {
     }
 }
 
+// Excel upload
+function uploadExcel(excel_file) {
+    let excel_form = new FormData
+    excel_form.append("excel", excel_file)
+    $.ajax({
+        type: "post",
+        url: process_course_excel_api,
+        data: excel_form,
+        contentType: false,
+        processData: false,
+        beforeSend: function(xhr){
+            $("#render-tabulation-btn").attr("disabled", true)
+            $("#render-tabulation-btn .content").hide(0, ()=>{
+                $("#render-tabulation-btn .spinner").show()
+            });
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        error: function(xhr, error, status) {
+            console.log(status);
+        },
+        complete: function() {
+            
+        }
+    });
+}
+
 $(document).ready( function() {
     loadCourseResults()
     $("#table-save-btn").on('click', function(){

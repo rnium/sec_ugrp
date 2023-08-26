@@ -224,9 +224,16 @@
                         </div>
                         <div class="col-md-12 mt-3 btn-container">
                             <div class="d-flex justify-content-end" >
-                                <button class="btn btn-success btn-iconized px-4" id="save-btn">
-                                    <i class='bx bxs-chevrons-up me-1 py-1'></i>
-                                    <span class="roboto-font">Upload</span>
+                                <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="process-excel-btn">
+                                    <div class="content">
+                                        <div class="d-flex align-items-center">
+                                            <i class='bx bx-play-circle me-2'></i>
+                                            <span class="roboto-font ">Process</span>
+                                        </div>
+                                    </div>
+                                    <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
                                 </button>
                             </div>
                         </div>
@@ -302,6 +309,7 @@
     const update_course_results_api = "{% url 'results:update_course_results' course.id %}";
     const delete_course_api = "{% url 'results:delete_course' course.id %}";
     const add_new_entry_to_course_api = "{% url 'results:add_new_entry_to_course' course.id %}";
+    const process_course_excel_api = "{% url 'results:process_course_excel' course.id %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
