@@ -20,6 +20,8 @@ from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
+from io import BytesIO
+import openpyxl
     
 class BadrequestException(APIException):
     status_code = 403
@@ -316,9 +318,40 @@ def add_new_entry_to_course(request, pk):
 
 @csrf_exempt
 def process_course_excel(request, pk):
-    if request.method == "POST":
+    header_to_course_property_config = {
+        'code_a': 'part_A_code',
+        'marks_a': 'part_A_score',
+        'code_b': 'part_B_code',
+        'marks_b': 'part_B_score',
+        'marks_tt': 'incourse_score',
+        'total': 'total_score',
+    }
+    if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
-        print(excel_file)
+        try:
+            buffer = BytesIO(excel_file.read())
+            wb = openpyxl.load_workbook(buffer)
+            sheet = wb[wb.sheetnames[0]]
+            rows = list(sheet.rows)
+            header = [cell.value.lower().strip() for cell in rows[0]]
+            data_rows = rows[1:]
+        except Exception as e:
+            return JsonResponse({'details': e}, status=400)
+        
+        if 'reg' not in header:
+            return JsonResponse({'details': "Registration no. column 'reg' not found"}, status=400)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         return JsonResponse({'status':'Complete'})
     else:
-        return JsonResponse({'details': 'Method not allowed!'}, status=405)
+        return JsonResponse({'details': 'Not allowed!'}, status=400)
