@@ -317,7 +317,7 @@ def add_new_entry_to_course(request, pk):
 @csrf_exempt
 def process_course_excel(request, pk):
     if request.method == "POST":
-        excel_file = request.POST.get('excel')
+        excel_file = request.FILES.get('excel')
         print(excel_file)
         return JsonResponse({'status':'Complete'})
     else:

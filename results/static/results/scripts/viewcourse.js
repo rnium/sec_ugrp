@@ -446,17 +446,22 @@ function uploadExcel(excel_file) {
         contentType: false,
         processData: false,
         beforeSend: function(xhr){
-            $("#render-tabulation-btn").attr("disabled", true)
-            $("#render-tabulation-btn .content").hide(0, ()=>{
-                $("#render-tabulation-btn .spinner").show()
+            $("#process-excel-btn").attr("disabled", true)
+            $("#process-excel-btn .content").hide(0, ()=>{
+                $("#process-excel-btn .spinner").show()
             });
-            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        success: function(response) {
+            console.log(response);
         },
         error: function(xhr, error, status) {
             console.log(status);
         },
         complete: function() {
-            
+            $("#process-excel-btn").removeAttr("disabled");
+            $("#process-excel-btn .spinner").hide(0, ()=>{
+                $("#process-excel-btn .content").show()
+            });
         }
     });
 }
@@ -476,4 +481,13 @@ $(document).ready( function() {
     $("#confirm-del-btn").on('click', delete_course)
     // new entry button
     $("#new_entry_add_button").on('click', addNewEntry)
+    // excel upload button
+    $("#process-excel-btn").on('click', function() {
+        excel_file = $("#excelFile")[0].files
+        if (excel_file.length > 0) {
+            uploadExcel(excel_file[0]);
+        } else {
+            alert("Please choose an excel file!")
+        }
+    })
 })
