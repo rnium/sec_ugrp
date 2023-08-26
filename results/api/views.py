@@ -318,14 +318,19 @@ def add_new_entry_to_course(request, pk):
 
 @csrf_exempt
 def process_course_excel(request, pk):
-    header_to_course_property_config = {
+    course_props = {
         'code_a': 'part_A_code',
         'marks_a': 'part_A_score',
         'code_b': 'part_B_code',
         'marks_b': 'part_B_score',
         'marks_tt': 'incourse_score',
-        'total': 'total_score',
     }
+    try:
+        course = Course.objects.get(pk=pk)
+        course_results = course.courseresult_set.all()
+    except Course.DoesNotExist:
+        return JsonResponse({'details': "Course not found"}, status=404)
+    
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
         try:
@@ -337,9 +342,38 @@ def process_course_excel(request, pk):
             data_rows = rows[1:]
         except Exception as e:
             return JsonResponse({'details': e}, status=400)
-        
-        if 'reg' not in header:
+            
+        try:
+            reg_col_idx = header.index('reg')
+        except ValueError:
             return JsonResponse({'details': "Registration no. column 'reg' not found"}, status=400)
+        logs = {
+            'success': [],
+            'errors': [],
+        }
+        # data saving
+        if 'total' in header:
+            total_col_idx = header.index('total')
+            for r in range(len(data_rows)):
+                try:
+                    reg_no = int(data_rows[r][reg_col_idx].value)
+                    total = float(data_rows[r][total_col_idx].value)
+                except Exception as e:
+                    logs['errors'].append(f'Cannot parse data for row number: {r+2}')
+                course_res = course_results.filter(student__registration=reg_no).first()
+                if course_res:
+                    setattr(course_res, course_props['total'], total)
+                    course_res.
+                    try:
+                        course_res.save()
+                        logs['success'].append(f'Data saved for reg. number: {reg_no}')
+                    except Exception as e:
+                        logs['errors'].append(f'Cannot save data for row number: {r+2}. Error: {e}')
+        else:
+                 
+            print(logs)
+                    
+                    
         
         
         
