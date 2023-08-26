@@ -201,10 +201,11 @@ function generateRowElements(record) {
     const partAscore = record.part_A_score;
     const partBscore = record.part_B_score;
     const incourseScore = record.incourse_score;
+    const total_score = record.total_score;
     const required_inCourse_score = calculate_Incourse(record.incourse_score);
     let totalContainer = "";
-    if ((!isNaN(partAscore)) && (!isNaN(partBscore)) && (!isNaN(required_inCourse_score))) {
-        totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(partAscore+partBscore+required_inCourse_score)}</td>`
+    if (total_score != null) {
+        totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(total_score)}</td>`
     } else {
         totalContainer = `<td data-registration=${registration} id="total-${registration}" class="total-score pending">Pending</td>`
     }
