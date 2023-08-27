@@ -307,14 +307,18 @@ def add_new_entry_to_course(request, pk):
     # checking wheather this semester has included this course in the drop courses, then add it if not included
     if course not in enroll.semester.drop_courses.all():
         enroll.semester.drop_courses.add(course)
+    # creating course result
+    try:
+        CourseResult.objects.create(
+            student = student,
+            course = course,
+            is_drop_course = True
+        )
+    except Exception as e:
+        return Response(data={"details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     # adding course to enrollment
     enroll.courses.add(course)
-    # creating course result
-    CourseResult.objects.create(
-        student = student,
-        course = course,
-        is_drop_course = True
-    )
+    
     return Response(data={'status': 'Course Result for the student has been created'})
 
 @csrf_exempt
@@ -399,7 +403,7 @@ def process_course_excel(request, pk):
                             value = data_rows[r][title_idx].value
                             if col not in ['code_a', 'code_b']:
                                 if value is None:
-                                    logs['errors']['parse_errors'].append(f'Reg no: {reg_no}. Missing value for: {col}')
+                                    logs['errors']['parse_errors'].append(f'Reg no: {reg_no} Missing value for: {col}')
                                 else:
                                     value = float(value)
                         except Exception as e:
