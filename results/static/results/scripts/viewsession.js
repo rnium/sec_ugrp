@@ -197,8 +197,12 @@ function uploadExcel(excel_file) {
             $("#summary_list").html(response.summary);
             $("#summary_list_container").show(200)
         },
-        error: function(xhr, error, status) {
-            alert(status);
+        error: function(xhr, status, error) {
+            try {
+                alert(xhr.responseJSON.details);
+            } catch (error_) {
+                alert(error);
+            }
         },
         complete: function() {
             $("#process-excel-btn").removeAttr("disabled");

@@ -1,8 +1,8 @@
-<li class="text-info roboto-font small">
-    Successful insertions: {{logs.success}}
+<li class="text-success roboto-font">
+    Successful Insertions: {{logs.success}}
 </li>
 {% if logs.has_parse_errors  %}
-<li class="roboto-font small">
+<li class="roboto-font text-warning small">
     Parse Errors:
     <ol>
         {% for error in logs.errors.parse_errors %}
@@ -15,7 +15,7 @@
 {% endif %}
 
 {% if logs.has_save_errors  %}
-<li class="roboto-font small">
+<li class="roboto-font text-warning small">
     Save Errors:
     <ol>
         {% for error in logs.errors.save_errors %}
@@ -28,7 +28,7 @@
 {% endif %}
 
 {% if logs.has_unmatching_errors  %}
-<li class="roboto-font small">
+<li class="roboto-font text-warning small">
     Unmatchings:
     <ol>
         {% for error in logs.errors.unmatching %}

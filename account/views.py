@@ -185,7 +185,7 @@ def create_student_via_excel(request, pk):
             reg_col_idx = header.index('reg')
             first_name_col_idx = header.index('first_name')
         except ValueError:
-            return JsonResponse({'details': "Required columns not found"}, status=400)
+            return JsonResponse({'details': "Some required columns not found"}, status=400)
         logs = {
             'success': 0,
             'errors': {
@@ -214,13 +214,13 @@ def create_student_via_excel(request, pk):
                 'first_name': first_name.strip()
             }
             if last_name_col_idx is not None:
-                last_name = data_rows[r][last_name_col_idx].value.strip()
-                if len(last_name) > 0:
-                    account_kwargs['last_name'] = last_name
+                last_name = data_rows[r][last_name_col_idx].value
+                if last_name is not None and len(last_name) > 0:
+                    account_kwargs['last_name'] = last_name.strip()
             try:
                 StudentAccount.objects.create(**account_kwargs)
             except Exception as e:
-                logs['errors']['save_errors'].append(f'Cannot create student profile. Errors: {e}')
+                logs['errors']['save_errors'].append(f'Registration: {registration}. Errors: {e}')
                 continue
             logs['success'] += 1
         
