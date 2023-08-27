@@ -106,9 +106,13 @@
             
         </div>
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
-            <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newStudentEntryModal">
+            <button class="btn btn-secondary btn-iconized px-4 me-1" id="add-new" data-bs-toggle="modal" data-bs-target="#newStudentEntryModal">
                 <i class='bx bx-user-plus me-1'></i>
                 <span class="roboto-font" style="font-size: 0.8rem;">Add Student</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-iconized px-4" data-bs-toggle="modal" data-bs-target="#excelUploadModal">
+                <i class='bx bx-table me-2'></i>
+                <span class="roboto-font" style="font-size: 0.8rem;">Bulk Add by Excel</span>
             </button>
         </div>
         <div class="delete-btn-container mt-4 w-100">
@@ -203,6 +207,67 @@
             </div>
         </div>
     </div>
+    
+    <!-- New Student by Excel Modal -->
+    <div class="modal fade" id="excelUploadModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">
+                        Add From Excel
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="instructions container">
+                        <div class="infotext alert alert-warning">
+                            <div class="text-white text-center roboto-font mb-2">Please note before uploading</div>
+                            <ul>
+                                <li class="small text-warning">Column Names:</li>
+                                <ul>
+                                    <li class="roboto-font small">reg <span class="text-muted small">(Registration number of the students)</span> </li>
+                                    <li class="roboto-font small">first_name <span class="text-muted small">(First name of the students)</span> </li>
+                                    <li class="roboto-font small">last_name <span class="text-muted small">(Last name of the students - optional)</span> </li>
+                                </ul>
+                            </ul>
+                            <ul class="mb-0">
+                                <li class="text-warning small">Order of the columns are not necessary.</li>
+                                <li class="text-warning small">Missing columns will be ignored.</li>
+                                <li class="text-warning small">Verify the data and the specified column names before uploading.</li>
+                            </ul>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Select Excel File</label>
+                            <input class="form-control" accept=".xlsx" type="file" id="excelFile">
+                        </div>
+                        <div class="col-md-12 mt-3 btn-container">
+                            <div class="d-flex justify-content-end" >
+                                <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="process-excel-btn">
+                                    <div class="content">
+                                        <div class="d-flex align-items-center">
+                                            <i class='bx bx-play-circle me-2'></i>
+                                            <span class="roboto-font ">Process</span>
+                                        </div>
+                                    </div>
+                                    <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="action-summery alert alert-info mt-3" style="display: none;" id="summary_list_container">
+                            <p class="text-center text-white roboto-font">Process Summery</p>
+                            <ul id="summary_list">
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock content %}
 
