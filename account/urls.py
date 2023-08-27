@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/login', views.api_login, name="user_login_api"),
     path('logout/', views.LogoutView.as_view(), name="user_logout"),
     path('createstudentaccount/', views.StudentAccountCreate.as_view(), name="create_student_account"),
+    path('createstudentaccount/excel/session<int:pk>', views.create_student_via_excel, name="create_student_via_excel"),
     path('setstudentavatar/', views.set_student_avatar, name="set_student_avatar"),
     path('student/<int:registration>/', views.StudentProfileView.as_view(), name="view_student_profile"),
     path('sendstaffsignuptoken', views.send_signup_token, name="send_staff_signup_token"),

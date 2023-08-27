@@ -163,7 +163,7 @@ def set_student_avatar(request):
 
 
 @csrf_exempt
-def process_student_create_excel(request, pk):
+def create_student_via_excel(request, pk):
     try:
         session = Session.objects.get(pk=pk)
     except Session.DoesNotExist:
@@ -204,14 +204,14 @@ def process_student_create_excel(request, pk):
             except Exception as e:
                 logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [cannot parse registration no.]')
                 continue
-            first_name = data_rows[r][first_name_col_idx].value.strip()
-            if len(first_name) == 0:
-                logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [invalid first name]')
+            first_name = data_rows[r][first_name_col_idx].value
+            if first_name is None:
+                logs['errors']['parse_errors'].append(f'registration: {registration}. Errors: [first name cannot be empty]')
                 continue
             account_kwargs = {
                 'registration': registration,
                 'session': session,
-                'first_name': first_name
+                'first_name': first_name.strip()
             }
             if last_name_col_idx is not None:
                 last_name = data_rows[r][last_name_col_idx].value.strip()

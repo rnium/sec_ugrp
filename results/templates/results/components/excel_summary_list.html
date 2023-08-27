@@ -4,38 +4,38 @@
 {% if logs.has_parse_errors  %}
 <li class="roboto-font small">
     Parse Errors:
-    <ul>
+    <ol>
         {% for error in logs.errors.parse_errors %}
         <li class="text-danger roboto-font small">
             {{error}}
         </li>
         {% endfor %}
-    </ul>
+    </ol>
 </li>
 {% endif %}
 
 {% if logs.has_save_errors  %}
 <li class="roboto-font small">
     Save Errors:
-    <ul>
+    <ol>
         {% for error in logs.errors.save_errors %}
         <li class="text-danger roboto-font small">
             {{error}}
         </li>
         {% endfor %}
-    </ul>
+    </ol>
 </li>
 {% endif %}
 
 {% if logs.has_unmatching_errors  %}
 <li class="roboto-font small">
     Unmatchings:
-    <ul>
+    <ol>
         {% for error in logs.errors.unmatching %}
         <li class="text-danger roboto-font small">
             {{error}}
         </li>
         {% endfor %}
-    </ul>
+    </ol>
 </li>
 {% endif %}

@@ -276,6 +276,7 @@
     const create_semester_api = "{% url 'results:create_semester' session.id %}";
     const create_student_account_api = "{% url 'account:create_student_account' %}";
     const set_student_avatar_api = "{% url 'account:set_student_avatar' %}";
+    const create_student_via_excel_api = "{% url 'account:create_student_via_excel' session.id %}";
     const sessionId = {{session.id}};
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";

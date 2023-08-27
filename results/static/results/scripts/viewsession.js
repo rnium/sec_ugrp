@@ -177,9 +177,49 @@ function createStudentAccount(){
     });
 }
 
+// Excel upload
+function uploadExcel(excel_file) {
+    let excel_form = new FormData
+    excel_form.append("excel", excel_file)
+    $.ajax({
+        type: "post",
+        url: create_student_via_excel_api,
+        data: excel_form,
+        contentType: false,
+        processData: false,
+        beforeSend: function(xhr){
+            $("#process-excel-btn").attr("disabled", true)
+            $("#process-excel-btn .content").hide(0, ()=>{
+                $("#process-excel-btn .spinner").show()
+            });
+        },
+        success: function(response) {
+            $("#summary_list").html(response.summary);
+            $("#summary_list_container").show(200)
+        },
+        error: function(xhr, error, status) {
+            alert(status);
+        },
+        complete: function() {
+            $("#process-excel-btn").removeAttr("disabled");
+            $("#process-excel-btn .spinner").hide(0, ()=>{
+                $("#process-excel-btn .content").show()
+            });
+        }
+    });
+}
+
 
 
 $(document).ready(function () {
     $("#create_sem_btn").on('click', createSemester)
     $("#create-student-btn").on('click', createStudentAccount)
+    $("#process-excel-btn").on('click', function() {
+        excel_file = $("#excelFile")[0].files
+        if (excel_file.length > 0) {
+            uploadExcel(excel_file[0]);
+        } else {
+            alert("Please choose an excel file!")
+        }
+    })
 });
