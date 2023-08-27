@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
+from django.template.loader import render_to_string
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
@@ -341,8 +342,12 @@ def process_course_excel(request, pk):
         except ValueError:
             return JsonResponse({'details': "Registration no. column 'reg' not found"}, status=400)
         logs = {
-            'success': [],
-            'errors': [],
+            'success': 0,
+            'errors': {
+                'parse_errors': [],
+                'save_errors': [],
+                'unmatching': []
+            }
         }
         # data saving
         if 'total' in header: 
@@ -352,7 +357,7 @@ def process_course_excel(request, pk):
                     reg_no = int(data_rows[r][reg_col_idx].value)
                     total = float(data_rows[r][total_col_idx].value)
                 except Exception as e:
-                    logs['errors'].append(f'Cannot parse data for row number: {r+2}')
+                    logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
@@ -360,9 +365,9 @@ def process_course_excel(request, pk):
                     try:
                         course_res.save()
                     except Exception as e:
-                        logs['errors'].append(f'Cannot save data for row number: {r+2}. Error: {e}')
+                        logs['errors']['save_errors'].append(f"reg. no: {reg_no}. Error: {e}")
                         continue
-                    logs['success'].append(f'Data saved for reg. number: {reg_no}')
+                    logs['success'] += 1
         else:
             course_props = {
                 'code_a': 'part_A_code',
@@ -375,7 +380,7 @@ def process_course_excel(request, pk):
                 try:
                     reg_no = int(data_rows[r][reg_col_idx].value)
                 except Exception as e:
-                    logs['errors'].append(f'Cannot parse registration no. for row number: {r+2}.')
+                    logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
@@ -389,32 +394,23 @@ def process_course_excel(request, pk):
                             if col not in ['code_a', 'code_b']:
                                 value = float(value)
                         except Exception as e:
-                            logs['errors'].append(f'Cannot parse {col} for reg. number: {reg_no}. Error: {e}.')
+                            logs['errors']['parse_errors'].append(f'reg no: {reg_no}. error: {e}')
                             continue
                         setattr(course_res, prop_name, value)
                     try:
                         course_res.save()
                     except Exception as e:
-                        logs['errors'].append(f'Cannot save data for row number: {r+2}. Error: {e}.')
+                        logs['errors']['save_errors'].append(f"reg. no: {reg_no}. Error: {e}")
                         continue
-                    logs['success'].append(f'Data saved for reg. number: {reg_no}.')
+                    logs['success'] += 1
                 else:
-                    logs['errors'].append(f'No matching record for row number: {r+2}.')
-            print(logs)
-                    
-                    
+                    logs['errors']['unmatching'].append(f'row number: {r+2}')
         
+        logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
+        logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
+        logs['has_unmatching_errors'] = bool(len(logs['errors']['unmatching']))  
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        return JsonResponse({'status':'Complete'})
+        summary = render_to_string('results/components/course_excel_summary.html', context={'logs': logs})
+        return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)

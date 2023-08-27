@@ -1,0 +1,41 @@
+<li class="text-info roboto-font small">
+    Successful insertions: {{logs.success}}
+</li>
+{% if logs.has_parse_errors  %}
+<li>
+    Parse Errors:
+    <ul>
+        {% for error in logs.errors.parse_errors %}
+        <li class="text-danger roboto-font small">
+            {{error}}
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endif %}
+
+{% if logs.has_save_errors  %}
+<li>
+    Save Errors:
+    <ul>
+        {% for error in logs.errors.save_errors %}
+        <li class="text-danger roboto-font small">
+            {{error}}
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endif %}
+
+{% if logs.has_unmatching_errors  %}
+<li>
+    Unmatchings:
+    <ul>
+        {% for error in logs.errors.unmatching %}
+        <li class="text-danger roboto-font small">
+            {{error}}
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endif %}
