@@ -398,15 +398,18 @@ def process_course_excel(request, pk):
                         try:
                             value = data_rows[r][title_idx].value
                             if col not in ['code_a', 'code_b']:
-                                value = float(value)
+                                if value is None:
+                                    logs['errors']['parse_errors'].append(f'Reg no: {reg_no}. Missing value for: {col}')
+                                else:
+                                    value = float(value)
                         except Exception as e:
-                            logs['errors']['parse_errors'].append(f'reg no: {reg_no}. error: {e}')
+                            logs['errors']['parse_errors'].append(f'Reg no: {reg_no}. error: {e}')
                             continue
                         setattr(course_res, prop_name, value)
                     try:
                         course_res.save()
                     except Exception as e:
-                        logs['errors']['save_errors'].append(f"reg. no: {reg_no}. Error: {e}")
+                        logs['errors']['save_errors'].append(f"Reg. no: {reg_no}. Error: {e}")
                         continue
                     logs['success'] += 1
                 else:
