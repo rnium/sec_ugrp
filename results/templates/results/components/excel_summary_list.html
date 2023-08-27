@@ -1,6 +1,19 @@
 <li class="text-success roboto-font">
     Successful Insertions: {{logs.success}}
 </li>
+{% if logs.has_missing_cols  %}
+<li class="roboto-font text-warning small">
+    Missing Columns:
+    <ol>
+        {% for error in logs.errors.missing_cols %}
+        <li class="text-danger roboto-font small">
+            {{error}}
+        </li>
+        {% endfor %}
+    </ol>
+</li>
+{% endif %}
+
 {% if logs.has_parse_errors  %}
 <li class="roboto-font text-warning small">
     Parse Errors:

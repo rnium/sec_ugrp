@@ -344,6 +344,7 @@ def process_course_excel(request, pk):
         logs = {
             'success': 0,
             'errors': {
+                'missing_cols': set(),
                 'parse_errors': [],
                 'save_errors': [],
                 'unmatching': []
@@ -392,6 +393,7 @@ def process_course_excel(request, pk):
                         try:
                             title_idx = header.index(col)
                         except Exception as e:
+                            logs['errors']['missing_cols'].add(col)
                             continue
                         try:
                             value = data_rows[r][title_idx].value
@@ -410,6 +412,7 @@ def process_course_excel(request, pk):
                 else:
                     logs['errors']['unmatching'].append(f'row number: {r+2}')
         
+        logs['has_missing_cols'] = bool(len(logs['errors']['missing_cols']))    
         logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
         logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
         logs['has_unmatching_errors'] = bool(len(logs['errors']['unmatching']))  
