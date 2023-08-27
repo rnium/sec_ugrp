@@ -24,7 +24,7 @@
                     <span>No verified user found with this email</span>
                 </div>
                 <div class="submit-con mt-4">
-                    <button class="btn-1 shadow-sm">Submit</button>
+                    <button class="btn-1 shadow-sm" id="submit_email_btn">Submit</button>
                 </div>
             </div>
             <div class="success-info"  style="display: none;">
@@ -33,5 +33,12 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'results/scripts/jquery-3.7.0.min.js' %}"></script>
+    <script>
+        const send_mail_url = "{% url 'account:send_recovery_email_api' %}";
+        const csrftoken = "{{csrftoken}}";
+    </script>
+    <script src="{% static 'account/scripts/recovery.js' %}" defer></script>
+    
 </body>
 </html>

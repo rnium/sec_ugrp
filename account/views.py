@@ -16,7 +16,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
@@ -356,4 +359,30 @@ def send_signup_token(request):
         return Response(data={'details': str(e)}, status=status.HTTP_502_BAD_GATEWAY)
     return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
     
-    
+# Account Recovery API's
+@api_view(["POST"])
+def send_recovery_email_api(request):
+    email_subject = "Password Recovery"
+    try:
+        email = request.data['email']
+    except Exception as e:
+        return Response(data={"error":"no email provided"}, status=status.HTTP_400_BAD_REQUEST)
+    user = User.objects.filter(email=email).first()
+    if user is None:
+        return Response(data={'info':'no user found with this email'}, status=status.HTTP_404_NOT_FOUND)
+    # # checking if user has account
+    # if not hasattr(user, 'account'):
+    #     return Response(data={"info":"user has no account"}, status=status.HTTP_409_CONFLICT)
+
+    uid = urlsafe_base64_encode(force_bytes(user.id))
+    token = default_token_generator.make_token(user)
+    recovery_url = request.build_absolute_uri(reverse("account:reset_password_get", args=(uid, token)))
+    email_body = render_to_string('account/recovery_mail.html', context={
+        "user": user,
+        "recovery_url": recovery_url
+    })
+    try:
+        utils.send_html_email(user.email, email_subject, email_body)
+    except Exception as e:
+        return Response(data={'info':'cannot send email'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    return Response(data={"info":"email sent"}, status=status.HTTP_200_OK)
