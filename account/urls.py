@@ -17,5 +17,7 @@ urlpatterns = [
     path('setadminavatar/', views.set_admin_avatar, name="set_admin_avatar"),
     path('recovery/', views.forgot_password_get, name="forgot_password_get"),
     path('api/recovery/sendmail', views.send_recovery_email_api, name="send_recovery_email_api"),
+    path('recovery/<uidb64>/<token>', views.reset_password_get, name="reset_password_get"),
+    path('api/recovery/setpassword/<uidb64>/<emailb64>', views.reset_password_api, name="reset_password_api"),
 ]
    

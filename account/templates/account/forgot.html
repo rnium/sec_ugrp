@@ -14,20 +14,20 @@
         <div class="text-white fs-4">SEC Results</div>
         <div class="form-container shadow">
             <div class="section-title py-1">Password Recovery</div>
-            <div class="content">
-                <div class="field-container inset-float-textinput-no-border email" >
+            <div class="content" id="content-con">
+                <div class="field-container inset-float-textinput-no-border email" id="email-inp-con">
                     <input class="inp_input" type="email" id="email" placeholder=" ">
                     <label class="inp_label" for="email">Enter your email</label>
                 </div>
-                <div class="error-info" style="display: none;">
+                <div class="error-info" id="error-info-con" style="display: none;">
                     <i class='bx bx-error-circle'></i>
-                    <span>No verified user found with this email</span>
+                    <span id="error-info-raw">No verified user found with this email</span>
                 </div>
                 <div class="submit-con mt-4">
                     <button class="btn-1 shadow-sm" id="submit_email_btn">Submit</button>
                 </div>
             </div>
-            <div class="success-info"  style="display: none;">
+            <div class="success-info" id="success-info-con" style="display: none;">
                 <i class='bx bx-check' ></i>
                 <div class="info">Recovery link sent to your email. Please check inbox/spam folder and follow the instructions</div>
             </div>

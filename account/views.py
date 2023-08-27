@@ -235,9 +235,24 @@ def create_student_via_excel(request, pk):
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
 
-
+# Account recovery
 def forgot_password_get(request):
     return render(request, 'account/forgot.html')
+
+def reset_password_get(request,  uidb64, token):
+    try :
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=user_id)
+    except Exception as e:
+        user = None
+    
+    if user and default_token_generator.check_token(user, token):
+        uid = uidb64
+        emaildb64 = urlsafe_base64_encode(force_bytes(user.email))
+        reset_password_api_url = reverse("account:reset_password_api", args=(uid, emaildb64))
+        return render(request, 'account/setup_new_pass.html', context={'reset_password_api_url':reset_password_api_url})
+    else:
+        return render_error(request, 'Invalid or expired recovery link')
  
 # REST API SECTION BELOW
 
@@ -386,3 +401,25 @@ def send_recovery_email_api(request):
     except Exception as e:
         return Response(data={'info':'cannot send email'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     return Response(data={"info":"email sent"}, status=status.HTTP_200_OK)
+    
+    
+@api_view(["POST"])
+def reset_password_api(request, uidb64, emailb64):
+    try :
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        email = force_str(urlsafe_base64_decode(emailb64))
+        user = User.objects.get(pk=user_id, email=email)
+    except Exception as e:
+        user = None
+    try:
+        new_pass = request.data['new_password']
+    except KeyError:
+        return Response(data={"info":"required data not provided"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if user is not None:
+        user.set_password(new_pass)
+        user.save()
+        logout(request)
+        return Response(data={"info":"password reset successful"},status=status.HTTP_200_OK)
+    else:
+        return Response(data={"info":"User not found"}, status=status.HTTP_404_NOT_FOUND)
