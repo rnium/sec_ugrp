@@ -252,25 +252,31 @@ class CourseResult(models.Model):
     
     
     def save(self, *args, **kwargs):
-        # Calculates total marks before saving
-        if (self.part_A_score is not None and   # Case 1: If component scores are provided, calculating
-            self.part_B_score is not None and
+        ### Calculates total marks before saving
+        if (self.part_A_score is not None or   # Case 1: If any component scores are provided, calculating total
+            self.part_B_score is not None or
             self.incourse_score is not None):
-            # check if all three scores are within maximum marks
-            if ((self.part_A_score > self.course.part_A_marks) or
-                (self.part_B_score > self.course.part_B_marks )or
-                (self.incourse_score > self.course.incourse_marks)):
-                raise ValidationError("Score cannot be more than defined marks")
-            # saving total marks
-            incourse_actual = ((self.course.total_marks - 
-                                (self.course.part_A_marks + self.course.part_B_marks))/self.course.incourse_marks) * self.incourse_score
-            self.total_score = round((self.part_A_score + self.part_B_score + incourse_actual), 3)
+            total = 0
+            if self.part_A_score is not None:
+                if self.part_A_score > self.course.part_A_marks:
+                    raise ValidationError("Score cannot be more than defined marks")
+                total += self.part_A_score
+            if self.part_B_score is not None:
+                if self.part_B_score > self.course.part_B_marks:
+                    raise ValidationError("Score cannot be more than defined marks")
+                total += self.part_B_score
+            if self.incourse_score is not None:
+                if self.incourse_score > self.course.incourse_marks:
+                    raise ValidationError("Score cannot be more than defined marks")
+                total += self.incourse_score
+                
+            self.total_score = round(total, 3)
+                
         else:          # Case 2: If total marks are provided
             if self.total_score != None:
                 if self.total_score > self.course.total_marks:
                     raise ValidationError("Score cannot be more than defined marks")
                 
-            
         # Saving grade point
         self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
         self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
