@@ -9,7 +9,7 @@ from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course)
 from account.models import StudentAccount, AdminAccount
 from results.gradesheet_generator import get_gradesheet
-from results.utils import get_ordinal_number
+from results.utils import get_ordinal_number, render_error
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -147,7 +147,7 @@ def download_semester_tabulation(request, pk):
         filename = semester.semesterdocument.tabulation_filename
         return FileResponse(open(filepath, 'rb'), filename=filename)
     else:
-        HttpResponse("No Tabulation sheet")
+        return render_error(request, 'No Tabulation sheet')
 
 @login_required
 def download_year_gradesheet(request, registration, year):
@@ -158,7 +158,7 @@ def download_year_gradesheet(request, registration, year):
         year_first_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=1, semester__is_running=False, semester_gpa__isnull=False)
         year_second_semester = SemesterEnroll.objects.get(student=student, semester__year=year, semester__year_semester=2, semester__is_running=False, semester_gpa__isnull=False)
     except:
-        return HttpResponse("<h1 style='text-align: center;margin-top:10rem'>GradeSheet not available!</h1>")
+        return render_error(request, 'GradeSheet not available!')
     sheet_pdf = get_gradesheet(
         student = student,
         year_first_sem_enroll = year_first_semester,
@@ -169,4 +169,4 @@ def download_year_gradesheet(request, registration, year):
 
 @login_required 
 def pending_view(request):
-    return HttpResponse("<h1 style='text-align: center;margin-top:10rem'>This Section is Under Development</h1>")
+    return render_error(request, 'This Section is Under Development!')
