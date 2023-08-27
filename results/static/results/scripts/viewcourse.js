@@ -453,10 +453,10 @@ function uploadExcel(excel_file) {
         },
         success: function(response) {
             $("#summary_list").html(response.summary);
-            $("#summary_list_container").show(200)
+            $("#summary_list_container").show(500)
         },
         error: function(xhr, error, status) {
-            console.log(status);
+            alert(status);
         },
         complete: function() {
             $("#process-excel-btn").removeAttr("disabled");

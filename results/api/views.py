@@ -362,6 +362,10 @@ def process_course_excel(request, pk):
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
                     course_res.total_score = total
+                    # setting other scores to None
+                    course_res.part_A_score = None
+                    course_res.part_B_score = None
+                    course_res.incourse_score = None
                     try:
                         course_res.save()
                     except Exception as e:
