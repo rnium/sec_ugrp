@@ -1,3 +1,5 @@
+import openpyxl
+from io import BytesIO
 from typing import Any, Dict
 from datetime import timedelta
 from django.http import HttpResponse
@@ -14,6 +16,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
@@ -25,10 +28,9 @@ from . import utils
 from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
-from results.models import Department
+from results.models import Department, Session
 
     
-
 def login_page(request):
     if request.user.is_authenticated:
             return redirect("results:dashboard")
@@ -158,7 +160,78 @@ def set_student_avatar(request):
             return JsonResponse(data={'details': 'No image uploaded'}, status=400)
     else:
         return JsonResponse(data={'details': 'Method not allowed'}, status=400)
- 
+
+
+@csrf_exempt
+def process_student_create_excel(request, pk):
+    try:
+        session = Session.objects.get(pk=pk)
+    except Session.DoesNotExist:
+        return JsonResponse({'details': "Course not found"}, status=404)
+    
+    if request.method == "POST" and request.FILES.get('excel'):
+        excel_file = request.FILES.get('excel')
+        try:
+            buffer = BytesIO(excel_file.read())
+            wb = openpyxl.load_workbook(buffer)
+            sheet = wb[wb.sheetnames[0]]
+            rows = list(sheet.rows)
+            header = [cell.value.lower().strip() for cell in rows[0]]
+            data_rows = rows[1:]
+        except Exception as e:
+            return JsonResponse({'details': 'Can\'t open excel file'}, status=400)
+            
+        try:
+            reg_col_idx = header.index('reg')
+            first_name_col_idx = header.index('first_name')
+        except ValueError:
+            return JsonResponse({'details': "Required columns not found"}, status=400)
+        logs = {
+            'success': 0,
+            'errors': {
+                'parse_errors': [],
+                'save_errors': []
+            }
+        }
+        # data saving
+        try:
+            last_name_col_idx = header.index('last_name')
+        except ValueError:
+            last_name_col_idx = None
+        for r in range(len(data_rows)):
+            try:
+                registration = int(data_rows[r][reg_col_idx].value)
+            except Exception as e:
+                logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [cannot parse registration no.]')
+                continue
+            first_name = data_rows[r][first_name_col_idx].value.strip()
+            if len(first_name) == 0:
+                logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [invalid first name]')
+                continue
+            account_kwargs = {
+                'registration': registration,
+                'first_name': first_name
+            }
+            if last_name_col_idx is not None:
+                last_name = data_rows[r][last_name_col_idx].value.strip()
+                if len(last_name) > 0:
+                    account_kwargs['last_name'] = last_name
+            try:
+                StudentAccount.objects.create(**account_kwargs)
+            except Exception as e:
+                logs['errors']['save_errors'].append(f'Cannot create student profile. Errors: {e}')
+                continue
+            logs['success'] += 1
+            
+        
+        logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
+        logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
+        
+        summary = render_to_string('results/components/course_excel_summary.html', context={'logs': logs})
+        return JsonResponse({'status':'Complete', 'summary':summary})
+    else:
+        return JsonResponse({'details': 'Not allowed!'}, status=400)
+
  
 # REST API SECTION BELOW
 
