@@ -15,5 +15,6 @@ urlpatterns = [
     path('admin/signup/', views.signup_admin, name="signupadmin"),
     path('admin/signup/createaccount/<str:tokenId>', views.create_admin_account, name="create_admin_account"),
     path('setadminavatar/', views.set_admin_avatar, name="set_admin_avatar"),
+    path('recovery/', views.forgot_password_get, name="forgot_password_get"),
 ]
    

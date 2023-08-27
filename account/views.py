@@ -232,6 +232,9 @@ def create_student_via_excel(request, pk):
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
 
+
+def forgot_password_get(request):
+    return render(request, 'account/forgot.html')
  
 # REST API SECTION BELOW
 

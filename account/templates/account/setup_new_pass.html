@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="styles/recovery.css">
+    <title>Recovery</title>
+</head>
+<body>
+    <div class="container mt-5 py-2">
+        <div class="text-white fs-4">SEC Results</div>
+        <div class="form-container shadow">
+            <div class="section-title py-1">Set new password</div>
+            <div class="content">
+                <div class="field-container inset-float-textinput-no-border password">
+                    <input class="inp_input" type="password" id="password0" placeholder=" ">
+                    <label class="inp_label" for="password0">New Password</label>
+                    <i class='bx bx-hide password-toggle' id="p1-toggle" data-inp="password1"></i>
+                </div>
+                <div class="field-container inset-float-textinput-no-border password mt-3">
+                    <input class="inp_input" type="password" id="password1" placeholder=" ">
+                    <label class="inp_label" for="password1">Retype Password</label>
+                    <i class='bx bx-hide password-toggle' id="p1-toggle" data-inp="password1"></i>
+                </div>
+                <div class="error-info mt-3" style="display: none;">
+                    <i class='bx bx-error-circle'></i>
+                    <span>Something went wrong</span>
+                </div>
+                <div class="submit-con mt-4">
+                    <button class="btn-1 shadow-sm">Submit</button>
+                </div>
+            </div>
+            <div class="success-info" style="display: none;">
+                <i class='bx bx-check' ></i>
+                <div class="info">Password setup complete. You can login now</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
