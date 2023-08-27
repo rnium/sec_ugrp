@@ -2,7 +2,7 @@
     Successful insertions: {{logs.success}}
 </li>
 {% if logs.has_parse_errors  %}
-<li>
+<li class="roboto-font small">
     Parse Errors:
     <ul>
         {% for error in logs.errors.parse_errors %}
@@ -15,7 +15,7 @@
 {% endif %}
 
 {% if logs.has_save_errors  %}
-<li>
+<li class="roboto-font small">
     Save Errors:
     <ul>
         {% for error in logs.errors.save_errors %}
@@ -28,7 +28,7 @@
 {% endif %}
 
 {% if logs.has_unmatching_errors  %}
-<li>
+<li class="roboto-font small">
     Unmatchings:
     <ul>
         {% for error in logs.errors.unmatching %}
