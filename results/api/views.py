@@ -414,7 +414,7 @@ def process_course_excel(request, pk):
         logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
         logs['has_unmatching_errors'] = bool(len(logs['errors']['unmatching']))  
         
-        summary = render_to_string('results/components/course_excel_summary.html', context={'logs': logs})
+        summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
         return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)

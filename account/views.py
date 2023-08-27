@@ -210,6 +210,7 @@ def process_student_create_excel(request, pk):
                 continue
             account_kwargs = {
                 'registration': registration,
+                'session': session,
                 'first_name': first_name
             }
             if last_name_col_idx is not None:
@@ -222,12 +223,11 @@ def process_student_create_excel(request, pk):
                 logs['errors']['save_errors'].append(f'Cannot create student profile. Errors: {e}')
                 continue
             logs['success'] += 1
-            
         
         logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
         logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
         
-        summary = render_to_string('results/components/course_excel_summary.html', context={'logs': logs})
+        summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
         return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
