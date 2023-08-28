@@ -337,7 +337,7 @@
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput" id="partAmarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partAmarksInput" placeholder="">
                                     <label for="partAmarksInput">Part A marks</label>
                                 </div>              
                             </div>
@@ -349,7 +349,7 @@
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput" id="partBmarksInput" placeholder="">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partBmarksInput" placeholder="">
                                     <label for="partBmarksInput">Part B marks</label>
                                 </div>              
                             </div> 
@@ -511,7 +511,6 @@
     const change_running_status_api = "{% url 'results:change_running_status' semester.id %}";
     const delete_semester_api = "{% url 'results:delete_semester' semester.id %}";
     const semesterId = {{semester.id}};
-    const semesterNthNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/viewsemester.js' %}"></script>
