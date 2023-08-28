@@ -119,6 +119,7 @@
         </div>
         {% endif %}
     </div>
+    {% if semester.is_tabulation_producible %}
     <div class="tabulation bg-material p-4 mt-4 rounded-3 shadow-sm border-b-1" id="tabulation-main">
         <div class="section-title text-center mb-4 text-info">Tabulation Sheet</div>
         <div class="tabulation-card-container">
@@ -264,6 +265,8 @@
         </div>
         {% endwith %}
     </div>
+    {% endif %}
+    
     <div class="semester-info bg-dark p-3 mt-5 rounded-3 shadow">
         <i class='bx bx-info-circle bg' ></i>
         <div class="d-flex justify-content-center align-items-center mt-4">

@@ -127,6 +127,11 @@ class Semester(models.Model):
         return bool(num_courses)
     
     @property
+    def is_tabulation_producible(self):
+        num_course_results = CourseResult.objects.filter(course__semester=self, total_score__isnull=False).count()
+        return bool(num_course_results)
+    
+    @property
     def has_tabulation_sheet(self):
         if self.semesterdocument and self.semesterdocument.tabulation_sheet:
             return True
