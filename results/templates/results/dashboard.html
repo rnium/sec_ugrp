@@ -42,7 +42,7 @@
         <div class="h4">Sylhet Engineering College</div>
     </div>
     <div class="row dashboard-content py-4 px-5">
-        <div class="col-lg-6 live-semesters title-box  me-3 bg-material">
+        <div class="col-lg-6 live-semesters title-box  me-3 ">
             <!-- <div class="grad-top"><div class="grad-con"></div></div> -->
             <div class="title">Recent Semesters</div>
             <div class="content">
@@ -60,7 +60,7 @@
                                 <div class="session">
                                     <span class="label">Session:&nbsp;</span>
                                     <span class="val">{{semester.session.session_code}}</span>
-                                    <span class="dept {{semester.session.dept.name|lower}}">{{semester.session.batch_name}}</span>
+                                    <span class="dept {% if semester.is_running %}{{semester.session.dept.name|lower}}{% else %}dept-all-offline-sem{% endif %}">{{semester.session.batch_name}}</span>
                                 </div>
                                 <!-- <div class="semester-no">4th year 1st semester</div> -->
                                 <div class="exam-start-month">

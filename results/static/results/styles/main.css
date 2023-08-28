@@ -161,6 +161,12 @@ body main .dashboard-container .dashboard-content .live-semesters .content ul li
           box-shadow: 0 0 10px #dea5e8;
 }
 
+body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept-all-offline-sem {
+  color: #ebeaef;
+  -webkit-box-shadow: 0 0 10px #ebeaef;
+          box-shadow: 0 0 10px #ebeaef;
+}
+
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month {
   display: -webkit-box;
   display: -ms-flexbox;
