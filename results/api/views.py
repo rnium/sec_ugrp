@@ -386,6 +386,8 @@ def process_course_excel(request, pk):
                         logs['errors']['save_errors'].append(f"reg. no: {reg_no}. Error: {e}")
                         continue
                     logs['success'] += 1
+                else:
+                    logs['errors']['unmatching'].append(f'Reg: {reg_no}. Row number: {r+2}')
         else:
             course_props = {
                 'code_a': 'part_A_code',
@@ -426,7 +428,7 @@ def process_course_excel(request, pk):
                         continue
                     logs['success'] += 1
                 else:
-                    logs['errors']['unmatching'].append(f'row number: {r+2}')
+                    logs['errors']['unmatching'].append(f'Reg: {reg_no}. Row number: {r+2}')
         
         logs['has_missing_cols'] = bool(len(logs['errors']['missing_cols']))    
         logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
