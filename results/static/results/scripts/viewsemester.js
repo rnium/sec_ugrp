@@ -438,5 +438,5 @@ $(document).ready(function () {
     $("#confirm-change-btn").on('click', change_running_status);
     // delete semester
     $("#confirm-del-btn").on('click', delete_semester)
-    showDevModal('newEntryModal')
+    // showDevModal('newEntryModal')
 });

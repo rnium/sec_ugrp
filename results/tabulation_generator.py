@@ -177,8 +177,9 @@ def render_spans(num_rows: int, num_cols: int, nth_semester: int) -> List[Tuple]
         raise ValueError()
     # first row static spans
     spans.append(('SPAN', (0, 0), (3,0))) 
-    spans.append(('SPAN', (-4, 0), (-3, 0))) 
     spans.append(('SPAN', (-2, 0), (-1, 0)))
+    if nth_semester > 1:
+        spans.append(('SPAN', (-4, 0), (-3, 0))) 
     # row-wise spans 
     for i in range(1, num_rows, 2):
         spans.append(('SPAN', (0, i), (0, i+1)))
