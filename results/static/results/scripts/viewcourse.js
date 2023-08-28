@@ -138,25 +138,26 @@ function processData() {
 }
 
 
-function calculate_Incourse(score) {
-    if (score == null | isNaN(score)) {
-        return "--";
-    }
-    let result = (required_inCourse_marks/course_incourse_marks) * score;
-    return convertFloat(result);
-}
 
 function updateTotalMarks(registration) {
     let a_score = parseFloat($(`#part-A-${registration}`).val().trim());
     let b_score = parseFloat($(`#part-B-${registration}`).val().trim());
-    let incourse_score;
-    if (inCourse_needs_conversion) {
-        incourse_score = parseFloat($(`#incourse-converted-${registration}`).text().trim());
-    } else {
-        incourse_score = parseFloat($(`#incourse-raw-${registration}`).val().trim())
-    }
-    if ((!isNaN(a_score)) && (!isNaN(b_score)) && (!isNaN(incourse_score))) {
-        let total = (a_score + b_score + incourse_score);
+    let incourse_score = parseFloat($(`#incourse-raw-${registration}`).val().trim());
+
+    if ((!isNaN(a_score)) | (!isNaN(b_score)) | (!isNaN(incourse_score))) {
+        let total = 0;
+        if (!isNaN(a_score)) {
+            let partA_actual = (course_part_A_marks_final/course_partA_marks) * a_score;
+            total += partA_actual;
+        }
+        if (!isNaN(b_score)) {
+            let partB_actual = (course_part_B_marks_final/course_partB_marks) * b_score;
+            total += partB_actual;
+        }
+        if (!isNaN(incourse_score)) {
+            total += incourse_score;
+        }
+        total = Math.ceil(total)
         if (total > course_total_marks) {
             $(`#total-${registration}`).text("Invalid");
             $(`#total-${registration}`).addClass('pending');
@@ -176,20 +177,6 @@ function activateScoreInputs() {
         const inp_id = $(this).attr('id');
         // update input class based on values
         check_input(inp_id)
-        // check for incourse marks
-        if ($(this).hasClass('incourse-score')) {
-            let new_converted_marks = calculate_Incourse($(this).val());
-            let converted_marks_container = `#incourse-converted-${registration}`;
-            $(converted_marks_container).text(new_converted_marks)
-            if (isNaN(new_converted_marks) | (new_converted_marks > required_inCourse_marks) ) {
-                $(converted_marks_container).text("--")
-                $(converted_marks_container).removeClass("text-info");
-                $(converted_marks_container).addClass("text-warning");
-            } else {
-                $(converted_marks_container).addClass("text-info");
-                $(converted_marks_container).removeClass("text-warning");
-            }
-        }
         // update total marks after all other checkings
         updateTotalMarks(registration)
     })
@@ -202,7 +189,6 @@ function generateRowElements(record) {
     const partBscore = record.part_B_score;
     const incourseScore = record.incourse_score;
     const total_score = record.total_score;
-    const required_inCourse_score = calculate_Incourse(record.incourse_score);
     let totalContainer = "";
     if (total_score != null) {
         totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(total_score)}</td>`
@@ -271,7 +257,6 @@ function insertTable(response) {
                             <th>Part A [${course_partA_marks}]</th>
                             <th>Part B [${course_partB_marks}]</th>
                             <th>In Course [${course_incourse_marks}]</th>
-                            ${inCourse_needs_conversion ? `<th>In Course [${required_inCourse_marks}]</th>` : ``}
                             <th>Total</th>
                         </tr>
                     </thead>
