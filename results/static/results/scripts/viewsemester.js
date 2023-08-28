@@ -91,13 +91,21 @@ function getNewCourseData() {
     let totalMarksIn = parseFloat($("#totalMarksInput").val().trim());
     let creditsIn = parseFloat($("#courseCreditsInput").val().trim());
     let partAMarksIn = parseFloat($("#partAmarksInput").val().trim());
+    let partAMarksInFinal = parseFloat($("#partAmarksInputFinal").val().trim());
     let partBMarksIn = parseFloat($("#partBmarksInput").val().trim());
+    let partBMarksInFinal = parseFloat($("#partBmarksInputFinal").val().trim());
     let incourseMarksIn = parseFloat($("#inCourseMarksInput").val().trim());
     
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
     
-    if (isNaN(totalMarksIn) | isNaN(creditsIn) | isNaN(partAMarksIn) | isNaN(partBMarksIn) | isNaN(incourseMarksIn)) {
+    if (isNaN(totalMarksIn)
+        | isNaN(creditsIn) 
+        | isNaN(partAMarksIn) 
+        | isNaN(partBMarksIn) 
+        | isNaN(incourseMarksIn) 
+        | isNaN(partAMarksInFinal)
+        | isNaN(partBMarksInFinal)) {
         $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
         $("#createCourseAlert").show()
         return false;
@@ -113,13 +121,7 @@ function getNewCourseData() {
         $("#createCourseAlert").show()
         return false;
     }
-    let semesterCodeOfCC = parseInt(courseCodeNumber.toString()[0])
-    if (semesterNthNumber != semesterCodeOfCC) {
-        $("#createCourseAlert").text("Invalid Course code for this semester!");
-        $("#createCourseAlert").show()
-        return false;
-    }
-    if ((partAMarksIn+partBMarksIn+incourseMarksIn) > totalMarksIn) {
+    if ((partAMarksInFinal+partBMarksInFinal+incourseMarksIn) > totalMarksIn) {
         $("#createCourseAlert").text("Invalid Marks Distribution!");
         $("#createCourseAlert").show()
         return false;
@@ -135,7 +137,9 @@ function getNewCourseData() {
         "course_credit": creditsIn,
         "total_marks": totalMarksIn,
         "part_A_marks": partAMarksIn,
+        "part_A_marks_final": partAMarksInFinal,
         "part_B_marks": partBMarksIn,
+        "part_B_marks_final": partBMarksInFinal,
         "incourse_marks": incourseMarksIn,
     }
 
@@ -209,8 +213,8 @@ function createCourse() {
             cache: false,
             success: function(response) {
                 hideModal("newSemesterEntryModal");
-                showInfo("createCourseAlert", "New course created successfully! Reloading page in a moments")
-                setTimeout(()=>{location.reload()}, 3000)
+                showInfo("createCourseAlert", "New course created successfully! Reloading page in a moment")
+                setTimeout(()=>{location.reload()}, 1000)
             },
             error: function(xhr, status, error) {
                 $("#createCourseAddBtn").removeAttr("disabled");
@@ -380,25 +384,9 @@ function delete_semester() {
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
-    $(".marksinput").on('keyup', function(){
-        let totalMarksIn = parseInt($("#totalMarksInput").val().trim());
-        let partAMarksIn = parseInt($("#partAmarksInput").val().trim());
-        let partBMarksIn = parseInt($("#partBmarksInput").val().trim());
-        let incourseMarksIn = parseInt($("#inCourseMarksInput").val().trim());
-        if (isNaN(totalMarksIn) | isNaN(partAMarksIn) | isNaN(partBMarksIn) | isNaN(incourseMarksIn)) {
-            $("#incourseInfoAlert").hide()
-        }
-        else {
-            let marksDiff = totalMarksIn - (partAMarksIn+partBMarksIn);
-            if (marksDiff != incourseMarksIn) {
-                $("#incourseInfoAlert .from").text(incourseMarksIn)
-                $("#incourseInfoAlert .to").text(marksDiff)
-                $("#incourseInfoAlert").show()
-            }
-            else {
-                $("#incourseInfoAlert").hide()
-            }
-        }
+    $(".part-x-marks").on('keyup', function(){
+        let final_input = $(this).attr('id') + "Final";
+        $(`#${final_input}`).val($(this).val());
     });
     $("#selectionConfirmBtn").on('click', updateDropcourse);
     $(".btn-check").on("change", function(){

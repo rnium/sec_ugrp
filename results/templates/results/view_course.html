@@ -227,7 +227,7 @@
                                 <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="process-excel-btn">
                                     <div class="content">
                                         <div class="d-flex align-items-center">
-                                            <i class='bx bx-play-circle me-2'></i>
+                                            <i class='bx bx-analyse me-2'></i>
                                             <span class="roboto-font ">Process</span>
                                         </div>
                                     </div>
@@ -308,9 +308,9 @@
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
     const course_partB_marks = {{course.part_B_marks}};
+    const course_part_A_marks_final = {{course.part_A_marks_final}};
+    const course_part_B_marks_final = {{course.part_B_marks_final}};
     const course_incourse_marks = {{course.incourse_marks}};
-    const required_inCourse_marks = course_total_marks - (course_partA_marks + course_partB_marks);
-    const inCourse_needs_conversion = (required_inCourse_marks != course_incourse_marks);
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/viewcourse.js' %}"></script>

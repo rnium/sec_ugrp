@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
@@ -193,6 +194,8 @@ class Course(models.Model):
     total_marks = models.FloatField(validators=[MinValueValidator(1, "Total Marks must be greater than 0")])
     part_A_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
     part_B_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
+    part_A_marks_final = models.FloatField(default=0, validators=[MinValueValidator(0, "Marks must be non negative")])
+    part_B_marks_final = models.FloatField(default=0, validators=[MinValueValidator(0, "Marks must be non negative")])
     incourse_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
@@ -205,6 +208,13 @@ class Course(models.Model):
     
     def __str__(self):
         return f"{self.semester} Course: {self.code}"
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.part_A_marks_final == 0:
+            self.part_A_marks_final = self.part_A_marks
+        if self.part_B_marks_final == 0:
+            self.part_B_marks_final = self.part_B_marks
+        super().save(*args, **kwargs)
     
     @property
     def num_nonempty_records(self):
@@ -261,28 +271,31 @@ class CourseResult(models.Model):
             if self.part_A_score is not None:
                 if self.part_A_score > self.course.part_A_marks:
                     raise ValidationError("Score cannot be more than defined marks")
-                total += self.part_A_score
+                conversion_ratio = (self.course.part_A_marks_final / self.course.part_A_marks)
+                part_a_actual_score = conversion_ratio * self.part_A_score
+                total += part_a_actual_score
             if self.part_B_score is not None:
                 if self.part_B_score > self.course.part_B_marks:
                     raise ValidationError("Score cannot be more than defined marks")
-                total += self.part_B_score
+                conversion_ratio = (self.course.part_B_marks_final / self.course.part_B_marks)
+                part_b_actual_score = conversion_ratio * self.part_B_score
+                total += part_b_actual_score
             if self.incourse_score is not None:
                 if self.incourse_score > self.course.incourse_marks:
                     raise ValidationError("Score cannot be more than defined marks")
                 total += self.incourse_score
                 
-            self.total_score = math.ceil(total)
+            self.total_score = total
                 
         else:          # Case 2: If total marks are provided
             if self.total_score != None:
                 if self.total_score > self.course.total_marks:
                     raise ValidationError("Score cannot be more than defined marks")
-                else:
-                    self.total_score = math.ceil(self.total_score)
                 
         # Saving grade point
-        self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
-        self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
+        totalScore = math.ceil(self.total_score)
+        self.grade_point = calculate_grade_point(totalScore, self.course.total_marks)
+        self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
         super().save(*args, **kwargs)
         # updating semester enrollment
         enrollment = SemesterEnroll.objects.filter(semester=self.course.semester, student=self.student).first()
