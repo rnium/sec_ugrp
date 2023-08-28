@@ -331,6 +331,12 @@ def process_course_excel(request, pk):
     
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
+        # checking filename for our course here
+        filename = excel_file.name.replace(' ', '').lower()
+        course_codename = course.code.replace(' ', '').lower()
+        if filename.find(course_codename) == -1:
+            return JsonResponse({'details': 'Filename must contain course code'}, status=400)
+        # preparing workbook
         try:
             buffer = BytesIO(excel_file.read())
             wb = openpyxl.load_workbook(buffer)
