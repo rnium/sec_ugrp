@@ -285,18 +285,17 @@ class CourseResult(models.Model):
                     raise ValidationError("Score cannot be more than defined marks")
                 total += self.incourse_score
                 
-            self.total_score = math.ceil(total)
+            self.total_score = total
                 
         else:          # Case 2: If total marks are provided
             if self.total_score != None:
                 if self.total_score > self.course.total_marks:
                     raise ValidationError("Score cannot be more than defined marks")
-                else:
-                    self.total_score = math.ceil(self.total_score)
                 
         # Saving grade point
-        self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
-        self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
+        totalScore = math.ceil(self.total_score)
+        self.grade_point = calculate_grade_point(totalScore, self.course.total_marks)
+        self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
         super().save(*args, **kwargs)
         # updating semester enrollment
         enrollment = SemesterEnroll.objects.filter(semester=self.course.semester, student=self.student).first()

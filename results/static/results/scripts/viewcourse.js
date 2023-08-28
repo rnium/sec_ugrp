@@ -157,7 +157,7 @@ function updateTotalMarks(registration) {
         if (!isNaN(incourse_score)) {
             total += incourse_score;
         }
-        total = Math.ceil(total)
+        total = convertFloat(total);
         if (total > course_total_marks) {
             $(`#total-${registration}`).text("Invalid");
             $(`#total-${registration}`).addClass('pending');
