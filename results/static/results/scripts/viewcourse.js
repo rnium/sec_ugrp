@@ -215,7 +215,6 @@ function generateRowElements(record) {
         partAscore: `<input type="text" data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
         partBscore: `<input type="text" data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
         inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} ${is_running_semester ? '': "disabled"}>`,
-        convertedInCourse: `<td id="incourse-converted-${registration}" class="${ isNaN(required_inCourse_score) ? 'text-warning' : "text-info"}">${required_inCourse_score}</td>`,
         totalContainer: totalContainer
     }
     return elements;
@@ -254,7 +253,6 @@ function render_rows(response) {
                         <td class="inp-con">
                             ${fields.inCourseScore}
                         </td>
-                        ${inCourse_needs_conversion ? fields.convertedInCourse : ""}
                         ${fields.totalContainer}
                     </tr>`;
         rows += row;

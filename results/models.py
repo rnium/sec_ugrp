@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
@@ -207,6 +208,14 @@ class Course(models.Model):
     
     def __str__(self):
         return f"{self.semester} Course: {self.code}"
+    
+    def save(self, *args, **kwargs) -> None:
+        if self.part_A_marks_final is None:
+            if self.part_A_marks_final == 0:
+                self.part_A_marks_final = self.part_A_marks
+            if self.part_A_marks_final == 0:
+                self.part_B_marks_final = self.part_B_marks
+        super().save(*args, **kwargs)
     
     @property
     def num_nonempty_records(self):
