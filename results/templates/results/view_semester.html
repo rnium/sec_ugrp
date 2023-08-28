@@ -64,6 +64,10 @@
     </div>
     <div class="all-courses bg-material p-3 mt-4 rounded-3 border-b-1">
         <div class="header text-center">All Courses</div>
+        <div class="d-flex justify-content-center align-items-center mt-1">
+            <i class='bx bxs-pyramid fs-5 me-2 text-secondary'></i>
+            <div class="roboto-font text-secondary">{{semester.total_credits}} Credits</div>
+        </div>
         <div class="courses row p-4">
             {% if semester.has_courses %}
             {% for course in semester.course_set.all %}
