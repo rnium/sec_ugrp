@@ -248,14 +248,20 @@ function render_rows(response) {
 
 function insertTable(response) {
     let rows = render_rows(response);
+    const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
+    const partB_conv_ratio = convertFloat(course_part_B_marks_final/course_partB_marks);
     let table = `<table>
                     <thead>
                         <tr>
                             <th>Registration No</th>
                             <th>Part A Code</th>
                             <th>Part B Code</th>
-                            <th>Part A [${course_partA_marks}]</th>
-                            <th>Part B [${course_partB_marks}]</th>
+                            <th>Part A [${course_partA_marks}]
+                                <div class="small text-info">conv. ratio: ${partA_conv_ratio}</div>
+                            </th>
+                            <th>Part B [${course_partB_marks}]
+                                <div class="small text-info">conv. ratio: ${partB_conv_ratio}</div>
+                            </th>
                             <th>In Course [${course_incourse_marks}]</th>
                             <th>Total</th>
                         </tr>
