@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.templatetags.static import static
 from results.utils import get_ordinal_number, calculate_grade_point, calculate_letter_grade
 from os.path import join, basename
+import math
 
 
 class Department(models.Model):
@@ -270,12 +271,14 @@ class CourseResult(models.Model):
                     raise ValidationError("Score cannot be more than defined marks")
                 total += self.incourse_score
                 
-            self.total_score = round(total, 3)
+            self.total_score = math.ceil(total)
                 
         else:          # Case 2: If total marks are provided
             if self.total_score != None:
                 if self.total_score > self.course.total_marks:
                     raise ValidationError("Score cannot be more than defined marks")
+                else:
+                    self.total_score = math.ceil(self.total_score)
                 
         # Saving grade point
         self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
