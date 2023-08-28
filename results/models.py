@@ -281,6 +281,10 @@ class CourseResult(models.Model):
         self.grade_point = calculate_grade_point(self.total_score, self.course.total_marks)
         self.letter_grade = calculate_letter_grade(self.total_score, self.course.total_marks)
         super().save(*args, **kwargs)
+        # updating semester enrollment
+        enrollment = SemesterEnroll.objects.filter(semester=self.course.semester, student=self.student).first()
+        if enrollment:
+            enrollment.update_stats()
         
     
     @property
