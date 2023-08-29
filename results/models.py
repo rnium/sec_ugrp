@@ -51,6 +51,12 @@ class Session(models.Model):
     def __str__(self):
         return f"{self.dept.name.upper()} {self.session_code}"
     
+    def count_total_credits(self):
+        credits_count = 0
+        for semester in self.semester_set.all():
+            credits_count += semester.total_credits
+        return credits_count
+            
     @property
     def session_code(self):
         return f"{self.from_year}-{self.to_year % 2000}"
@@ -62,6 +68,9 @@ class Session(models.Model):
     @property
     def batch_name(self):
         return f"{self.dept.name.upper()} {get_ordinal_number(self.batch_no)} batch"
+    
+    
+        
     
 
 class Semester(models.Model):

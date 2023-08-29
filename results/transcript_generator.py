@@ -182,11 +182,12 @@ def get_main_table(context: Dict) -> Table:
     # Extracting requied data
     student = context['student']
     STUDENT_CGPA = student.total_points / student.credits_completed
+    SESSION_TOTAL_CREDITS = student.session.count_total_credits()
     PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
     GRADES_COUNT = session_letter_grades_count(student.session)
-    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=160).count()
+    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=SESSION_TOTAL_CREDITS).count()
     if NUM_INCOMPLETE_STUDENTS == 0:
         NUM_INCOMPLETE_STUDENTS = 'Nil'
     if hasattr(context['last_semester'], 'semesterdocument'):
