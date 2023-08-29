@@ -64,7 +64,6 @@ class Session(models.Model):
         return f"{self.dept.name.upper()} {get_ordinal_number(self.batch_no)} batch"
     
 
-
 class Semester(models.Model):
     year = models.IntegerField(
         validators = [
@@ -178,7 +177,6 @@ class SemesterEnroll(models.Model):
             self.save()
             self.student.update_stats()
         
-    
 
 class SemesterDocument(models.Model):
     def filepath(self, filename):
@@ -196,8 +194,6 @@ class SemesterDocument(models.Model):
         return name_str
     
     
-
-
 class Course(models.Model):
     semester = models.ForeignKey("Semester", on_delete=models.CASCADE)
     code = models.CharField(max_length=20)
@@ -213,7 +209,7 @@ class Course(models.Model):
     added_in = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-course_credit", "code"]
+        ordering = ["code", "-course_credit"]
         constraints = [
             models.UniqueConstraint(fields=["semester", "code"], name="unique_course_semester")
         ]
@@ -248,7 +244,6 @@ class Course(models.Model):
         return self.courseresult_set.filter(total_score=None).count()
     
     
-
 class CourseResult(models.Model):
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
