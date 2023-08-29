@@ -1,7 +1,8 @@
-from typing import List
+from typing import List, Dict
+from io import BytesIO
+from django.conf import settings
 from reportlab.lib import colors
 from reportlab.lib.units import inch, cm
-from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer
@@ -10,16 +11,19 @@ from reportlab.platypus import Image
 from reportlab.platypus.flowables import Flowable
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from results.utils import get_letter_grade
 
 DEBUG_MODE = False
 
 w, h = A4
 margin_X = 1*cm
 margin_Y = 1*cm
-pdfmetrics.registerFont(TTFont('roboto-bold', "Roboto-Bold.ttf"))
-pdfmetrics.registerFont(TTFont('roboto-italic', "Roboto-MediumItalic.ttf"))
-pdfmetrics.registerFont(TTFont('roboto', "Roboto-Regular.ttf"))
-pdfmetrics.registerFont(TTFont('roboto-m', "Roboto-Medium.ttf"))
+
+pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-italic', settings.BASE_DIR/'results/static/results/fonts/Roboto-MediumItalic.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-m', settings.BASE_DIR/'results/static/results/fonts/Roboto-Medium.ttf'))
+
 
 
 class HorizontalLine(Flowable):
@@ -106,9 +110,9 @@ def get_exam_controller_table() -> Table:
     
 
 def build_header(flowables) -> None: 
-    logo = Image('sust.png', width=55, height=60.434)
+    logo = Image(settings.BASE_DIR/'results/static/results/images/sust.png', width=55, height=60.434)
     controller_table = get_exam_controller_table()
-    phone_icon = "phone.png"
+    phone_icon = settings.BASE_DIR/'results/static/results/images/phone.png'
     brown_paragraph_style = custom_style = ParagraphStyle(
         name='brown_paragraph_style',
         fontName = "roboto-m",
@@ -141,10 +145,10 @@ def build_header(flowables) -> None:
     line = HorizontalLine(w)
     flowables.append(line)
 
-def get_yearOfExamsTable() -> Table:
+def get_yearOfExamsTable(scheduled, held) -> Table:
     data = [
-        ['(a) Scheduled', ':  2021'],
-        ['(b) Held On', ':  2022'],
+        ['(a) Scheduled', f':  {scheduled}'],
+        ['(b) Held On', f':  {held}'],
     ]
     style_config = [
         ('ALIGN', (0, 0), (0, -1), 'LEFT'),
@@ -162,7 +166,7 @@ def get_yearOfExamsTable() -> Table:
     table.setStyle(TableStyle(style_config))
     return table
         
-def get_main_table() -> Table:
+def get_main_table(context: Dict) -> Table:
     table_fontSize = 9
     table_fontName_normal = 'Times-Roman'
     table_fontName_bold = 'Times-Bold'
@@ -175,29 +179,43 @@ def get_main_table() -> Table:
     university_paragraph = Paragraph("Shahjalal University of Science & Technology<br/>P.O.: University, Sylhet, Bangladesh.", style=normalStyle)
     bottom_info = """The results of the student mentioned above are compiled considering agreegated of <u>four years for B. Sc. (Engg.)</u><br/>examinations.
     Additional sheets containing the subject studied, course number and grade obtained in each course<br/>are enclosed."""
+    # Extracting requied data
+    student = context['student']
+    STUDENT_CGPA = student.total_points / student.credits_completed
+    PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
+    LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
+    LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
+    if hasattr(context['last_semester'], 'semesterdocument'):
+        semesterDoc = context['last_semester'].semesterdocument
+        if semesterDoc.tabulatiobn_sheet_render_config is not None:
+            try:
+                held_time = semesterDoc.tabulatiobn_sheet_render_config['render_config']['tabulation_exam_time']
+            except KeyError:
+                pass
+            LAST_SEMESTER_HELD_TIME = held_time.split(' ')[-1]
+    LAST_SEMESTER_ENROLLS_COUNT = context['last_semester'].semesterenroll_set.count()    
     data = [
-        ["1.", 'Name of the Student', ':', 'IFTAKHAR ALAM SAMIN'],
+        ["1.", 'Name of the Student', ':', student.student_name.upper()],
         ["2.", 'Name of the CollegeName of the College', ':', 'Sylhet Engineering College, Sylhet'],
         ["3.", 'Name of the University', ':', university_paragraph],
-        ["4.", 'Registration & Exam Roll No.', ':', '2017338503'],
-        ["5.", 'Period Attended', ':', '2017-2022'],
-        ["6.", 'Years of Examination', ':', get_yearOfExamsTable()],
-        ["7.", 'Degree(s) Awarded', ':', 'B.Sc. (Engg.) in Electrical and Electronic Engineering'],
+        ["4.", 'Registration & Exam Roll No.', ':', student.registration],
+        ["5.", 'Period Attended', ':', f'{PERIOD_ATTENDED_FROM_YEAR}-{LAST_SEMESTER_HELD_TIME}'],
+        ["6.", 'Years of Examination', ':', get_yearOfExamsTable(LAST_SEMESTER_SHEDULE_TIME, LAST_SEMESTER_HELD_TIME)],
+        ["7.", 'Degree(s) Awarded', ':', f'B.Sc. (Engg.) in {student.session.dept.fullname}'],
         ["8.", 'Grading System', ':', get_grading_scheme_table()],
         [Spacer(1, 10)],
-        ["9.", 'Credits Completed', ':', "161"],
-        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph("CGPA: <b>3.77 (With Distinction)</b>", style=normalStyle)],
-        ["11.", 'Letter Grade Obtained', ':', Paragraph("<b>A</b>", style=normalStyle)],
-        ["12.", 'Position In Class', ':', Paragraph("<b>4th</b>", style=normalStyle)],
-        ["13.", 'Total Number of Students Appeared', ':', Paragraph("<b>57</b>", style=normalStyle)],
-        ["14."
+        ["9.", 'Credits Completed', ':', student.credits_completed],
+        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{round(STUDENT_CGPA, 2)} (With Distinction)</b>", style=normalStyle)],
+        ["11.", 'Letter Grade Obtained', ':', Paragraph(f"<b>{get_letter_grade(STUDENT_CGPA)}</b>", style=normalStyle)],
+        ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{LAST_SEMESTER_ENROLLS_COUNT}</b>", style=normalStyle)],
+        ["13."
          , Paragraph(
              'Total Number of  Degree Awarded<br/>this Year in Applicant\'s Academic Field', style=normalStyle
          )
          , ':'
          , Paragraph("<b>A+ = Nil, A = 09, A- = 20, B+ = 16, B = 08, B- = 02, C+ = Nil <br/>C = Nil, C- = Nil, Withheld = Nil, Incomplete = 02</b>", style=normalStyle)
         ],
-        ["15.", 'Medium of Instruction', ':', Paragraph("<b>English</b>", style=normalStyle)],
+        ["14.", 'Medium of Instruction', ':', Paragraph("<b>English</b>", style=normalStyle)],
         [Paragraph(bottom_info, normalStyle), '', '', '']
     ]
     style_config = [
@@ -223,23 +241,21 @@ def get_main_table() -> Table:
     table.setStyle(TableStyle(style_config))
     return table
 
-def build_body(flowables: List) -> None:
+def build_body(flowables: List, context: Dict) -> None:
     title_style = ParagraphStyle(
         name='TitleStyle',
         fontName='Times-Bold',
         fontSize=11,
-        # leading=14,
         textColor=colors.black,
         alignment=1,
-        # underline=True,  # Set underline to True
     )
     flowables.append(Paragraph("<u>TRANSCRIPT OF ACADEMIC RECORDS</u>", style=title_style))
     flowables.append(Spacer(1, 15))
-    flowables.append(get_main_table())
+    flowables.append(get_main_table(context))
 
-def get_footer():
+def get_footer(context):
     footer_data = [
-        ['Prepared by: Md. Ashraful Alam', 'Compared by:', 'Deputy Controller of Examinations']
+        [f"Prepared by: {context['admin_name']}", 'Compared by:', 'Deputy Controller of Examinations']
     ]
     style_config = [
         ('FONTSIZE', (0, 0), (-1, -1), 10), 
@@ -254,21 +270,20 @@ def get_footer():
     signature_table.setStyle(TableStyle(style_config))
     
     return signature_table
-
-    
-def add_footer(canvas, doc):
-    footer = get_footer()
+  
+def add_footer(canvas, doc, context):
+    footer = get_footer(context)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=0.9*inch, y=0.7*inch)  
 
-def build_transcript():
-    doc = SimpleDocTemplate("transcript.pdf", pagesize=A4, topMargin=margin_Y, title="Academic Transcript")
+def get_transcript(context: Dict):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title="Academic Transcript")
     story = []
     build_header(story)
     story.append(Spacer(1, 15))
-    build_body(story)
+    build_body(story, context)
    
-    doc.build(story, onFirstPage=add_footer)
+    doc.build(story, onFirstPage=lambda canv, doc: add_footer(canvas=canv, doc=doc, context=context))
+    return buffer.getvalue()
     
-if __name__ == "__main__":
-    build_transcript()

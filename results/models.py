@@ -83,7 +83,7 @@ class Semester(models.Model):
             MaxValueValidator(8, message="Semester number cannot be more than 8"),
         ]
     )
-    start_month = models.CharField(max_length=15)
+    start_month = models.CharField(max_length=15) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
     is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")

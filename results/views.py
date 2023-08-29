@@ -9,8 +9,16 @@ from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course)
 from account.models import StudentAccount, AdminAccount
 from results.gradesheet_generator import get_gradesheet
+from results.transcript_generator import get_transcript
 from results.utils import get_ordinal_number, render_error
 
+
+def user_is_super_OR_dept_admin(request):
+    if hasattr(request.user, 'adminaccount'):
+        return request.user.adminaccount.is_super_admin or (request.user.adminaccount.dept is not None)
+    else:
+        return False
+    
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "results/dashboard.html"
@@ -152,6 +160,9 @@ def download_semester_tabulation(request, pk):
 
 @login_required
 def download_year_gradesheet(request, registration, year):
+    has_permission = user_is_super_OR_dept_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     # semester enrolls
     try:
@@ -170,10 +181,20 @@ def download_year_gradesheet(request, registration, year):
 
 @login_required
 def download_transcript(request, registration):
+    has_permission = user_is_super_OR_dept_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
-    last_semester = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
-    if last_semester is not None:
-        return render_error(request, 'WIP!')
+    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    if last_enroll is not None:
+        context = {
+            'admin_name': request.user.adminaccount.user_full_name,
+            'student': student,
+            'last_semester': last_enroll.semester
+        }
+        sheet_pdf = get_transcript(context=context)
+        filename = f"Transcript - {student.registration}.pdf"
+        return FileResponse(ContentFile(sheet_pdf), filename=filename)
     else:
         return render_error(request, 'Transcript not available!')
 

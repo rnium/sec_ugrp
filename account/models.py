@@ -119,7 +119,7 @@ class StudentAccount(BaseAccount):
             return f"{self.first_name} {self.last_name}"
         else:
             return self.first_name
-    
+        
     @property
     def student_cgpa(self):
         if points:= self.total_points:
