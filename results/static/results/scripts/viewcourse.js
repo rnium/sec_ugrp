@@ -486,4 +486,10 @@ $(document).ready( function() {
             alert("Please choose an excel file!")
         }
     })
+    // focus reg input of addnewentry
+    $("#add-new").on('click', ()=>{
+        setTimeout(() => {
+            $("#new_entry_registration").focus();
+        }, 500);
+    })
 })
