@@ -342,7 +342,7 @@ def process_course_excel(request, pk):
             wb = openpyxl.load_workbook(buffer)
             sheet = wb[wb.sheetnames[0]]
             rows = list(sheet.rows)
-            header = [cell.value.lower().strip() for cell in rows[0]]
+            header = [cell.value.lower().strip() if cell.value is not None else None for cell in rows[0]]
             data_rows = rows[1:]
         except Exception as e:
             return JsonResponse({'details': e}, status=400)
