@@ -385,11 +385,11 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                if total is None:
-                    logs['errors']['parse_errors'].append(f'Reg no: {reg_no} Missing value for: total. Value set to : 0')
-                    total = 0
                 course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
+                    if total is None:
+                        logs['errors']['parse_errors'].append(f'Reg no: {reg_no} Missing value for: total. Value set to : 0')
+                        total = 0
                     course_res.total_score = total
                     # setting other scores to None
                     course_res.part_A_score = None
