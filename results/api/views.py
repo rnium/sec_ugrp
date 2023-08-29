@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
@@ -61,6 +61,16 @@ class SemesterCreate(CreateAPIView):
             raise BadrequestException(str(e))
 
 
+class SemesterUpdate(UpdateAPIView):
+    serializer_class = SemesterSerializer
+    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    
+    def get_queryset(self):
+        pk = self.kwargs.get("pk")
+        semester = Semester.objects.filter(id=pk)
+        return semester
+    
+    
 
 class CourseCreate(CreateAPIView):
     serializer_class = CourseSerializer

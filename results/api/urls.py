@@ -7,6 +7,7 @@ urlpatterns = [
     path('session/<int:pk>/createsemester/', views.SemesterCreate.as_view(), name="create_semester"),
     path('createcourse/', views.CourseCreate.as_view(), name="create_course"),
     path('semester<int:pk>/dropcourseupdate/', views.updateDropCourses, name="drop_course_update"),
+    path('semester<int:pk>/update/', views.SemesterUpdate.as_view(), name="semester_update"),
     path('semester<int:pk>/rendertabulation/', views.render_tabulation, name="render_tabulation"),
     path('semester<int:pk>/changerunningstatus/', views.toggle_semester_is_running, name="change_running_status"),
     path('semester<int:pk>/deletesemester/', views.delete_semester, name="delete_semester"),

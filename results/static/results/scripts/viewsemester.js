@@ -381,6 +381,76 @@ function delete_semester() {
     }
 }
 
+function getSemesterData() {
+    let exam_month = $("#monthInput").val().trim();
+    let yearInput = $("#yearInput").val().trim();
+    let semesterInput = $("#SemesterInput").val().trim();
+    exam_month_array = exam_month.split(" ")
+    let year_no = parseInt(yearInput)
+    let year_semester_no = parseInt(semesterInput)
+
+    if (isNaN(year_no) | isNaN(year_semester_no) | exam_month_array.length != 2) {
+        $("#updateSemesterAlert").text("Invalid Input");
+        $("#updateSemesterAlert").show()
+        return false;
+    }
+    if (year_no < 1 | year_no > 4) {
+        $("#updateSemesterAlert").text("Invalid Year Number");
+        $("#updateSemesterAlert").show()
+        return false;
+    }
+    if (year_semester_no < 1 | year_semester_no > 2) {
+        $("#updateSemesterAlert").text("Invalid Semester Number");
+        $("#updateSemesterAlert").show()
+        return false;
+    }
+    else {
+        $("#updateSemesterAlert").hide()
+    }
+    const nth_semester = ((year_no - 1)*2) + year_semester_no;
+    data = {
+        "year": year_no,
+        "year_semester": year_semester_no,
+        "semester_no": nth_semester,
+        "start_month": exam_month,
+    }
+    return data;
+}
+
+function updateSemester() {
+    payload = getSemesterData()
+    if (payload) {
+        $.ajax({
+            type: "patch",
+            url: semester_update_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#update-semester-btn").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                showInfo('updateSemesterAlert', "Updated successfully. Reloading!");
+                setTimeout(()=>{
+                    location.reload();
+                }, 1000)
+            },
+            error: function(xhr, status, _error) {
+                try {
+                    showError("updateSemesterAlert", xhr.responseJSON);
+                } catch (error) {
+                    showError("updateSemesterAlert", _error);
+                }
+            },
+            complete: function() {
+                $("#update-semester-btn").removeAttr("disabled");
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -426,5 +496,6 @@ $(document).ready(function () {
     $("#confirm-change-btn").on('click', change_running_status);
     // delete semester
     $("#confirm-del-btn").on('click', delete_semester)
-    // showDevModal('newEntryModal')
+    // update semester 
+    $("#update-semester-btn").on('click', updateSemester)   
 });

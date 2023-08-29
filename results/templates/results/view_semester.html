@@ -453,28 +453,28 @@
                     <div class="form-container row p-0">
                         <div class="col-md-6 mb-2 pe-1">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="yearInput" placeholder="">
+                                <input type="text" class="form-control" id="yearInput" placeholder="" value="{{semester.year}}">
                                 <label for="yearInput">Year No.</label>
                             </div>              
                         </div>
                         <div class="col-md-6 mb-2 ps-1">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="SemesterInput" placeholder="">
+                                <input type="text" class="form-control" id="SemesterInput" placeholder="" value="{{semester.year_semester}}">
                                 <label for="SemesterInput">Semester No.</label>
                             </div>              
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="monthInput" placeholder="">
+                                <input type="text" class="form-control" id="monthInput" placeholder="" value="{{semester.start_month}}">
                                 <label for="monthInput">Exam Schedule (e.g., March 2023)</label>
                             </div>            
                         </div>                                             
                     </div>
-                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
+                    <div id="updateSemesterAlert" class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
                     </div>   
                 </div>
                 <div class="d-flex p-3 pt-0 justify-content-end">
-                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="update-semester-btn">
                         <i class='bx bx-refresh me-1'></i>
                         <span>Update</span>
                     </button>
@@ -559,6 +559,7 @@
 {% block script %}
 <script>
     const create_course_api = "{% url 'results:create_course' %}";
+    const semester_update_api = "{% url 'results:semester_update' semester.id %}";
     const drop_course_update_api = "{% url 'results:drop_course_update' semester.id %}";
     const render_tabulation_api = "{% url 'results:render_tabulation' semester.id %}";
     const change_running_status_api = "{% url 'results:change_running_status' semester.id %}";
