@@ -281,25 +281,29 @@
             <i class='bx bx-user-check me-1 fs-4 text-secondary'></i>
             <span class="roboto-font">{{request.user.adminaccount.user_full_name}}</span>
         </div>
-        <div class="btn-container mt-2 d-flex justify-content-center ">
+        <div class="btn-container mt-2 d-flex justify-content-center my-4">
             {% comment %} If it does not has courses it is deletale, otherwise it can be changed within is_running ststus {% endcomment %}
             {% if not semester.has_courses %}
-            <button class="btn btn-danger btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteSemesterModal">
+            <button class="btn btn-danger btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteSemesterModal">
                 <i class='bx bxs-trash-alt me-2 py-1'></i>
                 <span class="roboto-font ">Delete This Semester</span>
             </button>
+            <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#semesterEditModal">Edit Semester</button>
+
             {% else %}
             {% if semester.is_running %}
-            <button class="btn btn-secondary btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
+            <button class="btn btn-secondary btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
                 <i class='bx bx-lock-alt me-2 py-1'></i>
                 <span class="roboto-font ">Close This Semester</span>
             </button>
             {% else %}
-            <button class="btn btn-success btn-iconized my-4 px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
+            <button class="btn btn-success btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
                 <i class='bx bx-play me-2 py-1'></i>
                 <span class="roboto-font ">Run This Semester</span>
             </button>
             {% endif %}
+            <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#semesterEditModal">Edit Semester</button>
+
             {% endif %}
         </div>
     </div>
@@ -436,6 +440,48 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- Semester Update Modal -->
+    <div class="modal fade" id="semesterEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Edit Semester</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>              
+                <div class="modal-body">
+                    <div class="form-container row p-0">
+                        <div class="col-md-6 mb-2 pe-1">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="yearInput" placeholder="">
+                                <label for="yearInput">Year No.</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-6 mb-2 ps-1">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="SemesterInput" placeholder="">
+                                <label for="SemesterInput">Semester No.</label>
+                            </div>              
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="monthInput" placeholder="">
+                                <label for="monthInput">Exam Schedule (e.g., March 2023)</label>
+                            </div>            
+                        </div>                                             
+                    </div>
+                    <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
+                    </div>   
+                </div>
+                <div class="d-flex p-3 pt-0 justify-content-end">
+                    <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="save-btn">
+                        <i class='bx bx-refresh me-1'></i>
+                        <span>Update</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     
 
     <!-- Notification Modal -->
