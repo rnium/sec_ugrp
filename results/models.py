@@ -147,7 +147,7 @@ class Semester(models.Model):
 class SemesterEnroll(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
-    courses = models.ManyToManyField("Course", related_name='enrolled_courses')
+    courses = models.ManyToManyField("Course", related_name='enrollment')
     semester_credits = models.FloatField(default=0)
     semester_points = models.FloatField(default=0)
     semester_gpa = models.FloatField(null=True, blank=True)
@@ -311,7 +311,7 @@ class CourseResult(models.Model):
             self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
         super().save(*args, **kwargs)
         # updating semester enrollment
-        enrollment = SemesterEnroll.objects.filter(semester=self.course.semester, student=self.student).first()
+        enrollment = self.course.enrollment.filter(student=self.student).first()
         if enrollment:
             enrollment.update_stats()
         
