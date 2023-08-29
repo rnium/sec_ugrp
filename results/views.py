@@ -149,9 +149,9 @@ def download_semester_tabulation(request, pk):
     else:
         return render_error(request, 'No Tabulation sheet')
 
+
 @login_required
 def download_year_gradesheet(request, registration, year):
-    # student
     student = get_object_or_404(StudentAccount, registration=registration)
     # semester enrolls
     try:
@@ -167,6 +167,18 @@ def download_year_gradesheet(request, registration, year):
     filename = f"{get_ordinal_number(year)} year gradesheet - {student.registration}.pdf"
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
+
+@login_required
+def download_transcript(request, registration):
+    student = get_object_or_404(StudentAccount, registration=registration)
+    last_semester = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    if last_semester is not None:
+        return render_error(request, 'WIP!')
+    else:
+        return render_error(request, 'Transcript not available!')
+
+
 @login_required 
 def pending_view(request):
     return render_error(request, 'This Section is Under Development!')
+

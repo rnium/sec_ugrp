@@ -13,6 +13,7 @@ urlpatterns = [
     path('departments/<str:dept_name>/<int:from_year>-<int:to_year>/semester/<int:year>-<int:semester>/<str:course_code>', views.CourseView.as_view(), name="view_course"),
     path('semester/<int:pk>/tabulation/download', views.download_semester_tabulation, name="download_semester_tabulation"),
     path('student/<int:registration>/gradesheet/<int:year>', views.download_year_gradesheet, name="download_year_gradesheet"),
+    path('student/<int:registration>/transcript', views.download_transcript, name="download_transcript"),
     path('staffs', views.StaffsView.as_view(), name="stuffs_view"),
 ]
 
