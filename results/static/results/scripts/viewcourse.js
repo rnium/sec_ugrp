@@ -442,7 +442,8 @@ function uploadExcel(excel_file) {
         },
         success: function(response) {
             $("#summary_list").html(response.summary);
-            $("#summary_list_container").show(500)
+            $("#summary_list_container").show(500);
+            loadCourseResults();
         },
         error: function(xhr, status, error) {
             try {
