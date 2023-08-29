@@ -70,6 +70,11 @@ class SemesterUpdate(UpdateAPIView):
         semester = Semester.objects.filter(id=pk)
         return semester
     
+    def patch(self, request, *args, **kwargs):
+        try:
+            return self.partial_update(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class CourseCreate(CreateAPIView):

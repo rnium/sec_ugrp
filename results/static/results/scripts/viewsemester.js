@@ -421,7 +421,7 @@ function updateSemester() {
     payload = getSemesterData()
     if (payload) {
         $.ajax({
-            type: "patch",
+            type: "PATCH",
             url: semester_update_api,
             dataType: "json",
             contentType: "application/json",
@@ -432,14 +432,14 @@ function updateSemester() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                showInfo('updateSemesterAlert', "Updated successfully. Reloading!");
+                showInfo('updateSemesterAlert', "Updated successfully");
                 setTimeout(()=>{
-                    location.reload();
+                    window.location.href = session_url;
                 }, 1000)
             },
             error: function(xhr, status, _error) {
                 try {
-                    showError("updateSemesterAlert", xhr.responseJSON);
+                    showError("updateSemesterAlert", JSON.stringify(xhr.responseJSON));
                 } catch (error) {
                     showError("updateSemesterAlert", _error);
                 }
