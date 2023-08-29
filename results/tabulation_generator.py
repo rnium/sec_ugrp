@@ -11,7 +11,7 @@ from results.models import Semester, SemesterEnroll, CourseResult
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade
 
-TABLE_FONT_SIZE = 9
+TABLE_FONT_SIZE = 10
 h, w = TABLOID
 
 class SemesterDataContainer:
@@ -287,6 +287,7 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         # ('WORDWRAP', (0, 0), (-1, -1), True),   # Enable word wrap for all cells
         # ('SHRINK', (0, 0), (-1, -1), 1), 
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
+        ('FONTSIZE', (2, 0), (-5, 1), TABLE_FONT_SIZE-2), 
         # ('BACKGROUND', (0, 0), (-1, 0), colors.grey),    # Header row background color
         # ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),  # Header row text color
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),            # Center align all cells
