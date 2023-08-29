@@ -11,7 +11,7 @@ from reportlab.platypus import Image
 from reportlab.platypus.flowables import Flowable
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from results.utils import get_letter_grade
+from results.utils import get_letter_grade, session_letter_grades_count
 
 DEBUG_MODE = False
 
@@ -185,6 +185,10 @@ def get_main_table(context: Dict) -> Table:
     PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
+    GRADES_COUNT = session_letter_grades_count(student.session)
+    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=160).count()
+    if NUM_INCOMPLETE_STUDENTS == 0:
+        NUM_INCOMPLETE_STUDENTS = 'Nil'
     if hasattr(context['last_semester'], 'semesterdocument'):
         semesterDoc = context['last_semester'].semesterdocument
         if semesterDoc.tabulatiobn_sheet_render_config is not None:
@@ -213,7 +217,10 @@ def get_main_table(context: Dict) -> Table:
              'Total Number of  Degree Awarded<br/>this Year in Applicant\'s Academic Field', style=normalStyle
          )
          , ':'
-         , Paragraph("<b>A+ = Nil, A = 09, A- = 20, B+ = 16, B = 08, B- = 02, C+ = Nil <br/>C = Nil, C- = Nil, Withheld = Nil, Incomplete = 02</b>", style=normalStyle)
+         , Paragraph(
+            f"<b>A+ = {GRADES_COUNT['A+']}, A = {GRADES_COUNT['A']}, A- = {GRADES_COUNT['A-']}, B+ = {GRADES_COUNT['B+']}, B = {GRADES_COUNT['B']}, B- = {GRADES_COUNT['B-']}, C+ = {GRADES_COUNT['C+']} <br/>C = {GRADES_COUNT['C']}, C- = {GRADES_COUNT['C-']}, Withheld = Nil, Incomplete = {NUM_INCOMPLETE_STUDENTS}</b>",
+            style=normalStyle
+         )
         ],
         ["14.", 'Medium of Instruction', ':', Paragraph("<b>English</b>", style=normalStyle)],
         [Paragraph(bottom_info, normalStyle), '', '', '']

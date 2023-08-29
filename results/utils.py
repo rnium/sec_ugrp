@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from typing import Dict
 
 SEC_GRADING_SCHEMA = {
     "A+" : {"min": 79, "max":100, "grade_point":4.0},
@@ -48,7 +49,33 @@ def get_letter_grade(grade_point):
     for LG, schema in SEC_GRADING_SCHEMA.items():
         if grade_point >= schema['grade_point']:
             return LG
-        
+
+
+def session_letter_grades_count(session) -> Dict[str, str]:
+    student_list = session.studentaccount_set.all()
+    grades_count = {
+        "A+" : 0, "A" : 0, "A-" : 0, "B+" : 0, "B" : 0, "B-" : 0,
+        "C+" : 0, "C" : 0, "C-" : 0, "F" : 0,
+    }
+    for student in student_list:
+        points = student.total_points
+        credits_count = student.credits_completed
+        if points and credits_count:
+            cgpa = points/credits_count
+            lg = get_letter_grade(cgpa)
+            grades_count[lg] += 1
+    for key, value in grades_count.items():
+        if value == 0:
+            grades_count[key] = 'Nil'
+        else:
+            if value < 10:
+                grades_count[key] = f'0{value}'
+            else:
+                grades_count[key] = f'{value}' 
+    return grades_count
+    
+
+
 def render_error(request, msg=None, secondary_msg=None):
     context = {
         "error" : msg if msg is not None else "An Error Occurred!"
