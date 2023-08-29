@@ -210,7 +210,8 @@ function render_rows(response) {
     let rows = ""
     for (record of response) {
         let fields = generateRowElements(record);
-        let row = `<tr>
+        let row_class = record.is_drop_course ? 'drop_course' : '';
+        let row = `<tr class="${row_class}">
                         <td class="student-info">
                             <a href="#" class="profile-link" data-id="${record.student.registration}">${record.student.registration}</a>
                             <div class="profile-card" id="${record.student.registration}-profile" style="display: none;">

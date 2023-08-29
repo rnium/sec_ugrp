@@ -616,6 +616,10 @@ body main .view-course-container .score-board table tbody tr .student-info .prof
   font-weight: 500;
 }
 
+body main .view-course-container .score-board table tbody tr.drop_course {
+  background-color: rgba(185, 79, 79, 0.2);
+}
+
 body main .view-course-container .score-board .btn-container .add-new-btn {
   background-color: #414958;
 }
