@@ -143,6 +143,7 @@
     {% if course.semester.is_running %}
     <div class="delete-btn-container mt-4">
         <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">Delete Course</button>
+        <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#updateCourseModal">Edit Course</button>
     </div>
     {% endif %}
 
@@ -172,6 +173,87 @@
                             <button type="button" class="btn btn-primary px-4" id="new_entry_add_button">Add</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Course Edit Modal -->
+    <div class="modal fade" id="updateCourseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material shadow">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Modify {{course.code}}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseCodeInput" placeholder="" value="{{course.code}}">
+                                    <label for="courseCodeInput">Course Code</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseTitleInput" placeholder="" value="{{course.title}}">
+                                    <label for="courseTitleInput">Course Title</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="courseCreditsInput" placeholder=""  value="{{course.course_credit}}">
+                                    <label for="courseCreditsInput">Credits</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput" id="totalMarksInput" placeholder="" value="{{course.total_marks}}">
+                                    <label for="totalMarksInput">Total Marks</label>
+                                </div>
+                            </div> 
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partAmarksInput" placeholder="" value="{{course.part_A_marks}}">
+                                    <label for="partAmarksInput">Part A marks</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-6 ps-1">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput" id="partAmarksInputFinal" placeholder="" value="{{course.part_A_marks_final}}">
+                                    <label for="partAmarksInputFinal">Part A Final Marks</label>
+                                </div>
+                            </div> 
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partBmarksInput" placeholder="" value="{{course.part_B_marks}}">
+                                    <label for="partBmarksInput">Part B marks</label>
+                                </div>              
+                            </div> 
+                            <div class="col-md-6 ps-1">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control marksinput" id="partBmarksInputFinal" placeholder="" value="{{course.part_B_marks}}">
+                                    <label for="partBmarksInputFinal">Part B Final Marks</label>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control marksinput" id="inCourseMarksInput" placeholder="" value="{{course.incourse_marks}}">
+                                    <label for="inCourseMarksInput">Termtest marks</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2" id="error-alert-container">
+                                <div id="createCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
+                    <button type="button" id="createCourseAddBtn" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>
