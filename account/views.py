@@ -110,7 +110,7 @@ def set_admin_avatar(request):
             return JsonResponse(data={'details': 'Unauthorized'}, status=403)
         # check if user has permission
         if not hasattr(request.user, 'adminaccount'):
-            return JsonResponse(data={'details': 'Unauthorized'}, status=403)
+            return JsonResponse(data={'details': 'Forbidden'}, status=403)
         else:
             account = request.user.adminaccount
         # Saving file
@@ -143,7 +143,6 @@ def set_student_avatar(request):
         # get student account
         try:
             registration = request.POST.get('registration')
-            print(registration)
             account = StudentAccount.objects.get(registration=registration)
         except StudentAccount.DoesNotExist:
             return JsonResponse(data={'details': "Account not found"}, status=400)
@@ -431,3 +430,23 @@ def reset_password_api(request, uidb64, emailb64):
         return Response(data={"info":"password reset successful"},status=status.HTTP_200_OK)
     else:
         return Response(data={"info":"User not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def update_admin_account(request):
+    if not hasattr(request.user, 'adminaccount'):
+        return Response(data={'details': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+    try:
+        first_name = request.data['first_name']
+        last_name = request.data['last_name']
+    except KeyError:
+        return Response(data={'details': 'Necessary data not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    user = request.user
+    user.first_name = first_name
+    user.last_name = last_name
+    try:
+        user.save()
+    except Exception as e:
+        return Response(data={'details': 'Cannot update'}, status=status.HTTP_400_BAD_REQUEST)
+    return Response(data={'status': 'Changes Saved'})
