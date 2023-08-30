@@ -263,7 +263,7 @@ def get_footer(second_sem_cumulative):
 def add_footer(canvas, doc, second_sem_cumulative):
     footer = get_footer(second_sem_cumulative)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=cm, y=cm)
+    footer.drawOn(canvas=canvas, x=cm, y=0.5*cm)
 
 def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> bytes:
     buffer = BytesIO()
