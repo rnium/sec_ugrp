@@ -195,9 +195,9 @@ def get_main_table(context: Dict) -> Table:
         if semesterDoc.tabulatiobn_sheet_render_config is not None:
             try:
                 held_time = semesterDoc.tabulatiobn_sheet_render_config['render_config']['tabulation_exam_time']
+                LAST_SEMESTER_HELD_TIME = held_time.split(' ')[-1]
             except KeyError:
                 pass
-            LAST_SEMESTER_HELD_TIME = held_time.split(' ')[-1]
     LAST_SEMESTER_ENROLLS_COUNT = context['last_semester'].semesterenroll_set.count()    
     data = [
         ["1.", 'Name of the Student', ':', student.student_name.upper()],

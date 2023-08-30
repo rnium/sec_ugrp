@@ -343,7 +343,8 @@ def process_course_excel(request, pk):
         course_results = course.courseresult_set.all()
     except Course.DoesNotExist:
         return JsonResponse({'details': "Course not found"}, status=404)
-    
+    if not course.semester.is_running:
+        return JsonResponse({'details': "Semester is not running!"}, status=400)
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
         # checking filename for our course here
