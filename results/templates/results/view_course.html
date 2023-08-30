@@ -67,7 +67,7 @@
             <div class="d-flex justify-content-end align-items-center">
                 <button class="btn btn-secondary btn-iconized px-4" data-bs-toggle="modal" data-bs-target="#excelUploadModal">
                     <i class='bx bx-table me-2'></i>
-                    <span class="roboto-font">Upload Excel</span>
+                    <span class="roboto-font">Export excel</span>
                 </button>
             </div>
         </div>
@@ -183,7 +183,7 @@
             <div class="modal-content bg-material">
                 <div class="modal-header">
                     <div class="modal-title text-info">
-                        Upload Data for <span class="roboto-font text-info">{{course.code|upper}}<span>
+                        Export Data for <span class="roboto-font text-info">{{course.code|upper}}<span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
@@ -227,8 +227,8 @@
                                 <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="process-excel-btn">
                                     <div class="content">
                                         <div class="d-flex align-items-center">
-                                            <i class='bx bx-analyse me-2'></i>
-                                            <span class="roboto-font ">Process</span>
+                                            <i class='bx bx-export me-2'></i>
+                                            <span class="roboto-font ">Export</span>
                                         </div>
                                     </div>
                                     <div class="spinner spinner-border mx-4" role="status" style="display: none;">
@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         <div class="action-summery alert alert-info mt-3" style="display: none;" id="summary_list_container">
-                            <p class="text-center text-white roboto-font">Process Summery</p>
+                            <p class="text-center text-white roboto-font">Export Summery</p>
                             <ul id="summary_list">
                             </ul>
                         </div>
