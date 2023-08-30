@@ -140,7 +140,7 @@ def cumulative_semester_data(student, semester_upto):
 
 def get_courses_data(semester_enroll, blank_list):
     dataset = []
-    courses = semester_enroll.courses.all()
+    courses = semester_enroll.courses.all().order_by('-semester__semester_no')
     for course in courses:
         record = course.courseresult_set.filter(student=semester_enroll.student).first()
         data = [
@@ -260,10 +260,10 @@ def get_footer(second_sem_cumulative):
     ])
     return footer_table
     
-def add_footer(canvas, doc, second_sem_cumulative):
+def add_footer(canvas, doc, second_sem_cumulative, margin_y=cm):
     footer = get_footer(second_sem_cumulative)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=cm, y=0.5*cm)
+    footer.drawOn(canvas=canvas, x=cm, y=margin_y)
 
 def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> bytes:
     buffer = BytesIO()
@@ -277,6 +277,15 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> by
     build_semester(story, year_first_sem_enroll, first_sem_cumulative)
     story.append(Spacer(1, 20))
     build_semester(story, year_second_sem_enroll, second_sem_cumulative)
-    doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative))
+    TOTAL_NUMBER_OF_COURSES = year_first_sem_enroll.courses.count() + year_second_sem_enroll.courses.count()
+    if TOTAL_NUMBER_OF_COURSES <= 22:
+        print("EXEC")
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative))
+    elif TOTAL_NUMBER_OF_COURSES <= 24:
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative, 0.4*cm))
+    else:
+        story.append(Spacer(1, 40))
+        story.append(get_footer(second_sem_cumulative))
+        doc.build(story)
     return buffer.getvalue()
     
