@@ -1,3 +1,4 @@
+import math
 from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -8,9 +9,9 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.utils import get_ordinal_number, calculate_grade_point, calculate_letter_grade
+from results.utils import (get_ordinal_number, calculate_grade_point, 
+                           calculate_letter_grade, round_up_point_five)
 from os.path import join, basename
-import math
 
 
 class Department(models.Model):
@@ -309,7 +310,7 @@ class CourseResult(models.Model):
                 
         # Saving grade point
         if self.total_score is not None:
-            totalScore = math.ceil(self.total_score)
+            totalScore = round_up_point_five(self.total_score)
             self.grade_point = calculate_grade_point(totalScore, self.course.total_marks)
             self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
         super().save(*args, **kwargs)

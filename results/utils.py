@@ -51,6 +51,14 @@ def get_letter_grade(grade_point):
             return LG
 
 
+def round_up_point_five(num):
+    num_int = int(num)
+    if (num - num_int) >= 0.5:
+        return num_int+1;
+    else:
+        return num
+
+
 def session_letter_grades_count(session) -> Dict[str, str]:
     student_list = session.studentaccount_set.all()
     grades_count = {
