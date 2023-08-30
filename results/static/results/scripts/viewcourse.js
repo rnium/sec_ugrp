@@ -5,7 +5,7 @@ function showError(alertContainer, msg) {
     $(`#${alertContainer}`).text(msg)
     $(`#${alertContainer}`).show(200,()=>{
         setTimeout(()=>{
-            $(`#${errorContainer}`).hide()
+            $(`#${alertContainer}`).hide()
         }, 60000)
     })
 }

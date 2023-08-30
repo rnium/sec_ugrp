@@ -118,7 +118,7 @@ class CourseUpdate(UpdateAPIView):
             return_value = self.partial_update(request, *args, **kwargs)
             # update courseresult and then enrollments of the course
             course = self.get_object()
-            for course_result in course.course_result_set.all():
+            for course_result in course.courseresult_set.all():
                 course_result.save()
             semester_enrollments = course.enrollment.all()
             for enrollment in semester_enrollments:
