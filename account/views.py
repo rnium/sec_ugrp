@@ -64,6 +64,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         context['request'] = self.request
         return context
 
+
 def signup_admin(request):
     # checking if user logged in or not
     if not isinstance(request.user, AnonymousUser):
@@ -94,6 +95,13 @@ def signup_admin(request):
         context['dept'] = dept
     return render(request, "account/staff_signup.html", context=context)
 
+
+@login_required
+def view_admin_profile_edit(request):
+    if hasattr(request.user, 'adminaccount'):
+        return render(request, 'account/admin_profile_edit.html', context={'admin':request.user.adminaccount})
+    else:
+        return render_error(request, "Go Back. You're not supposed to see this!")
 
 @csrf_exempt
 def set_admin_avatar(request):

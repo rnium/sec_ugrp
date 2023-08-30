@@ -1045,6 +1045,40 @@ body main .view-session-container .container .semesters .semester-item.running-s
   outline: 2px solid #57eba3;
 }
 
+body main .admin-profile-edit .super-admin::before {
+  content: "Super Admin";
+  display: inline-block;
+  padding: 0 5px;
+  font-weight: normal;
+  font-family: 'Gemunu Libre', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  background-color: inherit;
+  border: 1px solid #fccc76;
+  color: #fdac41;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+body main .admin-profile-edit .dept {
+  color: #00cfdd;
+  font-family: 'Gemunu Libre', sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+body main .admin-profile-edit .dept::before {
+  content: "Admin";
+  display: inline-block;
+  padding: 0 5px;
+  font-weight: normal;
+  background-color: inherit;
+  border: 1px solid #9dbff8;
+  color: #9dbff8;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
 .profile {
   position: absolute;
   top: 1.5rem;
