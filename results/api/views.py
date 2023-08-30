@@ -104,6 +104,30 @@ class CourseCreate(CreateAPIView):
             raise BadrequestException(str(e))
 
 
+class CourseUpdate(UpdateAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    
+    def get_queryset(self):
+        pk = self.kwargs.get("pk")
+        courses = Course.objects.filter(id=pk)
+        return courses
+    
+    def patch(self, request, *args, **kwargs):
+        try:
+            return_value = self.partial_update(request, *args, **kwargs)
+            # update courseresult and then enrollments of the course
+            course = self.get_object()
+            for course_result in course.course_result_set.all():
+                course_result.save()
+            semester_enrollments = course.enrollment.all()
+            for enrollment in semester_enrollments:
+                enrollment.update_stats()
+            return return_value
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+
 @api_view(["POST"])
 def updateDropCourses(request, pk):
     try:
