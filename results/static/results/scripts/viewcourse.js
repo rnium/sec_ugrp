@@ -1,3 +1,27 @@
+
+function showError(alertContainer, msg) {
+    $(`#${alertContainer}`).removeClass("alert-warning");
+    $(`#${alertContainer}`).addClass("alert-danger");
+    $(`#${alertContainer}`).text(msg)
+    $(`#${alertContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
+function showInfo(alertContainer, msg) {
+    $(`#${alertContainer}`).removeClass("alert-danger");
+    $(`#${alertContainer}`).addClass("alert-warning");
+    $(`#${alertContainer}`).text(msg)
+    $(`#${alertContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
+
 function showNotification(msg) {
     const elem = document.getElementById('notificationModal')
     const toastBody = document.getElementById('modal-body');
@@ -322,6 +346,93 @@ function post_data(data) {
     })
 }
 
+function getCourseData() {
+    let courseCodeIn = $("#courseCodeInput").val().trim();
+    let courseTitleIn = $("#courseTitleInput").val().trim();
+    let totalMarksIn = parseFloat($("#totalMarksInput").val().trim());
+    let creditsIn = parseFloat($("#courseCreditsInput").val().trim());
+    let partAMarksIn = parseFloat($("#partAmarksInput").val().trim());
+    let partAMarksInFinal = parseFloat($("#partAmarksInputFinal").val().trim());
+    let partBMarksIn = parseFloat($("#partBmarksInput").val().trim());
+    let partBMarksInFinal = parseFloat($("#partBmarksInputFinal").val().trim());
+    let incourseMarksIn = parseFloat($("#inCourseMarksInput").val().trim());
+    
+    let courseCodeArray = courseCodeIn.split(" ")
+    let courseCodeNumber = parseInt(courseCodeArray[1])
+    
+    if (isNaN(totalMarksIn)
+        | isNaN(creditsIn) 
+        | isNaN(partAMarksIn) 
+        | isNaN(partBMarksIn) 
+        | isNaN(incourseMarksIn) 
+        | isNaN(partAMarksInFinal)
+        | isNaN(partBMarksInFinal)) {
+        $("#editCourseAlert").text("Invalid Input(s), please fill correctly");
+        $("#editCourseAlert").show()
+        return false;
+    }
+
+    if (courseCodeIn.length == 0 | courseTitleIn.length == 0) {
+        $("#editCourseAlert").text("Please fill all the fields");
+        $("#editCourseAlert").show()
+        return false;
+    }
+    if (courseCodeArray.length != 2 | isNaN(courseCodeNumber)) {
+        $("#editCourseAlert").text("Invalid Course code! Please enter correctly.");
+        $("#editCourseAlert").show()
+        return false;
+    }
+    if ((partAMarksInFinal+partBMarksInFinal+incourseMarksIn) > totalMarksIn) {
+        $("#editCourseAlert").text("Invalid Marks Distribution!");
+        $("#editCourseAlert").show()
+        return false;
+    }
+    else {
+        $("#editCourseAlert").hide()
+    }
+    
+    data = {
+        "code": courseCodeIn,
+        "title": courseTitleIn,
+        "course_credit": creditsIn,
+        "total_marks": totalMarksIn,
+        "part_A_marks": partAMarksIn,
+        "part_A_marks_final": partAMarksInFinal,
+        "part_B_marks": partBMarksIn,
+        "part_B_marks_final": partBMarksInFinal,
+        "incourse_marks": incourseMarksIn,
+    }
+
+    return data;
+}
+
+function updateCourse() {
+    payload = getCourseData()
+    if (payload) {
+        $.ajax({
+            type: "PATCH",
+            url: update_course_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#editCourseAlert").hide()
+                $("#updateCourseAddBtn").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                showInfo("editCourseAlert", "Updated successfully")
+                setTimeout(()=>{window.location.href = semester_homepage}, 1000)
+            },
+            error: function(xhr, status, error) {
+                $("#updateCourseAddBtn").removeAttr("disabled");
+                showError("editCourseAlert", error);
+            },
+        });
+    }
+}
+
 function delete_course() {
     let showAlert = (msg)=>{
         $("#deleteCourseModal .alert").text(msg)
@@ -473,7 +584,8 @@ $(document).ready( function() {
             post_data(data)
         }
     })
-    //  course del button
+    
+    $("#updateCourseAddBtn").on('click', updateCourse)
     $("#confirm-del-btn").on('click', delete_course)
     // new entry button
     $("#new_entry_add_button").on('click', addNewEntry)

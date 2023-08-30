@@ -245,7 +245,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 mt-2" id="error-alert-container">
-                                <div id="createCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
+                                <div id="editCourseAlert" class="alert alert-danger roboto-font text-center" role="alert" style="display: none;font-size: 0.9rem;" >
                                 </div>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                     
                 </div>
                 <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
-                    <button type="button" id="createCourseAddBtn" class="btn btn-primary">Update</button>
+                    <button type="button" id="updateCourseAddBtn" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>
@@ -386,6 +386,8 @@
     const delete_course_api = "{% url 'results:delete_course' course.id %}";
     const add_new_entry_to_course_api = "{% url 'results:add_new_entry_to_course' course.id %}";
     const process_course_excel_api = "{% url 'results:process_course_excel' course.id %}";
+    const update_course_api = "{% url 'results:update_course' course.id %}";
+    const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
