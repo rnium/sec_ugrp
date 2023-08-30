@@ -187,6 +187,10 @@ input.score-inp.error:focus {
   font-family: 'Roboto Mono', monospace;
 }
 
+.silkscreen-font {
+  font-family: 'Silkscreen', cursive;
+}
+
 .border-b-1 {
   border: 1px solid #555870;
 }

@@ -38,14 +38,28 @@
 {% endblock nav %}
 
 {% block content %}
-<div class="departments py-5 d-flex justify-content-center align-items-center">
-    {% for dept in departments %}
-    <div class="col-lg-4 me-4">
-        <a class="dept {{dept.name|lower}}-dept title-box " href="{% url 'results:view_department' dept.name %}">
-            <div class="title fs-2">{{dept.name|upper}}</div>
-            <div class="fullname text-center fs-4">{{dept.fullname}}</div>
-        </a>
+<div class="dept-tab-container px-5 pt-2 w-100">
+    <div class="sys-info text-center mb-5">
+        <img src="{% static 'results/images/bdgovt.png' %}" alt="" width="100px">
+        <div class="instituition fs-2 silkscreen-font">Sylhet Engineering College</div>
+        <div class="instituition fs-4 silkscreen-font text-secondary">Departments</div>
     </div>
-    {% endfor %}
+    <div class="row justify-content-center">
+        {% for dept in departments  %}
+        <div class="col-md-4 col-sm-12" >
+            <a href="{% url 'results:view_department' dept.name %}">
+                <div class="card" >
+                    <div class="fs-1 bg-material text-info py-5 text-center">
+                        {{dept.name|upper}}
+                    </div>
+                    <div class="card-body px-3 py-4">
+                        <p class="card-text text-center silkscreen-font">{{dept.fullname}}</p>
+                        <p class="text-center text-success">{{dept.session_set.count}} Batches</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock content %}
