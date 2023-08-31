@@ -93,32 +93,7 @@
 }
 
 .navbar ul.nav li .tooltip {
-  position: absolute;
-  opacity: 0;
-  top: 50%;
-  left: 90%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  z-index: 1;
-  word-wrap: normal;
-  background-color: white;
-  padding: 5px 10px;
-  border-radius: 8px;
-  color: #5b8dee;
-  font-family: 'Roboto Mono', monospace;
-  -webkit-box-shadow: 0 0 5px #e0e0e0;
-          box-shadow: 0 0 5px #e0e0e0;
-  -webkit-transition: left 0.2s ease-out;
-  transition: left 0.2s ease-out;
-}
-
-.navbar ul.nav li .tooltip:hover {
-  pointer-events: none;
-}
-
-.navbar ul.nav li:hover .tooltip {
-  left: 125%;
-  opacity: 1;
+  display: none;
 }
 
 .navbar ul.nav li.active a {
@@ -126,7 +101,6 @@
           box-shadow: 0 0 2px #023270;
   background-image: -webkit-gradient(linear, left top, right top, from(#3568d4), to(#0c63af));
   background-image: linear-gradient(to right, #3568d4, #0c63af);
-  pointer-events: none;
 }
 
 .navbar ul.nav li.active a i, .navbar ul.nav li.active a span {
