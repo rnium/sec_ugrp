@@ -10,20 +10,24 @@ from PIL import Image
 from results.models import Semester, SemesterEnroll, CourseResult
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade
+from results.api.utils import sort_courses
 
 TABLE_FONT_SIZE = 10
 h, w = TABLOID
 
 class SemesterDataContainer:
     def __init__(self, semester: Semester):
+        regular_coruses = sort_courses(semester.course_set.all(), semester.session.dept.name)
+        drop_courses = sort_courses(semester.drop_courses.all(), semester.session.dept.name)
         self.semester = semester
-        self.regular_courses = semester.course_set.all()
-        self.drop_courses = semester.drop_courses.all()
+        self.regular_courses = regular_coruses
+        self.drop_courses = drop_courses
         self.course_list = [*list(self.drop_courses), *list(self.regular_courses)]
         self.num_courses = len(self.course_list)
         self.students = semester.session.studentaccount_set.all()
         self.num_students = self.students.count()
         self.has_overall_result_coulumn = (semester.semester_no > 1)
+        
         
 
 def cumulative_semester_result(student, semesters):
@@ -340,6 +344,7 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config,
                             rightMargin = 1*inch,
                             topMargin = 1*cm,
                             bottomMargin = 1*cm,
+                            title=f"Tabulation sheet"
                             )
     # Building
     doc.build(flowables)

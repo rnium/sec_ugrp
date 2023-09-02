@@ -202,7 +202,7 @@ def render_tabulation(request, pk):
     try:
         files = get_tabulation_files(semester, render_config, footer_data_raw)
     except Exception as e:
-        return Response(data={'details': e}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'details': "cannot generate tabulation"}, status=status.HTTP_400_BAD_REQUEST)
     if hasattr(semester, 'semesterdocument'):
         semesterdoc = semester.semesterdocument
     else:

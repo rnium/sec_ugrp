@@ -45,4 +45,15 @@ def is_confirmed_user(request, username):
     password = request.data.get('password')
     user = authenticate(request, username=username, password=password)
     return ((user is not None) and (request.user == user))
+
+def course_sorting_key(course: Course, dept_name):
+    dept_priority = 0
+    coursecode_first_part = course.code.split(' ')[0].lower().strip()
+    if coursecode_first_part == dept_name.lower():
+        dept_priority = 1
+    return (course.course_credit, dept_priority)
+
+def sort_courses(courses, dept_name):
+    sorted_courses = sorted(courses, key=lambda course: course_sorting_key(course, dept_name), reverse=True)
+    return sorted_courses
     
