@@ -180,8 +180,41 @@
             </div>
             
           </div>
+
+          <div class="delete-btn-container mt-4 w-100">
+            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteStudentModal">Delete Student</button>
+          </div>
         </div>
     </section>
+</div>
+
+<!-- Delete student Modal -->
+<div class="modal fade" id="deleteStudentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content bg-material">
+          <div class="modal-header">
+              <div class="modal-title text-info" id="changeWithPasswordModalLabel">Confirm Action</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="text-center mb-4 mt-1">Enter your password to continue</div>
+              <div class="input-group mb-3 shadow-sm">
+                  <span class="input-group-text bg-material-1" id="basic-addon1"><i class='bx bx-fingerprint fs-4'></i></span>
+                  <input type="password" class="form-control py-2" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+              <div class="alert alert-warning text-center" role="alert" style="display: none;">
+              </div>            
+          </div>
+          <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
+              <button class="ms-auto btn btn-secondary btn-iconized px-3 shadow-sm" id="confirm-del-btn">
+                  <div class="d-flex align-items-center ">
+                      <i class='bx bxs-trash-alt me-2'></i>
+                      <span class="roboto-font ">Delete</span>
+                  </div>
+              </button>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock content %}
 

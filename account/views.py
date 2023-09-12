@@ -28,6 +28,7 @@ from rest_framework import status
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.generics import CreateAPIView
 from . import utils
+from results.api.utils import is_confirmed_user
 from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
@@ -241,6 +242,38 @@ def create_student_via_excel(request, pk):
         return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
+
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_student(request, registration):
+    try:
+        student = StudentAccount.objects.get(registration=registration)
+    except StudentAccount.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != student.session.dept):
+            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking password
+    if not is_confirmed_user(request, username=request.user.username):
+        return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
+    # url to be redirected after deletion
+    session_url = reverse('results:view_session', kwargs={
+        'dept_name': student.session.dept.name,
+        'from_year': student.session.from_year,
+        'to_year': student.session.to_year
+    })
+    # delete
+    if hasattr(student, 'user'):
+        student.user.delete()
+    else:   
+        student.delete()
+    return Response(data={"session_url": session_url})       
+ 
 
 # Account recovery
 def forgot_password_get(request):
