@@ -194,7 +194,7 @@ function delete_session() {
     if (payload) {
         $.ajax({
             type: "post",
-            url: delete_semester_api,
+            url: delete_session_api,
             dataType: "json",
             contentType: "application/json",
             beforeSend: function(xhr){
@@ -205,8 +205,8 @@ function delete_session() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                $('#deleteSemesterModal .alert').removeClass('alert-warning');
-                $('#deleteSemesterModal .alert').addClass('alert-info');
+                $('#deleteSessionModal .alert').removeClass('alert-warning');
+                $('#deleteSessionModal .alert').addClass('alert-info');
                 showAlert("Complete")
                 setTimeout(()=>{
                     window.location.href = response.dept_url

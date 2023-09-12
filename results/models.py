@@ -70,6 +70,10 @@ class Session(models.Model):
     def batch_name(self):
         return f"{self.dept.name.upper()} {get_ordinal_number(self.batch_no)} batch"
     
+    @property
+    def has_semester(self):
+        return bool(self.semester_set.count())
+    
     
         
     
