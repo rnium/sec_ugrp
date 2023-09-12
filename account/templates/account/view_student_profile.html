@@ -221,5 +221,7 @@
 {% block script %}
 <script>
     const csrftoken = "{{csrf_token}}";
+    const delete_student_api = "{% url 'account:delete_student' student.registration %}";
 </script>
+<script src="{% static 'account/scripts/viewstudentprofile.js' %}"></script>
 {% endblock script %}

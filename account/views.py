@@ -268,7 +268,7 @@ def delete_student(request, registration):
         'to_year': student.session.to_year
     })
     # delete
-    if hasattr(student, 'user'):
+    if student.user:
         student.user.delete()
     else:   
         student.delete()
