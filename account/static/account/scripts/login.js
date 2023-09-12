@@ -72,8 +72,8 @@ function submitForm() {
 
 
 $(document).ready(function () {
-    $("#password").on('keyup', function (e) { 
-        if (e.key == 'Enter' || e.keyCode === 13) {
+    $("#passwordInput").on('keyup', function (e) { 
+        if (e.key == 'Enter' || e.keyCode == 13) {
             submitForm()
         }
      })
