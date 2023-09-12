@@ -177,6 +177,49 @@ function createStudentAccount(){
     });
 }
 
+// Delete session
+function delete_session() {
+    let showAlert = (msg)=>{
+        $("#deleteSessionModal .alert").text(msg)
+        $("#deleteSessionModal .alert").show()
+    }
+    let password = $(`#deleteSessionModal input[type="password"]`).val().trim()
+    if (password.length == 0) {
+        showAlert("Please enter your password");
+        return
+    }
+    payload = {
+        password: password
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: delete_semester_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#confirm-del-btn").attr("disabled", true)
+                $("#deleteSemesterModal .alert").hide()
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $('#deleteSemesterModal .alert').removeClass('alert-warning');
+                $('#deleteSemesterModal .alert').addClass('alert-info');
+                showAlert("Complete")
+                setTimeout(()=>{
+                    window.location.href = response.dept_url
+                }, 1000)
+            },
+            error: function(xhr, status, error) {
+                showAlert(xhr.responseJSON.details)
+                $("#confirm-del-btn").removeAttr('disabled');
+            }
+        });
+    }
+}
+
 // Excel upload
 function uploadExcel(excel_file) {
     let excel_form = new FormData
@@ -216,14 +259,15 @@ function uploadExcel(excel_file) {
 
 
 $(document).ready(function () {
-    $("#create_sem_btn").on('click', createSemester)
-    $("#create-student-btn").on('click', createStudentAccount)
+    $("#create_sem_btn").on('click', createSemester);
+    $("#create-student-btn").on('click', createStudentAccount);
+    $("#confirm-del-btn").on('click', delete_session);
     $("#process-excel-btn").on('click', function() {
         excel_file = $("#excelFile")[0].files
         if (excel_file.length > 0) {
             uploadExcel(excel_file[0]);
         } else {
-            alert("Please choose an excel file!")
+            alert("Please choose an excel file!");
         }
     })
 });
