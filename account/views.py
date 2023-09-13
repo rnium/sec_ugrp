@@ -32,7 +32,7 @@ from results.api.utils import is_confirmed_user
 from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
-from results.models import Department, Session
+from results.models import Department, Session, CourseResult
 
     
 def login_page(request):
@@ -309,10 +309,16 @@ def migrate_sesion_of_student(request, registration):
     student.session = new_session
     student.is_regular = False
     student.save()
-    # keeping or removing enrollments
+    # Removing enrollments if not needed
     keep_records = request.data.get('keep_records', True)
     if not keep_records:
-        student.semesterenroll_set.all().delete()
+        enrollments = student.semesterenroll_set.all()
+        for enroll in enrollments:
+            for course in enroll.courses.all():
+                course_result = CourseResult.objects.filter(student=student, course=course)
+                course_result.delete()
+        enrollments.delete()
+        student.update_stats()
     return Response(data={"status": "Complete"})       
 
  
