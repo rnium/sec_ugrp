@@ -307,7 +307,14 @@ def migrate_sesion_of_student(request, registration):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
     # changing session
     student.session = new_session
-    student.is_regular = False
+    try:
+        student_reg_year = int(str(student.registration)[:4])
+    except Exception as e:
+        student_reg_year = None
+    if student_reg_year is not None and student_reg_year == new_session.from_year:
+        student.is_regular = True
+    else:
+        student.is_regular = False
     student.save()
     # Removing enrollments if not needed
     keep_records = request.data.get('keep_records', True)
