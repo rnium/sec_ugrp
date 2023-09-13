@@ -93,7 +93,7 @@
             <div class="row">
                 {% for student in session.studentaccount_set.all %}
                 <div class="col-lg-6 p-0">
-                    <a href="{% url 'account:view_student_profile' student.registration %}" class="student rounded-3">
+                    <a href="{% url 'account:view_student_profile' student.registration %}" class="student {% if not student.is_regular %}re-addmitted{% endif %} rounded-3">
                         <img src="{{student.avatar_url}}" alt="" class="dp">
                         <div class="info">
                             <div class="name fs-6" data-bs-toggle="tooltip">{{student.student_name|truncatechars:25}}</div>
