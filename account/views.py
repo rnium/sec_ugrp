@@ -60,10 +60,17 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        context['student'] = context['studentaccount'] # Alias
-        context['enrollments'] = context['student'].semesterenroll_set.all().order_by('semester__semester_no')
-        context['gradesheet_years'] = context['student'].gradesheet_years
+        student = context['studentaccount']
+        context['student'] = student # Alias
+        context['enrollments'] = student.semesterenroll_set.all().order_by('semester__semester_no')
+        context['gradesheet_years'] = student.gradesheet_years
         context['request'] = self.request
+        
+        try:
+            student_reg_year = int(str(student.registration)[:4])
+        except Exception as e:
+            pass
+        context['migratable_sessions'] = Session.objects.filter(from_year__gte=student_reg_year, dept=student.session.dept).exclude(id=student.session.id)
         return context
 
 
@@ -274,6 +281,40 @@ def delete_student(request, registration):
     else:   
         student.delete()
     return Response(data={"session_url": session_url})       
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def migrate_sesion_of_student(request, registration):
+    try:
+        student = StudentAccount.objects.get(registration=registration)
+        new_session = Session.objects.get(id=request.data.get("session_id", None))
+    except StudentAccount.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Session.DoesNotExist:
+        return Response(data={"details": "Session Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # Checking session's department
+    if new_session.dept != student.session.dept:
+        return Response(data={"details": "Invalid session for student"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    # cheking admin user
+    if hasattr(request.user, 'adminaccount'):
+        if (request.user.adminaccount.dept is not None and
+            request.user.adminaccount.dept != student.session.dept):
+            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking password
+    if not is_confirmed_user(request, username=request.user.username):
+        return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
+    # changing session
+    student.session = new_session
+    student.is_regular = False
+    student.save()
+    # keeping or removing enrollments
+    keep_records = request.data.get('keep_records', True)
+    if not keep_records:
+        student.semesterenroll_set.all().delete()
+    return Response(data={"status": "Complete"})       
+
  
 
 # Account recovery
