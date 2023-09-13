@@ -61,6 +61,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['student'] = context['studentaccount'] # Alias
+        context['enrollments'] = context['student'].semesterenroll_set.all().order_by('semester__semester_no')
         context['gradesheet_years'] = context['student'].gradesheet_years
         context['request'] = self.request
         return context

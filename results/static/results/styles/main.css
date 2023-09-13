@@ -1079,6 +1079,96 @@ body main .admin-profile-edit .dept::before {
   margin-right: 10px;
 }
 
+body main .student-profile-container .semester-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #415864;
+}
+
+body main .student-profile-container .semester-item .sem-codename {
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 1.5rem;
+  background-color: rgba(15, 15, 15, 0.3);
+  -webkit-box-shadow: 0 0 50px #3bcad4;
+          box-shadow: 0 0 50px #3bcad4;
+}
+
+body main .student-profile-container .semester-item .sem-codename span {
+  font-family: 'Silkscreen', cursive;
+  font-size: 1.5rem;
+}
+
+body main .student-profile-container .semester-item .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main .student-profile-container .semester-item .info .semester-no {
+  color: #00cfdd;
+}
+
+body main .student-profile-container .semester-item .info .exam-stats {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+body main .student-profile-container .semester-item:hover {
+  outline: 2px solid #6990a2;
+}
+
+body main .student-profile-container .semester-item.running-semester {
+  background-color: rgba(76, 155, 131, 0.5);
+}
+
+body main .student-profile-container .semester-item.running-semester .sem-codename {
+  -webkit-box-shadow: 0 0 50px #05c270;
+          box-shadow: 0 0 50px #05c270;
+}
+
+body main .student-profile-container .semester-item.running-semester .info .semester-no {
+  color: aquamarine;
+}
+
+body main .student-profile-container .semester-item.running-semester:hover {
+  outline: 2px solid #57eba3;
+}
+
 .profile {
   position: absolute;
   top: 1.5rem;

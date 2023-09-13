@@ -124,7 +124,7 @@ class StudentAccount(BaseAccount):
     def student_cgpa(self):
         if points:= self.total_points:
             cgpa = points / self.credits_completed
-            return "{:.2f}".format(cgpa)
+            return "{}".format(round(cgpa, 2))
         else:
             return None
     
