@@ -214,11 +214,47 @@
 
           <div class="btn-container mt-4 w-100">
             <button class="btn btn-outline-danger me-3" data-bs-toggle="modal" data-bs-target="#deleteStudentModal">Delete Student</button>
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#deleteStudentModal">Migrate Session</button>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#migrateSessionModal">Migrate Session</button>
           </div>
         </div>
     </section>
 </div>
+
+<!-- Migrate Session Modal -->
+<div class="modal fade" id="migrateSessionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content bg-material">
+          <div class="modal-header">
+              <div class="modal-title text-info">Migrate Session</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div> 
+          <div class="modal-body">
+              <div class="col-md-12 p-2">
+                  <select class="form-select bg-material-1" aria-label="Default select example" id="new_entry_semester_selection">
+                      <option selected>Select the session to be migrated</option>
+                      {% for semester in running_semesters %}
+                      <option value="{{semester.id}}">{{semester}}</option>
+                      {% endfor %}
+                  </select>
+                  <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="keepRecordsSwitch" checked>
+                    <label class="form-check-label" for="keepRecordsSwitch">Keep all existing records</label>
+                  </div>    
+                  <div class="input-group my-2 shadow-sm">
+                    <span class="input-group-text bg-material-1" id="basic-addon1"><i class='bx bx-fingerprint fs-4'></i></span>
+                    <input type="password" class="form-control py-2" placeholder="Enter Password" aria-label="Username" aria-describedby="basic-addon1">
+                  </div>              
+                  <div class="alert alert-danger mt-3 text-center" role="alert" style="display: none;" id="new_entry_alert">
+                  </div>
+                  <div class="d-flex justify-center pt-3 justify-content-end">
+                      <button type="button" class="btn btn-primary px-4" id="new_entry_add_button">Migrate</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
 
 <!-- Delete student Modal -->
 <div class="modal fade" id="deleteStudentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
