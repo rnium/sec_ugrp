@@ -65,13 +65,11 @@ class SemesterResultsTestCase(TestCase):
                     self.assertEqual(enroll.semester_credits, actual_credits, msg=messsage)
                 except AssertionError:
                     print(colored(f"Mismatch Credits --> Reg: {reg} , db: {enroll.semester_credits} , actual {actual_credits}", 'light_red'))
-                    continue
                 try:
                     self.assertEqual(enroll.semester_gpa, actual_gp, msg=messsage)
                 except AssertionError:
                     # print(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}")
                     print(colored(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}", "red"))
-                    
                     continue
                 success += 1
             print(colored(f"successful: {success} / {semester_enrollments.count()}", 'light_green'))
