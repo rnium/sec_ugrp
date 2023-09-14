@@ -60,7 +60,10 @@
                     class="rounded-5 img-fluid mt-3" style="width: 150px;">
                   <h5 class="mt-3 mb-1">{{student.first_name}}</h5>
                   <p class="text-white roboto-font mb-1">{{student.registration}}</p>
-                  {% if student.student_cgpa is not None %}<p class="text-muted mb-4">CGPA: <span class='text-warning fs-5'>{{student.student_cgpa}}</span></p>{% endif %}
+                  <div class="text-muted mt-1">CGPA: <span class='text-warning fs-5'>{{student.student_cgpa}}</span></div>
+                  <hr>
+                  <div class="text-muted mt-0 roboto-font small">Credits Complete: <span class='text-info roboto-font'>{{student.credits_completed}}</span></div>
+                  <div class="text-muted mb-2 roboto-font small">Points: <span class='text-info'>{{student.total_points}}</span></div>
                   {% if not student.is_regular %}
                   <div class="readd-badge">
                     <i class='bx bxs-label'></i>
