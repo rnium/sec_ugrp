@@ -62,8 +62,8 @@
                   <p class="text-white roboto-font mb-1">{{student.registration}}</p>
                   <div class="text-muted mt-1">CGPA: <span class='text-warning fs-5'>{{student.student_cgpa}}</span></div>
                   <hr>
-                  <div class="text-muted mt-0 roboto-font small">Credits Complete: <span class='text-info roboto-font'>{{student.credits_completed}}</span></div>
-                  <div class="text-muted mb-2 roboto-font small">Points: <span class='text-info'>{{student.total_points}}</span></div>
+                  <div class="text-muted roboto-font small">Points: <span class='text-info'>{{student.total_points}}</span></div>
+                  <div class="text-muted mb-2 roboto-font small">Credits Complete: <span class='text-info roboto-font'>{{student.credits_completed}}</span></div>
                   {% if not student.is_regular %}
                   <div class="readd-badge">
                     <i class='bx bxs-label'></i>
@@ -94,7 +94,7 @@
                               <span style="font-size: 0.9rem;">{{enroll.semester_points|point_zero_to_int_else_float}}</span>
                             </span>
                             <span class="stats-item me-4">
-                              <span class="small text-muted">GPA:</span>
+                              <span class="small text-muted">GP:</span>
                               <span class="">{{enroll.semester_gpa|floating_two_point}}</span>
                             </span>
                             <span class="stats-item">
@@ -247,7 +247,7 @@
                   </select>
                   <div class="form-check form-switch mt-3">
                     <input class="form-check-input" type="checkbox" role="switch" id="keepRecordsSwitch" checked>
-                    <label class="form-check-label" for="keepRecordsSwitch">Keep all existing semester enrolls</label>
+                    <label class="form-check-label" for="keepRecordsSwitch">Keep all semester data</label>
                   </div>    
                   <div class="input-group mt-4 mb-2 shadow-sm">
                     <span class="input-group-text bg-material-1" id="basic-addon1"><i class='bx bx-fingerprint fs-4'></i></span>
