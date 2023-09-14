@@ -4,6 +4,7 @@ import openpyxl
 from typing import List
 from results.models import SemesterEnroll, Semester
 import unittest
+from termcolor import colored
 # Create your tests here.
 
 def get_excel_dataset(header: List, data_rows:List, credits_idxs:List, gp_idxs: List):
@@ -50,8 +51,9 @@ class SemesterResultsTestCase(TestCase):
         semesters = Semester.objects.filter(session__from_year=2018)
         for sem in semesters:
             success = 0
-            print(f"Running test for semester: {sem}")
-            for enroll in sem.semesterenroll_set.all():
+            print(f"# Running test for semester: {sem}")
+            semester_enrollments = sem.semesterenroll_set.all()
+            for enroll in semester_enrollments:
                 reg = enroll.student.registration
                 try:
                     actual_credits = dataset[reg][sem.semester_no]['credits']
@@ -62,16 +64,17 @@ class SemesterResultsTestCase(TestCase):
                 try:
                     self.assertEqual(enroll.semester_credits, actual_credits, msg=messsage)
                 except AssertionError:
-                    print(f"Mismatch credits reg: {reg}")
+                    print(colored(f"Mismatch Credits --> Reg: {reg} , db: {enroll.semester_credits} , actual {actual_credits}", 'light_red'))
                     continue
                 try:
                     self.assertEqual(enroll.semester_gpa, actual_gp, msg=messsage)
                 except AssertionError:
-                    print(f"Mismatch gp reg: {reg}")
+                    # print(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}")
+                    print(colored(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}", "red"))
+                    
                     continue
-                
-                
-            print(f"successful: {success}")
+                success += 1
+            print(colored(f"successful: {success} / {semester_enrollments.count()}", 'light_green'))
         
         
         
