@@ -86,16 +86,20 @@
                         <div class="semester-no">{{enroll.semester.semester_name}} ({{enroll.semester.session.session_code}})</div>
                         <div class="exam-stats">
                             <span class="stats-item me-4">
+                              <span class="small text-muted">Credits:</span>
+                              <span style="font-size: 0.9rem;">{{enroll.semester_credits|point_zero_to_int_else_float}} / {{enroll.semester.total_credits|point_zero_to_int_else_float}}</span>
+                            </span>
+                            <span class="stats-item me-4">
+                              <span class="small text-muted">Points:</span>
+                              <span style="font-size: 0.9rem;">{{enroll.semester_points|point_zero_to_int_else_float}}</span>
+                            </span>
+                            <span class="stats-item me-4">
                               <span class="small text-muted">GPA:</span>
                               <span class="">{{enroll.semester_gpa|floating_two_point}}</span>
                             </span>
-                            <span class="stats-item me-4">
+                            <span class="stats-item">
                               <span class="small text-muted">LG:</span>
                               <span style="font-size: 0.9rem;">{{enroll.semester_gpa|to_letter_grade}}</span>
-                            </span>
-                            <span class="stats-item">
-                              <span class="small text-muted">Credits:</span>
-                              <span style="font-size: 0.9rem;">{{enroll.semester_credits|point_zero_to_int_else_float}} / {{enroll.semester.total_credits|point_zero_to_int_else_float}}</span>
                             </span>
                         </div>
                     </div>    
