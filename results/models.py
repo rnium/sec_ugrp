@@ -186,7 +186,7 @@ class SemesterEnroll(models.Model):
         if points_count > 0:
             self.semester_credits = credits_count
             self.semester_points = points_count
-            self.semester_gpa = round(points_count/credits_count, 3)
+            self.semester_gpa = round(points_count/credits_count, 2)
             self.save()
             self.student.update_stats()
         
