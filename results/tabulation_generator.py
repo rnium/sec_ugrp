@@ -38,13 +38,17 @@ def cumulative_semester_result(student, semesters):
         if enrollment:
             total_credits += enrollment.semester_credits
             total_points += enrollment.semester_points
-           
-    overall_grade_point = (total_points/total_credits)
-    overall_letter_grade = get_letter_grade(overall_grade_point)
     result = {}
-    result['grade_point'] = round(overall_grade_point, 2)
-    result['letter_grade'] = overall_letter_grade
-    result['total_credits'] = total_credits
+    if total_credits == 0:
+        result['grade_point'] = ""; 
+        result['letter_grade'] = ""
+        result['total_credits'] = ""
+    else:
+        overall_grade_point = (total_points/total_credits)
+        overall_letter_grade = get_letter_grade(overall_grade_point)
+        result['grade_point'] = round(overall_grade_point, 2)
+        result['letter_grade'] = overall_letter_grade
+        result['total_credits'] = total_credits
     # {'grade_point':round(overall_grade_point, 2), 'letter_grade':overall_letter_grade, 'total_credits':total_credits},
     return result
 
