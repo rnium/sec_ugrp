@@ -197,8 +197,11 @@ def render_tabulation(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
-    render_config = request.data['render_config']
-    footer_data_raw = request.data['footer_data_raw']
+    try:
+        render_config = request.data['render_config']
+        footer_data_raw = request.data['footer_data_raw']
+    except KeyError:
+        return Response(data={"necessary data missing"}, status=status.HTTP_400_BAD_REQUEST)
     try:
         files = get_tabulation_files(semester, render_config, footer_data_raw)
     except Exception as e:
