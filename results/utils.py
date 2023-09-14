@@ -2,8 +2,8 @@ from django.shortcuts import render
 from typing import Dict
 
 SEC_GRADING_SCHEMA = {
-    "A+" : {"min": 79, "max":100, "grade_point":4.0},
-    "A" : {"min": 75, "max":78.999, "grade_point":3.75},
+    "A+" : {"min": 79.5, "max":100, "grade_point":4.0},
+    "A" : {"min": 75, "max":79.499, "grade_point":3.75},
     "A-" : {"min": 70, "max":74.999, "grade_point":3.50},
     "B+" : {"min": 65, "max":69.999, "grade_point":3.25},
     "B" : {"min": 60, "max":64.999, "grade_point":3.00},
