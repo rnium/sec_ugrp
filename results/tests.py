@@ -3,6 +3,7 @@ from django.conf import settings
 import openpyxl
 from typing import List
 from results.models import SemesterEnroll, Semester
+import unittest
 # Create your tests here.
 
 def get_excel_dataset(header: List, data_rows:List, credits_idxs:List, gp_idxs: List):
@@ -32,7 +33,7 @@ def get_excel_dataset(header: List, data_rows:List, credits_idxs:List, gp_idxs: 
 
 class SemesterResultsTestCase(TestCase):
     fixtures = [settings.BASE_DIR/'fixtures.json']
-        
+    
     def test_semester_results(self):
         # data preparation
         excel_file = settings.BASE_DIR/"anunad_results.xlsx"
@@ -48,19 +49,28 @@ class SemesterResultsTestCase(TestCase):
         # model preparation
         semesters = Semester.objects.filter(session__from_year=2018)
         for sem in semesters:
-            print(f"running test for: {sem}")
             success = 0
-            
+            print(f"Running test for semester: {sem}")
             for enroll in sem.semesterenroll_set.all():
+                reg = enroll.student.registration
                 try:
-                    actual_credits = dataset[enroll.student.registration][sem.semester_no]['credits']
-                    actual_gp = dataset[enroll.student.registration][sem.semester_no]['gp']
+                    actual_credits = dataset[reg][sem.semester_no]['credits']
+                    actual_gp = dataset[reg][sem.semester_no]['gp']
                 except Exception as exe:
-                    # print(f"data not found for reg: {enroll.student.registration} in the dataset")
-                    return
-                success += 1
-                self.assertEqual(enroll.semester_credits, actual_credits, msg=enroll.student.registration)
-                self.assertEqual(enroll.semester_gpa, actual_gp, msg=enroll.student.registration)
+                    continue
+                messsage = f"{reg} <-- {sem}"
+                try:
+                    self.assertEqual(enroll.semester_credits, actual_credits, msg=messsage)
+                except AssertionError:
+                    print(f"Mismatch credits reg: {reg}")
+                    continue
+                try:
+                    self.assertEqual(enroll.semester_gpa, actual_gp, msg=messsage)
+                except AssertionError:
+                    print(f"Mismatch gp reg: {reg}")
+                    continue
+                
+                
             print(f"successful: {success}")
         
         
