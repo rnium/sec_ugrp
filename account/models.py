@@ -119,11 +119,19 @@ class StudentAccount(BaseAccount):
             return f"{self.first_name} {self.last_name}"
         else:
             return self.first_name
+    
+    @property
+    def raw_cgpa(self):
+        if points:= self.total_points:
+            cgpa = points / self.credits_completed
+            return cgpa
+        else:
+            return None
         
     @property
     def student_cgpa(self):
-        if points:= self.total_points:
-            cgpa = points / self.credits_completed
+        if self.total_points:
+            cgpa = self.raw_cgpa
             return "{}".format(round(cgpa, 2))
         else:
             return None

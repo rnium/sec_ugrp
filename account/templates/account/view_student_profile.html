@@ -63,7 +63,8 @@
                   <div class="text-muted mt-1">CGPA: <span class='text-warning fs-5'>{{student.student_cgpa}}</span></div>
                   <hr>
                   <div class="text-muted roboto-font small">Points: <span class='text-info'>{{student.total_points}}</span></div>
-                  <div class="text-muted mb-2 roboto-font small">Credits Complete: <span class='text-info roboto-font'>{{student.credits_completed}}</span></div>
+                  <div class="text-muted roboto-font small">Credits Complete: <span class='text-info roboto-font'>{{student.credits_completed}}</span></div>
+                  <div class="text-muted mb-2 roboto-font small">Raw CGPA: <span class='text-info roboto-font'>{{student.raw_cgpa}}</span></div>
                   {% if not student.is_regular %}
                   <div class="readd-badge">
                     <i class='bx bxs-label'></i>
