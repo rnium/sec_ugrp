@@ -72,7 +72,7 @@ class SemesterResultsTestCase(TestCase):
                     print(colored(f"Mismatch GP --> Reg: {reg} , system: {enroll.semester_gpa} , actual {actual_gp}", "red"))
                     continue
                 success += 1
-            print(colored(f"successful: {success} / {semester_enrollments.count()} ({round((success / semester_enrollments.count())*100, 3)}%)", 'light_green'))
+            print(colored(f"successful: {success} / {semester_enrollments.count()} ({round((success / semester_enrollments.count())*100, 2)}%)", 'light_green'))
         
         
         
