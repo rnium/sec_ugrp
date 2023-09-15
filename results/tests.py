@@ -64,15 +64,15 @@ class SemesterResultsTestCase(TestCase):
                 try:
                     self.assertEqual(enroll.semester_credits, actual_credits, msg=messsage)
                 except AssertionError:
-                    print(colored(f"Mismatch Credits --> Reg: {reg} , db: {enroll.semester_credits} , actual {actual_credits}", 'light_red'))
+                    print(colored(f"Mismatch Credits --> Reg: {reg} , system: {enroll.semester_credits} , actual {actual_credits}", 'light_red'))
                 try:
                     self.assertEqual(enroll.semester_gpa, actual_gp, msg=messsage)
                 except AssertionError:
                     # print(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}")
-                    print(colored(f"Mismatch GP --> Reg: {reg} , db: {enroll.semester_gpa} , actual {actual_gp}", "red"))
+                    print(colored(f"Mismatch GP --> Reg: {reg} , system: {enroll.semester_gpa} , actual {actual_gp}", "red"))
                     continue
                 success += 1
-            print(colored(f"successful: {success} / {semester_enrollments.count()}", 'light_green'))
+            print(colored(f"successful: {success} / {semester_enrollments.count()} ({round((success / semester_enrollments.count())*100, 3)}%)", 'light_green'))
         
         
         
