@@ -1,5 +1,6 @@
 from typing import Any, Optional
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
 from results.models import Department, Session, SemesterEnroll, CourseResult
 
 
@@ -21,5 +22,7 @@ class Command(BaseCommand):
                         update_count += 1
             self.stdout.write(self.style.SUCCESS(f"{semester} --> Updated {update_count} / {course_res_count} course results"))
                         
-            
+        # Export fixtures from the main database
+        self.stdout.write(self.style.WARNING(f"Dumping to fixtures"))
+        call_command('dumpdata', '--exclude', 'auth.permission', '--exclude', 'contenttypes', '--exclude', 'admin.LogEntry', '--output', 'fixtures.json')
         self.stdout.write(self.style.SUCCESS(f"completed"))
