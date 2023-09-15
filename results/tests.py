@@ -41,7 +41,7 @@ class SemesterResultsTestCase(TestCase):
         wb = openpyxl.load_workbook(excel_file)
         sheet1 = wb[wb.sheetnames[0]]
         rows = list(sheet1.rows)
-        header = [cell.value.lower().strip() for cell in rows[0]]
+        header = [cell.value.lower().strip() for cell in rows[0] if cell.value is not None]
         data_rows = rows[1:]
         credits_idxs = [header.index(col) for col in header if col.startswith("credit")]
         gp_idxs = [header.index(col) for col in header if col.startswith("gp")]
