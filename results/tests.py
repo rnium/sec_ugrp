@@ -48,6 +48,8 @@ class SemesterResultsTestCase(TestCase):
         self.assertEqual(len(credits_idxs), len(gp_idxs))
         dataset = get_excel_dataset(header, data_rows, credits_idxs, gp_idxs)
         # model preparation
+        count_enrollments = 0
+        count_successful = 0
         semesters = Semester.objects.filter(session__from_year=2018)
         for sem in semesters:
             success = 0
@@ -72,8 +74,10 @@ class SemesterResultsTestCase(TestCase):
                     print(colored(f"Mismatch GP --> Reg: {reg} , system: {enroll.semester_gpa} , actual {actual_gp}", "red"))
                     continue
                 success += 1
+            count_enrollments += semester_enrollments.count()
+            count_successful += success
             print(colored(f"successful: {success} / {semester_enrollments.count()} ({round((success / semester_enrollments.count())*100, 2)}%)", 'light_green'))
-        
+        print(colored(f"Overall accuracy: {round((count_successful / count_enrollments)*100, 2)}%", 'yellow'))
         
         
         
