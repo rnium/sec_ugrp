@@ -279,7 +279,6 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> by
     build_semester(story, year_second_sem_enroll, second_sem_cumulative)
     TOTAL_NUMBER_OF_COURSES = year_first_sem_enroll.courses.count() + year_second_sem_enroll.courses.count()
     if TOTAL_NUMBER_OF_COURSES <= 22:
-        print("EXEC")
         doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative))
     elif TOTAL_NUMBER_OF_COURSES <= 24:
         doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative, 0.4*cm))

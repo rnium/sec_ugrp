@@ -110,14 +110,3 @@ class SemesterResultsTestCase(TestCase):
         print(colored(f"Success: {success} / {students.count()}", 'light_green'))
             
         
-        
-# class OverallResultTestCase(TestCase):
-#     fixtures = [settings.BASE_DIR/'fixtures.json']   
-    
-#     def test_semester_results(self):
-#         excel_file = settings.BASE_DIR/"anunad_results.xlsx"
-#         wb = openpyxl.load_workbook(excel_file)
-#         sheet1 = wb[wb.sheetnames[0]]
-#         rows = list(sheet1.rows)
-#         header = [cell.value.lower().strip() for cell in rows[0] if cell.value is not None]
-#         data_rows = rows[1:]
