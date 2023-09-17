@@ -316,7 +316,7 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
     return
 
 
-def insert_footer(footer_data: List[List], flowables: List):
+def get_footer(footer_data: List[List]):
     PADDING_STYLES = []
     if len(footer_data) > 2:
         for row in range(2, len(footer_data), 2):
@@ -327,8 +327,13 @@ def insert_footer(footer_data: List[List], flowables: List):
     ])
     table = Table(footer_data, colWidths=calculate_column_widths(len(footer_data[0])))
     table.setStyle(ts)
-    flowables.append(table)
-    return
+    return table
+
+
+def add_footer(canvas, doc, footer_data, margin_y=cm):
+    footer = get_footer(footer_data)
+    footer.wrapOn(canvas, 0, 0)
+    footer.drawOn(canvas=canvas, x=2.5*cm, y=margin_y)
 
 
 def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config, footer_data) -> BytesIO:
@@ -338,7 +343,7 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config,
         flowables.append(Spacer(1, 0.5*cm))
         insert_table(data, flowables, semesterData.semester.semester_no)
         flowables.append(Spacer(1, 0.5*cm))
-        insert_footer(footer_data, flowables)
+        # insert_footer(footer_data, flowables)
         flowables.append(PageBreak())
     # Create the PDF document 
     buffer = BytesIO()
@@ -351,7 +356,7 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config,
                             title=f"Tabulation sheet"
                             )
     # Building
-    doc.build(flowables)
+    doc.build(flowables, onFirstPage=lambda canv, doc: add_footer(canv, doc, footer_data), onLaterPages=lambda canv, doc: add_footer(canv, doc, footer_data))
     return buffer
 
 def get_thumnail_image(pdf_file: BytesIO) -> bytes:
