@@ -9,5 +9,6 @@ PyMuPDF==1.22.5
 pytz==2023.3
 reportlab==4.0.4
 sqlparse==0.4.4
+termcolor==2.3.0
 typing_extensions==4.7.1
 tzdata==2023.3
