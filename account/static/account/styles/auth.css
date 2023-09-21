@@ -1,10 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Montserrat:wght@400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Major+Mono+Display&family=Montserrat:wght@400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   color: #f2f2f4;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
+}
+
+@font-face {
+  font-family: "deadcrt";
+  src: url("/fonts/DEADCRT.ttf");
 }
 
 body {
@@ -51,5 +56,47 @@ body main .login-container .sys-info .instituition {
 
 body main .login-container .form-container {
   width: 100%;
+}
+
+@-webkit-keyframes example {
+  0% {
+    text-shadow: 0 0 30px #07f5a6;
+  }
+  50% {
+    text-shadow: 0 0 50px #07f5a6;
+  }
+  100% {
+    text-shadow: 0 0 30px #07f5a6;
+  }
+}
+
+@keyframes example {
+  0% {
+    text-shadow: 0 0 30px #07f5a6;
+  }
+  50% {
+    text-shadow: 0 0 50px #07f5a6;
+  }
+  100% {
+    text-shadow: 0 0 30px #07f5a6;
+  }
+}
+
+.dev-info {
+  margin-top: 10rem;
+}
+
+.dev-info a {
+  text-decoration: none;
+  font-family: 'Major Mono Display', monospace;
+  font-size: 1.5rem;
+  color: #00ff95;
+  text-shadow: 0 0 30px #07f5a6;
+  -webkit-animation-name: example;
+          animation-name: example;
+  -webkit-animation-duration: 4s;
+          animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
 }
 /*# sourceMappingURL=auth.css.map */
