@@ -13,7 +13,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
+            model_name='semesterdocument',
+            name='tabulation_sheet_render_by',
+        ),
+        migrations.AddField(
             model_name='semesterdocument',
             name='tabulation_sheet_render_by',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
