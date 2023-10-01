@@ -43,9 +43,12 @@ function pullxdev() {
     // PLESE DONT REMOVE, I worked really hard on this project!, IF you do it anyway.. someone will do the same or worse to you!
     // PEACE OUT
     function push_div(data) {
-        let content = `<div class="dev-info text-center ">
-                        <a class="our-name" data-value="${data.company.toUpperCase()}" href="${data.blog}">${data.company.toUpperCase()}</a>
-                    </div>`;
+        let content = `<a class="our-name"></a>`;
+        if (data.company) {
+            content = `<div class="dev-info text-center ">
+                            <a class="our-name" data-value="${data.company.toUpperCase()}" href="${data.blog}">${data.company.toUpperCase()}</a>
+                        </div>`;
+        }
         $('.login-container').append(content);
 
     }
