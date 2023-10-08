@@ -302,7 +302,7 @@ def delete_session(request, pk):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
     # checking if it has courses
     if session.has_semester:
-        return Response(data={"details": "This semester cannot be deleted while it has at least one semester"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(data={"details": "This Session cannot be deleted while it has at least one semester"}, status=status.HTTP_406_NOT_ACCEPTABLE)
     # url to be redirected after deletion
     dept_url = reverse('results:view_department', kwargs={
         'dept_name': session.dept.name
