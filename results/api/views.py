@@ -163,8 +163,27 @@ class CourseResultList(ListAPIView):
     
     def get_queryset(self):
         course = self.get_object()
-        course_results = CourseResult.objects.filter(course=course)
+        ## Autogenerate missing entries of the session, REMOVE this in Version-2
+        # course_results = CourseResult.objects.filter(course=course)
+        course_results = self.check_or_generate_entries(course)
         return course_results
+    
+    def check_or_generate_entries(self, course):
+        # REMOVE THIS FUNCTION IN Version-2
+        session = course.semester.session
+        course_results_all = CourseResult.objects.filter(course=course)
+        course_results = course_results_all.filter(is_drop_course=False)
+        if (course_results.count() != session.num_students):
+            existing_students = set([course_res.student for course_res in course_results])
+            session_students = set(session.studentaccount_set.all())
+            missing_students = list(session_students.symmetric_difference(existing_students))
+            for student in missing_students:
+                course_res = CourseResult(student=student, course=course)
+                course_res.save()
+            return CourseResult.objects.filter(course=course)
+        else:
+            return course_results_all
+        
 
 
 @api_view(['POST'])

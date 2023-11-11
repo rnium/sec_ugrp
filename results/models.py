@@ -74,6 +74,10 @@ class Session(models.Model):
     def has_semester(self):
         return bool(self.semester_set.count())
     
+    @property
+    def num_students(self):
+        return self.studentaccount_set.count()
+    
     
         
     
@@ -277,6 +281,7 @@ class CourseResult(models.Model):
     updated = models.DateTimeField(auto_now=True)
     
     class Meta:
+        ordering = ["is_drop_course", "student__registration"]
         constraints = [
             models.UniqueConstraint(fields=["student", "course"], name="unique_courseresult_student")
         ]
