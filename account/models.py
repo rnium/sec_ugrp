@@ -106,8 +106,11 @@ class StudentAccount(BaseAccount):
         credits_count = 0
         points_count = 0
         for enroll in enrollments:
-            credits_count += enroll.semester_credits
-            points_count += enroll.semester_points
+            # Formula Changed after suggestion from Ashraful sir on 8th October 2023
+            # Tabulation generator still unchanged
+            sem_credits = enroll.semester_credits
+            credits_count += sem_credits
+            points_count += enroll.semester_gpa * sem_credits
         if points_count >= 0:
             self.credits_completed = credits_count
             self.total_points = points_count
