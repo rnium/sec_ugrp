@@ -173,6 +173,13 @@ class SemesterEnroll(models.Model):
             models.UniqueConstraint(fields=['semester', 'student'], name="one_enroll_per_semester")
         ]
     
+    def save(self, *args, **kwargs):
+        enrolls = SemesterEnroll.objects.filter(semester__semester_no=self.semester.semester_no, student=self.student).exclude(id=self.id)
+        if enrolls.count():
+            raise ValidationError(f"Student already enrolled for a semester no: {self.semester.semester_no}")
+        super().save(*args, **kwargs)
+    
+    
     def update_stats(self):
         """Updates the stats field of the object.
         Dont call this function within SemesterEnroll.save()

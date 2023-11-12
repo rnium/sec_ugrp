@@ -1,5 +1,6 @@
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -178,8 +179,21 @@ class CourseResultList(ListAPIView):
             session_students = set(session.studentaccount_set.all())
             missing_students = list(session_students.symmetric_difference(existing_students))
             for student in missing_students:
-                course_res = CourseResult(student=student, course=course)
-                course_res.save()
+                semester_enroll = SemesterEnroll.objects.filter(semester=course.semester, student=student).first()
+                if (semester_enroll is None):
+                    try:
+                        semester_enroll = SemesterEnroll(semester=course.semester, student=student)
+                        semester_enroll.save()
+                    except ValidationError:
+                        print("Hola.. error")
+                        continue
+                try:
+                    course_res = CourseResult(student=student, course=course)
+                    course_res.save()
+                except Exception as e:
+                    continue
+                semester_enroll.courses.add(course)
+                    
             return CourseResult.objects.filter(course=course)
         else:
             return course_results_all
@@ -203,6 +217,7 @@ def update_course_results(request, pk):
         try:
             course_result.save()
         except Exception as e:
+            print(e)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     ## updating stats data: credits, points and gpa for each enrolls
     # romoved: (note: each courseresult related enrollments are now updated after saving the course_result in save() method)

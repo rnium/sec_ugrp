@@ -10,6 +10,8 @@ def ordinal_num(n):
 
 @register.filter
 def floating_two_point(n):
+    if n is None:
+        return
     return round(n, 2)
 
 @register.filter
