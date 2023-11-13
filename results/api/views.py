@@ -17,13 +17,16 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer)
 from .permission import IsCampusAdmin
-from results.models import Session, Semester, Course, CourseResult, SemesterDocument, SemesterEnroll
+from results.models import (Department, Session, Semester, Course, 
+                            CourseResult, SemesterDocument, SemesterEnroll, Backup)
 from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
 from io import BytesIO
 import openpyxl
+from datetime import datetime
+
     
 class BadrequestException(APIException):
     status_code = 403
@@ -544,3 +547,30 @@ def process_course_excel(request, pk):
         return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def generate_backup(request):
+    try:
+        dept_id = request.data['department_id']
+        dept = Department.objects.get(id=dept_id)
+    except KeyError:
+        return Response(data={"details":"Data is missing"}, status=status.HTTP_400_BAD_REQUEST)
+    except Department.DoesNotExist:
+        return Response(data={"details":"Department Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        backup_data = utils.create_backup(dept)
+    except Exception as e:
+        return Response(data={"details": f"Cannot create backup. Error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    # current_datetime = datetime.now()
+    # formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    backup = Backup(
+        department = dept,
+        data = backup_data
+    )
+    backup.save()
+    return Response(data=backup_data)
+
+    
+        

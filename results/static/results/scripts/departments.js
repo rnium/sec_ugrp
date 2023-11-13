@@ -74,6 +74,42 @@ function createSession() {
     }
 }
 
+function temporaryTextToggler(elem_id, new_text) {
+    let prev_text = $(`#${elem_id}`).text();
+    $(`#${elem_id}`).text(new_text);
+    setTimeout(()=>{
+        $(`#${elem_id}`).text(prev_text);
+    }, 3000)
+}
+
+function createBackup() {
+    payload = {
+        'department_id': dept_id
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: backup_create_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#create_backup_btn").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $("#create_backup_btn").removeAttr("disabled");
+            },
+            error: function(xhr, status, error) {
+                $("#create_backup_btn").removeAttr("disabled");
+                temporaryTextToggler("create_backup_btn", "Error..")
+            },
+        });
+    }
+}
+
 $(document).ready(function () {
-    $("#addSessionBtn").on('click', createSession)
+    $("#addSessionBtn").on('click', createSession);
+    $("#create_backup_btn").on('click', createBackup);
 });

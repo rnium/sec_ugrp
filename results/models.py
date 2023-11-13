@@ -345,5 +345,5 @@ class Backup(models.Model):
     def filepath(self, filename):
         return join(str(self.semester.session.dept.name), "Backups", filename)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    file = models.FileField(upload_to=filepath)
+    data = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
