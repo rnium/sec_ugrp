@@ -341,17 +341,9 @@ class CourseResult(models.Model):
         return (self.grade_point * self.course.course_credit)
     
     
-class Activity(models.Model):
-    ACTIVITY_TYPES = [
-        ("add", "Addition"),
-        ("update", "Modification"),
-        ("delete", "Deletion"),
-    ]
-    by = models.ForeignKey(User, on_delete=models.CASCADE)
-    at = models.DateTimeField(auto_now_add=True)
-    target_url = models.URLField(null=True, blank=True)
-    type = models.CharField(max_length=10, choices=ACTIVITY_TYPES)
-    message = models.CharField(max_length=200)
-    
-    class Meta:
-        ordering = ['at']
+class Backup(models.Model):
+    def filepath(self, filename):
+        return join(str(self.semester.session.dept.name), "Backups", filename)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=filepath)
+    created_at = models.DateTimeField(auto_now_add=True)
