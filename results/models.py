@@ -347,3 +347,6 @@ class Backup(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     data = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ["-created_at"]

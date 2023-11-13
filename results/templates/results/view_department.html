@@ -118,18 +118,14 @@
                 </div>
                 <div class="modal-body">
                     <ul class="list-group">
+                        {% for backup in department.backup_set.all  %}
                         <li class="list-group-item mb-1 bg-material-1">
                             <div class="d-flex align-items-center">
                                 <i class='bx bx-history fs-1 text-secondary'></i>
-                                <a class="ms-2 text-white" href="">Backup - 14.10.2023 at 8:36:32PM</a>
+                                <a class="ms-2 text-white" href="">Backup {{backup.id}} <span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
                             </div>
                         </li>
-                        <li class="list-group-item mb-1 bg-material-1">
-                            <div class="d-flex align-items-center">
-                                <i class='bx bx-history fs-1 text-secondary'></i>
-                                <a class="ms-2 text-white" href="">Backup - 14.10.2023 at 8:36:32PM</a>
-                            </div>
-                        </li>
+                        {% endfor %}
                         <!-- <li class="list-group-item bg-material-1">
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <i class='bx bx-history fs-1 text-secondary mt-2'></i>
