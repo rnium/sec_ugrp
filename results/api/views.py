@@ -185,7 +185,6 @@ class CourseResultList(ListAPIView):
                         semester_enroll = SemesterEnroll(semester=course.semester, student=student)
                         semester_enroll.save()
                     except ValidationError:
-                        print("Hola.. error")
                         continue
                 try:
                     course_res = CourseResult(student=student, course=course)
