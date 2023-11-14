@@ -25,6 +25,7 @@ from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
 from io import BytesIO
 import openpyxl
+import json
 from datetime import datetime
 
     
@@ -590,5 +591,13 @@ def generate_backup(request):
     
     return Response(data=response)
 
-    
+
+@csrf_exempt
+def perform_restore(request):
+    if request.method == "POST" and request.FILES.get('backup_file'):
+        backup_file = request.FILES.get('backup_file')
+        decoded_file = backup_file.read().decode('utf-8')
+        data = json.loads(decoded_file)
+        print(data.keys())
+    return JsonResponse(data={'info': 'ok'})
         

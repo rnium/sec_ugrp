@@ -123,7 +123,7 @@
                         <li class="list-group-item mb-1 bg-material-1" id="backup-{{backup.id}}">
                             <div class="d-flex align-items-center">
                                 <img src="{% static "results/images/cd-drive.png" %}" width="50px">
-                                <a class="ms-2 text-white" target="_blank" href="{% url 'results:download_backup' backup.id %}">Backup {{backup.id}} at<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
+                                <a class="ms-2 text-white" target="_blank" href="{% url 'results:download_backup' backup.id %}">Backup {{backup.id}}<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
                             </div>
                         </li>
                         {% endfor %}
@@ -142,10 +142,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="file" class="form-control" id="" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                    <input type="file" class="form-control" id="backup_file" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                     <div class="btn-con mt-1 d-flex justify-content-end align-items-center">
-                        <span class="me-3 text-warning" id="">Restoring...</span>
-                        <button class="btn btn-secondary" type="button" id="">Restore</button>
+                        <small class="me-3 text-warning" id="restore-info"></small>
+                        <button class="btn btn-secondary" id="restore-btn" type="button" id="">Restore</button>
                     </div>
                 </div>
                 </div>
@@ -159,6 +159,7 @@
 <script>
     const create_session_api = "{% url 'results:create_session' %}";
     const backup_create_api = "{% url 'results:generate_backup' %}";
+    const perform_restore_api = "{% url 'results:perform_restore' %}";
     const dept_id = {{department.id}};
     const csrftoken = "{{csrf_token}}";
 </script>

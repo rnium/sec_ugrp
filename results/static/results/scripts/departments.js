@@ -128,7 +128,46 @@ function createBackup() {
     }
 }
 
+
+function performRestore(backup_file) {
+    let data_form = new FormData
+    data_form.append("backup_file", backup_file)
+    $.ajax({
+        type: "post",
+        url: perform_restore_api,
+        data: data_form,
+        contentType: false,
+        processData: false,
+        beforeSend: function(xhr){
+            $("#restore-btn").attr("disabled", true)
+            $("#restore-info").text("Restoring data");
+        },
+        success: function(response) {
+            $("#restore-info").text("Data restoration complete. Reloading page");
+            // setTimeout(()=>{
+            //     location.reload();
+            // }, 2000)
+        },
+        error: function(xhr, status, error) {
+            $("#restore-btn").removeAttr("disabled");
+            try {
+                alert(xhr.responseJSON.details);
+            } catch (error_) {
+                alert(error);
+            }
+        },
+    });
+}
+
 $(document).ready(function () {
     $("#addSessionBtn").on('click', createSession);
     $("#create_backup_btn").on('click', createBackup);
+    $("#restore-btn").on('click', function() {
+        backup_file = $("#backup_file")[0].files
+        if (backup_file.length > 0) {
+            performRestore(backup_file[0]);
+        } else {
+            alert("Please choose a backup file!")
+        }
+    })
 });
