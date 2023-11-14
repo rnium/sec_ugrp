@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from account.models import StudentAccount
 from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
 from django.forms.models import model_to_dict
@@ -118,6 +119,12 @@ def delete_all_of_dept(dept: Department):
 
 
 def restore_data(dept, sessions_data):
+    semester_drop_courses_prev_IDs = {}
+    enrollment_courses_prev_IDs = {}
+    semester_hash = {}        # key = previous, value = new
+    enrollment_hash = {}        # key = previous, value = new
+    courses_hash = {}       # key = previous, value = new
+    failed_course_results = []
     for session_data in sessions_data:
         session_data['session_meta'].pop('id')
         session_data['session_meta']['dept'] = dept
@@ -128,4 +135,64 @@ def restore_data(dept, sessions_data):
             student_data.pop('user')
             student_data['session'] = session
             StudentAccount.objects.create(**student_data)
+        # Semesters
+        for sem_data in session_data['semesters']:
+            prev_sem_id = sem_data['semester_meta']['id']
+            semester_drop_courses_prev_IDs[prev_sem_id] = sem_data['semester_meta']['drop_courses']
+            sem_data['semester_meta'].pop('id')
+            sem_data['semester_meta'].pop('drop_courses')
+            sem_data['semester_meta']['session'] = session
+            if sem_data['semester_meta']['added_by']:
+                user = User.objects.filter(username=sem_data['semester_meta']['added_by']).first()
+                if user:
+                    sem_data['semester_meta']['added_by'] = user
+            semester = Semester(**sem_data['semester_meta'])
+            semester.save()
+            semester_hash[prev_sem_id] = semester.id
+            # Courses
+            for course_data in sem_data['courses']:
+                prev_id = course_data['course_meta']['id']
+                course_data['course_meta'].pop('id')
+                course_data['course_meta']['semester'] = semester
+                if course_data['course_meta']['added_by']:
+                    user = User.objects.filter(username=course_data['course_meta']['added_by']).first()
+                    if user:
+                        course_data['course_meta']['added_by'] = user
+                course = Course(**course_data['course_meta'])
+                course.save()
+                courses_hash[prev_id] = course.id
+                # Course Results
+                course_res_bulks = []
+                for result_data in course_data['course_results']:
+                    result_data.pop('id')
+                    result_data['course'] = course
+                    try:
+                        result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
+                    except Exception as e:
+                        failed_course_results.append(result_data)
+                        continue
+                    course_res_bulks.append(CourseResult(**result_data))
+                CourseResult.objects.bulk_create(course_res_bulks)
+            # Enrolls
+            for enroll_data in sem_data['enrolls']:
+                enrollment_prev_id = enroll_data['id']
+                enrollment_courses_prev_IDs[enrollment_prev_id] = enroll_data['courses']
+                enroll_data.pop('id')
+                enroll_data.pop('courses')
+                enroll_data['student'] = StudentAccount.objects.get(registration=enroll_data['student'])
+                enroll_data['semester'] = semester
+                enroll = SemesterEnroll(**enroll_data)
+                enroll.save()
+                enrollment_hash[enrollment_prev_id] = enroll.id
+    # retry failed courseresult creation 
+    course_result_bulks = []
+    for result_data in failed_course_results:
+        result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
+        course_result_bulks.append(CourseResult(**result_data))
+    CourseResult.objects.bulk_create(course_result_bulks)
+        
+    # print(f"Sem drop courses: {len(semester_drop_courses_prev_IDs)}")
+            
+                
+                    
     
