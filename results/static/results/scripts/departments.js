@@ -101,12 +101,29 @@ function createBackup() {
             cache: false,
             success: function(response) {
                 $("#create_backup_btn").text("Create New Backup")
-                $("#create_backup_btn").removeAttr("disabled");
+                console.log(response);
+                // removing no-backups
+                if (response.is_no_backup_shown) {
+                    $(`#no-backup`).remove();
+                }
+                // removing deleted backups
+                for (id of response.deleted_backups) {
+                    $(`#backup-${id}`).hide(150, ()=>{
+                        $(`#backup-${id}`).remove();
+                    });;
+                }
+                // inserting new backup
+                $("#backup-list").prepend(response.new_backup_elem);
+                $(`#backup-${response.new_backup_id}`).show(200)
+                
             },
             error: function(xhr, status, error) {
-                $("#create_backup_btn").removeAttr("disabled");
+                $("#create_backup_btn").text("Create New Backup")
                 temporaryTextToggler("create_backup_btn", "Error..")
             },
+            complete: function() {
+                $("#create_backup_btn").removeAttr("disabled");
+            }
         });
     }
 }

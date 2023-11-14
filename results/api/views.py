@@ -577,11 +577,20 @@ def generate_backup(request):
     )
     backup.save()
     backups_qs = Backup.objects.filter(department=dept)
+    deleted_backups = []
     if backups_qs.count() > 5:
         deleting_backups = list(backups_qs)[5:]
         for d_backup in deleting_backups:
+            deleted_backups.append(d_backup.id)
             d_backup.delete()
-    return Response(data=backup_data)
+    response = {
+        'deleted_backups': deleted_backups,
+        'new_backup_id': backup.id,
+        'new_backup_elem': render_to_string('results/components/backup_item.html', context={'backup': backup}),
+        'is_no_backup_shown': backups_qs.count() == 1,
+    }
+    
+    return Response(data=response)
 
     
         

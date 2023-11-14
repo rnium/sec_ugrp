@@ -117,7 +117,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ul class="list-group">
+                    <ul class="list-group" id="backup-list">
                         {% if department.backup_set.count %}
                         {% for backup in department.backup_set.all  %}
                         <li class="list-group-item mb-1 bg-material-1" id="backup-{{backup.id}}">
@@ -128,7 +128,7 @@
                         </li>
                         {% endfor %}
                         {% else %}
-                        <li class="list-group-item bg-material-1">
+                        <li class="list-group-item bg-material-1" id="no-backup">
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <i class='bx bx-history fs-1 text-secondary mt-2'></i>
                                 <p class="fs-4 text-muted">No Backups!</p>
