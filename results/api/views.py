@@ -559,6 +559,12 @@ def generate_backup(request):
         return Response(data={"details":"Data is missing"}, status=status.HTTP_400_BAD_REQUEST)
     except Department.DoesNotExist:
         return Response(data={"details":"Department Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if ((not hasattr(request.user, 'adminaccount')) or
+        request.user.adminaccount.dept is not None and
+        request.user.adminaccount.dept != dept):
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # get backup data
     try:
         backup_data = utils.create_backup(dept)
     except Exception as e:
