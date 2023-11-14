@@ -28,6 +28,12 @@ import openpyxl
 import json
 from datetime import datetime
 
+
+def user_is_super_OR_dept_admin(request):
+    if hasattr(request.user, 'adminaccount'):
+        return request.user.adminaccount.is_super_admin or (request.user.adminaccount.dept is not None)
+    else:
+        return False
     
 class BadrequestException(APIException):
     status_code = 403
@@ -594,10 +600,17 @@ def generate_backup(request):
 
 @csrf_exempt
 def perform_restore(request):
+    if (not request.user.is_authenticated) or (not hasattr(request.user, 'adminaccount')):
+        return JsonResponse({'details': "Forbidden Action"}, status=403)
     if request.method == "POST" and request.FILES.get('backup_file'):
         backup_file = request.FILES.get('backup_file')
         decoded_file = backup_file.read().decode('utf-8')
         data = json.loads(decoded_file)
-        print(data.keys())
+    else:
+        return JsonResponse({'details': "Semester is not running!"}, status=400)
+    if (request.user.adminaccount.dept is not None and 
+        request.user.adminaccount.dept.name.lower() != data['dept']):
+        return JsonResponse({'details': "Forbidden Action"}, status=403)
+    
     return JsonResponse(data={'info': 'ok'})
         

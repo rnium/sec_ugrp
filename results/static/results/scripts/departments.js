@@ -151,10 +151,13 @@ function performRestore(backup_file) {
         error: function(xhr, status, error) {
             $("#restore-btn").removeAttr("disabled");
             try {
-                alert(xhr.responseJSON.details);
+                $("#restore-info").text(xhr.responseJSON.details);
             } catch (error_) {
-                alert(error);
+                $("#restore-info").text(error);
             }
+            setTimeout(()=>{
+                $("#restore-info").text('');
+            }, 3000)
         },
     });
 }
