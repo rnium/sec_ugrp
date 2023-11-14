@@ -569,8 +569,6 @@ def generate_backup(request):
         backup_data = utils.create_backup(dept)
     except Exception as e:
         return Response(data={"details": f"Cannot create backup. Error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    # current_datetime = datetime.now()
-    # formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
     backup = Backup(
         department = dept,
         data = backup_data

@@ -1,16 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from typing import Any, Dict
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse
-from results.models import (Semester, SemesterEnroll, Department, Session, Course)
+from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup)
 from account.models import StudentAccount, AdminAccount
 from results.gradesheet_generator import get_gradesheet
 from results.transcript_generator import get_transcript
 from results.utils import get_ordinal_number, render_error
+from datetime import datetime
+import json
 
 
 def user_is_super_OR_dept_admin(request):
@@ -198,6 +200,24 @@ def download_transcript(request, registration):
     else:
         return render_error(request, 'Transcript not available!')
 
+@login_required
+def download_backup(request, pk):
+    has_permission = user_is_super_OR_dept_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    backup = get_object_or_404(Backup, pk=pk) 
+    if request.user.adminaccount.dept is not None and backup.department != request.user.adminaccount.dept:
+        return render_error(request, 'Forbidden')
+    current_datetime = datetime.now()
+    formatted_datetime = current_datetime.strftime("%d-%m-%Y")
+    filename = f"RDB Backup-{backup.id} {backup.department.name.upper()} {formatted_datetime}"
+    response = JsonResponse(backup.data)
+    response['Content-Disposition'] = f'attachment; filename="{filename}.json"'
+    return response
+
+
+        
+    
 
 @login_required 
 def pending_view(request):

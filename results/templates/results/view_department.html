@@ -123,7 +123,7 @@
                         <li class="list-group-item mb-1 bg-material-1" id="backup-{{backup.id}}">
                             <div class="d-flex align-items-center">
                                 <img src="{% static "results/images/cd-drive.png" %}" width="50px">
-                                <a class="ms-2 text-white" href="">Backup {{backup.id}} at<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
+                                <a class="ms-2 text-white" target="_blank" href="{% url 'results:download_backup' backup.id %}">Backup {{backup.id}} at<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
                             </div>
                         </li>
                         {% endfor %}
