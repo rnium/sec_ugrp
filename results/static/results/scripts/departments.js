@@ -94,11 +94,13 @@ function createBackup() {
             contentType: "application/json",
             beforeSend: function(xhr){
                 $("#create_backup_btn").attr("disabled", true)
+                $("#create_backup_btn").text("creating...")
                 xhr.setRequestHeader("X-CSRFToken", csrftoken)
             },
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
+                $("#create_backup_btn").text("Create New Backup")
                 $("#create_backup_btn").removeAttr("disabled");
             },
             error: function(xhr, status, error) {

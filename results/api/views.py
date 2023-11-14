@@ -570,6 +570,11 @@ def generate_backup(request):
         data = backup_data
     )
     backup.save()
+    backups_qs = Backup.objects.filter(department=dept)
+    if backups_qs.count() > 5:
+        deleting_backups = list(backups_qs)[5:]
+        for d_backup in deleting_backups:
+            d_backup.delete()
     return Response(data=backup_data)
 
     

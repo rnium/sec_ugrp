@@ -118,20 +118,24 @@
                 </div>
                 <div class="modal-body">
                     <ul class="list-group">
+                        {% if department.backup_set.count %}
                         {% for backup in department.backup_set.all  %}
                         <li class="list-group-item mb-1 bg-material-1">
                             <div class="d-flex align-items-center">
-                                <i class='bx bx-history fs-1 text-secondary'></i>
-                                <a class="ms-2 text-white" href="">Backup {{backup.id}} <span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
+                                <img src="{% static "results/images/cd-drive.png" %}" width="50px">
+                                <a class="ms-2 text-white" href="">Backup {{backup.id}} at<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
                             </div>
                         </li>
                         {% endfor %}
-                        <!-- <li class="list-group-item bg-material-1">
+                        {% else %}
+                        <li class="list-group-item bg-material-1">
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <i class='bx bx-history fs-1 text-secondary mt-2'></i>
                                 <p class="fs-4 text-muted">No Backups!</p>
                             </div>
-                        </li> -->
+                        </li>
+                        {% endif %}
+                        
                     </ul>
                     <div class="btn-con mt-3 d-flex justify-content-end">
                         <button type="button" id="create_backup_btn" class="btn btn-outline-success">Create New Backup</button>
