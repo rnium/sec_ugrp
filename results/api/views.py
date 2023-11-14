@@ -611,6 +611,10 @@ def perform_restore(request):
     if (request.user.adminaccount.dept is not None and 
         request.user.adminaccount.dept.name.lower() != data['dept']):
         return JsonResponse({'details': "Forbidden Action"}, status=403)
-    
+    try:
+        dept = Department.objects.filter(name=data['dept'])
+    except Department.DoesNotExist:
+        return JsonResponse({'details': "Department Not Found"}, status=404)
+    utils.delete_all_of_dept(dept)
     return JsonResponse(data={'info': 'ok'})
         

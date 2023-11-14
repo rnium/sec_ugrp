@@ -86,12 +86,16 @@ def create_backup(dept: Department):
             }
             semester_drop_courses = [course.id for course in semester_data['semester_meta']['drop_courses']]
             semester_data['semester_meta']['drop_courses'] = semester_drop_courses
+            if (semester.added_by):
+                semester_data['semester_meta']['added_by'] = semester.added_by.username
             courses = Course.objects.filter(semester=semester)
             for course in courses:
                 course_data = {
                     'course_meta': model_to_dict(course),
                     'course_results': []
                 }
+                if course.added_by:
+                    course_data['course_meta']['added_by'] = course.added_by.username
                 course_results = CourseResult.objects.filter(course=course)
                 for result in course_results:
                     course_data['course_results'].append(model_to_dict(result))
@@ -108,5 +112,12 @@ def create_backup(dept: Department):
     
     return backup_data
     
-        
+def delete_all_of_dept(dept: Department):
+    sessions = Session.objects.filter(dept=dept)
+    sessions.delete()
+
+# def restore_data(data):
+#     sessions_data = data['sessions']
+#     for session_data in sessions_data:
+#         session = 
     
