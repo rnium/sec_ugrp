@@ -121,9 +121,9 @@ def delete_all_of_dept(dept: Department):
 def restore_data(dept, sessions_data):
     semester_drop_courses_prev_IDs = {}
     enrollment_courses_prev_IDs = {}
-    semester_hash = {}        # key = previous, value = new
-    enrollment_hash = {}        # key = previous, value = new
-    courses_hash = {}       # key = previous, value = new
+    semester_hash = {}        # key = previous, value = new object
+    enrollment_hash = {}        # key = previous, value = new object
+    courses_hash = {}       # key = previous, value = new object
     failed_course_results = []
     for session_data in sessions_data:
         session_data['session_meta'].pop('id')
@@ -148,7 +148,7 @@ def restore_data(dept, sessions_data):
                     sem_data['semester_meta']['added_by'] = user
             semester = Semester(**sem_data['semester_meta'])
             semester.save()
-            semester_hash[prev_sem_id] = semester.id
+            semester_hash[prev_sem_id] = semester
             # Courses
             for course_data in sem_data['courses']:
                 prev_id = course_data['course_meta']['id']
@@ -160,7 +160,7 @@ def restore_data(dept, sessions_data):
                         course_data['course_meta']['added_by'] = user
                 course = Course(**course_data['course_meta'])
                 course.save()
-                courses_hash[prev_id] = course.id
+                courses_hash[prev_id] = course
                 # Course Results
                 course_res_bulks = []
                 for result_data in course_data['course_results']:
@@ -183,16 +183,25 @@ def restore_data(dept, sessions_data):
                 enroll_data['semester'] = semester
                 enroll = SemesterEnroll(**enroll_data)
                 enroll.save()
-                enrollment_hash[enrollment_prev_id] = enroll.id
+                enrollment_hash[enrollment_prev_id] = enroll
     # retry failed courseresult creation 
     course_result_bulks = []
     for result_data in failed_course_results:
         result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
         course_result_bulks.append(CourseResult(**result_data))
     CourseResult.objects.bulk_create(course_result_bulks)
-        
-    # print(f"Sem drop courses: {len(semester_drop_courses_prev_IDs)}")
-            
+    # semester drop courses
+    for prevId, newSem in semester_hash.items():
+        drop_courses = semester_drop_courses_prev_IDs[prevId]
+        for prev_course_id in drop_courses:
+            newSem.drop_courses.add(courses_hash[prev_course_id])
+    # enrolled courses
+    for prevId, newEnroll in enrollment_hash.items():
+        enrolled_courses = enrollment_courses_prev_IDs[prevId]
+        for prev_course_id in enrolled_courses:
+            newEnroll.courses.add(courses_hash[prev_course_id])
+    
+    
                 
                     
     
