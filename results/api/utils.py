@@ -113,11 +113,19 @@ def create_backup(dept: Department):
     return backup_data
     
 def delete_all_of_dept(dept: Department):
-    sessions = Session.objects.filter(dept=dept)
+    sessions = dept.session_set.all()
     sessions.delete()
 
-# def restore_data(data):
-#     sessions_data = data['sessions']
-#     for session_data in sessions_data:
-#         session = 
+
+def restore_data(dept, sessions_data):
+    for session_data in sessions_data:
+        session_data['session_meta'].pop('id')
+        session_data['session_meta']['dept'] = dept
+        session = Session(**session_data['session_meta'])
+        session.save()
+        # Students
+        for student_data in session_data['students']:
+            student_data.pop('user')
+            student_data['session'] = session
+            StudentAccount.objects.create(**student_data)
     
