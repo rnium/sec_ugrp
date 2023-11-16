@@ -5,7 +5,7 @@ from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 
 @shared_task(bind=True)
-def restore_data_task(self, dept_id, sessions_data, total_objects, one_percent):
+def restore_data_task(self, dept_id, sessions_data, total_objects):
     dept = Department.objects.get(id=dept_id)
     semester_drop_courses_prev_IDs = {}
     enrollment_courses_prev_IDs = {}
@@ -100,14 +100,14 @@ def restore_data_task(self, dept_id, sessions_data, total_objects, one_percent):
         drop_courses = semester_drop_courses_prev_IDs[prevId]
         for prev_course_id in drop_courses:
             newSem.drop_courses.add(courses_hash[prev_course_id])
-    count += one_percent
-    progress_recorder.set_progress(count, total_objects)
+        count += len(drop_courses)
+        progress_recorder.set_progress(count, total_objects)
     # enrolled courses
     for prevId, newEnroll in enrollment_hash.items():
         enrolled_courses = enrollment_courses_prev_IDs[prevId]
         for prev_course_id in enrolled_courses:
             newEnroll.courses.add(courses_hash[prev_course_id])
-    count += one_percent
-    progress_recorder.set_progress(count, total_objects)
+        count += len(enrolled_courses)
+        progress_recorder.set_progress(count, total_objects)
     
     

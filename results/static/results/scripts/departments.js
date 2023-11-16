@@ -143,11 +143,15 @@ function init_progressbar(progress_url) {
                 $("#progress-main").addClass("bg-success");
                 $("#restore-info").text("Data restoration complete. Please reload");
             } else {
-                init_progressbar(progress_url)
+                setTimeout(()=>{
+                    init_progressbar(progress_url);
+                }, 100)
             }
         },
         error: function(xhr, status, error) {
-            init_progressbar(progress_url)
+            setTimeout(()=>{
+                init_progressbar(progress_url);
+            }, 100)
         }
     });
 }

@@ -125,7 +125,9 @@ def get_obj_count(sessions_data):
         for semester in session['semesters']:
             obj_count += len(semester['courses'])
             obj_count += len(semester['enrolls'])
+            obj_count += len(semester['semester_meta']['drop_courses'])
             obj_count += sum(len(course['course_results']) for course in semester['courses'])
+            obj_count += sum(len(enroll['courses']) for enroll in semester['enrolls'])
     return obj_count
             
              
