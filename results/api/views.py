@@ -616,11 +616,13 @@ def perform_restore(request):
         dept = Department.objects.get(name=data['dept'])
     except Department.DoesNotExist:
         return JsonResponse({'details': "Department Not Found"}, status=404)
-    utils.delete_all_of_dept(dept)
-    result = restore_data_task.delay(dept.id, data['sessions'])
     try:
-        print(f"task id: {result.task_id}")
+        obj_count = utils.get_obj_count(data['sessions'])
     except Exception as e:
-        print(f"result: {result}")
-    return JsonResponse(data={'info': 'ok'})
-        
+        return JsonResponse({'details': "Bad data"}, status=406)
+    one_percent = obj_count // 100
+    obj_count += (one_percent * 2) # 2% of total objects
+    utils.delete_all_of_dept(dept)
+    result = restore_data_task.delay(dept.id, data['sessions'], obj_count, one_percent)
+    progress_url = reverse('celery_progress:task_status', args=(result.task_id,))
+    return JsonResponse(data={'info': 'ok', 'progress_url': progress_url})

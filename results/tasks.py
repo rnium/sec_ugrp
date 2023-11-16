@@ -2,9 +2,10 @@ from django.contrib.auth.models import User
 from account.models import StudentAccount
 from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
 from celery import shared_task
+from celery_progress.backend import ProgressRecorder
 
 @shared_task(bind=True)
-def restore_data_task(self, dept_id, sessions_data):
+def restore_data_task(self, dept_id, sessions_data, total_objects, one_percent):
     dept = Department.objects.get(id=dept_id)
     semester_drop_courses_prev_IDs = {}
     enrollment_courses_prev_IDs = {}
@@ -12,16 +13,23 @@ def restore_data_task(self, dept_id, sessions_data):
     enrollment_hash = {}        # key = previous, value = new object
     courses_hash = {}       # key = previous, value = new object
     failed_course_results = []
+    progress_recorder = ProgressRecorder(self)
+    count = 0
+    progress_recorder.set_progress(count, total_objects)
     for session_data in sessions_data:
         session_data['session_meta'].pop('id')
         session_data['session_meta']['dept'] = dept
         session = Session(**session_data['session_meta'])
         session.save()
+        count += 1
+        progress_recorder.set_progress(count, total_objects)
         # Students
         for student_data in session_data['students']:
             student_data.pop('user')
             student_data['session'] = session
             StudentAccount.objects.create(**student_data)
+            count += 1
+            progress_recorder.set_progress(count, total_objects)
         # Semesters
         for sem_data in session_data['semesters']:
             prev_sem_id = sem_data['semester_meta']['id']
@@ -35,6 +43,8 @@ def restore_data_task(self, dept_id, sessions_data):
                     sem_data['semester_meta']['added_by'] = user
             semester = Semester(**sem_data['semester_meta'])
             semester.save()
+            count += 1
+            progress_recorder.set_progress(count, total_objects)
             semester_hash[prev_sem_id] = semester
             # Courses
             for course_data in sem_data['courses']:
@@ -47,6 +57,8 @@ def restore_data_task(self, dept_id, sessions_data):
                         course_data['course_meta']['added_by'] = user
                 course = Course(**course_data['course_meta'])
                 course.save()
+                count += 1
+                progress_recorder.set_progress(count, total_objects)
                 courses_hash[prev_id] = course
                 # Course Results
                 course_res_bulks = []
@@ -60,6 +72,8 @@ def restore_data_task(self, dept_id, sessions_data):
                         continue
                     course_res_bulks.append(CourseResult(**result_data))
                 CourseResult.objects.bulk_create(course_res_bulks)
+                count += len(course_res_bulks)
+                progress_recorder.set_progress(count, total_objects)
             # Enrolls
             for enroll_data in sem_data['enrolls']:
                 enrollment_prev_id = enroll_data['id']
@@ -70,6 +84,8 @@ def restore_data_task(self, dept_id, sessions_data):
                 enroll_data['semester'] = semester
                 enroll = SemesterEnroll(**enroll_data)
                 enroll.save()
+                count += 1
+                progress_recorder.set_progress(count, total_objects)
                 enrollment_hash[enrollment_prev_id] = enroll
     # retry failed courseresult creation 
     course_result_bulks = []
@@ -77,15 +93,21 @@ def restore_data_task(self, dept_id, sessions_data):
         result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
         course_result_bulks.append(CourseResult(**result_data))
     CourseResult.objects.bulk_create(course_result_bulks)
+    count += len(course_res_bulks)
+    progress_recorder.set_progress(count, total_objects)
     # semester drop courses
     for prevId, newSem in semester_hash.items():
         drop_courses = semester_drop_courses_prev_IDs[prevId]
         for prev_course_id in drop_courses:
             newSem.drop_courses.add(courses_hash[prev_course_id])
+    count += one_percent
+    progress_recorder.set_progress(count, total_objects)
     # enrolled courses
     for prevId, newEnroll in enrollment_hash.items():
         enrolled_courses = enrollment_courses_prev_IDs[prevId]
         for prev_course_id in enrolled_courses:
             newEnroll.courses.add(courses_hash[prev_course_id])
+    count += one_percent
+    progress_recorder.set_progress(count, total_objects)
     
     

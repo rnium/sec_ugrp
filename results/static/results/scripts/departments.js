@@ -128,6 +128,30 @@ function createBackup() {
     }
 }
 
+function init_progressbar(progress_url) {
+    $.ajax({
+        type: "get",
+        url: progress_url,
+        dataType: "dataType",
+        dataType: "json",
+        contentType: false,
+        success: function (response) {
+            $("#progress-wrapper").attr("aria-valuenow", response.progress.percent);
+            $("#progress-main").css("width", `${response.progress.percent}%`);
+            if (response.complete) {
+                $("#progress-main").removeClass("bg-primary");
+                $("#progress-main").addClass("bg-success");
+                $("#restore-info").text("Data restoration complete. Please reload");
+            } else {
+                init_progressbar(progress_url)
+            }
+        },
+        error: function(xhr, status, error) {
+            init_progressbar(progress_url)
+        }
+    });
+}
+
 
 function performRestore(backup_file) {
     let data_form = new FormData
@@ -144,6 +168,10 @@ function performRestore(backup_file) {
         },
         success: function(response) {
             $("#restore-info").text("Data restoration started!");
+            $("#progress-container").show(100, ()=>{
+                init_progressbar(response.progress_url);
+            });
+            
         },
         error: function(xhr, status, error) {
             $("#restore-btn").removeAttr("disabled");
