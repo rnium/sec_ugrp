@@ -138,10 +138,21 @@ function init_progressbar(progress_url) {
         success: function (response) {
             $("#progress-wrapper").attr("aria-valuenow", response.progress.percent);
             $("#progress-main").css("width", `${response.progress.percent}%`);
+            if (response.progress.percent > 10) {
+                $("#progress-main").text(`${response.progress.percent}%`);
+            }
             if (response.complete) {
-                $("#progress-main").removeClass("bg-primary");
-                $("#progress-main").addClass("bg-success");
-                $("#restore-info").text("Data restoration complete. Please reload");
+                if (!response.success) {
+                    $("#progress-main").removeClass("bg-primary");
+                    $("#progress-main").addClass("bg-danger");
+                    $("#restore-info").addClass("text-warning");
+                    $("#restore-info").text("Data Restoration Failed!");
+                    return;
+                } else {
+                    $("#progress-main").removeClass("bg-primary");
+                    $("#progress-main").addClass("bg-success");
+                    $("#restore-info").text("Data restoration complete. Please reload");
+                }
             } else {
                 setTimeout(()=>{
                     init_progressbar(progress_url);
