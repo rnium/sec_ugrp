@@ -22,7 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("results.urls")),
-    path('account/', include("account.urls"))
+    path('account/', include("account.urls")),
+    path('celery-progress/', include("celery_progress.urls"))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

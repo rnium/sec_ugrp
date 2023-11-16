@@ -140,13 +140,10 @@ function performRestore(backup_file) {
         processData: false,
         beforeSend: function(xhr){
             $("#restore-btn").attr("disabled", true)
-            $("#restore-info").text("Restoring data. This will take a while");
+            $("#restore-info").text("Uploading data");
         },
         success: function(response) {
-            $("#restore-info").text("Data restoration complete. Reloading page");
-            setTimeout(()=>{
-                location.reload();
-            }, 2000)
+            $("#restore-info").text("Data restoration started!");
         },
         error: function(xhr, status, error) {
             $("#restore-btn").removeAttr("disabled");

@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
     'results.apps.ResultsConfig',
-    'rest_framework'
+    'rest_framework',
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
@@ -146,6 +147,12 @@ LOGIN_URL = '/account/login/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery Settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "django-db"
+# CELERY_ACCEPT_CONTENT = ["json"]
+# CELERY_TASK_SERIALIZER = 'json'
 
 try:
     from .local_settings import *

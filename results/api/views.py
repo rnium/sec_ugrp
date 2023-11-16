@@ -23,6 +23,7 @@ from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
 from results.tabulation_generator import get_tabulation_files
+from results.tasks import restore_data_task
 from io import BytesIO
 import openpyxl
 import json
@@ -616,6 +617,10 @@ def perform_restore(request):
     except Department.DoesNotExist:
         return JsonResponse({'details': "Department Not Found"}, status=404)
     utils.delete_all_of_dept(dept)
-    utils.restore_data(dept, sessions_data=data['sessions'])
+    result = restore_data_task.delay(dept.id, data['sessions'])
+    try:
+        print(f"task id: {result.task_id}")
+    except Exception as e:
+        print(f"result: {result}")
     return JsonResponse(data={'info': 'ok'})
         
