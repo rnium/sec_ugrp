@@ -33,6 +33,7 @@ from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
 from results.models import Department, Session, CourseResult
+from .tasks import send_html_email_task
 
     
 def login_page(request):
@@ -467,7 +468,7 @@ def send_signup_token(request):
         utils.send_signup_email(request, invite_token)
     except Exception as e:
         return Response(data={'details': str(e)}, status=status.HTTP_502_BAD_GATEWAY)
-    return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
+    return Response(data={"status": "Invitation email will be sent"}, status=HTTP_200_OK)
     
 # Account Recovery API's
 @api_view(["POST"])
@@ -492,7 +493,7 @@ def send_recovery_email_api(request):
         "recovery_url": recovery_url
     })
     try:
-        utils.send_html_email(user.email, email_subject, email_body)
+        send_html_email_task.delay(user.email, email_subject, email_body)
     except Exception as e:
         return Response(data={'info':'cannot send email'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     return Response(data={"info":"email sent"}, status=status.HTTP_200_OK)

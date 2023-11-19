@@ -8,29 +8,9 @@ from django.urls import reverse
 from pathlib import Path
 from PIL import Image
 from io import BytesIO
-from email.message import EmailMessage
-from email.utils import formataddr
-import ssl
-import smtplib
 from urllib.parse import urlencode
+from .tasks import send_html_email_task
 
-def send_html_email(receiver, subject, body):
-    sender = settings.EMAIL_HOST_USER
-    password = settings.EMAIL_HOST_PASSWORD
-    host = settings.EMAIL_HOST
-    port = settings.EMAIL_PORT
-    
-    em = EmailMessage()
-    em['From'] = formataddr(("SEC Results", sender))
-    em['To'] = receiver
-    em['Subject'] = subject
-    em.set_content(body, subtype='html')
-    
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL(host, port, context=context) as smtp:
-        smtp.login(sender, password)
-        smtp.sendmail(sender, receiver, em.as_string())
 
 
 def send_signup_email(request, invitation):
@@ -43,7 +23,7 @@ def send_signup_email(request, invitation):
         "signup_url": signup_url,
         "invitation": invitation
     })
-    send_html_email(receiver, email_subject, email_body)
+    send_html_email_task.delay(receiver, email_subject, email_body)
     
 
 
