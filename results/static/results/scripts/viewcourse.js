@@ -476,6 +476,59 @@ function delete_course() {
 }
 
 // add new entry for student
+function get_student_retakigs() {
+    let reg = $("#new_entry_registration").val();
+    if (reg.length == 0) return;
+    let data = {
+        registration: parseInt(reg),
+    };
+    let payload = JSON.stringify(data)
+    $.ajax({
+        url: student_retakings_api,
+        contentType: "application/json",
+        type: "POST",
+        beforeSend: function(xhr){
+            $("#retaking-info").hide(0, ()=>{
+                $("#retakings-container").hide(0, ()=>{
+                    $("#newentry-loader").show();
+                });
+            });
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: payload,
+        cache: false,
+        success: function(response){
+            if (response.retaking_courses.length == 0) {
+                $("#retaking-info .info-text").text("No Carry Courses");
+                $("#retaking-info").show(0);
+            }
+            else {
+                // List all courses
+                $("#retakings-container").empty();
+                for (retaking of response.retaking_courses) {
+                    let elem = `<div class="col-md-4 py-2 m-0">
+                                    <input type="checkbox" class="btn-check" id="retake-${retaking.courseresult_id}" autocomplete="off">
+                                    <label class="btn btn-outline-warning w-100" for="retake-${retaking.courseresult_id}">${retaking.course_code}</label><br>
+                                </div>`;
+                    $("#retakings-container").append(elem);
+                }
+                $("#retakings-container").show();
+            }
+        },
+        error: function(xhr,status,error){
+            try {
+                $("#retaking-info .info-text").text(xhr.responseJSON.detail);
+            } catch (error_) {
+                $("#retaking-info .info-text").text(error);
+            }
+            $("#retaking-info").show();
+        },
+        complete: function(){
+            $("#newentry-loader").hide(0);
+        }
+    })
+}
+
 function get_entry_data() {
     const show_error = msg => {
         $("#new_entry_alert").removeClass("alert-info");
@@ -587,6 +640,8 @@ $(document).ready( function() {
     
     $("#updateCourseAddBtn").on('click', updateCourse)
     $("#confirm-del-btn").on('click', delete_course)
+    // new entry registration input
+    $("#new_entry_registration").on('keyup', get_student_retakigs)
     // new entry button
     $("#new_entry_add_button").on('click', addNewEntry)
     // excel upload button

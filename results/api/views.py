@@ -208,22 +208,21 @@ class CourseResultList(ListAPIView):
         else:
             return course_results_all
         
-@api_view(["GET"])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def student_retakings(request, registration):
+def student_retakings(request):
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+    registration = request.data.get('registration')
     student = get_object_or_404(StudentAccount, registration=registration)
     retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)
     remaining_retaking = []
     for retaking in retaking_course_res:
         retakes = CourseResult.objects.filter(retake_of=retaking, is_drop_course=True, grade_point__gt=0)
-        previous_courseResults_in_this_course = CourseResult.objects.filter(student=student, course=retaking.course)
         if retakes.count() == 0:
             remaining_retaking.append({
-                'course_id': retaking.course.id,
+                'courseresult_id': retaking.id,
                 'course_code': retaking.course.code,
-                'has_enrolled_already': bool(previous_courseResults_in_this_course.count())
             })
     return Response(data={'retaking_courses': remaining_retaking})
 
