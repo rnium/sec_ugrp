@@ -184,7 +184,7 @@ function append_carry_entries(response) {
 
         for (course of response[record].records) {
             if (course.completed) {
-                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-success me-1 px-3" style="font-size: 0.8rem;">${course.course_code}</a>`
+                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-primary me-1 px-3" style="font-size: 0.8rem;">${course.course_code}</a>`
             }
             else {
                 carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-secondary px-3 me-1" style="font-size: 0.8rem;">${course.course_code}</a>`
