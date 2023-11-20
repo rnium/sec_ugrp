@@ -208,12 +208,31 @@ class CourseResultList(ListAPIView):
         else:
             return course_results_all
         
-    
 @api_view(["GET"])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
+def student_retakings(request, registration):
+    if not user_is_super_OR_dept_admin(request):
+        return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+    student = get_object_or_404(StudentAccount, registration=registration)
+    retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)
+    remaining_retaking = []
+    for retaking in retaking_course_res:
+        retakes = CourseResult.objects.filter(retake_of=retaking, is_drop_course=True, grade_point__gt=0)
+        previous_courseResults_in_this_course = CourseResult.objects.filter(student=student, course=retaking.course)
+        if retakes.count() == 0:
+            remaining_retaking.append({
+                'course_id': retaking.course.id,
+                'course_code': retaking.course.code,
+                'has_enrolled_already': bool(previous_courseResults_in_this_course.count())
+            })
+    return Response(data={'retaking_courses': remaining_retaking})
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def session_retake_list(request, pk):
-    # if not user_is_super_OR_dept_admin(request):
-    #     return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+    if not user_is_super_OR_dept_admin(request):
+        return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
     session = get_object_or_404(Session, pk=pk)
     students = session.studentaccount_set.all()
     session_retake_data = {}
