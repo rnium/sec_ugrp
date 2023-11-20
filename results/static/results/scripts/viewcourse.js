@@ -476,6 +476,7 @@ function delete_course() {
 }
 
 // add new entry for student
+let retaking_courseresult_id = null;
 function activate_retake_choices() {
     $(".retake-btn").on('click', function(event){
         if (! $(this).is("checked")) {
@@ -487,6 +488,7 @@ function activate_retake_choices() {
             $(this).prop('checked', false);
         })
         $(this).prop('checked', true);
+        retaking_courseresult_id = $(this).data("retakingcr");
     })
 }
 
@@ -521,7 +523,7 @@ function get_student_retakigs() {
                 $("#retakings-container").empty();
                 for (retaking of response.retaking_courses) {
                     let elem = `<div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="retake-btn btn-check" id="retake-${retaking.courseresult_id}" autocomplete="off">
+                                    <input type="checkbox" class="retake-btn btn-check" id="retake-${retaking.courseresult_id}" data-retakingcr="${retaking.courseresult_id}" autocomplete="off">
                                     <label class="btn btn-outline-warning w-100" for="retake-${retaking.courseresult_id}">${retaking.course_code}</label><br>
                                 </div>`;
                     $("#retakings-container").append(elem);
@@ -565,7 +567,8 @@ function get_entry_data() {
     }
     data = {
         registration: registration,
-        semester_id: semester
+        semester_id: semester,
+        retake_for: retaking_courseresult_id
     }
     return data;
 }

@@ -444,12 +444,18 @@ def add_new_entry_to_course(request, pk):
     try:
         reg_no = request.data['registration']
         semester_id = request.data['semester_id']
+        retake_for = request.data['retake_for']
     except KeyError:
         return Response(data={"details":"Data is missing"}, status=status.HTTP_400_BAD_REQUEST)
     # course
     try:
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
+        return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
+    #retaking courseResult
+    try:
+        retaking = CourseResult.objects.get(pk=retake_for)
+    except CourseResult.DoesNotExist:
         return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
     # finding student
     try:
@@ -472,6 +478,7 @@ def add_new_entry_to_course(request, pk):
         CourseResult.objects.create(
             student = student,
             course = course,
+            retake_of = retaking,
             is_drop_course = True
         )
     except Exception as e:
