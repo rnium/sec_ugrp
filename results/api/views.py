@@ -208,9 +208,36 @@ class CourseResultList(ListAPIView):
         else:
             return course_results_all
         
+    
+@api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+def session_retake_list(request, pk):
+    # if not user_is_super_OR_dept_admin(request):
+    #     return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+    session = get_object_or_404(Session, pk=pk)
+    students = session.studentaccount_set.all()
+    session_retake_data = {}
+    for student in students:
+        student_record = {
+            "name": student.student_name,
+            "records": []
+        }
+        retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)
+        if retaking_course_res.count() == 0:
+            continue
+        for retaking in retaking_course_res:
+            retakes = CourseResult.objects.filter(retake_of=retaking, is_drop_course=True, grade_point__gt=0)
+            is_retake_complete = bool(retakes.count())
+            student_record['records'].append({
+                'course_code': retaking.course.code,
+                'course_url': '',
+                'completed': is_retake_complete
+            })
+        session_retake_data[student.registration] = student_record
+    return Response(data=session_retake_data)
+    
 
-
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def update_course_results(request, pk):
     course = get_object_or_404(Course, pk=pk)

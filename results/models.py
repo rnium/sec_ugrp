@@ -41,6 +41,7 @@ class Session(models.Model):
     to_year = models.IntegerField()
     batch_no = models.IntegerField()
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
+    total_credits = models.FloatField(default=0)
     
     class Meta:
         ordering = ["-from_year"]
@@ -78,9 +79,7 @@ class Session(models.Model):
     def num_students(self):
         return self.studentaccount_set.count()
     
-    
-        
-    
+       
 
 class Semester(models.Model):
     year = models.IntegerField(
@@ -285,6 +284,7 @@ class CourseResult(models.Model):
         MinValueValidator(0, message="Score cannot be less than 0")])
     letter_grade = models.CharField(max_length=5, null=True, blank=True)
     is_drop_course = models.BooleanField(default=False)
+    retake_of = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     
     class Meta:

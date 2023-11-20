@@ -6,6 +6,7 @@ urlpatterns = [
     path('createsession/', views.SessionCreate.as_view(), name="create_session"),
     path('session/<int:pk>/createsemester/', views.SemesterCreate.as_view(), name="create_semester"),
     path('session/<int:pk>/delete/', views.delete_session, name="delete_session"),
+    path('session/<int:pk>/retakes/', views.session_retake_list, name="session_retake_list"),
     path('createcourse/', views.CourseCreate.as_view(), name="create_course"),
     path('semester<int:pk>/dropcourseupdate/', views.updateDropCourses, name="drop_course_update"),
     path('semester<int:pk>/update/', views.SemesterUpdate.as_view(), name="semester_update"),

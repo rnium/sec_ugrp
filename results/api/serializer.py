@@ -93,3 +93,4 @@ class CourseResultSerializer(ModelSerializer):
     class Meta:
         model = CourseResult
         exclude = ['updated', 'course']
+        
