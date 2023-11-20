@@ -476,9 +476,22 @@ function delete_course() {
 }
 
 // add new entry for student
+function activate_retake_choices() {
+    $(".retake-btn").on('click', function(event){
+        if (! $(this).is("checked")) {
+            $("#new_entry_add_button").show();
+        } 
+        let current_id = this.id;
+        let all_btns = $(".retake-btn");
+        all_btns.each(function() {
+            $(this).prop('checked', false);
+        })
+        $(this).prop('checked', true);
+    })
+}
+
 function get_student_retakigs() {
     let reg = $("#new_entry_registration").val();
-    if (reg.length == 0) return;
     let data = {
         registration: parseInt(reg),
     };
@@ -488,6 +501,7 @@ function get_student_retakigs() {
         contentType: "application/json",
         type: "POST",
         beforeSend: function(xhr){
+            $("#new_entry_add_button").hide();
             $("#retaking-info").hide(0, ()=>{
                 $("#retakings-container").hide(0, ()=>{
                     $("#newentry-loader").show();
@@ -507,12 +521,13 @@ function get_student_retakigs() {
                 $("#retakings-container").empty();
                 for (retaking of response.retaking_courses) {
                     let elem = `<div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="retake-${retaking.courseresult_id}" autocomplete="off">
+                                    <input type="checkbox" class="retake-btn btn-check" id="retake-${retaking.courseresult_id}" autocomplete="off">
                                     <label class="btn btn-outline-warning w-100" for="retake-${retaking.courseresult_id}">${retaking.course_code}</label><br>
                                 </div>`;
                     $("#retakings-container").append(elem);
                 }
                 $("#retakings-container").show();
+                activate_retake_choices();
             }
         },
         error: function(xhr,status,error){
@@ -641,7 +656,11 @@ $(document).ready( function() {
     $("#updateCourseAddBtn").on('click', updateCourse)
     $("#confirm-del-btn").on('click', delete_course)
     // new entry registration input
-    $("#new_entry_registration").on('keyup', get_student_retakigs)
+    $("#new_entry_registration").keypress(function(event) {
+        if (event.which === 13 || event.keyCode === 13) {
+            get_student_retakigs();
+        }
+    })
     // new entry button
     $("#new_entry_add_button").on('click', addNewEntry)
     // excel upload button
