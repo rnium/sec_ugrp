@@ -177,6 +177,61 @@ function createStudentAccount(){
     });
 }
 
+// Carry (Retaking) Listing
+function append_carry_entries(response) {
+    for (record in response) {
+        let carry_courses = "";
+
+        for (course of response[record].records) {
+            if (course.completed) {
+                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-success me-1 px-3" style="font-size: 0.8rem;">${course.course_code}</a>`
+            }
+            else {
+                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-secondary px-3 me-1" style="font-size: 0.8rem;">${course.course_code}</a>`
+            }
+        }
+        let entry = `<tr>
+                        <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                src="${response[record].avatar_url}"
+                                alt=""
+                                style="width: 45px; height: 45px"
+                                class="rounded-circle"
+                                />
+                            <div class="ms-3">
+                            <p class="fw-bold mb-1 roboto-font">${record}</p>
+                            <p class="text-muted mb-0">${response[record].name}</p>
+                            </div>
+                        </div>
+                        </td>
+                        <td colspan="2">
+                            ${carry_courses}
+                        </td>
+                    </tr>`
+        $("#listing-table tbody").append(entry);
+    }
+}
+
+function loadCarryList() {
+    $.ajax({
+        type: "get",
+        url: carry_listing_api,
+        data: "data",
+        dataType: "json",
+        success: function (response) {
+            append_carry_entries(response);
+            $("#listing-table-loader").hide(0, ()=>{
+                $("#listing-table").show(150);
+            });
+        },
+        error: function(xhr, status, error) {
+            $("#listing-table-loader .loader-info").text("Cannot load data");
+        }
+    });
+}
+
+
 // Delete session
 function delete_session() {
     let showAlert = (msg)=>{
@@ -270,4 +325,5 @@ $(document).ready(function () {
             alert("Please choose an excel file!");
         }
     })
+    loadCarryList();
 });

@@ -238,6 +238,7 @@ def session_retake_list(request, pk):
     for student in students:
         student_record = {
             "name": student.student_name,
+            "avatar_url": student.avatar_url,
             "records": []
         }
         retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)

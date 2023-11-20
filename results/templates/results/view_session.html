@@ -37,7 +37,13 @@
 {% endblock nav %}
 
 {% block content %}
-<div class="view-session-container m-5 pt-4">
+<div class="view-session-container m-5 mt-2 pt-4">
+    <div class="btn-container col-md-9 d-flex justify-content-start mt-2">
+        <button class="btn btn- btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#carry-listing-modal">
+            <i class='bx bx-transfer me-2 text-warning'></i>
+            <span class="roboto-font" style="font-size: 0.8rem;">Carry Listing</span>
+        </button>
+    </div>
     <div class="info">
         <a href="{% url 'results:view_department' session.dept.name %}" class="batch-no fs-1 text-secondary">{{session.batch_name}}</a>
         <div class="session mt-1">
@@ -120,6 +126,40 @@
         </div>
     </div>
     
+  
+    <!-- Carry Listing Modal -->
+    <div class="modal fade bg-material" id="carry-listing-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-material-1">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{session.batch_name}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="loader" id="listing-table-loader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="spinner-grow" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="loader-info fs-5 roboto-font ms-2 text-muted">Fetching Data</span>
+                        </div>
+                    </div>
+                    <table class="table table-hover table-striped align-middle mb-0" id="listing-table" style="display: none">
+                        <thead>
+                            <tr>
+                                <th class="text-info">Student</th>
+                                <th class="text-info" colspan="2">Courses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>           
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- New Semester Entry Modal -->
     <div class="modal fade" id="newSemesterEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -307,6 +347,7 @@
     const set_student_avatar_api = "{% url 'account:set_student_avatar' %}";
     const create_student_via_excel_api = "{% url 'account:create_student_via_excel' session.id %}";
     const delete_session_api = "{% url 'results:delete_session' session.id %}";
+    const carry_listing_api = "{% url 'results:session_retake_list' session.id %}";
     const sessionId = {{session.id}};
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
