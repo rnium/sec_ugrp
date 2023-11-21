@@ -6,7 +6,7 @@ from results.models import Department
 
 
 class Command(BaseCommand):
-    def handle(self, *args: Any, **options: Any) -> str | None:
+    def handle(self, *args: Any, **options: Any):
         # Export fixtures from the main database
         call_command('dumpdata', '--exclude', 'auth.permission', '--exclude', 'contenttypes', '--exclude', 'admin.LogEntry', '--output', 'fixtures.json')
         # Load fixtures into the test database
