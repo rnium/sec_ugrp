@@ -178,19 +178,32 @@ function createStudentAccount(){
 }
 
 // Carry (Retaking) Listing
+function toggle_completed_entries() {
+    // console.log($("#switch-show-complete").is(':checked'));;
+    if ($("#switch-show-complete").is(':checked')) {
+        $("#listing-table tr.completed").show(400);
+    } else {
+        console.log("hiding");
+        $("#listing-table tr.completed").hide(200)
+    }
+}
+
 function append_carry_entries(response) {
     for (record in response) {
         let carry_courses = "";
-
+        let row_class = ""
+        if (response[record].remaining_credits == 0) {
+            row_class = "completed"
+        }
         for (course of response[record].records) {
             if (course.completed) {
-                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-primary me-1 px-3" style="font-size: 0.8rem;">${course.course_code}</a>`
+                carry_courses += `<a href="${course.course_url}" class="pill pill-green me-1 mb-1 px-3" target="_blank" style="font-size: 0.8rem;">${course.course_code}</a>`
             }
             else {
-                carry_courses += `<a href="${course.course_url}" class="badge rounded-pill text-bg-secondary px-3 me-1" style="font-size: 0.8rem;">${course.course_code}</a>`
+                carry_courses += `<a href="${course.course_url}" class="pill pill-gray px-3 me-1 mb-1" target="_blank" style="font-size: 0.8rem;">${course.course_code}</a>`
             }
         }
-        let entry = `<tr>
+        let entry = `<tr class="${row_class}">
                         <td>
                         <div class="d-flex align-items-center">
                             <img
@@ -201,10 +214,10 @@ function append_carry_entries(response) {
                                 />
                             <div class="ms-3">
                             <p class="fw-bold mb-1 roboto-font">${record}</p>
-                            <p class="text-muted mb-0">${response[record].name}</p>
                             </div>
                         </div>
                         </td>
+                        ${response[record].remaining_credits == 0 ? `<td class="text-center text-muted">${response[record].remaining_credits}</td>` : `<td class="text-center text-danger">${response[record].remaining_credits}</td>`}
                         <td colspan="2">
                             ${carry_courses}
                         </td>
@@ -221,6 +234,7 @@ function loadCarryList() {
         dataType: "json",
         success: function (response) {
             append_carry_entries(response);
+            toggle_completed_entries()
             $("#listing-table-loader").hide(0, ()=>{
                 $("#listing-table").show(150);
             });
@@ -326,4 +340,5 @@ $(document).ready(function () {
         }
     })
     loadCarryList();
+    $("#switch-show-complete").on('click', toggle_completed_entries)
 });

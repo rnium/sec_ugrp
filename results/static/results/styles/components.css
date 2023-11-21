@@ -17,7 +17,7 @@
 
 input.code-inp {
   width: 9rem;
-  background-color: rgba(124, 145, 208, 0.3);
+  background-color: hsla(225, 47%, 65%, 0.3);
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
   height: 100%;
@@ -25,12 +25,10 @@ input.code-inp {
   font-size: 1rem;
   outline: 2px solid #7b90d0;
 }
-
 input.code-inp:focus {
   outline: 2px solid #7b90d0;
   border-color: #7b90d0;
-  -webkit-box-shadow: 0 0 5px #a1a1a1;
-          box-shadow: 0 0 5px #a1a1a1;
+  box-shadow: 0 0 5px rgb(161, 161, 161);
 }
 
 input.score-inp {
@@ -41,52 +39,37 @@ input.score-inp {
   border: 1px solid #555870;
   font-size: 1rem;
 }
-
 input.score-inp:focus {
-  outline: 2px solid #01a16c;
-  border-color: #01a16c;
-  -webkit-box-shadow: 0 0 5px #a1a1a1;
-          box-shadow: 0 0 5px #a1a1a1;
+  outline: 2px solid rgb(1, 161, 108);
+  border-color: rgb(1, 161, 108);
+  box-shadow: 0 0 5px rgb(161, 161, 161);
 }
 
 input.score-inp.empty {
-  border-color: #a3dd2f;
+  border-color: rgb(163, 221, 47);
   background-color: rgba(170, 255, 0, 0.1);
 }
-
 input.score-inp.empty:focus {
   outline: 2px solid yellowgreen;
 }
 
 input.score-inp.error {
-  border-color: #cd3247;
+  border-color: rgb(205, 50, 71);
   background-color: rgba(255, 0, 93, 0.2);
 }
-
 input.score-inp.error:focus {
-  outline: 2px solid #cd3249;
+  outline: 2px solid rgb(205, 50, 73);
 }
 
 .btn-iconized {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
 .btn-iconized i {
   font-size: 1.5rem;
 }
-
 .btn-iconized span {
   font-size: 1rem;
 }
@@ -100,74 +83,46 @@ input.score-inp.error:focus {
 }
 
 .download-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: #313846;
   padding: 10px 25px;
   border-radius: 180px;
   border: 1px solid cyan;
-  -webkit-box-shadow: 0 0 5px #494848;
-          box-shadow: 0 0 5px #494848;
+  box-shadow: 0 0 5px rgb(73, 72, 72);
   background-color: #1d5461;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
-
 .download-btn i, .download-btn span {
   color: cyan;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
-
 .download-btn i {
   font-size: 1.5rem;
   margin-right: 5px;
 }
-
 .download-btn span {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   font-size: 1.2rem;
 }
-
 .download-btn:hover {
   background-color: #00cfdd;
 }
-
 .download-btn:hover i, .download-btn:hover span {
   color: #28293d;
 }
 
 .print-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
 .print-btn i {
   font-size: 1.2rem;
 }
-
 .print-btn span {
   font-size: 0.8rem;
 }
@@ -180,15 +135,15 @@ input.score-inp.error:focus {
 
 .section-title {
   font-size: 1.5rem;
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
 }
 
 .roboto-font {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 .silkscreen-font {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
 }
 
 .border-b-1 {
@@ -196,6 +151,69 @@ input.score-inp.error:focus {
 }
 
 .text-gray {
-  color: #aaaaaa;
+  color: rgb(170, 170, 170);
 }
-/*# sourceMappingURL=components.css.map */
+
+.pill {
+  display: inline-block;
+  font-size: 14px;
+  padding: 2px 15px;
+  border-radius: 180px;
+}
+
+.pill-green {
+  background-color: rgba(28, 206, 126, 0.4);
+  color: #57eba3;
+}
+
+.pill-red {
+  background-color: rgba(238, 69, 69, 0.3);
+  color: #ff8080;
+}
+
+.pill-gray {
+  background-color: rgba(156, 156, 156, 0.2);
+  color: rgb(173, 173, 173);
+}
+
+.pill-blue {
+  background-color: rgba(14, 118, 245, 0.2);
+  color: #9dbff8;
+}
+
+.switch {
+  display: inline-block;
+}
+.switch label {
+  background-color: rgba(91, 90, 90, 0.5);
+  display: block;
+  width: 50px;
+  height: 22px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.switch label::after {
+  content: "";
+  display: block;
+  width: 27px;
+  height: 27px;
+  background-image: linear-gradient(to bottom right, rgb(111, 113, 113), rgb(137, 139, 139));
+  border-radius: 180px;
+  position: relative;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  transition: all 100ms ease-out;
+}
+.switch input {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.switch input:checked + label {
+  background-color: rgba(60, 143, 167, 0.4);
+}
+.switch input:checked + label::after {
+  left: 55%;
+  background-image: linear-gradient(to bottom right, rgb(19, 166, 159), rgb(16, 173, 173));
+}/*# sourceMappingURL=components.css.map */

@@ -129,10 +129,18 @@
   
     <!-- Carry Listing Modal -->
     <div class="modal fade" id="carry-listing-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content shadow-lg">
-                <div class="modal-header bg-material-1">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                <div class="modal-header bg-material">
+                    <div class="switch-con">
+                        <div class="inner d-flex justify-content-end">
+                            <div class="info me-2 text-muted">Show Completed</div>
+                            <div class="switch">
+                                <input type="checkbox" name="" id="switch-show-complete" checked>
+                                <label for="switch-show-complete"></label>
+                            </div>
+                        </div>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -148,7 +156,8 @@
                         <thead>
                             <tr>
                                 <th class="text-info">Student</th>
-                                <th class="text-info" colspan="2">Courses</th>
+                                <th class="text-info roboto-font text-center">Credits</th>
+                                <th class="text-info roboto-font text-center" colspan="2">Courses</th>
                             </tr>
                         </thead>
                         <tbody>

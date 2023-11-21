@@ -237,8 +237,8 @@ def session_retake_list(request, pk):
     session_retake_data = {}
     for student in students:
         student_record = {
-            "name": student.student_name,
             "avatar_url": student.avatar_url,
+            "remaining_credits": 0,
             "records": []
         }
         retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)
@@ -247,9 +247,15 @@ def session_retake_list(request, pk):
         for retaking in retaking_course_res:
             retakes = CourseResult.objects.filter(retake_of=retaking, is_drop_course=True, grade_point__gt=0)
             is_retake_complete = bool(retakes.count())
+            if not is_retake_complete:
+                student_record['remaining_credits'] += retaking.course.course_credit
             student_record['records'].append({
                 'course_code': retaking.course.code,
-                'course_url': '',
+                'course_url': reverse('results:view_course', args=(student.session.dept.name, 
+                                                                   student.session.from_year, 
+                                                                   student.session.to_year, 
+                                                                   retaking.course.semester.year, 
+                                                                   retaking.course.semester.year_semester, retaking.course.code)),
                 'completed': is_retake_complete
             })
         session_retake_data[student.registration] = student_record

@@ -1,140 +1,87 @@
 @import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Montserrat:wght@400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   color: #f2f2f4;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
-  background-color: #2b2d33;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  background-color: rgb(43, 45, 51);
   display: flex;
   position: relative;
 }
-
 body main {
   min-height: 100vh;
   width: 100%;
   margin-left: 250px;
-  -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
 }
-
 body main .dashboard-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-top: 4rem;
   width: 100% !important;
 }
-
 body main .dashboard-container .sys-info img {
   width: 7rem;
   margin-bottom: 1rem;
 }
-
 body main .dashboard-container .sys-info .h2, body main .dashboard-container .sys-info .h4 {
   color: #ebeaef;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
 body main .dashboard-container .sys-info .h4 {
   color: #9090a7;
 }
-
 body main .dashboard-container .dashboard-content {
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul {
   list-style-type: none;
   padding: 0;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li {
   margin-bottom: 0.5rem;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
   color: inherit;
   padding: 10px;
   border-radius: 10px;
-  background-color: #3c515c;
+  background-color: rgb(60, 81, 92);
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename {
   padding: 5px;
   border-radius: 5px;
   margin-right: 1.5rem;
   background-color: rgba(15, 15, 15, 0.3);
-  -webkit-box-shadow: 2px 2px 2px #28293d, -2px -3px 3px #595959;
-          box-shadow: 2px 2px 2px #28293d, -2px -3px 3px #595959;
+  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(89, 89, 89);
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename span {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   font-size: 0.8rem;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .label {
   color: #ebeaef;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept {
   display: inline-block;
   margin-left: 10px;
@@ -142,250 +89,164 @@ body main .dashboard-container .dashboard-content .live-semesters .content ul li
   font-weight: 500;
   border-radius: 4px;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.eee {
   color: #57eba3;
-  -webkit-box-shadow: 0 0 10px #57eba3;
-          box-shadow: 0 0 10px #57eba3;
+  box-shadow: 0 0 10px #57eba3;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.cse {
   color: #feed73;
-  -webkit-box-shadow: 0 0 10px #feed73;
-          box-shadow: 0 0 10px #feed73;
+  box-shadow: 0 0 10px #feed73;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.ce {
   color: #dea5e8;
-  -webkit-box-shadow: 0 0 10px #dea5e8;
-          box-shadow: 0 0 10px #dea5e8;
+  box-shadow: 0 0 10px #dea5e8;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept-all-offline-sem {
   color: #ebeaef;
-  -webkit-box-shadow: 0 0 10px #ebeaef;
-          box-shadow: 0 0 10px #ebeaef;
+  box-shadow: 0 0 10px #ebeaef;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
 }
-
 body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item:hover {
-  -webkit-box-shadow: 0 0 3px #6798ff;
-          box-shadow: 0 0 3px #6798ff;
+  box-shadow: 0 0 3px #6798ff;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul {
   margin: 0;
   padding: 0;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li {
   list-style-type: none;
   margin-bottom: 5px;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item {
   text-decoration: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item img {
   width: 40px;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item i.label {
   margin-right: 10px;
   font-size: 2.2rem;
   padding: 3px;
   border-radius: 5px;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item i.add {
   background-color: #05c270;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item i.delete {
   background-color: #ff3b3b;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item i.update {
   background-color: #0063f8;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item .details .info {
   font-size: 0.7rem;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item .details .info .username {
   font-weight: 500;
   color: #9090a7;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item .details .info .course {
   color: #5b8dee;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item .details .info .semester {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   color: #6798ff;
 }
-
 body main .dashboard-container .dashboard-content .activities .content ul li .activity-item:hover {
   background-color: rgba(0, 0, 0, 0.405);
   border-radius: 7px;
 }
-
 body main .dept-tab-container {
   margin-top: 5rem;
   width: 90%;
 }
-
 body main .dept-tab-container .departments {
   display: none;
   padding: 3rem;
   margin-top: 30%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-
 body main .dept-tab-container .departments a.dept {
   display: block;
   background-color: #313846;
 }
-
 body main .dept-tab-container .departments a.dept .fullname {
   padding: 2rem 10px;
 }
-
 body main .dept-tab-container .departments .cse-dept .title {
   color: #ffcc00;
   font-family: inherit;
   text-shadow: 0 0 15px #feed73;
 }
-
 body main .dept-tab-container .departments .eee-dept .title {
   color: #57eba3;
   font-family: inherit;
   text-shadow: 0 0 15px #05c270;
 }
-
 body main .dept-tab-container .departments .ce-dept .title {
   color: #dea5e8;
   font-family: inherit;
   text-shadow: 0 0 15px #6500cd;
 }
-
 body main .dept-tab-container .departments .ce-dept .fullname {
   padding: 3rem 0 !important;
 }
-
 body main .dept-tab-container .departments .dept-semesters {
   width: 90%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters {
   max-width: 600px;
   width: 30%;
   margin-left: 2%;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters .content ul {
   list-style-type: none;
   padding: 0;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters .content ul li {
   margin-bottom: 0.5rem;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters:first-of-type {
   margin-left: 0;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters.cse-dept .title {
   color: #ffcc00;
   font-family: inherit;
   text-shadow: 0 0 15px #feed73;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters.eee-dept .title {
   color: #57eba3;
   font-family: inherit;
   text-shadow: 0 0 15px #05c270;
 }
-
 body main .dept-tab-container .departments .dept-semesters .all-semesters.ce-dept .title {
   color: #dea5e8;
   font-family: inherit;
   text-shadow: 0 0 15px #6500cd;
 }
-
 body main .dept-tab-container .department-main .dept-logo {
   width: 180px;
 }
-
 body main .dept-tab-container .department-main .dept-title {
   color: #9090a7;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
-@-webkit-keyframes newSessionBgColor {
-  from {
-    background-color: rgba(146, 167, 230, 0.5);
-  }
-  to {
-    background-color: #414958;
-  }
-}
-
 @keyframes newSessionBgColor {
   from {
     background-color: rgba(146, 167, 230, 0.5);
@@ -394,15 +255,12 @@ body main .dept-tab-container .department-main .dept-title {
     background-color: #414958;
   }
 }
-
 body main .dept-tab-container .department-main .sessions .session {
   background-color: #414958;
   position: relative;
   overflow: hidden;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
-
 body main .dept-tab-container .department-main .sessions .session i.bg {
   position: absolute;
   bottom: -1rem;
@@ -410,367 +268,242 @@ body main .dept-tab-container .department-main .sessions .session i.bg {
   font-size: 5rem;
   opacity: 0.1;
 }
-
 body main .dept-tab-container .department-main .sessions .session:hover {
-  background-color: #92a7e651;
+  background-color: rgba(146, 167, 230, 0.3176470588);
 }
-
 body main .dept-tab-container .department-main .sessions .session.new {
-  -webkit-animation: newSessionBgColor 3s linear 1;
-          animation: newSessionBgColor 3s linear 1;
+  animation: newSessionBgColor 3s linear 1;
 }
-
 body main .dept-tab-container .department-main .sessions button.add-btn {
   background-color: #28293d;
   width: 100%;
   height: 85%;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
   opacity: 0.9;
 }
-
 body main .dept-tab-container .department-main .sessions button.add-btn i {
   font-size: 4rem;
 }
-
 body main .dept-tab-container .department-main .sessions button.add-btn:hover {
   opacity: 1;
 }
-
 body main .form-type-page {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
-
 body main .view-course-container {
   overflow-y: auto;
 }
-
 body main .view-course-container .info .semester a {
   background-color: #28293d;
-  -webkit-box-shadow: 0 0 5px #28293d;
-          box-shadow: 0 0 5px #28293d;
+  box-shadow: 0 0 5px #28293d;
   border: 1px solid #9090a7;
   border-left: 10px solid #9090a7;
   text-decoration: none;
   color: #ebeaef;
   padding: 5px 15px;
   border-radius: 5px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.9rem;
 }
-
 body main .view-course-container .info .semester.running a {
   background-color: rgba(4, 112, 80, 0.5);
-  border: 1px solid #02aa80;
-  border-left: 10px solid #02aa80;
+  border: 1px solid rgb(2, 170, 128);
+  border-left: 10px solid rgb(2, 170, 128);
   color: #57eba3;
 }
-
 body main .view-course-container .info .course-info .course-code {
   color: #9090a7;
   font-size: 2rem;
 }
-
 body main .view-course-container .info .course-info .title {
   color: #9dbff8;
 }
-
 body main .view-course-container .score-board {
   background-color: #313846;
   border: 1px solid #555870;
-  -webkit-box-shadow: 0 0 10px #222325;
-          box-shadow: 0 0 10px #222325;
+  box-shadow: 0 0 10px #222325;
   border-radius: 10px;
 }
-
 body main .view-course-container .score-board table {
   width: 100%;
 }
-
 body main .view-course-container .score-board table thead th {
   text-align: center;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   color: #ebeaef;
-  background-color: #1e292e;
+  background-color: rgb(30, 41, 46);
   font-weight: 500;
   font-size: 0.9rem;
   padding: 15px 10px;
   border: 1px solid #555870;
   border-collapse: collapse;
 }
-
 body main .view-course-container .score-board table tbody tr, body main .view-course-container .score-board table tbody td {
   border: 1px solid #555870;
   border-collapse: collapse;
 }
-
 body main .view-course-container .score-board table tbody tr {
   overflow: hidden;
   border-radius: 10px;
 }
-
 body main .view-course-container .score-board table tbody tr td {
   min-width: 120px !important;
   padding: 10px 5px;
   text-align: center;
 }
-
 body main .view-course-container .score-board table tbody tr td:nth-child(1) {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
 body main .view-course-container .score-board table tbody tr td:last-of-type {
   background-color: #555870;
 }
-
 body main .view-course-container .score-board table tbody tr td a {
   text-decoration: none;
   color: inherit;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 1rem;
 }
-
 body main .view-course-container .score-board table tbody tr td a:hover {
   color: #7b90d0;
 }
-
 body main .view-course-container .score-board table tbody tr td.pending {
   background-color: #ff8801;
   color: #28293d;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info {
-  position: relative;
+body main .view-course-container .score-board table tbody tr.drop_course {
+  background-color: rgba(185, 79, 79, 0.2);
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card {
-  -webkit-box-shadow: 0 0 50px #272727;
-          box-shadow: 0 0 50px #272727;
+body main .view-course-container .score-board .btn-container .add-new-btn {
+  background-color: #414958;
+}
+body main .view-course-container .profile-card {
+  box-shadow: 0 0 50px rgb(39, 39, 39);
   border-radius: 10px;
   padding: 15px;
-  position: absolute;
   background-color: #414958;
-  border: 1px solid #9090a7;
-  top: 10%;
-  left: 90%;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner {
-  display: -webkit-box;
-  display: -ms-flexbox;
+body main .view-course-container .profile-card .inner {
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: left;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .dp {
-  margin-right: 0;
+body main .view-course-container .profile-card .inner .dp {
+  margin-right: 1rem;
   min-width: 100px;
   max-width: 100px;
   min-height: 100px;
   max-height: 100px;
   border-radius: 10px;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .info {
+body main .view-course-container .profile-card .inner .info {
   width: 15rem;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .info .name {
-  font-size: 1rem;
+body main .view-course-container .profile-card .inner .info .name {
+  font-size: 1.2rem;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .info .reg-no {
+body main .view-course-container .profile-card .inner .info .reg-no {
   color: #f2f2f4;
   font-size: 0.8rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .session span {
+body main .view-course-container .profile-card .inner .session span {
   color: #9090a7;
   font-size: 0.7rem;
 }
-
-body main .view-course-container .score-board table tbody tr .student-info .profile-card .inner .session .dept {
+body main .view-course-container .profile-card .inner .session .dept {
   font-weight: 500;
 }
-
-body main .view-course-container .score-board table tbody tr.drop_course {
-  background-color: rgba(185, 79, 79, 0.2);
-}
-
-body main .view-course-container .score-board .btn-container .add-new-btn {
-  background-color: #414958;
-}
-
 body main .view-semester-container {
   overflow: hidden;
   position: relative;
 }
-
 body main .view-semester-container .running-sem-badge {
   position: absolute;
 }
-
 body main .view-semester-container .running-sem-badge .inner {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(4, 112, 80, 0.5);
   padding: 2px 10px 2px 10px;
   border-radius: 180px;
 }
-
-@-webkit-keyframes glowAnimation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.30;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 @keyframes glowAnimation {
   0% {
     opacity: 1;
   }
   50% {
-    opacity: 0.30;
+    opacity: 0.3;
   }
   100% {
     opacity: 1;
   }
 }
-
 body main .view-semester-container .running-sem-badge .inner .circle {
   display: inline-block;
   width: 15px;
   height: 15px;
-  background-color: #00ffbf;
+  background-color: rgb(0, 255, 191);
   margin-right: 5px;
   border-radius: 180px;
-  -webkit-animation: glowAnimation 2s infinite;
-          animation: glowAnimation 2s infinite;
+  animation: glowAnimation 2s infinite;
 }
-
 body main .view-semester-container .running-sem-badge .inner .title {
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
   color: #05c270;
 }
-
 body main .view-semester-container .info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-
 body main .view-semester-container .info .session {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: #414958;
   padding: 5px 5px 5px 15px;
   border-radius: 5px;
   border: 1px solid #555870;
 }
-
 body main .view-semester-container .info .session .value {
-  background-color: #2b2d33;
+  background-color: rgb(43, 45, 51);
   padding: 5px 10px;
   border-radius: 5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
 body main .view-semester-container .info .session .value .code {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
 body main .view-semester-container .info .session .value .batch-no {
   margin-left: 10px;
   padding: 3px 5px;
   border-radius: 10px;
   font-size: 0.8rem;
   display: inline-block;
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   color: #1d5461;
   background-color: #ebeaef;
 }
-
 body main .view-semester-container .all-courses .header {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-
 body main .view-semester-container .all-courses .courses .course-container {
   padding: 5px;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .course {
   display: block;
   border: 1px solid #9090a7;
@@ -780,33 +513,26 @@ body main .view-semester-container .all-courses .courses .course-container .cour
   border-radius: 10px;
   padding: 1.5rem 0.5rem;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .course .course-code {
   font-size: 2rem;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .course:hover {
   border-color: #00cfdd;
-  -webkit-box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-          box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
   background-color: #1d5461;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .course.drop-course {
   border: 1px solid #ff8080;
   border-left: 5px solid #ff8080;
   border-right: 5px solid #ff8080;
   background-color: rgba(237, 41, 41, 0.1);
 }
-
 body main .view-semester-container .all-courses .courses .course-container .course.drop-course:hover {
   border-color: #ff8080;
-  -webkit-box-shadow: 0 0 10px #28293d;
-          box-shadow: 0 0 10px #28293d;
+  box-shadow: 0 0 10px #28293d;
   background-color: rgba(237, 41, 41, 0.2);
 }
-
 body main .view-semester-container .all-courses .courses .course-container .adder {
   text-align: center;
   width: 100%;
@@ -814,22 +540,17 @@ body main .view-semester-container .all-courses .courses .course-container .adde
   height: 100%;
   border-radius: 10px;
   border: 0;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .adder i {
   font-size: 4rem;
 }
-
 body main .view-semester-container .all-courses .courses .course-container .adder:hover {
   opacity: 0.8;
 }
-
 body main .view-semester-container .semester-info {
   overflow: hidden;
 }
-
 body main .view-semester-container .semester-info i.bg {
   color: #414958;
   display: block;
@@ -839,226 +560,140 @@ body main .view-semester-container .semester-info i.bg {
   bottom: -2rem;
   right: -1.5rem;
 }
-
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row {
   margin-bottom: 2rem;
 }
-
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row .semester-title {
   font-size: 0.9rem;
   color: #00cfdd;
 }
-
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row:last-of-type {
   margin-bottom: 0;
 }
-
 body main .view-session-container .info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-
 body main .view-session-container .info .dept-logo {
   width: 180px;
 }
-
 body main .view-session-container .info .session {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background-color: #414958;
   padding: 5px 5px 5px 15px;
   border-radius: 5px;
   border: 1px solid #555870;
 }
-
 body main .view-session-container .info .session .value {
-  background-color: #2b2d33;
+  background-color: rgb(43, 45, 51);
   padding: 5px 10px;
   border-radius: 5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
 body main .view-session-container .info .session .value .code {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
 body main .view-session-container .info .session .value .batch-no {
   margin-left: 10px;
   padding: 3px 5px;
   border-radius: 10px;
   font-size: 0.8rem;
   display: inline-block;
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   color: #1d5461;
   background-color: #ebeaef;
 }
-
 body main .view-session-container .container .students-list {
   padding: 1rem;
 }
-
 body main .view-session-container .container .students-list .student {
   background-color: #414958;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   padding: 10px 15px;
   margin: 3px;
 }
-
 body main .view-session-container .container .students-list .student .info div {
   width: 100%;
   text-align: left;
 }
-
 body main .view-session-container .container .students-list .student .info .reg-no {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.9rem;
   color: #9090a7;
 }
-
 body main .view-session-container .container .students-list .re-addmitted {
   background-color: #313846;
 }
-
 body main .view-session-container .container .students-list .re-addmitted .info .reg-no {
   color: #7b90d0;
 }
-
 body main .view-session-container .container .semesters .semester-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   padding: 10px;
   border-radius: 10px;
-  background-color: #3c515c;
+  background-color: rgb(60, 81, 92);
 }
-
 body main .view-session-container .container .semesters .semester-item .sem-codename {
   padding: 5px;
   border-radius: 5px;
   margin-right: 1.5rem;
   background-color: rgba(15, 15, 15, 0.3);
-  -webkit-box-shadow: 2px 2px 2px #28293d, -2px -3px 3px #595959;
-          box-shadow: 2px 2px 2px #28293d, -2px -3px 3px #595959;
+  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(89, 89, 89);
 }
-
 body main .view-session-container .container .semesters .semester-item .sem-codename span {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-
 body main .view-session-container .container .semesters .semester-item .info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 body main .view-session-container .container .semesters .semester-item .info .semester-no {
   color: #00cfdd;
 }
-
 body main .view-session-container .container .semesters .semester-item .info .exam-start-month {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
 }
-
 body main .view-session-container .container .semesters .semester-item:hover {
   outline: 2px solid #9090a7;
 }
-
 body main .view-session-container .container .semesters .semester-item.running-semester {
   background-color: rgba(76, 155, 131, 0.5);
 }
-
 body main .view-session-container .container .semesters .semester-item.running-semester .sem-codename {
-  -webkit-box-shadow: 0 0 50px #05c270;
-          box-shadow: 0 0 50px #05c270;
+  box-shadow: 0 0 50px #05c270;
 }
-
 body main .view-session-container .container .semesters .semester-item.running-semester .info .semester-no {
   color: aquamarine;
 }
-
 body main .view-session-container .container .semesters .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;
 }
-
 body main .admin-profile-edit .super-admin::before {
   content: "Super Admin";
   display: inline-block;
   padding: 0 5px;
   font-weight: normal;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
   font-weight: bold;
   font-size: 1rem;
   background-color: inherit;
@@ -1067,14 +702,12 @@ body main .admin-profile-edit .super-admin::before {
   border-radius: 5px;
   margin-right: 5px;
 }
-
 body main .admin-profile-edit .dept {
   color: #00cfdd;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
   font-weight: bold;
   font-size: 1.2rem;
 }
-
 body main .admin-profile-edit .dept::before {
   content: "Admin";
   display: inline-block;
@@ -1086,136 +719,82 @@ body main .admin-profile-edit .dept::before {
   border-radius: 5px;
   margin-right: 10px;
 }
-
 body main .student-profile-container .profile-card {
   position: relative;
   overflow: hidden;
 }
-
 body main .student-profile-container .profile-card .readd-badge {
   position: absolute;
   top: 0;
   left: 0;
   border-radius: 0 0 5px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   padding: 0 10px;
   background-color: #475275;
 }
-
 body main .student-profile-container .profile-card .readd-badge i, body main .student-profile-container .profile-card .readd-badge span {
   color: #809df3;
 }
-
 body main .student-profile-container .profile-card .readd-badge i {
   font-size: 1.2rem;
   margin-right: 5px;
 }
-
 body main .student-profile-container .profile-card .readd-badge span {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
 }
-
 body main .student-profile-container .semester-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   padding: 10px;
   border-radius: 10px;
-  background-color: #415864;
+  background-color: rgb(65, 88, 100);
 }
-
 body main .student-profile-container .semester-item .sem-codename {
   padding: 5px;
   border-radius: 5px;
   margin-right: 1.5rem;
   background-color: rgba(15, 15, 15, 0.3);
-  -webkit-box-shadow: 0 0 50px #3bcad4;
-          box-shadow: 0 0 50px #3bcad4;
+  box-shadow: 0 0 50px rgb(59, 202, 212);
 }
-
 body main .student-profile-container .semester-item .sem-codename span {
-  font-family: 'Silkscreen', cursive;
+  font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-
 body main .student-profile-container .semester-item .info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 body main .student-profile-container .semester-item .info .semester-no {
   color: #00cfdd;
 }
-
 body main .student-profile-container .semester-item .info .exam-stats {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
 }
-
 body main .student-profile-container .semester-item:hover {
   outline: 2px solid #6990a2;
 }
-
 body main .student-profile-container .semester-item.running-semester {
   background-color: rgba(76, 155, 131, 0.5);
 }
-
 body main .student-profile-container .semester-item.running-semester .sem-codename {
-  -webkit-box-shadow: 0 0 50px #05c270;
-          box-shadow: 0 0 50px #05c270;
+  box-shadow: 0 0 50px #05c270;
 }
-
 body main .student-profile-container .semester-item.running-semester .info .semester-no {
   color: aquamarine;
 }
-
 body main .student-profile-container .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;
 }
@@ -1226,40 +805,26 @@ body main .student-profile-container .semester-item.running-semester:hover {
   right: 1rem;
   padding: 5px 20px 5px 5px;
   background-color: #555870;
-  -webkit-box-shadow: 0px 2px 10px #28293d;
-          box-shadow: 0px 2px 10px #28293d;
+  box-shadow: 0px 2px 10px #28293d;
   border-radius: 50px;
 }
-
 .profile a {
   text-decoration: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
 .profile a .info .name {
   color: #ebeaef;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
-
 .profile a .info .dept {
   color: #00cfdd;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
   font-weight: bold;
   font-size: 0.9rem;
 }
-
 .profile a .info .dept::before {
   content: "Admin";
   display: inline-block;
@@ -1271,13 +836,12 @@ body main .student-profile-container .semester-item.running-semester:hover {
   border-radius: 5px;
   margin-right: 5px;
 }
-
 .profile a .info .super-admin::before {
   content: "Super Admin";
   display: inline-block;
   padding: 0 5px;
   font-weight: normal;
-  font-family: 'Gemunu Libre', sans-serif;
+  font-family: "Gemunu Libre", sans-serif;
   font-weight: bold;
   font-size: 0.9rem;
   background-color: inherit;
@@ -1291,33 +855,28 @@ body main .student-profile-container .semester-item.running-semester:hover {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 2rem;
-  border: 2px solid #8999955b;
+  border: 2px solid rgba(137, 153, 149, 0.3568627451);
   padding: 0;
 }
-
 .title-box .title {
-  background-color: #8999955b;
-  font-family: 'Gemunu Libre', sans-serif;
+  background-color: rgba(137, 153, 149, 0.3568627451);
+  font-family: "Gemunu Libre", sans-serif;
   padding: 0.5rem 1rem;
   font-weight: 500;
   font-size: 1.2rem;
   color: #ebeaef;
   text-align: center;
 }
-
 .title-box .content {
   margin: 1rem;
 }
-
 .title-box .content .no-content {
   padding: 1rem 0;
 }
-
 .title-box .content .no-content .icon i {
   font-size: 3rem;
   color: gray;
 }
-
 .title-box .content .no-content .info {
   font-size: 1.2rem;
   color: gray;
@@ -1325,5 +884,4 @@ body main .student-profile-container .semester-item.running-semester:hover {
 
 a {
   text-decoration: none;
-}
-/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=main.css.map */
