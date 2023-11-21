@@ -6,7 +6,7 @@ from results.models import Department, Session, SemesterEnroll, CourseResult
 
 
 class Command(BaseCommand):
-    def handle(self, *args: Any, **options: Any) -> str | None:
+    def handle(self, *args: Any, **options: Any):
         fourth_batch = Session.objects.filter(dept__name="eee", from_year=2018).first()
         if not fourth_batch:
             self.stdout.write(self.style.ERROR(f"fourth batch not found"))

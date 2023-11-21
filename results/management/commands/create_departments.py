@@ -5,7 +5,7 @@ from results.models import Department
 
 
 class Command(BaseCommand):
-    def handle(self, *args: Any, **options: Any) -> str | None:
+    def handle(self, *args: Any, **options: Any):
         data = {
             'cse': {
                 'fullname': 'Computer Science Engineering',
