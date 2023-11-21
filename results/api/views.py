@@ -175,12 +175,11 @@ class CourseResultList(ListAPIView):
     
     def get_queryset(self):
         course = self.get_object()
-        ## Autogenerate missing entries of the session, REMOVE this in Version-2
-        # course_results = CourseResult.objects.filter(course=course)
-        course_results = self.check_or_generate_entries(course)
+        course_results = CourseResult.objects.filter(course=course)
         return course_results
     
     def check_or_generate_entries(self, course):
+        ## Autogenerate missing entries of the session, REMOVE this in Version-2
         # REMOVE THIS FUNCTION IN Version-2
         session = course.semester.session
         course_results_all = CourseResult.objects.filter(course=course)

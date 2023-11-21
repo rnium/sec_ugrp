@@ -181,10 +181,10 @@ function createStudentAccount(){
 function toggle_completed_entries() {
     // console.log($("#switch-show-complete").is(':checked'));;
     if ($("#switch-show-complete").is(':checked')) {
-        $("#listing-table tr.completed").show(400);
+        $("#listing-table .completed").show(300);
     } else {
         console.log("hiding");
-        $("#listing-table tr.completed").hide(200)
+        $("#listing-table .completed").hide(300)
     }
 }
 
@@ -197,7 +197,7 @@ function append_carry_entries(response) {
         }
         for (course of response[record].records) {
             if (course.completed) {
-                carry_courses += `<a href="${course.course_url}" class="pill pill-green me-1 mb-1 px-3" target="_blank" style="font-size: 0.8rem;">${course.course_code}</a>`
+                carry_courses += `<a href="${course.course_url}" class="completed pill pill-green me-1 mb-1 px-3" target="_blank" style="font-size: 0.8rem;">${course.course_code}</a>`
             }
             else {
                 carry_courses += `<a href="${course.course_url}" class="pill pill-gray px-3 me-1 mb-1" target="_blank" style="font-size: 0.8rem;">${course.course_code}</a>`

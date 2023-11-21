@@ -3,6 +3,7 @@ from account.models import StudentAccount
 from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
+import time
 
 @shared_task(bind=True)
 def restore_data_task(self, dept_id, sessions_data, total_objects):
@@ -12,6 +13,8 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
     semester_hash = {}        # key = previous, value = new object
     enrollment_hash = {}        # key = previous, value = new object
     courses_hash = {}       # key = previous, value = new object
+    courseresults_hash = {}      # key = previous, value = new object
+    retake_hash = {}    # key = new object, value = carry_of course_result id
     failed_course_results = []
     progress_recorder = ProgressRecorder(self)
     count = 0
@@ -61,8 +64,8 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                 progress_recorder.set_progress(count, total_objects)
                 courses_hash[prev_id] = course
                 # Course Results
-                course_res_bulks = []
                 for result_data in course_data['course_results']:
+                    result_id = result_data['id']
                     result_data.pop('id')
                     result_data['course'] = course
                     try:
@@ -70,10 +73,16 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                     except Exception as e:
                         failed_course_results.append(result_data)
                         continue
-                    course_res_bulks.append(CourseResult(**result_data))
-                CourseResult.objects.bulk_create(course_res_bulks)
-                count += len(course_res_bulks)
+                    retake_of_id = result_data['retake_of']
+                    result_data.pop('retake_of')
+                    course_res_new = CourseResult(**result_data)
+                    course_res_new.save()
+                    courseresults_hash[result_id] = course_res_new
+                    if retake_of_id:
+                        retake_hash[course_res_new] = retake_of_id
+                    count += 1
                 progress_recorder.set_progress(count, total_objects)
+                time.sleep(0.2)
             # Enrolls
             for enroll_data in sem_data['enrolls']:
                 enrollment_prev_id = enroll_data['id']
@@ -88,13 +97,22 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                 progress_recorder.set_progress(count, total_objects)
                 enrollment_hash[enrollment_prev_id] = enroll
     # retry failed courseresult creation 
-    course_result_bulks = []
     for result_data in failed_course_results:
         result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
-        course_result_bulks.append(CourseResult(**result_data))
-    CourseResult.objects.bulk_create(course_result_bulks)
-    count += len(course_res_bulks)
+        retake_of_id = result_data['retake_of']
+        result_data.pop('retake_of')
+        course_res_new = CourseResult(**result_data)
+        course_res_new.save()
+        courseresults_hash[result_id] = course_res_new
+        if retake_of_id:
+            retake_hash[course_res_new] = retake_of_id
+        count += 1
     progress_recorder.set_progress(count, total_objects)
+    time.sleep(0.2)
+    # Binding Retakings
+    for new_result, retake_of_id in retake_hash.items():
+        new_result.retake_of = courseresults_hash[retake_of_id]
+        new_result.save()
     # semester drop courses
     for prevId, newSem in semester_hash.items():
         drop_courses = semester_drop_courses_prev_IDs[prevId]
@@ -102,6 +120,7 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
             newSem.drop_courses.add(courses_hash[prev_course_id])
         count += len(drop_courses)
         progress_recorder.set_progress(count, total_objects)
+    time.sleep(0.2)
     # enrolled courses
     for prevId, newEnroll in enrollment_hash.items():
         enrolled_courses = enrollment_courses_prev_IDs[prevId]
