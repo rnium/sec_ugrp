@@ -206,7 +206,35 @@ class CourseResultList(ListAPIView):
             return CourseResult.objects.filter(course=course)
         else:
             return course_results_all
-        
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def generate_missing_entries(request, pk):
+    try:
+        course = Course.objects.get(pk=pk)
+    except Course.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    course_results = course.courseresult_set.all()
+    existing_students = set([course_res.student for course_res in course_results])
+    session_students = set(course.semester.session.studentaccount_set.all())
+    missing_students = list(session_students.symmetric_difference(existing_students))
+    for student in missing_students:
+        semester_enroll = SemesterEnroll.objects.filter(semester=course.semester, student=student).first()
+        if (semester_enroll is None):
+            try:
+                semester_enroll = SemesterEnroll(semester=course.semester, student=student)
+                semester_enroll.save()
+            except ValidationError:
+                continue
+        try:
+            course_res = CourseResult(student=student, course=course)
+            course_res.save()
+        except Exception as e:
+            continue
+        semester_enroll.courses.add(course)
+            
+    return Response(data={"info": f"{len(missing_students)} entry generated"})
+      
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def student_retakings(request):

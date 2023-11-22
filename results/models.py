@@ -266,6 +266,11 @@ class Course(models.Model):
     def num_pending_course(self):
         return self.courseresult_set.filter(total_score=None).count()
     
+    @property
+    def num_missing_entries_for_session(self):
+        num_enrolled_regular = self.courseresult_set.filter(student__session=self.semester.session).count()
+        return (self.semester.session.studentaccount_set.count() - num_enrolled_regular)
+    
     
 class CourseResult(models.Model):
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
