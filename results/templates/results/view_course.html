@@ -205,34 +205,19 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Entry Info</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="profile-card">
-                        <a href="" class="inner">
-                            <img src="./images/dp3.jpg" alt="" class="dp">
-                            <div class="info mt-2">
-                                <div class="name">MD Saiful Islam Rony</div>
-                                <div class="reg-no">2018338514</div>
-                                <div class="session"><span class="dept me-1">EEE</span><span>2018-19</span></div>
-                            </div>
-                        </a>
+                <div class="loader my-5" id="entry-info-loader">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Loading</span>
+                        </div>
+                        <span class="loader-info fs-5 roboto-font ms-2 text-muted">Loading</span>
                     </div>
-                    <div class="info text-center mt-3">
-                        <span class="label text-muted me-1">Enrolled In:</span> 
-                        <a href="" class="value">4th Year 1st Semester</a> 
-                    </div>
-                    <div class="info text-center">
-                        <span class="label text-muted me-1">Type:</span> 
-                        <span class="value pill pill-red">Carry</span> 
-                    </div>
-                    <div class="info text-center">
-                        <span class="label text-muted me-1">Carry Course:</span> 
-                        <a href="" class="value">Course Code</a> 
-                    </div>
-
                 </div>
-                <div class="modal-footer">
+                <div class="modal-body" style="display: none">
+                </div>
+                <div class="modal-footer" style="display: none">
                     <!-- <button type="button" class="btn btn-danger">Delete</button> -->
-                    <button class="ms-auto btn btn-secondary btn-iconized px-3 shadow-sm" id="confirm-del-btn">
+                    <button class="ms-auto btn btn-secondary btn-iconized px-3 shadow-sm" id="confirm-entry-del-btn">
                         <div class="d-flex align-items-center ">
                             <i class="bx bxs-trash-alt me-2"></i>
                             <span class="roboto-font ">Delete</span>
@@ -453,6 +438,7 @@
     const update_course_api = "{% url 'results:update_course' course.id %}";
     const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}";
     const student_retakings_api = "{% url 'results:student_retaking_list' %}";
+    const course_result_entry_info_api = "{% url 'results:course_result_entry_info' %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};

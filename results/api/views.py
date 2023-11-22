@@ -683,3 +683,15 @@ def perform_restore(request):
     result = restore_data_task.delay(dept.id, data['sessions'], obj_count)
     progress_url = reverse('celery_progress:task_status', args=(result.task_id,))
     return JsonResponse(data={'info': 'ok', 'progress_url': progress_url})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def course_result_entry_info(request):
+    try:
+        result_id = request.data.get('result_id')
+        course_res = CourseResult.objects.get(pk=result_id)
+    except CourseResult.DoesNotExist:
+        return Response(data={'details': "Not found"})
+    html_content= render_to_string('results/components/courseresult_info.html', context={'course_res': course_res})
+    return Response(data={"content": html_content})

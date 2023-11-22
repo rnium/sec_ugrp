@@ -1,0 +1,28 @@
+<div class="profile-card mb-3">
+    <a href="" class="inner">
+        <img src="{{course_res.student.avatar_url}}" alt="" class="dp">
+        <div class="info mt-2">
+            <div class="name">{{course_res.student.student_name}}</div>
+            <div class="reg-no text-muted fs-5">{{course_res.student.registration}}</div>
+            <div class="session"><span class="dept me-1">{{course_res.student.session.dept.name|upper}}</span><span>{{course_res.student.session.session_code}}</span></div>
+        </div>
+    </a>
+</div>
+{% comment %} <div class="info text-center">
+    <span class="label text-muted me-1">Enrolled In:</span> 
+    <a href="" class="value">{{course_res}}</a> 
+</div> {% endcomment %}
+<div class="info text-center">
+    <span class="label text-muted me-1">Type:</span>
+    {% if course_res.is_drop_course %}
+    <span class="value pill pill-red">Carry</span> 
+    {% else %}
+    <span class="value pill pill-green">Regular</span> 
+    {% endif %}
+</div>
+{% if course_res.retake_of %}
+<div class="info text-center">
+    <span class="label text-muted me-1">Carry Course:</span> 
+    <a href="" class="value">{{course_res.retake_of.course.code}}</a> 
+</div>
+{% endif %}

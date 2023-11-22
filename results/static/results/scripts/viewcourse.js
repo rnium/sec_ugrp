@@ -1,3 +1,9 @@
+function showModal(id) {
+    const elem = document.getElementById(id)
+    const mBootstrap = new bootstrap.Modal(elem);
+    mBootstrap.show()
+}
+
 
 function showError(alertContainer, msg) {
     $(`#${alertContainer}`).removeClass("alert-warning");
@@ -48,15 +54,6 @@ function convertFloat(num) {
     } else {
         return 0; // Return 0 for any other non-numeric input
     }
-}
-
-function activateProfileCard() {
-    $(".profile-link").on("mouseover", function() {
-        $(this).next(".profile-card").show(200)
-    })
-    $(".profile-link").on("mouseout", function() {
-        $(this).next(".profile-card").hide(200)
-    })
 }
 
 function check_input(inp_id) {
@@ -237,17 +234,7 @@ function render_rows(response) {
         let row_class = record.is_drop_course ? 'drop_course' : '';
         let row = `<tr class="${row_class}">
                         <td class="student-info">
-                            <a href="#" class="profile-link" data-id="${record.student.registration}">${record.student.registration}</a>
-                            <div class="profile-card" id="${record.student.registration}-profile" style="display: none;">
-                                <div class="inner">
-                                    <img src="${record.student.profile_picture_url}" alt="" class="dp">
-                                    <div class="info mt-2">
-                                        <div class="name">${record.student.name}</div>
-                                        <div class="reg-no">${record.student.registration}</div>
-                                        <div class="session"><span class="dept me-1">${record.student.dept.dept}</span><span>${record.student.dept.session_code}</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <a class="profile-link" style="cursor: pointer" data-courseresid="${record.id}">${record.student.registration}</a>
                         </td>
                         <td class="code-inp-con">
                             ${fields.partAcode}
@@ -269,6 +256,39 @@ function render_rows(response) {
         rows += row;
     }
     return rows;
+}
+
+function activateEntryDetails() {
+    $(".profile-link").on("click", function() {
+        let courseres_id = $(this).data('courseresid');
+        let payload = {result_id: courseres_id}
+        $.ajax({
+            type: "post",
+            url: course_result_entry_info_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#entryInfoModal .modal-body").empty();
+                $("#entryInfoModal .modal-footer").hide();
+                $("#entry-info-loader").show();
+                showModal("entryInfoModal");
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $("#entryInfoModal #confirm-entry-del-btn").attr("data-courseres-id", courseres_id);
+                $("#entry-info-loader").hide(0, function() {
+                    $("#entryInfoModal .modal-body").html(response.content)
+                    $("#entryInfoModal .modal-body").show()
+                    $("#entryInfoModal .modal-footer").show()
+                });
+            },
+            error: function(xhr, status, error) {
+                $("#entry-info-loader .loader-info").text(error)
+            }
+        });
+    })
 }
 
 function insertTable(response) {
@@ -299,8 +319,8 @@ function insertTable(response) {
     $("#tableContainer").html(table);
     $("#tablePlaceholder").hide(0, ()=>{
         $("#scoreBoard").show(0, function(){
-            activateProfileCard()
             activateScoreInputs()
+            activateEntryDetails()
         })
     });
 }
