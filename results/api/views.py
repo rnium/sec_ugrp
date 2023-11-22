@@ -268,7 +268,7 @@ def session_retake_list(request, pk):
             "remaining_credits": 0,
             "records": []
         }
-        retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False)
+        retaking_course_res = CourseResult.objects.filter(student=student, grade_point=0, is_drop_course=False).order_by("course__semester__semester_no")
         if retaking_course_res.count() == 0:
             continue
         for retaking in retaking_course_res:
