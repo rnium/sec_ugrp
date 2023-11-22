@@ -693,5 +693,9 @@ def course_result_entry_info(request):
         course_res = CourseResult.objects.get(pk=result_id)
     except CourseResult.DoesNotExist:
         return Response(data={'details': "Not found"})
-    html_content= render_to_string('results/components/courseresult_info.html', context={'course_res': course_res})
+    enrollment = course_res.course.enrollment.filter(student=course_res.student).first()
+    context = {'course_res': course_res, 'enrollment': enrollment}
+    if course_res.retake_of:
+        context['retake_course'] = course_res.retake_of.course
+    html_content= render_to_string('results/components/courseresult_info.html', context=context)
     return Response(data={"content": html_content})
