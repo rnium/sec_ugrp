@@ -503,6 +503,7 @@ function get_student_retakigs() {
         contentType: "application/json",
         type: "POST",
         beforeSend: function(xhr){
+            $("#new_entry_alert").hide();
             $("#new_entry_add_button").hide();
             $("#retaking-info").hide(0, ()=>{
                 $("#retakings-container").hide(0, ()=>{
