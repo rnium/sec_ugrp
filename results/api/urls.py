@@ -24,5 +24,6 @@ urlpatterns = [
     path('restorebackup/', views.perform_restore, name="perform_restore"),
     path('courseresult-entry-info/', views.course_result_entry_info, name="course_result_entry_info"),
     path('courseresult-delete/', views.delete_course_result, name="delete_course_result"),
+    path('course/<int:pk>/generate-missing', views.generate_missing_entries, name="generate_missing_entries"),
 ]
 

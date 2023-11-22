@@ -323,6 +323,27 @@ function delete_courseresult_entry() {
     });
 }
 
+function generate_missing_entries() {
+    $.ajax({
+        type: "post",
+        url: generate_missing_entries_api,
+        dataType: "json",
+        // contentType: "application/json",
+        beforeSend: function(xhr){
+            $("#generate_missing_btn").attr("disabled", true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        cache: false,
+        success: function(response) {
+            showNotification("Completed.. please reload");
+        },
+        error: function(xhr, status, error) {
+            $("#generate_missing_btn").attr("disabled", false);
+            showNotification("An error occured!");
+        }
+    });
+}
+
 function insertTable(response) {
     let rows = render_rows(response);
     const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
@@ -712,6 +733,7 @@ $(document).ready( function() {
     $("#updateCourseAddBtn").on('click', updateCourse)
     $("#confirm-entry-del-btn").on('click', delete_courseresult_entry)
     $("#confirm-del-btn").on('click', delete_course)
+    $("#generate_missing_btn").on('click', generate_missing_entries)
     // new entry registration input
     $("#new_entry_registration").keypress(function(event) {
         if (event.which === 13 || event.keyCode === 13) {

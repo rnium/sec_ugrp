@@ -133,7 +133,7 @@
                         <span>Add New Entry</span>
                     </button>
                     {% if course.num_missing_entries_for_session %}
-                    <button class="add-new-btn btn btn-secondary btn-iconized px-4 ms-2 id="add-new" data-bs-toggle="modal" data-bs-target="#newEntryModal">
+                    <button class="add-new-btn btn btn-secondary btn-iconized px-4 ms-2" id="generate_missing_btn">
                         <i class='bx bx-list-plus fs-3 text-info me-2'></i>
                         <span class="text-info">Insert Remaining {{course.num_missing_entries_for_session}}</span>
                     </button>
@@ -448,6 +448,7 @@
     const student_retakings_api = "{% url 'results:student_retaking_list' %}";
     const course_result_entry_info_api = "{% url 'results:course_result_entry_info' %}";
     const course_result_delete_api = "{% url 'results:delete_course_result' %}";
+    const generate_missing_entries_api = "{% url 'results:generate_missing_entries' course.id %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
