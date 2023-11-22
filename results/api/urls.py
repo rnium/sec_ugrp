@@ -23,5 +23,6 @@ urlpatterns = [
     path('createbackup/', views.generate_backup, name="generate_backup"),
     path('restorebackup/', views.perform_restore, name="perform_restore"),
     path('courseresult-entry-info/', views.course_result_entry_info, name="course_result_entry_info"),
+    path('courseresult-delete/', views.delete_course_result, name="delete_course_result"),
 ]
 

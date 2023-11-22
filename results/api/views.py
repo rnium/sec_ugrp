@@ -412,7 +412,7 @@ def delete_session(request, pk):
 def delete_course(request, pk):
     try:
         course = Course.objects.get(pk=pk)
-    except Semester.DoesNotExist:
+    except Course.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
@@ -441,6 +441,22 @@ def delete_course(request, pk):
     # delete
     course.delete()
     return Response(data={"semester_url": semester_url})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_course_result(request):
+    try:
+        course_res_id = request.data.get('courseres_id')
+        course_res = CourseResult.objects.get(pk=course_res_id)
+    except CourseResult.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if not user_is_super_OR_dept_admin(request):
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # delete
+    course_res.delete()
+    return Response(data={"info": "deleted"})
 
 
 @api_view(['POST'])

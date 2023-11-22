@@ -291,6 +291,38 @@ function activateEntryDetails() {
     })
 }
 
+function delete_courseresult_entry() {
+    if (!confirm("Are you sure to delete this entry?")) {
+        return
+    }
+    let courseres_id = $(this).data('courseres-id');
+    let payload = {courseres_id: courseres_id}
+    $.ajax({
+        type: "post",
+        url: course_result_delete_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $("#confirm-entry-del-btn").attr("disabled", true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(payload),
+        cache: false,
+        success: function(response) {
+            $("#entry-info-loader .loader-info").text("Done.. Reloading page")
+            $("#entryInfoModal .modal-body").empty();
+            $("#entryInfoModal .modal-footer").hide();
+            $("#entry-info-loader").show();
+            setTimeout(()=>{
+                location.reload()
+            }, 2000)
+        },
+        error: function(xhr, status, error) {
+            alert("An error occured!")
+        }
+    });
+}
+
 function insertTable(response) {
     let rows = render_rows(response);
     const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
@@ -678,6 +710,7 @@ $(document).ready( function() {
     })
     
     $("#updateCourseAddBtn").on('click', updateCourse)
+    $("#confirm-entry-del-btn").on('click', delete_courseresult_entry)
     $("#confirm-del-btn").on('click', delete_course)
     // new entry registration input
     $("#new_entry_registration").keypress(function(event) {

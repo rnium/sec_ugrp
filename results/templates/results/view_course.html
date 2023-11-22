@@ -439,6 +439,7 @@
     const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}";
     const student_retakings_api = "{% url 'results:student_retaking_list' %}";
     const course_result_entry_info_api = "{% url 'results:course_result_entry_info' %}";
+    const course_result_delete_api = "{% url 'results:delete_course_result' %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
