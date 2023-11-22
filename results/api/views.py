@@ -482,6 +482,9 @@ def delete_course_result(request):
     # cheking admin user
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking of semester running
+    if not course_res.course.semester.is_running:
+        return Response(data={'details': "Semester is offline"}, status=status.HTTP_400_BAD_REQUEST)
     # delete
     course_res.delete()
     return Response(data={"info": "deleted"})
@@ -738,8 +741,12 @@ def course_result_entry_info(request):
     except CourseResult.DoesNotExist:
         return Response(data={'details': "Not found"})
     enrollment = course_res.course.enrollment.filter(student=course_res.student).first()
-    context = {'course_res': course_res, 'enrollment': enrollment}
+    context = {
+        'course_res': course_res, 
+        'enrollment': enrollment, 
+    }
     if course_res.retake_of:
         context['retake_course'] = course_res.retake_of.course
+    
     html_content= render_to_string('results/components/courseresult_info.html', context=context)
-    return Response(data={"content": html_content})
+    return Response(data={"content": html_content, 'semester_running': course_res.course.semester.is_running})

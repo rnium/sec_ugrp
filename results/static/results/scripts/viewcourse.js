@@ -281,7 +281,9 @@ function activateEntryDetails() {
                 $("#entry-info-loader").hide(0, function() {
                     $("#entryInfoModal .modal-body").html(response.content)
                     $("#entryInfoModal .modal-body").show()
-                    $("#entryInfoModal .modal-footer").show()
+                    if (response.semester_running) {
+                        $("#entryInfoModal .modal-footer").show()
+                    }
                 });
             },
             error: function(xhr, status, error) {
