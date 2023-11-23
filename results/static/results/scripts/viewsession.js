@@ -233,6 +233,13 @@ function loadCarryList() {
         data: "data",
         dataType: "json",
         success: function (response) {
+            if (Object.keys(response).length == 0) {
+                $("#listing-table-loader").hide(0, ()=>{
+                    $("#carry-listing-modal .modal-body").addClass('bg-material');
+                    $("#carry-listing-modal .no-records").show();
+                })
+                return;
+            }
             append_carry_entries(response);
             toggle_completed_entries()
             $("#listing-table-loader").hide(0, ()=>{

@@ -747,6 +747,6 @@ def course_result_entry_info(request):
     }
     if course_res.retake_of:
         context['retake_course'] = course_res.retake_of.course
-    
+    context['retakes'] = CourseResult.objects.filter(retake_of=course_res).order_by("course__semester__session__from_year")
     html_content= render_to_string('results/components/courseresult_info.html', context=context)
     return Response(data={"content": html_content, 'semester_running': course_res.course.semester.is_running})

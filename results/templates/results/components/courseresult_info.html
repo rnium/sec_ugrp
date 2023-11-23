@@ -26,3 +26,16 @@
     <a href="{% url "results:view_course" retake_course.semester.session.dept.name retake_course.semester.session.from_year retake_course.semester.session.to_year retake_course.semester.year enrollment.semester.year_semester course_res.course.code %}" target="_blank" class="value">{{course_res.retake_of.course.code}}</a> 
 </div>
 {% endif %}
+{% if retakes %}
+<hr class="hr">
+{% for retake in retakes %}
+<div class="info text-center">
+    <span class="label text-muted me-1">Retake {{forloop.counter}}:</span>
+    {% if retake.grade_point > 0 %}
+    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.semester.session.from_year retake.course.semester.session.to_year retake.course.semester.year retake.course.semester.year_semester retake.course.code %}" target="_blank" class="value text-success">{{retake.course.code}}</a> 
+    {% else %}
+    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.semester.session.from_year retake.course.semester.session.to_year retake.course.semester.year retake.course.semester.year_semester retake.course.code %}" target="_blank" class="value text-danger">{{retake.course.code}}</a> 
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
