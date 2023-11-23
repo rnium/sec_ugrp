@@ -181,10 +181,10 @@ function createStudentAccount(){
 function toggle_completed_entries() {
     // console.log($("#switch-show-complete").is(':checked'));;
     if ($("#switch-show-complete").is(':checked')) {
-        $("#listing-table .completed").show(300);
+        $("#listing-table .completed").show();
     } else {
         console.log("hiding");
-        $("#listing-table .completed").hide(300)
+        $("#listing-table .completed").hide()
     }
 }
 
