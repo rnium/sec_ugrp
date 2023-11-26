@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis_local
+    ports:
+      - 6379:6379
+
+  celery_worker:
+    build: .
+    image: sec_rdb_celery:local
+    container_name: RDB_CeleryWorker
+    volumes:
+      - .:/app
+    command: celery -A config worker -l info
+    depends_on:
+      - redis
