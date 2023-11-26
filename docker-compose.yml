@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  app:
+    build: .
+    image: sec_rdb:local
+    container_name: rdb_django
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+
   redis:
     image: redis:alpine
     container_name: redis_local
