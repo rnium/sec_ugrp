@@ -13,6 +13,7 @@ from io import BytesIO
 from django.conf import settings
 from results.utils import get_letter_grade, get_ordinal_number
 from results.models import SemesterEnroll
+from results.api.utils import sort_courses
 
 DEBUG_MODE = False
 
@@ -33,6 +34,20 @@ def calculate_column_widths(num_columns, container_width, margin):
     available_width = container_width - 2*margin 
     column_width = available_width / num_columns
     return [column_width] * num_columns
+
+
+def course_sorting_key(course, dept_name):
+    dept_priority = 0
+    coursecode_first_part = course.code.split(' ')[0].lower().strip()
+    if coursecode_first_part == dept_name.lower():
+        dept_priority = 1
+    return (-course.semester.semester_no, -course.course_credit, -dept_priority)
+
+def sort_courses(courses, dept_name):
+    sorted_courses = sorted(courses, key=lambda course: course_sorting_key(course, dept_name), reverse=False)
+    return sorted_courses
+
+
 
 def get_grading_scheme_table() -> Table:
     data = [
@@ -140,7 +155,7 @@ def cumulative_semester_data(student, semester_upto):
 
 def get_courses_data(semester_enroll, blank_list):
     dataset = []
-    courses = semester_enroll.courses.all().order_by('-semester__semester_no')
+    courses = sort_courses(semester_enroll.courses.all(), 'eee')
     for course in courses:
         record = course.courseresult_set.filter(student=semester_enroll.student).first()
         data = [
