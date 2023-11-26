@@ -177,7 +177,7 @@ def get_main_table(context: Dict) -> Table:
         textColor=colors.black,
     )
     university_paragraph = Paragraph("Shahjalal University of Science & Technology<br/>P.O.: University, Sylhet, Bangladesh.", style=normalStyle)
-    bottom_info = """The results of the student mentioned above are compiled considering agreegated of <u>four years for B. Sc. (Engg.)</u><br/>examinations.
+    bottom_info = """The results of the student mentioned above are compiled considering aggregated of <u>four years for B. Sc. (Engg.)</u><br/>examinations.
     Additional sheets containing the subject studied, course number and grade obtained in each course<br/>are enclosed."""
     # Extracting requied data
     student = context['student']
@@ -201,7 +201,7 @@ def get_main_table(context: Dict) -> Table:
     LAST_SEMESTER_ENROLLS_COUNT = context['last_semester'].semesterenroll_set.count()    
     data = [
         ["1.", 'Name of the Student', ':', student.student_name.upper()],
-        ["2.", 'Name of the CollegeName of the College', ':', 'Sylhet Engineering College, Sylhet'],
+        ["2.", 'Name of the College', ':', 'Sylhet Engineering College, Sylhet'],
         ["3.", 'Name of the University', ':', university_paragraph],
         ["4.", 'Registration & Exam Roll No.', ':', student.registration],
         ["5.", 'Period Attended', ':', f'{PERIOD_ATTENDED_FROM_YEAR}-{LAST_SEMESTER_HELD_TIME}'],
