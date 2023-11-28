@@ -17,10 +17,7 @@ from os.path import join, basename
 class Department(models.Model):
     name = models.CharField(max_length=3, unique=True)
     fullname = models.CharField(max_length=100)
-    dept_logo = models.ImageField(upload_to="departments/logo/",
-                                    null=True, 
-                                    blank=True,
-                                    validators=[FileExtensionValidator(allowed_extensions=settings.ALLOWED_IMAGE_EXTENSIONS)])
+    dept_logo_name = models.CharField(max_length=50, null=True, blank=True)
     created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added = models.DateTimeField(auto_now_add=True)
     

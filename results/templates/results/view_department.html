@@ -41,7 +41,7 @@
 <div class="dept-tab-container w-100 px-3">
     <div class="department-main m-5 ">
         <div class="logo-container d-flex flex-column align-items-center">
-            <img src="{{department.dept_logo.url}}" class="dept-logo">
+            <img src="{% static 'results/logo/' %}{{department.dept_logo_name}}" class="dept-logo">
         </div>
         <div class="dept-title fs-3 text-center mt-2">{{department.dept_title_full}}</div>
         <div class=" mt-2">

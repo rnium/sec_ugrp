@@ -9,15 +9,15 @@ class Command(BaseCommand):
         data = {
             'cse': {
                 'fullname': 'Computer Science Engineering',
-                'dept_logo': "departments/logo/seccse.png"
+                'dept_logo_name': "cse-logo.png"
             },
             'eee': {
                 'fullname': 'Electrical and Electronic Engineering',
-                'dept_logo': "departments/logo/seceee.png"
+                'dept_logo_name': "eee-logo.png"
             },
             'ce': {
                 'fullname': 'Civil Engineering',
-                'dept_logo': "departments/logo/seccivil.png"
+                'dept_logo_name': "ce-logo.png"
             }
         }
         for name, props in data.items():
