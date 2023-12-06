@@ -358,7 +358,7 @@
 {% endblock content %}
 
 {% block script %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="{% static 'results/scripts/chartjs4.min.js' %}"></script>
 <script>
     const create_semester_api = "{% url 'results:create_semester' session.id %}";
     const create_student_account_api = "{% url 'account:create_student_account' %}";
