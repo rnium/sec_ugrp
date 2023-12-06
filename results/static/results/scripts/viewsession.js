@@ -252,6 +252,95 @@ function loadCarryList() {
     });
 }
 
+// Session Stats Charting
+
+function processStatsData(response) {
+    let data = {
+        registration: [],
+        cgpa: [],
+        credits: []
+    }
+    for (record of response) {
+        data.registration.push(record.registration);
+        data.cgpa.push(record.cgpa);
+        data.credits.push(record.credits_completed);
+    }
+    return data;
+}
+
+
+function render_performance_chart(data) {
+    let registration = data.registration
+    let cgpa = data.cgpa
+    let credits = data.credits
+    console.log(cgpa);
+    var ctx = document.getElementById('session_stats_chart').getContext('2d');
+    let gridlinecolor = "#073b4c";
+    let legendcolor = "#a5a58d"
+    var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: registration,
+        datasets: [
+        {
+            label: 'CGPA',
+            data: cgpa,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: true
+        }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+        x: {
+            display: true,
+            ticks: {
+            display: false
+            },
+            grid: {
+                display: false,
+                color: gridlinecolor
+            }
+        },
+        y: {
+            display: true,
+            ticks: {
+            display: true
+            },
+            grid: {
+                display: false,
+                color: gridlinecolor
+            }
+        }
+    }}
+    });
+}
+
+function get_performance_chart_data() {
+    $.ajax({
+        type: "get",
+        url: session_stats_api,
+        dataType: "json",
+        cache: false,
+        success: function(response) {
+            if (response.length) {
+                data = processStatsData(response)
+                render_performance_chart(data)
+            }
+        },
+        // error: function(xhr, error, status) {
+        //     $("#chart-loader").hide(0, ()=>{
+        //         $("#stat-info-con .info").text(xhr['responseJSON']['info'])
+        //         $("#stat-info-con").show()
+        //     })
+        // },
+    });
+}
+
 
 // Delete session
 function delete_session() {
@@ -346,6 +435,7 @@ $(document).ready(function () {
             alert("Please choose an excel file!");
         }
     })
+    get_performance_chart_data()
     loadCarryList();
     $("#switch-show-complete").on('click', toggle_completed_entries)
 });

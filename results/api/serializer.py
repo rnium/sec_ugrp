@@ -95,10 +95,14 @@ class CourseResultSerializer(ModelSerializer):
         exclude = ['updated', 'course']
 
 class StudentStatsSerializer(ModelSerializer):
+    name = serializers.SerializerMethodField(read_only=True)
     cgpa = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = StudentAccount
-        fields = ['registration', 'credits_completed', 'cgpa']
+        fields = ['registration', 'credits_completed', 'cgpa', 'name']
         read_only_fields = ['registration', 'cgpa']
+        
+    def get_name(self, obj):
+        return obj.student_name
     def get_cgpa(self, obj):
-        return obj.student_cgpa
+        return float(obj.student_cgpa)

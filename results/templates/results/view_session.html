@@ -88,7 +88,9 @@
                 <span class="roboto-font" style="font-size: 0.8rem;">Create New Semester</span>
             </button>
         </div>
-
+        <div class="chart-container row col-md-9" style="height: 200px !important;">
+            <canvas id="session_stats_chart" ></canvas>
+        </div>
         <div class="students-list col-md-9 rounded-2 mt-3">
             <div class="section-title text-center mb-2 d-flex justify-content-center align-items-center">
                 <span class="title-text me-2 section-title">Students</span>
@@ -356,6 +358,7 @@
 {% endblock content %}
 
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
     const create_semester_api = "{% url 'results:create_semester' session.id %}";
     const create_student_account_api = "{% url 'account:create_student_account' %}";
@@ -363,6 +366,7 @@
     const create_student_via_excel_api = "{% url 'account:create_student_via_excel' session.id %}";
     const delete_session_api = "{% url 'results:delete_session' session.id %}";
     const carry_listing_api = "{% url 'results:session_retake_list' session.id %}";
+    const session_stats_api = "{% url 'results:session_student_stats' session.id %}";
     const sessionId = {{session.id}};
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
