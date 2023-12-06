@@ -320,7 +320,7 @@ function render_performance_chart(data) {
     });
 }
 
-function get_performance_chart_data() {
+function loadStatsChart() {
     $.ajax({
         type: "get",
         url: session_stats_api,
@@ -328,16 +328,11 @@ function get_performance_chart_data() {
         cache: false,
         success: function(response) {
             if (response.length) {
+                $(".chart-container").show();
                 data = processStatsData(response)
                 render_performance_chart(data)
             }
         },
-        // error: function(xhr, error, status) {
-        //     $("#chart-loader").hide(0, ()=>{
-        //         $("#stat-info-con .info").text(xhr['responseJSON']['info'])
-        //         $("#stat-info-con").show()
-        //     })
-        // },
     });
 }
 
@@ -435,7 +430,7 @@ $(document).ready(function () {
             alert("Please choose an excel file!");
         }
     })
-    get_performance_chart_data()
+    loadStatsChart()
     loadCarryList();
     $("#switch-show-complete").on('click', toggle_completed_entries)
 });
