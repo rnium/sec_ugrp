@@ -93,4 +93,12 @@ class CourseResultSerializer(ModelSerializer):
     class Meta:
         model = CourseResult
         exclude = ['updated', 'course']
-        
+
+class StudentStatsSerializer(ModelSerializer):
+    cgpa = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = StudentAccount
+        fields = ['registration', 'credits_completed', 'cgpa']
+        read_only_fields = ['registration', 'cgpa']
+    def get_cgpa(self, obj):
+        return obj.student_cgpa

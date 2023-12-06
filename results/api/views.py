@@ -15,7 +15,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
-                         CourseSerializer, CourseResultSerializer)
+                         CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin
 from results.models import (Department, Session, Semester, Course, 
                             CourseResult, SemesterDocument, SemesterEnroll, Backup)
@@ -161,6 +161,21 @@ def updateDropCourses(request, pk):
             if course in semester.drop_courses.all():
                 semester.drop_courses.remove(course)
         return Response(data={"details": "complete"})
+
+
+class SessionStudentStats(ListAPIView):
+    serializer_class = StudentStatsSerializer
+    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    def get_object(self):
+        # get the course object first before getting queryset
+        pk = self.kwargs.get('pk')
+        session = get_object_or_404(Session, pk=pk)
+        self.check_object_permissions(self.request, session)
+        return session
+    
+    def get_queryset(self):
+        session = self.get_object()
+        return session.studentaccount_set.all()
     
 
 class CourseResultList(ListAPIView):
@@ -750,3 +765,13 @@ def course_result_entry_info(request):
     context['retakes'] = CourseResult.objects.filter(retake_of=course_res).order_by("course__semester__session__from_year")
     html_content= render_to_string('results/components/courseresult_info.html', context=context)
     return Response(data={"content": html_content, 'semester_running': course_res.course.semester.is_running})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def students_stats(request, session_pk):
+    try:
+        session = Session.objects.get(pk=session_pk)
+    except Session.DoesNotExist:
+        return Response(data={"details": "Session Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    

@@ -5,6 +5,7 @@ from results.api import views
 urlpatterns = [
     path('createsession/', views.SessionCreate.as_view(), name="create_session"),
     path('session/<int:pk>/createsemester/', views.SemesterCreate.as_view(), name="create_semester"),
+    path('session/<int:pk>/studentstats/', views.SessionStudentStats.as_view(), name="session_student_stats"),
     path('session/<int:pk>/delete/', views.delete_session, name="delete_session"),
     path('session/<int:pk>/retakes/', views.session_retake_list, name="session_retake_list"),
     path('student-retakings/', views.student_retakings, name="student_retaking_list"),
