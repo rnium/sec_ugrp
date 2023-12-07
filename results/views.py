@@ -12,6 +12,7 @@ from results.gradesheet_generator import get_gradesheet
 from results.transcript_generator import get_transcript
 from results.utils import get_ordinal_number, render_error
 from datetime import datetime
+from results.pdf_generators.course_report_generator import render_coursereport, get_fonts_css_txt
 import json
 
 
@@ -216,7 +217,12 @@ def download_backup(request, pk):
     return response
 
 
-        
+@login_required
+def download_coruse_report(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    report_pdf = render_coursereport(course)
+    filename = f"coursereport.pdf"
+    return FileResponse(ContentFile(report_pdf), filename=filename)
     
 
 @login_required 

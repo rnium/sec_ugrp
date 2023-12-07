@@ -1,0 +1,62 @@
+@page {
+    margin: 1.5cm 2cm;
+    size: 'A4';
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+}
+
+
+section p {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 5px;
+    font-family: Lora, sans;
+}
+
+p#dept {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+p#course-title {
+    font-size: 12px;    
+}
+
+p#title {
+    margin-bottom: 20px;
+    font-size: 10px;
+}
+
+
+table, th, td {
+    border: 0.5px solid #a9a9a9;
+    border-collapse: collapse;
+}
+
+
+table {
+    width: 100%;
+    margin: auto;
+}
+
+
+td, th {
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 9px;
+    font-family: Roboto;
+}
+
+th {
+    font-family: Roboto;
+    font-weight: bolder;
+    background-color: #f4f4f4;
+    color: rgb(0, 70, 70);
+}

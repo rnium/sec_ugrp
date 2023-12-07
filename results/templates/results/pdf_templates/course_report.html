@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section id="container">
+        <p id="dept">Department of {{course.semester.session.dept.fullname}}</p>
+        <p id="course-title">{{course.code}}: {{course.title}}</p>
+        <p id="title">{{course.course_credit}} Credits | {{course.semester.semester_name}} ({{course.semester.session.session_code}}) Results</p>
+        <table>
+            <thead>
+                <th>Registration No.</th>
+                <th>Part A</th>
+                <th>Part B</th>
+                <th>Term Test</th>
+                <th>Total</th>
+                <th>GP</th>
+                <th>LG</th>
+            </thead>
+            {% for result in course.courseresult_set.all %}
+            <tr>
+                <td>{{result.student.registration}}</td>
+                <td>{{result.part_A_score}}</td>
+                <td>{{result.part_B_score}}</td>
+                <td>{{result.incourse_score}}</td>
+                <td>{{result.total_score}}</td>
+                <td>{{result.grade_point}}</td>
+                <td>{{result.letter_grade}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+</body>
+</html>
