@@ -221,7 +221,7 @@ def download_backup(request, pk):
 def download_coruse_report(request, pk):
     course = get_object_or_404(Course, pk=pk)
     report_pdf = render_coursereport(course)
-    filename = f"coursereport.pdf"
+    filename = f"{str(course)} Report.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
     
 
