@@ -219,11 +219,17 @@ input.score-inp.error:focus {
 }
 
 @keyframes rotateIcon {
-  from {
-    transform: rotate(0deg);
+  0% {
+    transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+  20% {
+    transform: translateY(-30%);
+  }
+  70% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 .download-btn-2 {
@@ -231,15 +237,19 @@ input.score-inp.error:focus {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   background-color: rgb(57, 61, 70);
   padding: 7px 10px;
   border-radius: 180px;
   box-shadow: -2px -2px 3px rgb(112, 123, 126), 2px 2px 3px rgb(22, 26, 27);
   transition: all 400ms;
+  position: absolute;
 }
 .download-btn-2 i {
   font-size: 1.5rem;
-  text-shadow: 0 0 7px rgb(135, 255, 255);
+  transition: all 400ms;
+  text-shadow: 0 0 10px rgb(130, 246, 246);
+  position: relative;
 }
 .download-btn-2 span {
   color: rgb(146, 198, 212);
@@ -250,8 +260,9 @@ input.score-inp.error:focus {
   background-color: rgb(54, 58, 67);
 }
 .download-btn-2:hover i {
+  color: aquamarine;
   animation: rotateIcon 500ms linear forwards;
 }
 .download-btn-2:hover span {
-  color: rgb(251, 249, 245);
+  color: aquamarine;
 }/*# sourceMappingURL=components.css.map */
