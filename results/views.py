@@ -52,7 +52,8 @@ class DepartmentView(LoginRequiredMixin, DetailView):
         context['request'] = self.request
         return context
     
-
+class ExtensionsView(LoginRequiredMixin, TemplateView):
+    template_name = "results/extensions.html"
 
 @login_required 
 def departments_all(request):
@@ -224,7 +225,7 @@ def download_coruse_report(request, pk):
     filename = f"{str(course)} Report.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
     
-
+    
 @login_required 
 def pending_view(request):
     return render_error(request, 'This Section is Under Development!')

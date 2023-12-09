@@ -16,6 +16,7 @@ urlpatterns = [
     path('course/<int:pk>/coursereport', views.download_coruse_report, name="download_coruse_report"),
     path('student/<int:registration>/transcript/', views.download_transcript, name="download_transcript"),
     path('staffs/', views.StaffsView.as_view(), name="stuffs_view"),
+    path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
 ]
 

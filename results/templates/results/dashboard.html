@@ -19,6 +19,13 @@
         <div class="tooltip">Department</div>
     </li>
     <li class="nav-item">
+        <a href="{% url 'results:extensions_view' %}" class="nav-link">
+            <i class='bx bx-extension' ></i>
+            <span>Extensions</span>
+        </a>
+        <div class="tooltip">Extensions</div>
+    </li>
+    <li class="nav-item">
         <a href="{% url 'results:stuffs_view' %}" class="nav-link">
             <i class='bx bx-user'></i>
             <span>Staffs</span>
@@ -78,110 +85,6 @@
                     <div class="info fs-3 mt-2 text-secondary">Not Enough Data</div>
                 </div>
                 {% endif %}
-            </div>
-        </div>
-        <div class="col-lg-5 activities title-box bg-material" style="display: none">
-            <div class="title w-100 bg-material-1">Admin Activities</div>
-            <div class="content">
-                <div class="no-content d-flex flex-column justify-content-center align-items-center">
-                    <i class='bx bx-info-circle fs-1 text-warning'></i>
-                    <div class="info fs-3 mt-2 text-secondary">Not Enough Data</div>
-                </div>
-                <ul style="display: none;">
-                    <li>
-                        <a href="" class="activity-item">
-                            <!-- <i class='bx bx-refresh label update'></i> -->
-                            <img src="/images/create-file.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="activity-item">
-                            <!-- <i class='bx bx-refresh label update'></i> -->
-                            <img src="/images/create-file.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="activity-item">
-                            <!-- <i class='bx bx-refresh label update'></i> -->
-                            <img src="/images/create-file.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="" class="activity-item">
-                            <!-- <i class='bx bx-refresh label update'></i> -->
-                            <img src="/images/add.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="" class="activity-item">
-                            <!-- <i class='bx bx-refresh label update'></i> -->
-                            <img src="/images/add.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> updated 54 entries of <span class="course">EEE 715</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    
-                    
-                    <li>
-                        <a href="" class="activity-item">
-                            <img src="/images/rejected.png" alt="">
-                            <div class="details">
-                                <div class="info">
-                                    <span class="username">Rafiqul Islam</span> deleted 1 course from <span class="semester">4-1 [2018-19]</span>
-                                    <div class="time-info">
-                                        <i class='bx bx-history' ></i>
-                                        <span class="timenow">8:12:34 PM, 9 July 2023</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>

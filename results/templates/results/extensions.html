@@ -1,0 +1,79 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>Dashboard</title>
+{% endblock head %}
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:all_departments' %}" class="nav-link">
+            <i class='bx bx-archive'></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item active">
+        <a href="#" class="nav-link">
+            <i class='bx bx-extension'></i>
+            <span>Extensions</span>
+        </a>
+        <div class="tooltip">Extensions</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'account:view_admin_profile_edit' %}" class="nav-link">
+            <i class='bx bxs-spray-can'></i>
+            <span>Profile</span>
+        </a>
+        <div class="tooltip">Profile</div>
+    </li>
+</ul>
+{% endblock nav %}
+{% block content %}
+<div class="container py-4 px-5 mt-5">
+    <div class="row px-3 mt-5">
+        <div class="col-md-6">
+            <a href="" class="card shadow-sm bg-material mb-3 rounded-l" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                    <img src="{% static 'results/images/newdoc.svg' %}" class="img-fluid ps-3 py-3 rounded-start" alt="">
+                    </div>
+                    <div class="col-md-8">
+                    <div class="card-body h-100 d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-info">Gradesheet Maker</h5>
+                        <p class="card-text small">Create Gradesheets with custom data</p>
+                    </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="" class="card bg-material mb-3 rounded-l" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                    <img src="{% static 'results/images/transcript.svg' %}" class="img-fluid ps-3 py-3 rounded-start" alt="">
+                    </div>
+                    <div class="col-md-8">
+                    <div class="card-body h-100 d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-info">Transcript Maker</h5>
+                        <p class="card-text small">Create Transcripts with custom data</p>
+                    </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
