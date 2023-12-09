@@ -53,7 +53,11 @@ class DepartmentView(LoginRequiredMixin, DetailView):
         return context
     
 class ExtensionsView(LoginRequiredMixin, TemplateView):
-    template_name = "results/extensions.html"
+    template_name = "results/extensions.html"   
+     
+class GradesheetMakerView(LoginRequiredMixin, TemplateView):
+    template_name = "results/gradesheetmaker.html"
+    
 
 @login_required 
 def departments_all(request):

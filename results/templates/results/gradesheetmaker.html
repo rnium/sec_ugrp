@@ -1,0 +1,140 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>Dashboard</title>
+{% endblock head %}
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:all_departments' %}" class="nav-link">
+            <i class='bx bx-archive'></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item active">
+        <a href="{% url 'results:extensions_view' %}" class="nav-link">
+            <i class='bx bx-extension'></i>
+            <span>Extensions</span>
+        </a>
+        <div class="tooltip">Extensions</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'account:view_admin_profile_edit' %}" class="nav-link">
+            <i class='bx bxs-spray-can'></i>
+            <span>Profile</span>
+        </a>
+        <div class="tooltip">Profile</div>
+    </li>
+</ul>
+{% endblock nav %}
+{% block content %}
+<div class="container py-4 px-5 mt-5">
+    <div class="row g-3 mt-1 px-5">
+        <div class="col-md-12 d-flex text-center align-items-center">
+          <i class='bx bx-wrench text-muted fs-1 me-3'></i>
+          <div class="text-center fs-4 text-info mb-2 roboto-font">GradeSheet Maker</div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="RegInput" placeholder="">
+            <label for="RegInput">Registration Number</label>
+          </div>          
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="SessionInp" placeholder="name@example.com">
+            <label for="SessionInp">Session</label>
+          </div> 
+        </div>
+        <div class="col-lg-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="NameInp" placeholder="">
+            <label for="NameInp">Student Name</label>
+          </div> 
+        </div>
+        <div class="col-lg-12 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="deptInput" placeholder="">
+            <label for="deptInput">Department Name</label>
+          </div>          
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-text bg-material roboto-font text-info">1</span>
+            <div class="form-floating">
+              <input type="text" class="form-control" id="firstSemYear" placeholder="">
+              <label for="firstSemYear">Year Number</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="firstSemNumber" placeholder="">
+            <label for="firstSemNumber">Semester Number</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="firstSemHeld" placeholder="">
+            <label for="firstSemHeld">Held In</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group mb-3">
+            <span class="input-group-text bg-material roboto-font text-info">2</span>
+            <div class="form-floating">
+              <input type="text" class="form-control" id="secondSemYear" placeholder="">
+              <label for="secondSemYear">Year Number</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="secondSemNumber" placeholder="">
+            <label for="secondSemNumber">Semester Number</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="secondSemHeld" placeholder="">
+            <label for="secondSemHeld">Held In</label>
+          </div> 
+        </div>
+        <div class="col-lg-6">
+          <div class="">
+            <label for="formFile" class="form-label">Select Excel File</label>
+            <input class="form-control" type="file" id="formFile">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mt-3 btn-container d-flex justify-content-end align-content-start">
+            <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-tabulation-btn">
+                <div class="content">
+                    <div class="d-flex align-items-center">
+                        <i class='bx bx-rename me-2 py-1'></i>
+                        <span class="roboto-font ">Render & Download</span>
+                    </div>
+                </div>
+                <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </button>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock content %}
