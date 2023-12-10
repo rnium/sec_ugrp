@@ -1,3 +1,21 @@
+function processFormData() {
+    let data = {
+        reg_num: $('#RegInput').val(),
+        session: $('#SessionInp').val(),
+        name: $('#NameInp').val(),
+        dept: $('#deptInput').val(),
+        first_sem_year: $('#firstSemYear').val(),
+        first_sem_number: $('#firstSemNumber').val(),
+        first_sem_held_in: $('#firstSemHeld').val()
+    }
+    for (let key in data) {
+        if (data[key].length == 0) {
+            alert("All the required fields not filled!");
+            return;
+        }
+    }
+}
+
 function renderGradesheet(excel_file) {
     let excel_form = new FormData
     excel_form.append("excel", excel_file)
@@ -35,6 +53,8 @@ function renderGradesheet(excel_file) {
 $(document).ready(function () {
     $("#render-gs-btn").on('click', function(){
         excel_file = $("#excelInp")[0].files
+        processFormData()
+        return;
         if (excel_file.length > 0) {
             renderGradesheet(excel_file[0]);
         } else {
