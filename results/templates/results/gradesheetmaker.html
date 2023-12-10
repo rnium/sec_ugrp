@@ -43,7 +43,7 @@
 {% endblock nav %}
 {% block content %}
 <div class="container py-4 px-5 mt-5">
-    <div class="row g-3 mt-1 px-5">
+    <div class="row g-3 px-5">
         <div class="col-md-12 d-flex text-center align-items-center">
           <i class='bx bx-wrench text-muted fs-1 me-3'></i>
           <div class="text-center fs-4 text-info mb-2 roboto-font">GradeSheet Maker</div>
@@ -66,7 +66,7 @@
             <label for="NameInp">Student Name</label>
           </div> 
         </div>
-        <div class="col-lg-12 mb-3">
+        <div class="col-lg-12">
           <div class="form-floating">
             <input type="text" class="form-control" id="deptInput" placeholder="">
             <label for="deptInput">Department Name</label>
@@ -94,7 +94,7 @@
           </div> 
         </div>
         <div class="col-lg-4">
-          <div class="input-group mb-3">
+          <div class="input-group">
             <span class="input-group-text bg-material roboto-font text-info">2</span>
             <div class="form-floating">
               <input type="text" class="form-control" id="secondSemYear" placeholder="">
@@ -103,20 +103,38 @@
           </div>
         </div>
         <div class="col-lg-4">
-          <div class="form-floating mb-3">
+          <div class="form-floating">
             <input type="text" class="form-control" id="secondSemNumber" placeholder="">
             <label for="secondSemNumber">Semester Number</label>
           </div> 
         </div>
         <div class="col-lg-4">
-          <div class="form-floating mb-3">
+          <div class="form-floating">
             <input type="text" class="form-control" id="secondSemHeld" placeholder="">
             <label for="secondSemHeld">Held In</label>
           </div> 
         </div>
+        <div class="col-lg-4">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="finalResCredit" placeholder="">
+            <label for="finalResCredit">Final Result Credits</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="finalResCG" placeholder="">
+            <label for="finalResCG">Final Result CGPA</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="finalResCG" placeholder="">
+            <label for="finalResCG">Final Result Letter Grade</label>
+          </div> 
+        </div>
         <div class="col-lg-6">
           <div class="">
-            <label for="formFile" class="form-label">Select Excel File</label>
+            <label class="form-label">Select Excel File <i class='bx bx-question-mark shadow rounded bg-material border p-1' data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer"></i></label>
             <input class="form-control" type="file" id="formFile">
           </div>
         </div>
@@ -135,6 +153,41 @@
             </button>
           </div>
         </div>
-      </div>
+    </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-material">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Excel File formatting</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="instructions container">
+          <div class="infotext">
+              <div class="text-white text-center mb-2 alert alert-secondary">The excel sheet contains the information related to the courses that the student has participated in a semester</div>
+              <ul>
+                  <li class="small text-warning">Required Column Names:</li>
+                  <ul>
+                      <li class="roboto-font small">course_no <span class="text-muted small">(Course number of all participated coourses)</span> </li>
+                      <li class="roboto-font small">course_title <span class="text-muted small">(Course titles of all participated coourses)</span> </li>
+                      <li class="roboto-font small">course_credit <span class="text-muted small">(Course credits of all participated coourses)</span> </li>
+                      <li class="roboto-font small">grade_point <span class="text-muted small">(Grade points of all participated coourses)</span> </li>
+                      <li class="roboto-font small">semester_gp <span class="text-muted small">(Grade point of the semester)</span> </li>
+                      <li class="roboto-font small">semester_lg <span class="text-muted small">(Letter grade of the semester)</span> </li>
+                  </ul>
+              </ul>
+              <ul class="mb-0">
+                  <li class="text-warning small">For two semesters, first sheet of the excel workbook should contain data for first semester and second sheet for the other semester.</li>
+                  <li class="text-warning small">Order of the columns are not necessary.</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
