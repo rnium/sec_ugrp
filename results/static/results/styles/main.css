@@ -798,6 +798,52 @@ body main .student-profile-container .semester-item.running-semester .info .seme
 body main .student-profile-container .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;
 }
+body main .student-profile-container .sem-gradesheet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #1d5461;
+  padding: 10px;
+  border-radius: 5px;
+}
+body main .student-profile-container .sem-gradesheet i {
+  font-size: 1.7rem;
+  margin-right: 10px;
+}
+body main .student-profile-container .year-gradesheet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  background-color: #224769;
+}
+body main .student-profile-container .year-gradesheet i {
+  color: #b5daff;
+  font-size: 2rem;
+  margin-right: 10px;
+  transition: all 300ms;
+}
+body main .student-profile-container .year-gradesheet .num {
+  color: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  font-size: 3rem;
+  bottom: -30%;
+  right: 0;
+  font-family: "Silkscreen", cursive;
+  text-shadow: 0 0 10px rgba(216, 228, 231, 0.4);
+  transition: 300ms;
+}
+body main .student-profile-container .year-gradesheet:hover i {
+  color: white;
+}
+body main .student-profile-container .year-gradesheet:hover .num {
+  color: rgba(255, 255, 255, 0.9);
+}
 
 .profile {
   position: absolute;
