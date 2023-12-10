@@ -2,9 +2,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from account.models import StudentAccount
 from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
+from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
-from io import StringIO
+from io import StringIO, BytesIO
 import json
+import openpyxl
 
 
 def create_course_enrollments(semester: Semester):
@@ -130,6 +132,34 @@ def get_obj_count(sessions_data):
             obj_count += sum(len(enroll['courses']) for enroll in semester['enrolls'])
     return obj_count
             
-             
-                    
+            
+def parse_gradesheet_excel(excel_file, num_semesters):    
+    buffer = BytesIO(excel_file.read())
+    wb = openpyxl.load_workbook(buffer)
+    parsed_data = {}
+    for i in range(num_semesters):
+        sheet = wb[wb.sheetnames[i]]
+        rows = list(sheet.rows)
+        header = [cell.value.lower().strip() if cell.value is not None else None for cell in rows[0]]
+        data_rows = rows[1:]
+        semester_key = f'semester_{i+1}'
+        parsed_data[semester_key] = {
+            'courses': []
+        }
+        code_idx = header.index('course_code')
+        title_idx = header.index('course_title')
+        credit_idx = header.index('course_credit')
+        gp_idx = header.index('grade_point')
+        for row in range(len(data_rows)):
+            course_data = {
+                'code': data_rows[row][code_idx].value,
+                'title': data_rows[row][title_idx].value,
+                'credit': data_rows[row][credit_idx].value,
+                'gp': data_rows[row][gp_idx].value,
+                'lg': get_letter_grade(float(data_rows[row][gp_idx].value)),
+            }
+            parsed_data[semester_key]['courses'].append(course_data)
+        parsed_data[semester_key]['gp'] = data_rows[0][header.index('semester_gp')].value
+        parsed_data[semester_key]['lg'] = data_rows[0][header.index('semester_lg')].value
+    return parsed_data
     

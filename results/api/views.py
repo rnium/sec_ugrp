@@ -774,4 +774,16 @@ def students_stats(request, session_pk):
         session = Session.objects.get(pk=session_pk)
     except Session.DoesNotExist:
         return Response(data={"details": "Session Not Found"}, status=status.HTTP_404_NOT_FOUND)
-    
+
+@csrf_exempt
+def generate_gradesheet(request):
+    if request.method == "POST" and request.FILES.get('excel'):
+        excel_file = request.FILES.get('excel')
+        num_semesters = 2
+        try:
+            data = utils.parse_gradesheet_excel(excel_file, num_semesters)
+        except Exception as e:
+            return JsonResponse(data={"details": str(e)}, status=400)
+        return JsonResponse(data={"details": data})
+    else:
+        return JsonResponse({'details': 'Not allowed!'}, status=400)
