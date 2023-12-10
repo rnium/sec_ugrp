@@ -59,7 +59,7 @@
                 <p class="text-white roboto-font fs-5 mt-3">Super Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{superadmins.count}}</span> </p>
                 {% for admin in superadmins %}
                 <div class="col-xl-4 col-lg-6">
-                    <div class="card mb-4 bg-material ">
+                    <div class="mb-4">
                         <div class="card-body text-center">
                           <img src="{{admin.avatar_url}}" alt="avatar"
                             class="rounded-circle img-fluid" style="width: 120px;">
@@ -76,7 +76,7 @@
                 <p class="text-white roboto-font fs-5 text-center mt-3">Department Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{deptadmins.count}}</span></p>
                 {% for admin in deptadmins %}
                 <div class="col-xl-4 col-lg-6">
-                    <div class="card mb-4 bg-dark ">
+                    <div class="mb-4">
                         <div class="card-body text-center">
                           <img src="{{admin.avatar_url}}" alt="avatar"
                             class="rounded-circle img-fluid" style="width: 120px;">
