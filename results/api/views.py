@@ -780,10 +780,11 @@ def generate_gradesheet(request):
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
         num_semesters = 2
+        formdata = json.loads(request.POST.get('data'))
         try:
             data = utils.parse_gradesheet_excel(excel_file, num_semesters)
         except Exception as e:
             return JsonResponse(data={"details": str(e)}, status=400)
-        return JsonResponse(data={"details": data})
+        return JsonResponse(data={"details": data, 'log': formdata})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)

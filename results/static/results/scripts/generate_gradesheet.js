@@ -6,18 +6,36 @@ function processFormData() {
         dept: $('#deptInput').val(),
         first_sem_year: $('#firstSemYear').val(),
         first_sem_number: $('#firstSemNumber').val(),
-        first_sem_held_in: $('#firstSemHeld').val()
+        first_sem_held_in: $('#firstSemHeld').val(),
+        final_res_credit: $('#finalResCredit').val(),
+        final_res_cgpa: $('#finalResCG').val(),
+        final_res_letter_grade: $('#finalResLG').val(),
     }
     for (let key in data) {
         if (data[key].length == 0) {
-            alert("All the required fields not filled!");
-            return;
+            alert("All the required fields not filled properly!");
+            return false;
         }
     }
+    let second_sem_year = $("#secondSemYear").val();
+    let second_sem_number = $("#secondSemNumber").val();
+    let second_sem_held_in = $("#secondSemHeld").val();
+    if (second_sem_year.length == 0 
+        | second_sem_number.length == 0 
+        | second_sem_held_in.length == 0  ) {
+            data.num_semesters = 1
+    } else {
+        data.num_semesters = 2;
+        data.second_sem_year = second_sem_year;
+        data.second_sem_number = second_sem_number;
+        data.second_sem_held_in = second_sem_held_in;
+    }
+    return data;
 }
 
-function renderGradesheet(excel_file) {
+function renderGradesheet(data, excel_file) {
     let excel_form = new FormData
+    excel_form.append("data", JSON.stringify(data))
     excel_form.append("excel", excel_file)
     $.ajax({
         type: "POST",
@@ -53,10 +71,12 @@ function renderGradesheet(excel_file) {
 $(document).ready(function () {
     $("#render-gs-btn").on('click', function(){
         excel_file = $("#excelInp")[0].files
-        processFormData()
-        return;
+        let data = processFormData()
+        if (data == false) { 
+            return;
+        }
         if (excel_file.length > 0) {
-            renderGradesheet(excel_file[0]);
+            renderGradesheet(data, excel_file[0]);
         } else {
             alert("Please choose an excel file!");
         }
