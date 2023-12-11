@@ -788,8 +788,11 @@ def generate_gradesheet(request):
         try:
             excel_data = utils.parse_gradesheet_excel(excel_file, formdata, num_semesters)
         except Exception as e:
-            return JsonResponse(data={"details": str(e)}, status=400)
-        sheet_pdf = get_gradesheet(formdata, excel_data, num_semesters=num_semesters)
+            return JsonResponse(data={"details": f"Error while parsing the excel file: {e}"}, status=400)
+        try:
+            sheet_pdf = get_gradesheet(formdata, excel_data, num_semesters=num_semesters)
+        except Exception as e:
+            return JsonResponse(data={"details": f"Error while rendering file: {e}"}, status=400)
         pdf_base64 = base64.b64encode(sheet_pdf).decode('utf-8')
         redis_key = str(int(time.time())) + request.user.username
         cache.set(redis_key, pdf_base64)
