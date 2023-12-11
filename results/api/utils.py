@@ -4,6 +4,7 @@ from account.models import StudentAccount
 from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
+from django.core.exceptions import ValidationError
 from io import StringIO, BytesIO
 import json
 import openpyxl
@@ -133,10 +134,12 @@ def get_obj_count(sessions_data):
     return obj_count
             
             
-def parse_gradesheet_excel(excel_file, num_semesters):    
+def parse_gradesheet_excel(excel_file, form_data, num_semesters):    
     buffer = BytesIO(excel_file.read())
     wb = openpyxl.load_workbook(buffer)
     parsed_data = {}
+    if (num_semesters > 2):
+        raise ValidationError("Number of semesters exceeds limit")
     for i in range(num_semesters):
         sheet = wb[wb.sheetnames[i]]
         rows = list(sheet.rows)
@@ -150,16 +153,29 @@ def parse_gradesheet_excel(excel_file, num_semesters):
         title_idx = header.index('course_title')
         credit_idx = header.index('course_credit')
         gp_idx = header.index('grade_point')
+        total_credits = 0
         for row in range(len(data_rows)):
+            course_credit = float(data_rows[row][credit_idx].value)
             course_data = {
                 'code': data_rows[row][code_idx].value,
                 'title': data_rows[row][title_idx].value,
-                'credit': data_rows[row][credit_idx].value,
-                'gp': data_rows[row][gp_idx].value,
+                'credit': course_credit,
+                'gp': float(data_rows[row][gp_idx].value),
                 'lg': get_letter_grade(float(data_rows[row][gp_idx].value)),
             }
             parsed_data[semester_key]['courses'].append(course_data)
-        parsed_data[semester_key]['gp'] = data_rows[0][header.index('semester_gp')].value
-        parsed_data[semester_key]['lg'] = data_rows[0][header.index('semester_lg')].value
+            total_credits += course_credit
+        parsed_data[semester_key]['semester_credits'] = total_credits
+        parsed_data[semester_key]['semester_gp'] = float(data_rows[0][header.index('semester_gp')].value)
+        parsed_data[semester_key]['cumulative_credits'] = data_rows[0][header.index('cumulative_credits')].value
+        parsed_data[semester_key]['cumulative_gp'] = data_rows[0][header.index('cumulative_gp')].value
+        parsed_data[semester_key]['cumulative_lg'] = data_rows[0][header.index('cumulative_lg')].value
+    parsed_data['semester_1']['year'] = form_data['first_sem_year']
+    parsed_data['semester_1']['year_semester'] = form_data['first_sem_number']
+    parsed_data['semester_1']['held_in'] = form_data['first_sem_held_in']
+    if form_data['num_semesters'] == 2:
+        parsed_data['semester_2']['year'] = form_data['second_sem_year']
+        parsed_data['semester_2']['year_semester'] = form_data['second_sem_number']
+        parsed_data['semester_2']['held_in'] = form_data['second_sem_held_in']
     return parsed_data
     

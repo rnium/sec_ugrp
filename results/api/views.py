@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, FileResponse
 from django.template.loader import render_to_string
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -23,6 +23,7 @@ from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
 from results.pdf_generators.tabulation_generator import get_tabulation_files
+from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.tasks import restore_data_task
 from io import BytesIO
 import openpyxl
@@ -779,12 +780,14 @@ def students_stats(request, session_pk):
 def generate_gradesheet(request):
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
-        num_semesters = 2
         formdata = json.loads(request.POST.get('data'))
+        num_semesters = formdata['num_semesters']
         try:
-            data = utils.parse_gradesheet_excel(excel_file, num_semesters)
+            excel_data = utils.parse_gradesheet_excel(excel_file, formdata, num_semesters)
         except Exception as e:
             return JsonResponse(data={"details": str(e)}, status=400)
-        return JsonResponse(data={"details": data, 'log': formdata})
+        sheet_pdf = get_gradesheet(formdata, excel_data, num_semesters=num_semesters)
+        filename = "gradesheet.pdf"
+        return FileResponse(ContentFile(sheet_pdf), filename=filename)
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
