@@ -252,8 +252,8 @@ def download_coruse_report(request, pk):
     return FileResponse(ContentFile(report_pdf), filename=filename)
     
 @login_required
-def download_redispdf(request, redis_key, filename):
-    pdf_base64 = cache.get(redis_key)
+def download_cachedpdf(request, cache_key, filename):
+    pdf_base64 = cache.get(cache_key)
     if pdf_base64:
         pdf_data = base64.b64decode(pdf_base64.encode('utf-8'))
         return FileResponse(ContentFile(pdf_data), filename=filename)

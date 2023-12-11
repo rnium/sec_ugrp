@@ -793,7 +793,10 @@ def generate_gradesheet(request):
         pdf_base64 = base64.b64encode(sheet_pdf).decode('utf-8')
         redis_key = str(int(time.time())) + request.user.username
         cache.set(redis_key, pdf_base64)
-        filename = "gradesheet-" + str(formdata['reg_num']) + ".pdf"
-        return JsonResponse({'url': reverse('results:download_redispdf', args=(redis_key, filename))})
+        gradesheet_title = f"-gradesheet_{formdata['first_sem_year']}-{formdata['first_sem_number']}"
+        if num_semesters == 2:
+            gradesheet_title += f"_{formdata['second_sem_year']}-{formdata['second_sem_number']}"
+        filename =  str(formdata['reg_num']) + gradesheet_title + ".pdf"
+        return JsonResponse({'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
