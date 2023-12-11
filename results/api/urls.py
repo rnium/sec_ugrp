@@ -26,6 +26,7 @@ urlpatterns = [
     path('courseresult-entry-info/', views.course_result_entry_info, name="course_result_entry_info"),
     path('courseresult-delete/', views.delete_course_result, name="delete_course_result"),
     path('course/<int:pk>/generate-missing', views.generate_missing_entries, name="generate_missing_entries"),
-    path('generate-gradesheet-api', views.generate_gradesheet, name="generate_gradesheet_api"),
+    path('generate-gradesheet', views.generate_gradesheet, name="generate_gradesheet_api"),
+    path('generate-transcript', views.generate_transcript, name="generate_transcript_api"),
 ]
 

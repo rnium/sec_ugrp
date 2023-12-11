@@ -25,6 +25,7 @@ from . import utils
 from results.utils import get_ordinal_number
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
+from results.pdf_generators.transcript_generator_manual import get_transcript
 from results.tasks import restore_data_task
 from io import BytesIO
 from datetime import datetime
@@ -778,6 +779,23 @@ def students_stats(request, session_pk):
         session = Session.objects.get(pk=session_pk)
     except Session.DoesNotExist:
         return Response(data={"details": "Session Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def generate_transcript(request):
+    context = request.data
+    context['admin_name'] = request.user.adminaccount.user_full_name
+    try:
+        transcript_pdf = get_transcript(context)
+    except Exception as e:
+        return Response(data={"details": f"Error during rendering: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+    pdf_base64 = base64.b64encode(transcript_pdf).decode('utf-8')
+    redis_key = str(int(time.time())) + request.user.username
+    cache.set(redis_key, pdf_base64)
+    filename = "transcript-" + str(request.data['reg_num']) + ".pdf"
+    return Response(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+
 
 @csrf_exempt
 def generate_gradesheet(request):

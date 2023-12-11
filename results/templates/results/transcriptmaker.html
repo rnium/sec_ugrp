@@ -106,8 +106,8 @@
         </div>
         <div class="col-lg-3">
           <div class="form-floating">
-            <input type="text" class="form-control" id="finalResLG" placeholder="">
-            <label for="finalResLG">Students Appeared</label>
+            <input type="text" class="form-control" id="numStudentsAppeared" placeholder="">
+            <label for="numStudentsAppeared">Students Appeared</label>
           </div> 
         </div>
         <div class="col-lg-9">
@@ -118,7 +118,7 @@
         </div>
         <div class="col-lg-12">
           <div class="mt-3 btn-container d-flex justify-content-end align-content-start">
-            <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-gs-btn">
+            <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-tr-btn">
                 <div class="content">
                     <div class="d-flex align-items-center">
                         <i class='bx bx-rename me-2 py-1'></i>
@@ -175,8 +175,8 @@
 
 {% block script %}
 <script>
-    const generate_gradesheet_api = "{% url 'results:generate_gradesheet_api' %}";
+    const generate_transcript_api = "{% url 'results:generate_transcript_api' %}";
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/generate_gradesheet.js' %}"></script>
+<script src="{% static 'results/scripts/generate_transcript.js' %}"></script>
 {% endblock script %}
