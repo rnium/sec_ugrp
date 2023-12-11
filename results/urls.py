@@ -20,5 +20,6 @@ urlpatterns = [
     path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
     path('extensions/gradesheetmaker/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
+    path('redispdf-<str:redis_key>/<str:filename>', views.download_redispdf, name="download_redispdf"),
 ]
 

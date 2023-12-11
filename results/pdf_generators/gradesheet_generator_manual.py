@@ -116,7 +116,7 @@ def build_header(flowables, formdata) -> None:
         ['Department', '', dept_name_paragraph, ''],
         [Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), ''],
         ['Registration No.', '', f": {formdata['reg_num']}", ''],
-        ['Name of the Student', '', f": {formdata['name']}", ''],
+        ['Name of the Student', '', f": {formdata['name'].upper()}", ''],
     ]
     tblstyle_config = [
         ('SPAN', (0, 0), (0, 2)),
@@ -136,21 +136,6 @@ def build_header(flowables, formdata) -> None:
     tbl = Table(data=table_data, colWidths=[0.75*inch, 0.7*inch, 3*inch, 2.8*inch])
     tbl.setStyle(TableStyle(tblstyle_config))
     flowables.append(tbl)
-
-
-def cumulative_semester_data(student, semester_upto):
-    data = {}
-    enrolls = SemesterEnroll.objects.filter(semester__semester_no__lte=semester_upto, student=student)
-    credits_count = 0
-    points_count = 0
-    for enroll in enrolls:
-        credits_count += enroll.semester_credits
-        points_count += enroll.semester_points
-    if points_count:
-        data['credit'] = credits_count
-        data['grade_point'] = points_count / credits_count
-        data['letter_grade'] = get_letter_grade(data['grade_point'])
-    return data
         
 
 def get_courses_data(semester_data, blank_list):
@@ -176,7 +161,7 @@ def build_semester(flowables, semester_data) -> None:
     num_courses = len(course_dataset)
     
     data = [
-        [f"{cardinal_repr(semester_data['year'])} Year {semester_data['year_semester']} Semester", *course_title_extras, f"Held in: {semester_data['held_in']}", '', '', ''],
+        [f"{cardinal_repr(int(semester_data['year'].strip()))} Year {cardinal_repr(int(semester_data['year_semester'].strip()))} Semester", *course_title_extras, f"Held in: {semester_data['held_in']}", '', '', ''],
         ['Course No.', 'Course Title', *course_title_extras, 'Credit', 'Grade Obtained', ''],
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses

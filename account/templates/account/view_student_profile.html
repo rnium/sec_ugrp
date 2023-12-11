@@ -170,7 +170,7 @@
                 <div class="row g-1 row-cols-2 mb-2">
                   {% for semester_no in student.gradesheet_semesters %}
                   <div class="col-md-6">
-                    <a class="sem-gradesheet" href="{% url 'results:download_semester_gradesheet' student.registration semester_no %}">
+                    <a class="sem-gradesheet" href="{% url 'results:download_semester_gradesheet' student.registration semester_no %}" target="_blank">
                       <i class='bx bxs-file-pdf'></i>
                       <span>{{semester_no|ordinal_num}} Semester</span>
                     </a>
@@ -178,7 +178,7 @@
                   {% endfor %}
                   {% for year in gradesheet_years %}
                   <div class="col-md-12">
-                    <a class="year-gradesheet y1" href="{% url 'results:download_year_gradesheet' student.registration year %}">
+                    <a class="year-gradesheet y1" href="{% url 'results:download_year_gradesheet' student.registration year %}" target="_blank">
                       <i class='bx bxs-file-pdf'></i>
                       <span>{{year|ordinal_num}} Year Gradesheet</span>
                       <span class="num">{{year}}</span>

@@ -1,6 +1,7 @@
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -26,9 +27,11 @@ from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.tasks import restore_data_task
 from io import BytesIO
+from datetime import datetime
+import time
 import openpyxl
 import json
-from datetime import datetime
+import base64
 
 
 def user_is_super_OR_dept_admin(request):
@@ -787,7 +790,10 @@ def generate_gradesheet(request):
         except Exception as e:
             return JsonResponse(data={"details": str(e)}, status=400)
         sheet_pdf = get_gradesheet(formdata, excel_data, num_semesters=num_semesters)
-        filename = "gradesheet.pdf"
-        return FileResponse(ContentFile(sheet_pdf), filename=filename)
+        pdf_base64 = base64.b64encode(sheet_pdf).decode('utf-8')
+        redis_key = str(int(time.time())) + request.user.username
+        cache.set(redis_key, pdf_base64)
+        filename = "gradesheet-" + str(formdata['reg_num']) + ".pdf"
+        return JsonResponse({'url': reverse('results:download_redispdf', args=(redis_key, filename))})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)

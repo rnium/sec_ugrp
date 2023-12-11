@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
+from django.core.cache import cache
+import base64
 from typing import Any, Dict
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -248,6 +250,16 @@ def download_coruse_report(request, pk):
     report_pdf = render_coursereport(course)
     filename = f"{str(course)} Report.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
+    
+@login_required
+def download_redispdf(request, redis_key, filename):
+    pdf_base64 = cache.get(redis_key)
+    if pdf_base64:
+        pdf_data = base64.b64decode(pdf_base64.encode('utf-8'))
+        return FileResponse(ContentFile(pdf_data), filename=filename)
+    else:
+        return render_error(request, "Data not found")
+        
     
     
 @login_required 

@@ -50,7 +50,13 @@ function renderGradesheet(data, excel_file) {
             });
         },
         success: function(response) {
-            console.log(response);
+            var link = response.url;
+            if (link) {
+                var newTab = window.open(link, '_blank');
+                newTab.focus();
+            } else {
+                console.error('No link found in the API response.');
+            }
         },
         error: function(xhr, status, error) {
             try {
