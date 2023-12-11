@@ -48,8 +48,8 @@
 <div class="dept-tab-container px-5 pt-2 w-100">
     <div class="sys-info text-center mb-5">
         <img src="{% static 'results/images/bdgovt.png' %}" alt="" width="100px">
-        <div class="instituition fs-2 silkscreen-font">Sylhet Engineering College</div>
-        <div class="instituition fs-4 silkscreen-font text-secondary">Departments</div>
+        <div class="instituition fs-2 serif-font">Sylhet Engineering College</div>
+        <div class="instituition fs-4 serif-font text-secondary">Departments</div>
     </div>
     <div class="row justify-content-center">
         {% for dept in departments  %}
@@ -60,7 +60,7 @@
                         {{dept.name|upper}}
                     </div>
                     <div class="card-body px-3 py-4">
-                        <p class="card-text text-center silkscreen-font">{{dept.fullname}}</p>
+                        <p class="card-text text-center">{{dept.fullname}}</p>
                         <p class="text-center text-success">{{dept.session_set.count}} Batches</p>
                     </div>
                 </div>

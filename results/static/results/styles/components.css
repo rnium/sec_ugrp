@@ -146,6 +146,10 @@ input.score-inp.error:focus {
   font-family: "Silkscreen", cursive;
 }
 
+.serif-font {
+  font-family: "Fraunces", serif;
+}
+
 .border-b-1 {
   border: 1px solid #555870;
 }

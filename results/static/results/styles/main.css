@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Montserrat:wght@400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&family=Gemunu+Libre:wght@300;400;500&family=Lato&family=Montserrat:wght@300;400;500&family=Silkscreen&display=swap");
 * {
   box-sizing: border-box;
   color: #f2f2f4;
@@ -806,10 +806,15 @@ body main .student-profile-container .sem-gradesheet {
   background-color: #1d5461;
   padding: 10px;
   border-radius: 5px;
+  position: relative;
 }
-body main .student-profile-container .sem-gradesheet i {
+body main .student-profile-container .sem-gradesheet .num {
+  position: absolute;
+  bottom: -15%;
+  left: 0;
+  color: hwb(0 100% 0%);
   font-size: 1.7rem;
-  margin-right: 10px;
+  font-family: "Silkscreen", cursive;
 }
 body main .student-profile-container .year-gradesheet {
   display: flex;
