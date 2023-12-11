@@ -58,7 +58,10 @@ class ExtensionsView(LoginRequiredMixin, TemplateView):
     template_name = "results/extensions.html"   
      
 class GradesheetMakerView(LoginRequiredMixin, TemplateView):
-    template_name = "results/gradesheetmaker.html"
+    template_name = "results/gradesheetmaker.html"     
+
+class TranscriptMakerView(LoginRequiredMixin, TemplateView):
+    template_name = "results/transcriptmaker.html"
     
 
 @login_required 

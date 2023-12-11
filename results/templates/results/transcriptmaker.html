@@ -1,0 +1,182 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>Make Transcript</title>
+{% endblock head %}
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:all_departments' %}" class="nav-link">
+            <i class='bx bx-archive'></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item active">
+        <a href="{% url 'results:extensions_view' %}" class="nav-link">
+            <i class='bx bx-extension'></i>
+            <span>Extensions</span>
+        </a>
+        <div class="tooltip">Extensions</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'account:view_admin_profile_edit' %}" class="nav-link">
+            <i class='bx bxs-spray-can'></i>
+            <span>Profile</span>
+        </a>
+        <div class="tooltip">Profile</div>
+    </li>
+</ul>
+{% endblock nav %}
+{% block content %}
+<div class="container py-4 px-5 mt-5">
+    <div class="row g-3 px-5 mt-1">
+        <div class="col-md-12 d-flex text-center align-items-center">
+          <i class='bx bx-wrench text-muted fs-1 me-3'></i>
+          <div class="text-center fs-4 text-info mb-2 roboto-font">Transcript Maker</div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="RegInput" placeholder="">
+            <label for="RegInput">Registration Number</label>
+          </div>          
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="durationInp" placeholder="">
+            <label for="SessionInp">Period Attended</label>
+          </div> 
+        </div>
+        <div class="col-lg-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="nameInp" placeholder="">
+            <label for="NameInp">Student Name</label>
+          </div> 
+        </div>
+        <div class="col-lg-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="degreeInput" placeholder="">
+            <label for="deptInput">Degree(s) Awarded</label>
+          </div>          
+        </div>
+        <div class="col-lg-12">
+          <div class="input-group">
+            <span class="input-group-text bg-material px-4">Years of Examination</span>
+            <div class="form-floating">
+              <input type="text" class="form-control" id="examScheduled" placeholder="">
+              <label for="examScheduled">Scheduled</label>
+            </div>
+            <div class="form-floating">
+              <input type="text" class="form-control" id="examHeld" placeholder="">
+              <label for="examHeld">Held On</label>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="finalResCredit" placeholder="">
+            <label for="finalResCredit">Credits Completed</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="finalResCG" placeholder="">
+            <label for="finalResCG">Grade Point</label>
+          </div> 
+        </div>
+        <div class="col-lg-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="finalResLG" placeholder="">
+            <label for="finalResLG">Letter Grade</label>
+          </div> 
+        </div>
+        <div class="col-lg-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="finalResLG" placeholder="">
+            <label for="finalResLG">Students Appeared</label>
+          </div> 
+        </div>
+        <div class="col-lg-9">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="degreeCounts" placeholder="">
+            <label for="degreeCounts">Total Number of Degrees Awarded</label>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mt-3 btn-container d-flex justify-content-end align-content-start">
+            <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-gs-btn">
+                <div class="content">
+                    <div class="d-flex align-items-center">
+                        <i class='bx bx-rename me-2 py-1'></i>
+                        <span class="roboto-font ">Render & Download</span>
+                    </div>
+                </div>
+                <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </button>
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-material">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">File formatting</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="instructions container">
+          <div class="infotext">
+              <div class="text-white text-center mb-2 alert alert-secondary">The excel sheet contains the information related to the courses that the student has participated in a semester</div>
+              <ul>
+                  <li class="small text-warning">Required Column Names:</li>
+                  <ul>
+                      <li class="roboto-font small">course_code <span class="text-muted small">(Course codes of all participated coourses)</span> </li>
+                      <li class="roboto-font small">course_title <span class="text-muted small">(Course titles of all participated coourses)</span> </li>
+                      <li class="roboto-font small">course_credit <span class="text-muted small">(Course credits of all participated coourses)</span> </li>
+                      <li class="roboto-font small">grade_point <span class="text-muted small">(Grade points of all participated coourses)</span> </li>
+                      <li class="roboto-font small">semester_gp <span class="text-muted small">(Grade point of the semester)</span> </li>
+                      <li class="roboto-font small">semester_lg <span class="text-muted small">(Letter grade of the semester)</span> </li>
+                      <li class="roboto-font small">cumulative_credits <span class="text-muted small">(Cumulative Credits upto the semester)</span> </li>
+                      <li class="roboto-font small">cumulative_gp <span class="text-muted small">(Cumulative Grade Point upto the semester)</span> </li>
+                      <li class="roboto-font small">cumulative_lg <span class="text-muted small">(Cumulative Letter Grade upto the semester)</span> </li>
+                  </ul>
+              </ul>
+              <ul class="mb-0">
+                  <li class="text-warning small">For two semesters, first sheet of the excel workbook should contain data for first semester and second sheet for the other semester.</li>
+                  <li class="text-warning small">Order of the columns are not necessary.</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    const generate_gradesheet_api = "{% url 'results:generate_gradesheet_api' %}";
+    const csrftoken = "{{csrf_token}}";
+</script>
+<script src="{% static 'results/scripts/generate_gradesheet.js' %}"></script>
+{% endblock script %}
