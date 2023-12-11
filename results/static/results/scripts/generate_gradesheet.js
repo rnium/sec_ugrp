@@ -45,8 +45,8 @@ function renderGradesheet(data, excel_file) {
         processData: false,
         beforeSend: function(xhr){
             $("#render-gs-btn").attr("disabled", true)
-            $("#process-excel-btn .content").hide(0, ()=>{
-                $("#process-excel-btn .spinner").show()
+            $("#render-gs-btn .content").hide(0, ()=>{
+                $("#render-gs-btn .spinner").show()
             });
         },
         success: function(response) {
