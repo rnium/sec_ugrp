@@ -22,7 +22,7 @@ from results.models import (Department, Session, Semester, Course,
 from account.models import StudentAccount
 from . import utils
 from results.utils import get_ordinal_number
-from results.tabulation_generator import get_tabulation_files
+from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.tasks import restore_data_task
 from io import BytesIO
 import openpyxl

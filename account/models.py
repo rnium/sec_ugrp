@@ -140,6 +140,15 @@ class StudentAccount(BaseAccount):
             return None
     
     @property
+    def gradesheet_semesters(self):
+        semesters = []
+        for semester_no in range(1, 9):
+            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=semester_no, semester__is_running=False, semester_gpa__isnull=False)
+            if year_enrolls.count():
+                semesters.append(semester_no)
+        return semesters    
+    
+    @property
     def gradesheet_years(self):
         years = []
         for year in range(1, 5):

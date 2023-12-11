@@ -168,52 +168,23 @@
               <p class="mb-2 text-center"><span class="text-muted roboto-font fs-5">Grade Sheets</span></p>
               <div class="container">
                 <div class="row g-1 row-cols-2 mb-2">
-                  <div class="col-md-6" href="#">
-                    <a class="sem-gradesheet" href="#">
+                  {% for semester_no in student.gradesheet_semesters %}
+                  <div class="col-md-6">
+                    <a class="sem-gradesheet" href="{% url 'results:download_semester_gradesheet' student.registration semester_no %}">
                       <i class='bx bxs-file-pdf'></i>
-                      <span>1st Semester</span>
+                      <span>{{semester_no|ordinal_num}} Semester</span>
                     </a>
                   </div>
-                  <div class="col-md-6" href="#">
-                    <a class="sem-gradesheet" href="#">
+                  {% endfor %}
+                  {% for year in gradesheet_years %}
+                  <div class="col-md-12">
+                    <a class="year-gradesheet y1" href="{% url 'results:download_year_gradesheet' student.registration year %}">
                       <i class='bx bxs-file-pdf'></i>
-                      <span>1st Semester</span>
+                      <span>{{year|ordinal_num}} Year Gradesheet</span>
+                      <span class="num">{{year}}</span>
                     </a>
                   </div>
-                  <div class="col-md-6" href="#">
-                    <a class="sem-gradesheet" href="#">
-                      <i class='bx bxs-file-pdf'></i>
-                      <span>1st Semester</span>
-                    </a>
-                  </div>
-                  <div class="col-md-12" href="#">
-                    <a class="year-gradesheet y1" href="#">
-                      <i class='bx bxs-file-pdf'></i>
-                      <span>1st Year Gradesheet</span>
-                      <span class="num">1</span>
-                    </a>
-                  </div>
-                  <div class="col-md-12" href="#">
-                    <a class="year-gradesheet y2" href="#">
-                      <i class='bx bxs-file-pdf'></i>
-                      <span>2nd Year Gradesheet</span>
-                      <span class="num">2</span>
-                    </a>
-                  </div>
-                  <div class="col-md-12" href="#">
-                    <a class="year-gradesheet y3" href="#">
-                      <i class='bx bxs-file-pdf'></i>
-                      <span>3rd Year Gradesheet</span>
-                      <span class="num">3</span>
-                    </a>
-                  </div>
-                  <div class="col-md-12" href="#">
-                    <a class="year-gradesheet y4" href="#">
-                      <span class="num">4</span>
-                      <i class='bx bxs-file-pdf'></i>
-                      <span>4th Year Gradesheet</span>
-                    </a>
-                  </div>
+                  {% endfor %}
                 </div>
               </div>
               <div class="transcript-container mt-5 px-3">

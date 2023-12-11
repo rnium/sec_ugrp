@@ -8,11 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup)
 from account.models import StudentAccount, AdminAccount
-from results.gradesheet_generator import get_gradesheet
-from results.transcript_generator import get_transcript
+from results.pdf_generators.gradesheet_generator import get_gradesheet
+from results.pdf_generators.transcript_generator import get_transcript
 from results.utils import get_ordinal_number, render_error
 from datetime import datetime
-from results.pdf_generators.course_report_generator import render_coursereport, get_fonts_css_txt
+from results.pdf_generators.course_report_generator import render_coursereport
 import json
 
 
@@ -186,6 +186,26 @@ def download_year_gradesheet(request, registration, year):
     filename = f"{get_ordinal_number(year)} year gradesheet - {student.registration}.pdf"
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
+
+@login_required
+def download_semester_gradesheet(request, registration, semester_no):
+    has_permission = user_is_super_OR_dept_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    student = get_object_or_404(StudentAccount, registration=registration)
+    # semester enrolls
+    try:
+        semester_enroll = SemesterEnroll.objects.get(student=student, 
+                                                        semester__semester_no=semester_no, 
+                                                        semester__is_running=False, semester_gpa__isnull=False)
+    except:
+        return render_error(request, 'GradeSheet not available!')
+    sheet_pdf = get_gradesheet(
+        student = student,
+        year_first_sem_enroll = semester_enroll,
+    )
+    filename = f"{get_ordinal_number(semester_no)} semester gradesheet - {student.registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
 @login_required
 def download_transcript(request, registration):

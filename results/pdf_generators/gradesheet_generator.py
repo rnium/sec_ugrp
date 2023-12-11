@@ -275,31 +275,41 @@ def get_footer(second_sem_cumulative):
     ])
     return footer_table
     
-def add_footer(canvas, doc, second_sem_cumulative, margin_y=cm):
-    footer = get_footer(second_sem_cumulative)
+def add_footer(canvas, doc, final_cumulative, margin_y=cm):
+    footer = get_footer(final_cumulative)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
 
-def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll) -> bytes:
+def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=False) -> bytes:
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title=f"{student.registration} - {get_ordinal_number(year_first_sem_enroll.semester.year)} year gradesheet")
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title=f"gradesheet: {student.registration}")
     story = []
-    
+    TOTAL_NUMBER_OF_COURSES = year_first_sem_enroll.courses.count()
     build_header(story, student)
     story.append(Spacer(1, 20))
-    first_sem_cumulative = cumulative_semester_data(student, year_first_sem_enroll.semester.semester_no)
-    second_sem_cumulative = cumulative_semester_data(student, year_second_sem_enroll.semester.semester_no)
-    build_semester(story, year_first_sem_enroll, first_sem_cumulative)
-    story.append(Spacer(1, 20))
-    build_semester(story, year_second_sem_enroll, second_sem_cumulative)
-    TOTAL_NUMBER_OF_COURSES = year_first_sem_enroll.courses.count() + year_second_sem_enroll.courses.count()
-    if TOTAL_NUMBER_OF_COURSES <= 22:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative))
-    elif TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, second_sem_cumulative, 0.4*cm))
+    
+    if year_second_sem_enroll != False:
+        first_sem_cumulative = cumulative_semester_data(student, year_first_sem_enroll.semester.semester_no)
+        build_semester(story, year_first_sem_enroll, first_sem_cumulative)
+        second_sem_cumulative = cumulative_semester_data(student, year_second_sem_enroll.semester.semester_no)
+        story.append(Spacer(1, 20))
+        build_semester(story, year_second_sem_enroll, second_sem_cumulative)
+        TOTAL_NUMBER_OF_COURSES  += year_second_sem_enroll.courses.count()
     else:
         story.append(Spacer(1, 40))
-        story.append(get_footer(second_sem_cumulative))
+        first_sem_cumulative = cumulative_semester_data(student, year_first_sem_enroll.semester.semester_no)
+        build_semester(story, year_first_sem_enroll, first_sem_cumulative)
+        
+    final_cumulative = first_sem_cumulative
+    if year_second_sem_enroll:
+        final_cumulative = second_sem_cumulative
+    if TOTAL_NUMBER_OF_COURSES <= 22:
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative))
+    elif TOTAL_NUMBER_OF_COURSES <= 24:
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, 0.4*cm))
+    else:
+        story.append(Spacer(1, 40))
+        story.append(get_footer(final_cumulative))
         doc.build(story)
     return buffer.getvalue()
     
