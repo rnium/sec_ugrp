@@ -18,8 +18,8 @@ urlpatterns = [
     path('student/<int:registration>/transcript/', views.download_transcript, name="download_transcript"),
     path('staffs/', views.StaffsView.as_view(), name="stuffs_view"),
     path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
-    path('extensions/gradesheetmaker/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
-    path('extensions/transcriptmaker/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
+    path('extensions/gradesheet/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
+    path('extensions/transcript/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
     path('cachedpdf/<str:cache_key>/<str:filename>', views.download_cachedpdf, name="download_cachedpdf"),
 ]

@@ -1,6 +1,6 @@
 {% extends 'results/base.html' %} {% load static %}
 {% block head %}
-<title>Make Greadesheet</title>
+<title>Extension: Greadesheet</title>
 {% endblock head %}
 {% block nav %}
 <ul class="nav">
@@ -46,7 +46,7 @@
     <div class="row g-3 px-5">
         <div class="col-md-12 d-flex text-center align-items-center">
           <i class='bx bx-extension text-muted fs-1 me-3'></i>
-          <div class="text-center fs-4 text-info mb-2 roboto-font">GradeSheet Maker</div>
+          <div class="text-center fs-4 text-info mb-2 roboto-font">GradeSheet Compiler</div>
         </div>
         <div class="col-lg-6">
           <div class="form-floating">
@@ -143,8 +143,8 @@
             <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-gs-btn">
                 <div class="content">
                     <div class="d-flex align-items-center">
-                        <i class='bx bx-rename me-2 py-1'></i>
-                        <span class="roboto-font ">Render & Download</span>
+                        <i class='bx bxs-cog me-2 py-1'></i>
+                        <span class="roboto-font ">Compile</span>
                     </div>
                 </div>
                 <div class="spinner spinner-border mx-4" role="status" style="display: none;">
