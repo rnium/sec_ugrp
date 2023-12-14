@@ -427,6 +427,9 @@ body.light .modal label {
 body.light .modal ul li {
   color: #6500cd !important;
 }
+body.light .modal a span {
+  color: #555870;
+}
 body.light .download-btn {
   box-shadow: 0 0 0 !important;
   background-color: #41709d;
@@ -452,6 +455,9 @@ body.light .download-btn-2:hover {
 }
 body.light .download-btn-2:hover i {
   text-shadow: none;
+}
+body.light .btn-primary.btn-iconized i, body.light .btn-primary.btn-iconized span {
+  color: white !important;
 }
 body.light .pill-green {
   background-color: rgba(28, 206, 126, 0.3);
