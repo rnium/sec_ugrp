@@ -329,6 +329,15 @@ body.light .student-profile-container .semester-item.running-semester {
 body.light .student-profile-container .student-info .col-sm-3 p {
   color: #222325;
 }
+body.light .student-profile-container .card .card-body .col-sm-3 p {
+  color: #3568d4 !important;
+}
+body.light .student-profile-container .transcript-container .card-body {
+  background-color: #ced7de !important;
+}
+body.light .student-profile-container .transcript-container .h5.card-title {
+  color: #9090a7 !important;
+}
 body.light .admin-profile-edit h5 {
   color: #555870 !important;
 }
