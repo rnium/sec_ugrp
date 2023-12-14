@@ -488,6 +488,9 @@ body.light .btn-outline-secondary.btn-iconized i, body.light .btn-outline-second
 body.light .btn-outline-secondary.btn-iconized:hover i, body.light .btn-outline-secondary.btn-iconized:hover span {
   color: white !important;
 }
+body.light .btn-success.tn-iconized i, body.light .btn-success.tn-iconized span {
+  color: white !important;
+}
 body.light .card .card-text {
   color: #9090a7 !important;
 }
