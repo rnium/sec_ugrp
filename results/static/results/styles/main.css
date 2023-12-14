@@ -1,4 +1,470 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&family=Gemunu+Libre:wght@300;400;500&family=Lato&family=Montserrat:wght@300;400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
+body.light {
+  background-color: #ebeaef;
+}
+body.light .profile {
+  background-color: #fefefe;
+  box-shadow: 0 0 10px rgb(205, 204, 204);
+}
+body.light .profile a .name {
+  color: #555870;
+}
+body.light .bg-material {
+  background-color: #ffffff;
+}
+body.light .bg-material-1 {
+  background-color: #ebeaef;
+}
+body.light .dashboard-container .sys-info .h2 {
+  color: #555870;
+}
+body.light .dept-tab-container .sys-info .instituition {
+  color: #224769;
+  text-shadow: 0 0 5px #bcc9d5;
+}
+body.light .dept-tab-container .departments a.dept {
+  display: block;
+}
+body.light .dept-tab-container .departments a.dept .fullname {
+  padding: 2rem 10px;
+}
+body.light .dept-tab-container .departments .cse-dept .title {
+  color: #ffcc00;
+  font-family: inherit;
+  text-shadow: 0 0 15px #feed73;
+}
+body.light .dept-tab-container .departments .eee-dept .title {
+  color: #57eba3;
+  font-family: inherit;
+  text-shadow: 0 0 15px #05c270;
+}
+body.light .dept-tab-container .departments .ce-dept .title {
+  color: #dea5e8;
+  font-family: inherit;
+  text-shadow: 0 0 15px #6500cd;
+}
+body.light .dept-tab-container .departments .ce-dept .fullname {
+  padding: 3rem 0 !important;
+}
+body.light .dept-tab-container .departments .dept-semesters {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters {
+  max-width: 600px;
+  width: 30%;
+  margin-left: 2%;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters .content ul {
+  list-style-type: none;
+  padding: 0;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters .content ul li {
+  margin-bottom: 0.5rem;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters:first-of-type {
+  margin-left: 0;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters.cse-dept .title {
+  color: #ffcc00;
+  font-family: inherit;
+  text-shadow: 0 0 15px #feed73;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters.eee-dept .title {
+  color: #57eba3;
+  font-family: inherit;
+  text-shadow: 0 0 15px #05c270;
+}
+body.light .dept-tab-container .departments .dept-semesters .all-semesters.ce-dept .title {
+  color: #dea5e8;
+  font-family: inherit;
+  text-shadow: 0 0 15px #6500cd;
+}
+body.light .dept-tab-container .card .card-text {
+  color: #28293d;
+}
+body.light .dept-tab-container .card .bg-material {
+  background-color: #b5c7d7;
+}
+body.light .dept-tab-container .department-main .sessions {
+  background-color: white;
+}
+@keyframes newSessionBgColorLight {
+  from {
+    background-color: rgb(79, 137, 171);
+  }
+  to {
+    background-color: rgb(64, 97, 116);
+  }
+}
+body.light .dept-tab-container .department-main .sessions .section-title {
+  color: #9090a7;
+}
+body.light .dept-tab-container .department-main .sessions .session {
+  background-color: rgb(64, 97, 116) !important;
+}
+body.light .dept-tab-container .department-main .sessions .session:hover {
+  background-color: rgb(77, 122, 148) !important;
+}
+body.light .dept-tab-container .department-main .sessions .session.new {
+  animation: newSessionBgColorLight 2s linear 1 !important;
+}
+body.light .dept-tab-container .department-main .add-semester button {
+  transition: all 200ms;
+}
+body.light .dept-tab-container .department-main .add-semester button i, body.light .dept-tab-container .department-main .add-semester button span {
+  color: #222325 !important;
+}
+body.light .dept-tab-container .department-main .add-semester button:hover i, body.light .dept-tab-container .department-main .add-semester button:hover span {
+  color: white !important;
+}
+body.light .view-session-container .btn-container button i {
+  color: #ff8801 !important;
+}
+body.light .view-session-container .btn-container button span {
+  color: #555870;
+}
+body.light .view-session-container .semesters {
+  background-color: rgb(202, 207, 206);
+}
+body.light .view-session-container .semesters .section-title {
+  color: #9090a7;
+}
+body.light .view-session-container .semesters .semester-item {
+  background-color: #325779 !important;
+  transition: all 0.2s;
+}
+body.light .view-session-container .semesters .semester-item:hover {
+  background-color: #477199 !important;
+  outline: 0px !important;
+}
+body.light .view-session-container .semesters .semester-item.running-semester {
+  background-color: rgb(75, 170, 137) !important;
+}
+body.light .view-session-container #carry-listing-modal table .fw-bold {
+  color: #9090a7;
+}
+body.light .view-semester-container .header {
+  color: #9090a7 !important;
+}
+body.light .view-semester-container .text-info {
+  color: #0063f8 !important;
+}
+body.light .view-semester-container .running-sem-badge .inner {
+  background-color: rgba(0, 210, 147, 0.8);
+  padding: 2px 10px 2px 10px;
+  border-radius: 180px;
+}
+body.light .view-semester-container .running-sem-badge .inner .circle {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: rgb(255, 255, 255);
+  margin-right: 5px;
+  border-radius: 180px;
+  animation: glowAnimation 2s infinite;
+}
+body.light .view-semester-container .running-sem-badge .inner .title {
+  font-family: "Gemunu Libre", sans-serif;
+  color: white;
+}
+body.light .view-semester-container .border-b-1 {
+  border: 0 !important;
+}
+body.light .view-semester-container .all-courses .course {
+  display: block;
+  border: 1px solid #41709d !important;
+  border-left: 5px solid #41709d !important;
+  border-right: 5px solid #41709d !important;
+  background-color: rgba(0, 38, 255, 0.1) !important;
+  transition: all 200ms;
+}
+body.light .view-semester-container .all-courses .course .course-code {
+  color: #41709d !important;
+}
+body.light .view-semester-container .all-courses .course .course-title {
+  color: #313846 !important;
+}
+body.light .view-semester-container .all-courses .course .credits i, body.light .view-semester-container .all-courses .course span {
+  color: rgb(106, 148, 148) !important;
+}
+body.light .view-semester-container .all-courses .course:hover {
+  border-color: #3568d4 !important;
+  box-shadow: 0 0 10px rgba(96, 114, 128, 0.2) !important;
+  background-color: rgba(0, 38, 255, 0.2) !important;
+}
+body.light .view-semester-container .all-courses .course.drop-course {
+  border: 1px solid #ff8080 !important;
+  border-left: 5px solid #ff8080 !important;
+  border-right: 5px solid #ff8080 !important;
+  background-color: rgba(237, 41, 41, 0.1) !important;
+}
+body.light .view-semester-container .all-courses .course.drop-course:hover {
+  border-color: #ff8080;
+  box-shadow: 0 0 10px #28293d;
+  background-color: rgba(237, 41, 41, 0.12) !important;
+}
+body.light .view-semester-container .tabulation .section-title {
+  color: #9090a7 !important;
+}
+body.light .view-semester-container .tabulation .card .card-body .card-title {
+  color: #28293d;
+}
+body.light .view-semester-container .tabulation .render-config .title i, body.light .view-semester-container .tabulation .render-config span {
+  color: #555870 !important;
+}
+body.light .view-semester-container .tabulation .render-config .form-floating label {
+  color: #555870 !important;
+}
+body.light .view-semester-container .tabulation .render-config .label {
+  color: #224769 !important;
+}
+body.light .view-semester-container .tabulation .btn-container button span.roboto-font {
+  color: white !important;
+}
+body.light .view-semester-container .bg-dark {
+  background-color: rgb(250, 250, 250) !important;
+}
+body.light .view-semester-container .semester-info .roboto-font {
+  color: #224769 !important;
+}
+body.light .view-semester-container .semester-info .btn-secondary i, body.light .view-semester-container .semester-info .btn-secondary span {
+  color: white !important;
+}
+body.light .view-semester-container .semester-info .btn-outline-warning {
+  border-color: #ff8801 !important;
+  color: #ff8801 !important;
+}
+body.light .view-semester-container .semester-info .btn-outline-warning:hover {
+  color: white !important;
+}
+body.light .view-semester-container .semester-info i.bg {
+  color: #57eba3;
+}
+body.light .view-course-container .info .semester a {
+  background-color: rgba(197, 197, 197, 0.4);
+  box-shadow: 0 0 10px rgba(220, 220, 220, 0.695);
+  border: 1px solid #9090a7;
+  border-left: 10px solid #9090a7;
+  color: #9090a7;
+}
+body.light .view-course-container .info .semester.running a {
+  background-color: rgba(4, 112, 80, 0.1);
+  border: 1px solid rgb(7, 224, 169);
+  border-left: 10px solid rgb(7, 224, 169);
+  color: #05c270;
+}
+body.light .view-course-container .info .course-info .course-code {
+  color: #555870;
+}
+body.light .view-course-container .info .course-info .title {
+  color: #9090a7;
+}
+body.light .view-course-container .score-board {
+  background-color: white;
+  box-shadow: none;
+  border: 1px solid rgb(221, 221, 226);
+}
+body.light .view-course-container .score-board table thead th {
+  text-align: center;
+  font-family: "Roboto Mono", monospace;
+  color: #ebeaef;
+  background-color: rgb(117, 138, 134);
+  border: 1px solid #555870;
+}
+body.light .view-course-container .score-board table tbody tr, body.light .view-course-container .score-board table tbody td {
+  border: 1px solid #9090a7;
+}
+body.light .view-course-container .score-board table tbody tr td {
+  min-width: 120px !important;
+  padding: 10px 5px;
+  text-align: center;
+}
+body.light .view-course-container .score-board table tbody tr td input {
+  color: #555870;
+  box-shadow: none !important;
+}
+body.light .view-course-container .score-board table tbody tr td input.score-inp {
+  background-color: white;
+}
+body.light .view-course-container .score-board table tbody tr td:nth-child(1) {
+  font-family: "Roboto Mono", monospace;
+}
+body.light .view-course-container .score-board table tbody tr td:last-of-type {
+  background-color: rgb(146, 172, 164);
+}
+body.light .view-course-container .score-board table tbody tr td a {
+  text-decoration: none;
+  color: inherit;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1rem;
+  color: #555870;
+}
+body.light .view-course-container .score-board table tbody tr td a:hover {
+  color: #7b90d0;
+}
+body.light .view-course-container .score-board table tbody tr td.pending {
+  background-color: #ff8801;
+  color: #28293d;
+}
+body.light .view-course-container .score-board table tbody tr.drop_course {
+  background-color: rgba(164, 117, 117, 0.2);
+}
+body.light .view-course-container .score-board .btn-container .add-new-btn {
+  background-color: #414958;
+}
+body.light .student-profile-container .semester-item {
+  background-color: rgb(51, 113, 147);
+}
+body.light .student-profile-container .semester-item .text-muted {
+  color: rgb(179, 193, 201) !important;
+}
+body.light .student-profile-container .semester-item.running-semester {
+  background-color: rgb(83, 148, 135);
+}
+body.light .student-profile-container .student-info .col-sm-3 p {
+  color: #222325;
+}
+body.light header .navbar {
+  background-color: #c6d5da;
+  box-shadow: 0 0 20px rgb(218, 218, 218);
+}
+body.light header .navbar ul.nav li a i, body.light header .navbar ul.nav li a span {
+  color: rgb(35, 121, 150);
+}
+body.light header .navbar ul.nav li a:hover {
+  background-color: rgba(95, 128, 157, 0.2);
+}
+body.light header .navbar ul.nav li.active a {
+  box-shadow: 0 0 2px rgb(158, 168, 181);
+  background-image: linear-gradient(to right, #3568d4, rgb(12, 99, 175));
+}
+body.light header .navbar ul.nav li.active a i, body.light header .navbar ul.nav li.active a span {
+  color: white;
+}
+body.light .title-box {
+  background-color: #e2e5e8;
+}
+body.light .title-box .title {
+  color: #505359;
+}
+body.light .section-title {
+  color: #9090a7;
+}
+body.light .session {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #899daf !important;
+  border: 0 !important;
+}
+body.light .session .label {
+  color: #fbfcff;
+}
+body.light .session .value {
+  background-color: #414958 !important;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+body.light .session .value .code {
+  font-family: "Roboto Mono", monospace;
+}
+body.light .session .value .batch-no {
+  margin-left: 10px;
+  padding: 3px 5px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  display: inline-block;
+  font-family: "Silkscreen", cursive;
+  color: #1d5461;
+  background-color: #ebeaef;
+}
+body.light .modal .text-info {
+  color: #6798ff !important;
+}
+body.light .modal .bg-material {
+  background-color: #ebeaef;
+}
+body.light .modal .bg-material-1 {
+  background-color: #859aad;
+}
+body.light .modal .text-warning {
+  color: #0063f8 !important;
+}
+body.light .modal .text-center {
+  color: #9090a7 !important;
+}
+body.light .modal label {
+  color: #555870;
+}
+body.light .modal ul li {
+  color: #6500cd !important;
+}
+body.light .download-btn {
+  box-shadow: 0 0 0 !important;
+  background-color: #41709d;
+  border-color: #41709d !important;
+}
+body.light .download-btn i, body.light .download-btn span {
+  color: white;
+}
+body.light .download-btn-2 {
+  background-color: #ebeaef;
+  box-shadow: -2px -2px 5px rgb(255, 255, 255), -3px 0px 5px rgb(255, 255, 255), 2px 0px 3px rgb(209, 208, 208), 2px 2px 3px rgb(184, 194, 196);
+}
+body.light .download-btn-2 i {
+  color: #0063f8;
+  text-shadow: 0 0 10px rgb(128, 159, 159);
+}
+body.light .download-btn-2 span {
+  color: #5b8dee;
+}
+body.light .download-btn-2:hover {
+  box-shadow: none;
+  background-color: white;
+}
+body.light .download-btn-2:hover i {
+  text-shadow: none;
+}
+body.light .pill-green {
+  background-color: rgba(28, 206, 126, 0.3);
+  color: rgb(91, 152, 132);
+}
+body.light .pill-gray {
+  background-color: rgba(156, 156, 156, 0.2);
+  color: #9090a7;
+}
+body.light .switch label {
+  background-color: rgba(186, 186, 186, 0.5);
+}
+body.light .switch label::after {
+  background-image: linear-gradient(to bottom right, rgb(174, 174, 174), rgb(137, 139, 139));
+}
+body.light .switch input:checked + label {
+  background-color: rgba(60, 143, 167, 0.3);
+  box-shadow: inset -2px -2px 10px rgba(75, 126, 141, 0.2), inset 2px 2px 10px rgba(164, 198, 185, 0.5);
+}
+body.light .switch input:checked + label::after {
+  left: 55%;
+  background-image: linear-gradient(to bottom right, rgb(19, 166, 159), rgb(16, 173, 173));
+}
+body.light .btn-outline-secondary.btn-iconized i, body.light .btn-outline-secondary.btn-iconized span {
+  color: #555870 !important;
+  transition: all 0.5ms;
+}
+body.light .btn-outline-secondary.btn-iconized:hover i, body.light .btn-outline-secondary.btn-iconized:hover span {
+  color: white !important;
+}
+
 * {
   box-sizing: border-box;
   color: #f2f2f4;
@@ -286,6 +752,12 @@ body main .dept-tab-container .department-main .sessions button.add-btn i {
 }
 body main .dept-tab-container .department-main .sessions button.add-btn:hover {
   opacity: 1;
+}
+body main .dept-tab-container .card .text-info {
+  color: #3568d4 !important;
+}
+body main .dept-tab-container .card .card-text {
+  color: #ebeaef;
 }
 body main .form-type-page {
   display: flex;
@@ -816,6 +1288,9 @@ body main .student-profile-container .sem-gradesheet .num {
   font-size: 1.7rem;
   font-family: "Silkscreen", cursive;
 }
+body main .student-profile-container .sem-gradesheet :hover {
+  background-color: #475275;
+}
 body main .student-profile-container .year-gradesheet {
   display: flex;
   flex-direction: row;
@@ -854,7 +1329,7 @@ body main .student-profile-container .year-gradesheet:hover .num {
   position: absolute;
   top: 1.5rem;
   right: 1rem;
-  padding: 5px 20px 5px 5px;
+  padding: 5px 25px 5px 5px;
   background-color: #555870;
   box-shadow: 0px 2px 10px #28293d;
   border-radius: 50px;
@@ -868,7 +1343,7 @@ body main .student-profile-container .year-gradesheet:hover .num {
 }
 .profile a .info .name {
   color: #ebeaef;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Fraunces", sans-serif;
 }
 .profile a .info .dept {
   color: #00cfdd;
