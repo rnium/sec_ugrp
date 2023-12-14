@@ -329,6 +329,42 @@ body.light .student-profile-container .semester-item.running-semester {
 body.light .student-profile-container .student-info .col-sm-3 p {
   color: #222325;
 }
+body.light .admin-profile-edit h5 {
+  color: #555870 !important;
+}
+body.light .view-session-container .session, body.light .view-semester-container .session {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #899daf !important;
+  border: 0 !important;
+}
+body.light .view-session-container .session .label, body.light .view-semester-container .session .label {
+  color: #fbfcff;
+}
+body.light .view-session-container .session .value, body.light .view-semester-container .session .value {
+  background-color: #414958 !important;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+body.light .view-session-container .session .value .code, body.light .view-semester-container .session .value .code {
+  font-family: "Roboto Mono", monospace;
+}
+body.light .view-session-container .session .value .batch-no, body.light .view-semester-container .session .value .batch-no {
+  margin-left: 10px;
+  padding: 3px 5px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  display: inline-block;
+  font-family: "Silkscreen", cursive;
+  color: #1d5461;
+  background-color: #ebeaef;
+}
 body.light header .navbar {
   background-color: #c6d5da;
   box-shadow: 0 0 20px rgb(218, 218, 218);
@@ -355,38 +391,11 @@ body.light .title-box .title {
 body.light .section-title {
   color: #9090a7;
 }
-body.light .session {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: #899daf !important;
-  border: 0 !important;
+body.light i.bg-material {
+  color: #222325 !important;
 }
-body.light .session .label {
-  color: #fbfcff;
-}
-body.light .session .value {
-  background-color: #414958 !important;
-  padding: 5px 10px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-body.light .session .value .code {
-  font-family: "Roboto Mono", monospace;
-}
-body.light .session .value .batch-no {
-  margin-left: 10px;
-  padding: 3px 5px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  display: inline-block;
-  font-family: "Silkscreen", cursive;
-  color: #1d5461;
-  background-color: #ebeaef;
+body.light .modal .modal-title {
+  color: #3568d4 !important;
 }
 body.light .modal .text-info {
   color: #6798ff !important;
@@ -463,6 +472,26 @@ body.light .btn-outline-secondary.btn-iconized i, body.light .btn-outline-second
 }
 body.light .btn-outline-secondary.btn-iconized:hover i, body.light .btn-outline-secondary.btn-iconized:hover span {
   color: white !important;
+}
+body.light .card .card-text {
+  color: #9090a7 !important;
+}
+body.light .form-floating label {
+  color: #9090a7 !important;
+}
+body.light .form-label {
+  color: #9090a7;
+}
+body.light p.text-white {
+  color: #9090a7 !important;
+}
+body.light span.bg-dark.border.shadow-lg {
+  background-color: white !important;
+  color: #3568d4;
+  box-shadow: none !important;
+}
+body.light span.text-white {
+  color: #3568d4 !important;
 }
 
 * {

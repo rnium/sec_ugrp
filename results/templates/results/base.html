@@ -57,7 +57,7 @@
 
     <main style="{% if is_navActive %}margin-left:250px{% else %}margin-left:100px{% endif %}">
         <div class="profile">
-            <a href="#">
+            <a href="{% url 'account:view_admin_profile_edit' %}">
                 <img class="dp" src="{{request.user.adminaccount.avatar_url}}" alt="avatar">
                 <div class="info">
                     <div class="name">{{request.user.adminaccount.user_first_name | truncatechars:20}}</div>
