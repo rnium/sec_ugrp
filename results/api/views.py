@@ -821,3 +821,17 @@ def generate_gradesheet(request):
         return JsonResponse({'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
+
+    
+# @api_view(["POST"])
+# @permission_classes([IsAuthenticated])
+# def get_transcript_data(request, registration):
+#     if not hasattr(request.user, 'adminaccount'):
+#         return Response(data={"details": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+#     student = get_object_or_404(StudentAccount, registration=registration)
+#     data = {
+#         'name': student.student_name,
+#         'sesion': student.session.session_code,
+#         'dept': student.session.dept.fullname,
+        
+#     }

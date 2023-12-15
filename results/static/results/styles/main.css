@@ -229,11 +229,18 @@ body.light .view-semester-container .tabulation .btn-container button span.robot
 body.light .view-semester-container .bg-dark {
   background-color: rgb(250, 250, 250) !important;
 }
+body.light .view-semester-container .semester-info {
+  box-shadow: none !important;
+}
 body.light .view-semester-container .semester-info .roboto-font {
   color: #224769 !important;
 }
-body.light .view-semester-container .semester-info .btn-secondary i, body.light .view-semester-container .semester-info .btn-secondary span {
+body.light .view-semester-container .semester-info .btn-secondary i, body.light .view-semester-container .semester-info .btn-secondary span, body.light .view-semester-container .semester-info .btn-success i, body.light .view-semester-container .semester-info .btn-success span {
   color: white !important;
+}
+body.light .view-semester-container .semester-info .btn-success {
+  background-color: #05c270;
+  border: none !important;
 }
 body.light .view-semester-container .semester-info .btn-outline-warning {
   border-color: #ff8801 !important;
@@ -243,7 +250,7 @@ body.light .view-semester-container .semester-info .btn-outline-warning:hover {
   color: white !important;
 }
 body.light .view-semester-container .semester-info i.bg {
-  color: #57eba3;
+  color: #dea5e8;
 }
 body.light .view-course-container .info .semester a {
   background-color: rgba(197, 197, 197, 0.4);
@@ -340,6 +347,9 @@ body.light .student-profile-container .transcript-container .h5.card-title {
 }
 body.light .admin-profile-edit h5 {
   color: #555870 !important;
+}
+body.light .view-staffs-container .btn-container .roboto-font {
+  color: #9090a7;
 }
 body.light .view-session-container .session, body.light .view-semester-container .session {
   display: flex;
@@ -438,6 +448,9 @@ body.light .download-btn {
 body.light .download-btn i, body.light .download-btn span {
   color: white;
 }
+body.light .download-btn:hover {
+  background-color: #30608d;
+}
 body.light .download-btn-2 {
   background-color: #ebeaef;
   box-shadow: -2px -2px 5px rgb(255, 255, 255), -3px 0px 5px rgb(255, 255, 255), 2px 0px 3px rgb(209, 208, 208), 2px 2px 3px rgb(184, 194, 196);
@@ -488,7 +501,7 @@ body.light .btn-outline-secondary.btn-iconized i, body.light .btn-outline-second
 body.light .btn-outline-secondary.btn-iconized:hover i, body.light .btn-outline-secondary.btn-iconized:hover span {
   color: white !important;
 }
-body.light .btn-success.tn-iconized i, body.light .btn-success.tn-iconized span {
+body.light .btn-success.btn-iconized i, body.light .btn-success.btn-iconized span {
   color: white !important;
 }
 body.light .card .card-text {
@@ -499,6 +512,9 @@ body.light .form-floating label {
 }
 body.light .form-label {
   color: #9090a7;
+}
+body.light .text-warning {
+  color: #ff8801 !important;
 }
 body.light p.text-white {
   color: #9090a7 !important;
@@ -1068,6 +1084,7 @@ body main .view-semester-container .all-courses .courses .course-container .adde
   opacity: 0.8;
 }
 body main .view-semester-container .semester-info {
+  position: relative;
   overflow: hidden;
 }
 body main .view-semester-container .semester-info i.bg {
