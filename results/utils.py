@@ -14,7 +14,7 @@ SEC_GRADING_SCHEMA = {
     "F" : {"min": 0, "max":39.999, "grade_point":0.00},
 }
 
-def get_ordinal_number(value):
+def get_ordinal_suffix(value):
     try:
         value = int(value)
     except (ValueError, TypeError):
@@ -23,7 +23,11 @@ def get_ordinal_number(value):
         suffix = 'th'
     else:
         suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(value % 10, 'th')
-    return f'{value}{suffix}'
+    return suffix
+
+def get_ordinal_number(value): 
+    return f'{value}{get_ordinal_suffix(value)}'
+
 
 
 def calculate_grade_point(obtained_score, max_marks):

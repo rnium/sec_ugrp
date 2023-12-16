@@ -97,10 +97,85 @@ function change_session() {
     }
 }
 
+// Stats
+
+function initiate_chart(data) {
+    let grades = Object.keys(data.classes);
+    let counts = [];
+    let bgColors = [];
+    for (let grade of grades) {
+        counts.push(data.classes[grade])
+        if (grade == data.letter_grade) {
+            bgColors.push("rgb(5, 194, 112)")
+        } else {
+            bgColors.push("rgba(0, 150, 155, 0.9)")
+        }
+    }
+    console.log(counts);
+    // Chart creation
+    const ctx = document.getElementById('cgpaChart').getContext('2d');
+    const cgpaChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: grades,
+            datasets: [{
+                label: 'Total Obtained',
+                data: counts,
+                backgroundColor: bgColors, // Blue color for bars
+                borderColor: 'rgba(54, 162, 235, 1)', // Border color
+                borderWidth: 0,
+                borderRadius:5,
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    display: false,
+                    ticks: {
+                        display: false
+                    },
+                    grid: {
+                        display: false,
+                    }
+                },
+                y: {
+                    display: false,
+                    ticks: {
+                        display: false
+                    },
+                    grid: {
+                        display: false,
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false, // Hide the legend (labels)
+                }
+            }
+        }
+    });
+}
+
+function get_student_stats() {
+    $.ajax({
+        type: "get",
+        url: student_stats_api,
+        contentType: "application/json",
+        cache: false,
+        success: function(response) {
+            $('#position-num').text(response.position);
+            $('#position-suffix').text(response.position_suffix);
+            initiate_chart(response)
+        }
+    });
+}
+
 
 
 
 $(document).ready(function () {
+    get_student_stats();
     $("#confirm-del-btn").on('click', delete_student);
     $("#confirm_change_session").on('click', change_session);
 });

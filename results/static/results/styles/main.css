@@ -372,6 +372,9 @@ body.light .student-profile-container .semester-item.running-semester {
 body.light .student-profile-container .student-info .col-sm-3 p {
   color: #222325;
 }
+body.light .student-profile-container .profile-card .readd-badge {
+  background-color: #d2dfe0;
+}
 body.light .student-profile-container .card .card-body .col-sm-3 p {
   color: #3568d4 !important;
 }
@@ -380,6 +383,51 @@ body.light .student-profile-container .transcript-container .card-body {
 }
 body.light .student-profile-container .transcript-container .h5.card-title {
   color: #9090a7 !important;
+}
+body.light .student-profile-container .sem-gradesheet {
+  box-shadow: 2px 2px 5px rgb(209, 209, 209);
+  background-color: white;
+}
+body.light .student-profile-container .sem-gradesheet i {
+  font-size: 1.5rem;
+  margin-right: 5px;
+}
+body.light .student-profile-container .sem-gradesheet i, body.light .student-profile-container .sem-gradesheet span {
+  color: #41709d;
+}
+body.light .student-profile-container .sem-gradesheet:hover {
+  background-color: beige;
+}
+body.light .student-profile-container .year-gradesheet {
+  box-shadow: 2px 2px 5px rgb(209, 209, 209);
+  background-color: #5b7488;
+  color: rgb(0, 196, 131);
+  transition: all 0.2s;
+}
+body.light .student-profile-container .year-gradesheet i {
+  color: #ebeaef;
+}
+body.light .student-profile-container .year-gradesheet .num {
+  color: rgba(255, 255, 255, 0.4);
+  text-shadow: 0 0 10px rgba(216, 228, 231, 0.4);
+}
+body.light .student-profile-container .year-gradesheet:hover {
+  background-color: #4c687f;
+}
+body.light .student-profile-container .year-gradesheet:hover i {
+  color: white;
+}
+body.light .student-profile-container .year-gradesheet:hover .num {
+  color: rgba(255, 255, 255, 0.9);
+}
+body.light .student-profile-container .class-position .position span.num {
+  color: #05c270 !important;
+}
+body.light .student-profile-container .class-position .position span.ordinal {
+  color: #8a9edc !important;
+}
+body.light .student-profile-container .class-position .label {
+  color: #9090a7;
 }
 body.light .admin-profile-edit h5 {
   color: #555870 !important;
@@ -1375,32 +1423,33 @@ body main .student-profile-container .sem-gradesheet {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  box-shadow: 2px 2px 5px rgb(209, 209, 209);
   background-color: #1d5461;
   padding: 10px;
   border-radius: 5px;
   position: relative;
+  transition: all 0.2s;
+  box-shadow: none;
 }
-body main .student-profile-container .sem-gradesheet .num {
-  position: absolute;
-  bottom: -15%;
-  left: 0;
-  color: hwb(0 100% 0%);
-  font-size: 1.7rem;
-  font-family: "Silkscreen", cursive;
+body main .student-profile-container .sem-gradesheet i {
+  font-size: 1.5rem;
+  margin-right: 5px;
 }
-body main .student-profile-container .sem-gradesheet :hover {
-  background-color: #475275;
+body main .student-profile-container .sem-gradesheet:hover {
+  background-color: #225d69;
 }
 body main .student-profile-container .year-gradesheet {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  box-shadow: 2px 2px 5px rgb(209, 209, 209);
   padding: 20px 10px;
   border-radius: 5px;
   position: relative;
   overflow: hidden;
   background-color: #224769;
+  box-shadow: none !important;
 }
 body main .student-profile-container .year-gradesheet i {
   color: #b5daff;
@@ -1418,11 +1467,35 @@ body main .student-profile-container .year-gradesheet .num {
   text-shadow: 0 0 10px rgba(216, 228, 231, 0.4);
   transition: 300ms;
 }
+body main .student-profile-container .year-gradesheet:hover {
+  background-color: #2d5071;
+}
 body main .student-profile-container .year-gradesheet:hover i {
   color: white;
 }
 body main .student-profile-container .year-gradesheet:hover .num {
   color: rgba(255, 255, 255, 0.9);
+}
+body main .student-profile-container .class-position {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body main .student-profile-container .class-position .position span {
+  font-family: "Gemunu Libre", sans-serif;
+}
+body main .student-profile-container .class-position .position span.num {
+  font-size: 3rem;
+  text-shadow: 0 0 5px rgba(78, 189, 152, 0.2);
+  color: #05c270 !important;
+}
+body main .student-profile-container .class-position .position span.ordinal {
+  font-size: 1.5rem;
+  color: #b6c0de !important;
+}
+body main .student-profile-container .class-position .label {
+  color: #9090a7;
 }
 
 .profile {

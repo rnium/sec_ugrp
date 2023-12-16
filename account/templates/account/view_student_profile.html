@@ -165,8 +165,18 @@
               </div>
             </div>
             <div class="col-lg-5 right-col">
-              <p class="mb-2 text-center"><span class="text-muted roboto-font fs-5">Grade Sheets</span></p>
+              <div class="row mb-5 px-2">
+                <div class="col-lg-3 class-position">
+                  <div class="text-center position"><span class="num" id="position-num">#</span><span class="ordinal" id="position-suffix">*</span></div>
+                  <div class="label">in class</div>
+                </div>
+                <div class="col-lg-9 d-flex">
+                  <canvas id="cgpaChart" height="130"></canvas>
+                </div>
+              </div>
+
               <div class="container">
+                <p class="mb-2 text-center"><span class="text-muted roboto-font fs-5">Grade Sheets</span></p>
                 <div class="row g-1 row-cols-2 mb-2">
                   {% for semester_no in student.gradesheet_semesters %}
                   <div class="col-md-6">
@@ -288,9 +298,11 @@
 {% endblock content %}
 
 {% block script %}
+<script src="{% static 'results/scripts/chartjs4.min.js' %}"></script>
 <script>
     const csrftoken = "{{csrf_token}}";
     const change_session_api = "{% url 'account:migrate_sesion_of_student' student.registration %}";
+    const student_stats_api = "{% url 'results:student_stats_api' student.registration %}";
     const delete_student_api = "{% url 'account:delete_student' student.registration %}";
 </script>
 <script src="{% static 'account/scripts/viewstudentprofile.js' %}"></script>

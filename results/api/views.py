@@ -22,7 +22,7 @@ from results.models import (Department, Session, Semester, Course,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup)
 from account.models import StudentAccount
 from . import utils
-from results.utils import get_ordinal_number
+from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
@@ -822,6 +822,35 @@ def generate_gradesheet(request):
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
 
+
+    
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def student_stats(request, registration):
+    if not hasattr(request.user, 'adminaccount'):
+        return Response(data={"details": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+    current_student = get_object_or_404(StudentAccount, registration=registration)
+    current_student_cgpa = current_student.raw_cgpa
+    session_students = current_student.session.studentaccount_set.all()
+    session_students_cgpa = [student.raw_cgpa for student in session_students]
+    session_students_cgpa.sort(reverse=True)
+    data = {
+       'classes': {
+            'A+': 0, 'A': 0, 'A-': 0,
+            'B+': 0, 'B': 0, 'B-': 0,
+            'C+': 0, 'C': 0, 'C-': 0,
+            'F': 0,
+        } 
+    }
+    position_in_class = session_students_cgpa.index(current_student_cgpa) + 1
+    data['position'] = position_in_class
+    data['position_suffix'] = get_ordinal_suffix(position_in_class)
+    data['letter_grade'] = get_letter_grade(current_student_cgpa)
+    for cgpa in session_students_cgpa:
+        data['classes'][get_letter_grade(cgpa)] += 1
+    
+    return Response(data=data)
+    
     
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
