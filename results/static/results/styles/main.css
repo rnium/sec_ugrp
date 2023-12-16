@@ -864,7 +864,6 @@ body main .dept-tab-container .department-main .dept-logo {
 }
 body main .dept-tab-container .department-main .dept-title {
   color: #9090a7;
-  font-family: "Roboto Mono", monospace;
 }
 @keyframes newSessionBgColor {
   from {
