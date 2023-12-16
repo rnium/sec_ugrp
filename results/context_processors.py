@@ -6,7 +6,7 @@ def navbarContext(request):
     return context
 
 def themeContext(request):
-    nav = request.COOKIES.get("theme", "")
+    nav = request.COOKIES.get("theme", "light")
     context = {}
     if nav == "light":
         context['is_lightMode'] = True
