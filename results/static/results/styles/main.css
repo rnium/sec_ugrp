@@ -138,12 +138,18 @@ body.light .view-session-container .semesters .semester-item {
   background-color: #325779 !important;
   transition: all 0.2s;
 }
+body.light .view-session-container .semesters .semester-item .sem-codename {
+  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(83, 103, 145) !important;
+}
 body.light .view-session-container .semesters .semester-item:hover {
   background-color: #477199 !important;
   outline: 0px !important;
 }
 body.light .view-session-container .semesters .semester-item.running-semester {
-  background-color: rgb(75, 170, 137) !important;
+  background-color: rgb(63, 154, 122) !important;
+}
+body.light .view-session-container .semesters .semester-item.running-semester .sem-codename {
+  box-shadow: 0 0 50px rgb(55, 255, 188) !important;
 }
 body.light .view-session-container #carry-listing-modal .text-info {
   color: #5b8dee !important;
