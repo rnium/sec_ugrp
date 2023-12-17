@@ -570,6 +570,10 @@ body.light .pill-gray {
   background-color: rgba(156, 156, 156, 0.2);
   color: #9090a7;
 }
+body.light .pill-red {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff8080;
+}
 body.light .switch label {
   background-color: rgba(186, 186, 186, 0.5);
 }
@@ -1486,6 +1490,8 @@ body main .student-profile-container .class-position {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  justify-content: center;
+  align-items: flex-end;
 }
 body main .student-profile-container .class-position .position span {
   font-family: "Gemunu Libre", sans-serif;
