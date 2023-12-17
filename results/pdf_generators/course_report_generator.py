@@ -16,8 +16,8 @@ def get_fonts_css_txt(font_names):
 def render_coursereport(course):
     html_text = render_to_string('results/pdf_templates/course_report.html', context={'course':course})
     fonts = {
-        'Roboto': 'Roboto-Regular.ttf',
-        'Lora': 'Lora-VariableFont_wght.ttf',
+        'TimesNewRoman': 'timesnewroman.ttf',
+        'TimesNewRomanBold': 'timesnewromanbold.ttf',
     }
     font_config = FontConfiguration()
     fonts_css = get_fonts_css_txt(fonts)

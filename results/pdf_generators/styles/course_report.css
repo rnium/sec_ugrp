@@ -17,21 +17,29 @@ section p {
     text-align: center;
     margin: 0;
     margin-bottom: 5px;
-    font-family: Lora, sans;
+    font-family: TimesNewRoman, sans;
+}
+
+p#instituition {
+    font-size: 18px;
+    font-family: TimesNewRoman, sans;
 }
 
 p#dept {
     font-size: 16px;
-    font-weight: 600;
+    font-family: TimesNewRoman, sans;
 }
 
-p#course-title {
-    font-size: 12px;    
+p#course-code, p#title {
+    font-size: 14px;    
+}
+
+span.course-meta {
+    font-family: TimesNewRomanBold;
 }
 
 p#title {
     margin-bottom: 20px;
-    font-size: 10px;
 }
 
 
@@ -49,13 +57,13 @@ table {
 
 td, th {
     text-align: center;
-    padding: 0.5rem 0;
-    font-size: 9px;
-    font-family: Roboto;
+    padding: 0.3rem 0;
+    font-size: 10px;
+    font-family: TimesNewRoman;
 }
 
 th {
-    font-family: Roboto;
+    font-family: TimesNewRoman;
     font-weight: bolder;
     background-color: #f4f4f4;
     color: rgb(0, 70, 70);
