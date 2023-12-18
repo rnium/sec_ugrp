@@ -1,6 +1,9 @@
 {% extends 'results/base.html' %} {% load static %}
 {% block head %}
 <title>Staffs</title>
+<style>
+    body.light hr {color: gray};
+</style>
 {% endblock head %}
 
 {% block nav %}
@@ -53,8 +56,9 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="row text-center">
-                <p class="text-white roboto-font fs-5 mt-3 mb-4">Super Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{superadmins.count}}</span> </p>
+            <div class="super-admins row text-center d-flex justify-content-center">
+                <p class="text-white roboto-font fs-5 mt-3 mb-2">Super Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{superadmins.count}}</span> </p>
+                <hr class="mb-4">
                 {% for admin in superadmins %}
                 <div class="col-xl-3 col-lg-4">
                     <div class="mb-4">
@@ -70,8 +74,10 @@
                 {% endfor %}
                 
             </div>
-            <div class="row text-center">
-                <p class="text-white roboto-font fs-5 text-center mt-3 mb-4">Department Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{deptadmins.count}}</span></p>
+            <div class="dept-admins row text-center d-flex justify-content-center">
+                <hr class="mb-2 mt-3">
+                <p class="text-white roboto-font fs-5 text-center mb-2">Department Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{deptadmins.count}}</span></p>
+                <hr class="mb-4">
                 {% for admin in deptadmins %}
                 <div class="col-xl-3 col-lg-4">
                     <div class="mb-4">
