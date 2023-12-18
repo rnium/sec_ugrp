@@ -1,4 +1,5 @@
 import math
+import base64
 from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -243,6 +244,12 @@ class Course(models.Model):
         if self.part_B_marks_final == 0:
             self.part_B_marks_final = self.part_B_marks
         super().save(*args, **kwargs)
+        
+    @property
+    def b64_id(self):
+        id_str_bytes = str(self.id).encode('utf-8')
+        id_b64_bytes = base64.b64encode(id_str_bytes)
+        return id_b64_bytes.decode('utf-8')
     
     @property
     def num_nonempty_records(self):

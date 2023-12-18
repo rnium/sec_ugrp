@@ -248,7 +248,12 @@ def download_backup(request, pk):
 
 
 @login_required
-def download_coruse_report(request, pk):
+def download_coruse_report(request, b64_id):
+    try:
+        str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
+        pk = int(str(str_pk))
+    except Exception as e:
+        return render_error(request, "Invalid Course ID")
     course = get_object_or_404(Course, pk=pk)
     report_pdf = render_coursereport(course)
     filename = f"{str(course)} Report.pdf"

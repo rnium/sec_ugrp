@@ -78,7 +78,7 @@
                     <span class="roboto-font">Export excel</span>
                 </button>
                 {% else %}
-                <a href="{% url 'results:download_coruse_report' course.id %}" target="_blank" class="download-btn-2 px-4">
+                <a href="{% url 'results:download_coruse_report' course.b64_id %}" target="_blank" class="download-btn-2 px-4">
                     <i class='bx bx-down-arrow-alt me-2'></i>
                     <span class="roboto-font">Report</span>
                 </a>
