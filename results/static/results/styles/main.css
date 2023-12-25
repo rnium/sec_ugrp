@@ -1248,6 +1248,11 @@ body main .view-semester-container .students-list .student .info a i {
   background-color: rgba(124, 105, 105, 0.386);
   color: rgb(255, 120, 108);
   font-size: 1.3rem;
+  transition: all 0.3s;
+}
+body main .view-semester-container .students-list .student .info a i:hover {
+  background-color: rgb(197, 81, 71);
+  color: white;
 }
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row {
   margin-bottom: 2rem;
