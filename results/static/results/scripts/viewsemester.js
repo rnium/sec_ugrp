@@ -451,6 +451,34 @@ function updateSemester() {
     }
 }
 
+function delete_semesterenroll() {
+    if (!confirm("Are you sure to delete this entry?")) {
+        return
+    }
+    let enrollment_id = $(this).data('enrollid');
+    let payload = {enrollment_id: enrollment_id}
+    $.ajax({
+        type: "post",
+        url: delete_enrollment_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $(this).attr("disabled", true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(payload),
+        cache: false,
+        success: function(response) {
+            $("#enroll-counter").text(response.current_enroll_count);
+            $(`#enroll-${response.id}`).hide(200);
+        },
+        error: function(xhr, status, error) {
+            alert("An error occured!")
+            $(this).removeAttr("disabled");
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -495,7 +523,8 @@ $(document).ready(function () {
     // change running status button
     $("#confirm-change-btn").on('click', change_running_status);
     // delete semester
-    $("#confirm-del-btn").on('click', delete_semester)
+    $("#confirm-del-btn").on('click', delete_semester);
     // update semester 
-    $("#update-semester-btn").on('click', updateSemester)   
+    $("#update-semester-btn").on('click', updateSemester);
+    $(".delete-enroll-icon").on('click', delete_semesterenroll);
 });

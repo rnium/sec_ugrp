@@ -493,6 +493,28 @@ def delete_course(request, pk):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def delete_enrollment(request):
+    try:
+        enrollment_id = request.data.get('enrollment_id')
+        enrollment = SemesterEnroll.objects.get(pk=enrollment_id)
+    except SemesterEnroll.DoesNotExist:
+        return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # cheking admin user
+    if not user_is_super_OR_dept_admin(request):
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    # checking of semester running
+    if not enrollment.semester.is_running:
+        return Response(data={'details': "Semester is offline"}, status=status.HTTP_400_BAD_REQUEST)
+    # delete
+    semester = enrollment.semester
+    student = enrollment.student
+    enrollment.delete()
+    student.update_stats()
+    return Response(data={"info": "deleted", "id": enrollment_id, "current_enroll_count": semester.semesterenroll_set.count()})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def delete_course_result(request):
     try:
         course_res_id = request.data.get('courseres_id')
