@@ -348,7 +348,7 @@ def render_tabulation(request, pk):
     try:
         files = get_tabulation_files(semester, render_config, footer_data_raw)
     except Exception as e:
-        return Response(data={'details': "cannot generate tabulation"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'details': f"cannot generate tabulation, Error: {e}"}, status=status.HTTP_400_BAD_REQUEST)
     if hasattr(semester, 'semesterdocument'):
         semesterdoc = semester.semesterdocument
     else:
@@ -508,6 +508,8 @@ def delete_enrollment(request):
     # delete
     semester = enrollment.semester
     student = enrollment.student
+    course_res = CourseResult.objects.filter(student=student, course__semester=semester)
+    course_res.delete()
     enrollment.delete()
     student.update_stats()
     return Response(data={"info": "deleted", "id": enrollment_id, "current_enroll_count": semester.semesterenroll_set.count()})

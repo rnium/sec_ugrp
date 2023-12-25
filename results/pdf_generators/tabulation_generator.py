@@ -24,8 +24,8 @@ class SemesterDataContainer:
         self.drop_courses = drop_courses
         self.course_list = [*list(self.drop_courses), *list(self.regular_courses)]
         self.num_courses = len(self.course_list)
-        self.students = semester.session.studentaccount_set.all()
-        self.num_students = self.students.count()
+        self.students = [enroll.student for enroll in semester.semesterenroll_set.all()]
+        self.num_students = len(self.students)
         self.has_overall_result_coulumn = (semester.semester_no > 1)
         
         
