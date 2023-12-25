@@ -277,6 +277,22 @@
         {% endwith %}
     </div>
     {% endif %}
+    <div class="all-registrations bg-material p-3 mt-4 rounded-3 border-b-1">
+        <div class="header text-center">Registrations <span class="bg-info text-dark px-2 small rounded">{{semester.semesterenroll_set.count}}</span> </div>
+        <div class="row students-list">
+            {% for enroll in semester.semesterenroll_set.all %}
+            <div class="col-md-4 p-0">
+                <div class="student rounded-3" id="enroll-{{enroll.student.registration}}">
+                    <img src="{{enroll.student.avatar_url}}" alt="" class="dp">
+                    <div class="info">
+                        <div class="name">{{enroll.student.student_name|truncatechars:25}}</div>
+                        <div class="reg-no">{{enroll.student.registration}} <a><i style="cursor: pointer" class='bx bx-trash' data-registration="{{enroll.student.registration}}"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     
     <div class="semester-info bg-dark p-3 mt-5 rounded-3 shadow">
         <i class='bx bx-info-circle bg' ></i>

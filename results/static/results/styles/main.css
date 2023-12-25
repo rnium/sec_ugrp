@@ -280,6 +280,33 @@ body.light .view-semester-container .semester-info .btn-outline-warning:hover {
 body.light .view-semester-container .semester-info i.bg {
   color: #dea5e8;
 }
+body.light .view-semester-container .students-list .student {
+  background-color: rgb(241, 241, 241) !important;
+  box-shadow: 2px 2px 5px rgba(237, 237, 237, 0.3);
+}
+body.light .view-semester-container .students-list .student img {
+  border: 2px solid rgb(207, 207, 207);
+}
+body.light .view-semester-container .students-list .student .info .name {
+  color: #555870 !important;
+}
+body.light .view-semester-container .students-list .student .info .reg-no {
+  color: #5b8dee !important;
+}
+body.light .view-semester-container .students-list .student .info a i {
+  background-color: rgba(218, 156, 156, 0.386);
+  color: rgb(210, 33, 17);
+  font-size: 1.3rem;
+}
+body.light .view-semester-container .students-list .student.re-addmitted {
+  background-color: #5b8dee !important;
+}
+body.light .view-semester-container .students-list .student.re-addmitted .info .name {
+  color: #ebeaef !important;
+}
+body.light .view-semester-container .students-list .student.re-addmitted .info .reg-no {
+  color: #ebeaef !important;
+}
 body.light .view-course-container .info .semester a {
   background-color: rgb(220, 220, 220);
   box-shadow: 0 0 10px rgba(220, 220, 220, 0.695);
@@ -1125,14 +1152,14 @@ body main .view-semester-container .info .session .value .batch-no {
   color: #1d5461;
   background-color: #ebeaef;
 }
-body main .view-semester-container .all-courses .header {
+body main .view-semester-container .all-courses .header, body main .view-semester-container .all-registrations .header {
   font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-body main .view-semester-container .all-courses .courses .course-container {
+body main .view-semester-container .all-courses .courses .course-container, body main .view-semester-container .all-registrations .courses .course-container {
   padding: 5px;
 }
-body main .view-semester-container .all-courses .courses .course-container .course {
+body main .view-semester-container .all-courses .courses .course-container .course, body main .view-semester-container .all-registrations .courses .course-container .course {
   display: block;
   border: 1px solid #9090a7;
   border-left: 5px solid #9090a7;
@@ -1141,27 +1168,27 @@ body main .view-semester-container .all-courses .courses .course-container .cour
   border-radius: 10px;
   padding: 1.5rem 0.5rem;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .course-code {
+body main .view-semester-container .all-courses .courses .course-container .course .course-code, body main .view-semester-container .all-registrations .courses .course-container .course .course-code {
   font-size: 2rem;
   font-family: "Gemunu Libre", sans-serif;
 }
-body main .view-semester-container .all-courses .courses .course-container .course:hover {
+body main .view-semester-container .all-courses .courses .course-container .course:hover, body main .view-semester-container .all-registrations .courses .course-container .course:hover {
   border-color: #00cfdd;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
   background-color: #1d5461;
 }
-body main .view-semester-container .all-courses .courses .course-container .course.drop-course {
+body main .view-semester-container .all-courses .courses .course-container .course.drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course {
   border: 1px solid #ff8080;
   border-left: 5px solid #ff8080;
   border-right: 5px solid #ff8080;
   background-color: rgba(237, 41, 41, 0.1);
 }
-body main .view-semester-container .all-courses .courses .course-container .course.drop-course:hover {
+body main .view-semester-container .all-courses .courses .course-container .course.drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course:hover {
   border-color: #ff8080;
   box-shadow: 0 0 10px #28293d;
   background-color: rgba(237, 41, 41, 0.2);
 }
-body main .view-semester-container .all-courses .courses .course-container .adder {
+body main .view-semester-container .all-courses .courses .course-container .adder, body main .view-semester-container .all-registrations .courses .course-container .adder {
   text-align: center;
   width: 100%;
   background-color: rgba(123, 144, 208, 0.5);
@@ -1170,10 +1197,10 @@ body main .view-semester-container .all-courses .courses .course-container .adde
   border: 0;
   transition: all 0.2s;
 }
-body main .view-semester-container .all-courses .courses .course-container .adder i {
+body main .view-semester-container .all-courses .courses .course-container .adder i, body main .view-semester-container .all-registrations .courses .course-container .adder i {
   font-size: 4rem;
 }
-body main .view-semester-container .all-courses .courses .course-container .adder:hover {
+body main .view-semester-container .all-courses .courses .course-container .adder:hover, body main .view-semester-container .all-registrations .courses .course-container .adder:hover {
   opacity: 0.8;
 }
 body main .view-semester-container .semester-info {
@@ -1188,6 +1215,39 @@ body main .view-semester-container .semester-info i.bg {
   position: absolute;
   bottom: -2rem;
   right: -1.5rem;
+}
+body main .view-semester-container .students-list {
+  padding: 1rem;
+}
+body main .view-semester-container .students-list .student {
+  background-color: #414958;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 15px;
+  margin: 3px;
+  position: relative;
+  overflow: hidden;
+}
+body main .view-semester-container .students-list .student .info div {
+  width: 100%;
+  text-align: left;
+}
+body main .view-semester-container .students-list .student .info .reg-no {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  color: #9090a7;
+}
+body main .view-semester-container .students-list .student .info a {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+body main .view-semester-container .students-list .student .info a i {
+  border-radius: 10px 0 0 0;
+  padding: 7px;
+  background-color: rgba(124, 105, 105, 0.386);
+  color: rgb(255, 120, 108);
+  font-size: 1.3rem;
 }
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row {
   margin-bottom: 2rem;
