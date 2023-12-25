@@ -24,8 +24,8 @@ def add_course_to_enrollments(course: Course):
 
 def create_course_results(course: Course):
     object_prototypes = []
-    for student in course.semester.session.studentaccount_set.all():
-        object_prototypes.append(CourseResult(student=student, course=course))
+    for enroll in course.semester.semesterenroll_set.all():
+        object_prototypes.append(CourseResult(student=enroll.student, course=course))
     
     CourseResult.objects.bulk_create(object_prototypes)
 
