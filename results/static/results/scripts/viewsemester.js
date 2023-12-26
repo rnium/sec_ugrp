@@ -95,7 +95,7 @@ function getNewCourseData() {
     let partBMarksIn = parseFloat($("#partBmarksInput").val().trim());
     let partBMarksInFinal = parseFloat($("#partBmarksInputFinal").val().trim());
     let incourseMarksIn = parseFloat($("#inCourseMarksInput").val().trim());
-    
+    let selectedCourseType = $('input[name="courseTypeOptions"]:checked').val();
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
     
@@ -111,7 +111,7 @@ function getNewCourseData() {
         return false;
     }
 
-    if (courseCodeIn.length == 0 | courseTitleIn.length == 0) {
+    if (courseCodeIn.length == 0 | courseTitleIn.length == 0 | selectedCourseType.length == 0) {
         $("#createCourseAlert").text("Please fill all the fields");
         $("#createCourseAlert").show()
         return false;
@@ -141,6 +141,7 @@ function getNewCourseData() {
         "part_B_marks": partBMarksIn,
         "part_B_marks_final": partBMarksInFinal,
         "incourse_marks": incourseMarksIn,
+        "is_theory_course": (selectedCourseType == 'theory'),
     }
 
     return data;

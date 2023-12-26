@@ -319,11 +319,11 @@
                             <div class="col-md-12 mt-2">
                                 <span class="text-muted me-3 ms-2">Course Type:</span>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" checked="checked" name="courseTypeOptions" id="courseTypeTheory" value="theory">
+                                    <input class="form-check-input" type="radio" {% if course.is_theory_course %}checked="checked"{% endif %} name="courseTypeOptions" id="courseTypeTheory" value="theory">
                                     <label class="form-check-label" for="courseTypeTheory">Theory</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="courseTypeOptions" id="courseTypeLab" value="lab">
+                                    <input class="form-check-input" type="radio" {% if not course.is_theory_course %}checked="checked"{% endif %} name="courseTypeOptions" id="courseTypeLab" value="lab">
                                     <label class="form-check-label" for="courseTypeLab">Lab</label>
                                 </div>
                             </div>
