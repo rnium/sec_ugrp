@@ -320,9 +320,9 @@ function generateRowElements(record) {
         lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">Null</td>`
     }
     if (grade_point != null) {
-        gpContainer = `<td data-registration=${registration} class="" id="grade-point-${registration}">${grade_point}</td>`
+        gpContainer = `<td data-registration=${registration} class="themetext" id="grade-point-${registration}">${grade_point}</td>`
     } else {
-        gpContainer = `<td data-registration=${registration} id="grade-point-${registration}" class="">Undefined</td>`
+        gpContainer = `<td data-registration=${registration} id="grade-point-${registration}" class="themetext">Undefined</td>`
     }
     
     const elements = {
