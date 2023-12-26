@@ -24,6 +24,20 @@ function calculateLetterGrade(obtainedScore, maxMarks) {
     return null; // Return null if grade is not found in the schema
 }
 
+function calculateGradePoint(obtainedScore, maxMarks) {
+    if (obtainedScore === null || obtainedScore === undefined) {
+        return null;
+    }
+    const score = (obtainedScore / maxMarks) * 100;
+    for (const schema of Object.values(SEC_GRADING_SCHEMA)) {
+        if (schema.min <= score && score <= schema.max) {
+            return schema.grade_point;
+        }
+    }
+    return null; // Return null if grade point is not found in the schema
+}
+
+
 
 function showModal(id) {
     const elem = document.getElementById(id)
@@ -251,10 +265,13 @@ function updateLG(registration) {
     if (!isNaN(total_score)) {
         let total = convertFloat(total_score);
         let letter_grade = calculateLetterGrade(total, course_total_marks);
+        let grade_point = calculateGradePoint(total, course_total_marks);
         console.log(letter_grade);
         $(`#letter-grade-${registration}`).removeClass('pending');
         $(`#letter-grade-${registration}`).text(letter_grade);
+        $(`#grade-point-${registration}`).text(grade_point);
     } else {
+        $(`#grade-point-${registration}`).text("Undefined");
         $(`#letter-grade-${registration}`).text('Null');
         $(`#letter-grade-${registration}`).addClass('pending');
     }
@@ -288,8 +305,10 @@ function generateRowElements(record) {
     const incourseScore = record.incourse_score;
     const total_score = record.total_score;
     const letter_grade = record.letter_grade;
+    const grade_point = record.grade_point;
     let totalContainer = "";
     let lgContainer = "";
+    let gpContainer = "";
     if (total_score != null) {
         totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(total_score)}</td>`
     } else {
@@ -299,6 +318,11 @@ function generateRowElements(record) {
         lgContainer = `<td data-registration=${registration} class="total-score" id="letter-grade-${registration}">${letter_grade}</td>`
     } else {
         lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">Null</td>`
+    }
+    if (grade_point != null) {
+        gpContainer = `<td data-registration=${registration} class="" id="grade-point-${registration}">${grade_point}</td>`
+    } else {
+        gpContainer = `<td data-registration=${registration} id="grade-point-${registration}" class="">Undefined</td>`
     }
     
     const elements = {
@@ -310,6 +334,7 @@ function generateRowElements(record) {
         inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} ${is_running_semester ? '': "disabled"}>`,
         totalContainer: totalContainer,
         lgContainer: lgContainer,
+        gpContainer: gpContainer,
         name: name
     }
     return elements;
@@ -359,6 +384,7 @@ function render_rows_labCourse(response) {
                         <td class="inp-con">
                             ${fields.TotalScoreInp}
                         </td>
+                        ${fields.gpContainer}
                         ${fields.lgContainer}
                     </tr>`;
         rows += row;
@@ -473,6 +499,7 @@ function get_header_row_columns(response) {
         return `<th>Registration No</th>
                 <th>Student Name</th>
                 <th>Total [${course_total_marks}]</th>
+                <th>GP</th>
                 <th>LG</th>`;
     }
 }
