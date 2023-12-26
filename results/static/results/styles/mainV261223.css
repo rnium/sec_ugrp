@@ -398,7 +398,7 @@ body.light .view-course-container .score-board table tbody tr td.pending {
   background-color: #ff8801;
   color: #28293d;
 }
-body.light .view-course-container .score-board table tbody tr td.student-name {
+body.light .view-course-container .score-board table tbody tr td.student-name, body.light .view-course-container .score-board table tbody tr td.themetext {
   color: #555870 !important;
 }
 body.light .view-course-container .score-board table tbody tr.drop_course {
@@ -1095,7 +1095,7 @@ body main .view-course-container .profile-card .inner .session span {
 body main .view-course-container .profile-card .inner .session .dept {
   font-weight: 500;
 }
-body main .view-course-container td.student-name {
+body main .view-course-container td.student-name, body main .view-course-container td.themetext {
   color: #ebeaef;
 }
 body main .view-semester-container {
