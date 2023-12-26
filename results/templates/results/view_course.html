@@ -288,31 +288,31 @@
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput part-x-marks" id="partAmarksInput" placeholder="" value="{{course.part_A_marks}}">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partAmarksInput" placeholder="" {% if course.is_theory_course %} value="{{course.part_A_marks}}" {% endif %}>
                                     <label for="partAmarksInput">Part A marks</label>
                                 </div>              
                             </div>
                             <div class="col-md-6 ps-1">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput" id="partAmarksInputFinal" placeholder="" value="{{course.part_A_marks_final}}">
+                                    <input type="text" class="form-control marksinput" id="partAmarksInputFinal" placeholder="" {% if course.is_theory_course %} value="{{course.part_A_marks_final}}" {% endif %}>
                                     <label for="partAmarksInputFinal">Part A Final Marks</label>
                                 </div>
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput part-x-marks" id="partBmarksInput" placeholder="" value="{{course.part_B_marks}}">
+                                    <input type="text" class="form-control marksinput part-x-marks" id="partBmarksInput" placeholder="" {% if course.is_theory_course %} value="{{course.part_B_marks}}" {% endif %}>
                                     <label for="partBmarksInput">Part B marks</label>
                                 </div>              
                             </div> 
                             <div class="col-md-6 ps-1">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control marksinput" id="partBmarksInputFinal" placeholder="" value="{{course.part_B_marks}}">
+                                    <input type="text" class="form-control marksinput" id="partBmarksInputFinal" placeholder="" {% if course.is_theory_course %} value="{{course.part_B_marks_final}}" {% endif %}>
                                     <label for="partBmarksInputFinal">Part B Final Marks</label>
                                 </div>              
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control marksinput" id="inCourseMarksInput" placeholder="" value="{{course.incourse_marks}}">
+                                    <input type="text" class="form-control marksinput" id="inCourseMarksInput" placeholder="" {% if course.is_theory_course %} value="{{course.incourse_marks}}" {% endif %}>
                                     <label for="inCourseMarksInput">Termtest marks</label>
                                 </div>
                             </div>

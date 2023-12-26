@@ -99,7 +99,7 @@ function getNewCourseData() {
     let is_theory_course = (selectedCourseType == 'theory')
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
-    
+    console.log(is_theory_course);
     if (is_theory_course) {
         if (isNaN(totalMarksIn)
             || isNaN(creditsIn) 
@@ -113,7 +113,7 @@ function getNewCourseData() {
             return false;
         }
     } else {
-        if (isNaN(totalMarksIn) || isNaN(creditsIn) ) {
+        if (isNaN(totalMarksIn) || isNaN(creditsIn)) {
             $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
             $("#createCourseAlert").show()
             return false;
