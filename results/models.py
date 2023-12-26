@@ -166,7 +166,7 @@ class SemesterEnroll(models.Model):
     semester_gpa = models.FloatField(null=True, blank=True)
     
     class Meta:
-        ordering = ["student__registration"]
+        ordering = ["-student__is_regular", "student__registration"]
         constraints = [
             models.UniqueConstraint(fields=['semester', 'student'], name="one_enroll_per_semester")
         ]
