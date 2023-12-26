@@ -96,19 +96,33 @@ function getNewCourseData() {
     let partBMarksInFinal = parseFloat($("#partBmarksInputFinal").val().trim());
     let incourseMarksIn = parseFloat($("#inCourseMarksInput").val().trim());
     let selectedCourseType = $('input[name="courseTypeOptions"]:checked').val();
+    let is_theory_course = (selectedCourseType == 'theory')
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
     
-    if (isNaN(totalMarksIn)
-        | isNaN(creditsIn) 
-        | isNaN(partAMarksIn) 
-        | isNaN(partBMarksIn) 
-        | isNaN(incourseMarksIn) 
-        | isNaN(partAMarksInFinal)
-        | isNaN(partBMarksInFinal)) {
-        $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
-        $("#createCourseAlert").show()
-        return false;
+    if (is_theory_course) {
+        if (isNaN(totalMarksIn)
+            || isNaN(creditsIn) 
+            || isNaN(partAMarksIn)
+            || isNaN(partBMarksIn) 
+            || isNaN(incourseMarksIn) 
+            || isNaN(partAMarksInFinal)
+            || isNaN(partBMarksInFinal)) {
+            $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
+            $("#createCourseAlert").show()
+            return false;
+        }
+    } else {
+        if (isNaN(totalMarksIn) || isNaN(creditsIn) ) {
+            $("#createCourseAlert").text("Invalid Input(s), please fill correctly");
+            $("#createCourseAlert").show()
+            return false;
+        }
+        partAMarksIn = 0;
+        partAMarksInFinal = 0;
+        partBMarksIn = 0;
+        partBMarksInFinal = 0;
+        incourseMarksIn = 0;
     }
 
     if (courseCodeIn.length == 0 | courseTitleIn.length == 0 | selectedCourseType.length == 0) {
@@ -121,9 +135,9 @@ function getNewCourseData() {
         $("#createCourseAlert").show()
         return false;
     }
-    if ((partAMarksInFinal+partBMarksInFinal+incourseMarksIn) > totalMarksIn) {
+    if (((partAMarksInFinal+partBMarksInFinal+incourseMarksIn) > totalMarksIn) && is_theory_course) {
         $("#createCourseAlert").text("Invalid Marks Distribution!");
-        $("#createCourseAlert").show()
+        $("#createCourseAlert").show();
         return false;
     }
     else {
@@ -141,7 +155,7 @@ function getNewCourseData() {
         "part_B_marks": partBMarksIn,
         "part_B_marks_final": partBMarksInFinal,
         "incourse_marks": incourseMarksIn,
-        "is_theory_course": (selectedCourseType == 'theory'),
+        "is_theory_course": is_theory_course,
     }
 
     return data;
