@@ -220,10 +220,22 @@ body.light .view-semester-container .all-courses .course .course-title {
 body.light .view-semester-container .all-courses .course .credits i, body.light .view-semester-container .all-courses .course span {
   color: rgb(106, 148, 148) !important;
 }
+body.light .view-semester-container .all-courses .course .lab-course-badge {
+  background-color: #41709d !important;
+}
+body.light .view-semester-container .all-courses .course .lab-course-badge i, body.light .view-semester-container .all-courses .course .lab-course-badge span {
+  color: #ebeaef !important;
+}
 body.light .view-semester-container .all-courses .course:hover {
   border-color: #3568d4 !important;
   box-shadow: 0 0 10px rgba(96, 114, 128, 0.2) !important;
   background-color: rgba(0, 38, 255, 0.2) !important;
+}
+body.light .view-semester-container .all-courses .course:hover .lab-course-badge {
+  background-color: #3568d4 !important;
+}
+body.light .view-semester-container .all-courses .course:hover .lab-course-badge i, body.light .view-semester-container .all-courses .course:hover .lab-course-badge span {
+  color: #ebeaef !important;
 }
 body.light .view-semester-container .all-courses .course.drop-course {
   border: 1px solid #ff8080 !important;
@@ -231,10 +243,16 @@ body.light .view-semester-container .all-courses .course.drop-course {
   border-right: 5px solid #ff8080 !important;
   background-color: rgba(237, 41, 41, 0.1) !important;
 }
+body.light .view-semester-container .all-courses .course.drop-course .lab-course-badge {
+  background-color: #ff8080 !important;
+}
+body.light .view-semester-container .all-courses .course.drop-course .lab-course-badge i, body.light .view-semester-container .all-courses .course.drop-course .lab-course-badge span {
+  color: #555870 !important;
+}
 body.light .view-semester-container .all-courses .course.drop-course:hover {
   border-color: #ff8080;
   box-shadow: 0 0 10px #28293d;
-  background-color: rgba(237, 41, 41, 0.12) !important;
+  background-color: rgba(237, 41, 41, 0.2) !important;
 }
 body.light .view-semester-container .tabulation .section-title {
   color: #9090a7 !important;
