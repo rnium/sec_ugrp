@@ -15,9 +15,13 @@
         <table>
             <thead>
                 <th>Registration No.</th>
+                {% if course.is_theory_course %}
                 <th>Part A</th>
                 <th>Part B</th>
                 <th>Term Test</th>
+                {% else %}
+                <th>Student Name</th>
+                {% endif %}
                 <th>Total</th>
                 <th>GP</th>
                 <th>LG</th>
@@ -25,9 +29,13 @@
             {% for result in course.courseresult_set.all %}
             <tr>
                 <td>{{result.student.registration}}</td>
+                {% if course.is_theory_course %}
                 <td>{{result.part_A_score}}</td>
                 <td>{{result.part_B_score}}</td>
                 <td>{{result.incourse_score}}</td>
+                {% else %}
+                <td>{{result.student.student_name}}</td>
+                {% endif %}
                 <td>{{result.total_score}}</td>
                 <td>{{result.grade_point}}</td>
                 <td>{{result.letter_grade}}</td>
