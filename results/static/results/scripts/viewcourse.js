@@ -1,3 +1,30 @@
+const SEC_GRADING_SCHEMA = {
+    "A+": {"min": 79, "max":100, "grade_point":4.0},
+    "A": {"min": 75, "max":78.999, "grade_point":3.75},
+    "A-": {"min": 70, "max":74.999, "grade_point":3.50},
+    "B+": {"min": 65, "max":69.999, "grade_point":3.25},
+    "B": {"min": 60, "max":64.999, "grade_point":3.00},
+    "B-": {"min": 55, "max":59.999, "grade_point":2.75},
+    "C+": {"min": 50, "max":54.999, "grade_point":2.50},
+    "C": {"min": 45, "max":49.999, "grade_point":2.25},
+    "C-": {"min": 40, "max":44.999, "grade_point":2.00},
+    "F": {"min": 0, "max":39.999, "grade_point":0.00}
+};
+
+function calculateLetterGrade(obtainedScore, maxMarks) {
+    if (obtainedScore === null || obtainedScore === undefined) {
+        return null;
+    }
+    const score = (obtainedScore / maxMarks) * 100;
+    for (const [LG, schema] of Object.entries(SEC_GRADING_SCHEMA)) {
+        if (schema.min <= score && score <= schema.max) {
+            return LG;
+        }
+    }
+    return null; // Return null if grade is not found in the schema
+}
+
+
 function showModal(id) {
     const elem = document.getElementById(id)
     const mBootstrap = new bootstrap.Modal(elem);
@@ -159,6 +186,32 @@ function processData() {
 }
 
 
+function processLabcourseData() {
+    let dataset = {}
+    let inp_fields = $(".total-inp");
+    $.each(inp_fields, function (indexInArray, valueOfElement) { 
+        const elem_id = valueOfElement.id;
+        const elem_selector = `#${elem_id}`;
+        const registration = $(elem_selector).data('registration')
+        const value = $(elem_selector).val()
+        let score = null;
+        if (value.length > 0) {
+            let score_number = Number(value);
+            if (!isNaN(score_number)) {
+                score = score_number;
+            }
+        }
+        // create the entry for the registration_no
+        if (!(registration in dataset)) {
+            dataset[registration] = {}
+        }
+        dataset[registration]['total_score'] = score;
+    });
+    
+    return dataset
+}
+
+
 
 function updateTotalMarks(registration) {
     let a_score = parseFloat($(`#part-A-${registration}`).val().trim());
@@ -192,6 +245,21 @@ function updateTotalMarks(registration) {
     }
 }
 
+
+function updateLG(registration) {
+    let total_score = parseFloat($(`#total-inp-${registration}`).val().trim());
+    if (!isNaN(total_score)) {
+        let total = convertFloat(total_score);
+        let letter_grade = calculateLetterGrade(total, course_total_marks);
+        console.log(letter_grade);
+        $(`#letter-grade-${registration}`).removeClass('pending');
+        $(`#letter-grade-${registration}`).text(letter_grade);
+    } else {
+        $(`#letter-grade-${registration}`).text('Null');
+        $(`#letter-grade-${registration}`).addClass('pending');
+    }
+}
+
 function activateScoreInputs() {
     $(".score-inp").on('keyup', function(){
         let registration = $(this).data('registration');
@@ -203,31 +271,51 @@ function activateScoreInputs() {
     })
 }
 
+function activateTotalScoreInput() {
+    $(".score-inp").on('keyup', function(){
+        let registration = $(this).data('registration');
+        const inp_id = $(this).attr('id');
+        check_input(inp_id)
+        updateLG(registration)
+    })
+}
 
 function generateRowElements(record) {
     const registration = record.student.registration;
+    const name = record.student.name;
     const partAscore = record.part_A_score;
     const partBscore = record.part_B_score;
     const incourseScore = record.incourse_score;
     const total_score = record.total_score;
+    const letter_grade = record.letter_grade;
     let totalContainer = "";
+    let lgContainer = "";
     if (total_score != null) {
         totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(total_score)}</td>`
     } else {
         totalContainer = `<td data-registration=${registration} id="total-${registration}" class="total-score pending">Pending</td>`
     }
+    if (letter_grade != null) {
+        lgContainer = `<td data-registration=${registration} class="total-score" id="letter-grade-${registration}">${letter_grade}</td>`
+    } else {
+        lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">Null</td>`
+    }
+    
     const elements = {
         partAcode: `<input type="text" data-registration=${registration} id="code-part-A-${registration}" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
         partBcode: `<input type="text" data-registration=${registration} id="code-part-B-${registration}" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
         partAscore: `<input type="text" data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
         partBscore: `<input type="text" data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
+        TotalScoreInp: `<input type="text" data-max="${course_total_marks}" id="total-inp-${registration}" data-registration=${registration} ${total_score != null ? `value="${total_score}" class="score-inp total-inp"` : 'class="score-inp empty total-inp"'} ${is_running_semester ? '': "disabled"}>`,
         inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} ${is_running_semester ? '': "disabled"}>`,
-        totalContainer: totalContainer
+        totalContainer: totalContainer,
+        lgContainer: lgContainer,
+        name: name
     }
     return elements;
 }
 
-function render_rows(response) {
+function render_rows_theoryCourse(response) {
     let rows = ""
     for (record of response) {
         let fields = generateRowElements(record);
@@ -252,6 +340,26 @@ function render_rows(response) {
                             ${fields.inCourseScore}
                         </td>
                         ${fields.totalContainer}
+                    </tr>`;
+        rows += row;
+    }
+    return rows;
+}
+
+function render_rows_labCourse(response) {
+    let rows = ""
+    for (record of response) {
+        let fields = generateRowElements(record);
+        let row_class = record.is_drop_course ? 'drop_course' : '';
+        let row = `<tr class="${row_class}">
+                        <td class="student-info">
+                            <a class="profile-link" style="cursor: pointer" data-courseresid="${record.id}">${record.student.registration}</a>
+                        </td>
+                        <td class="student-name">${fields.name}</td>
+                        <td class="inp-con">
+                            ${fields.TotalScoreInp}
+                        </td>
+                        ${fields.lgContainer}
                     </tr>`;
         rows += row;
     }
@@ -346,24 +454,41 @@ function generate_missing_entries() {
     });
 }
 
+function get_header_row_columns(response) {
+    if (is_theory_course) {
+        const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
+        const partB_conv_ratio = convertFloat(course_part_B_marks_final/course_partB_marks);
+        return `<th>Registration No</th>
+                <th>Part A Code</th>
+                <th>Part B Code</th>
+                <th>Part A [${course_partA_marks}]
+                    <div class="small text-info">conv. ratio: ${partA_conv_ratio}</div>
+                </th>
+                <th>Part B [${course_partB_marks}]
+                    <div class="small text-info">conv. ratio: ${partB_conv_ratio}</div>
+                </th>
+                <th>In Course [${course_incourse_marks}]</th>
+                <th>Total</th>`;
+    } else {
+        return `<th>Registration No</th>
+                <th>Student Name</th>
+                <th>Total [${course_total_marks}]</th>
+                <th>LG</th>`;
+    }
+}
+
 function insertTable(response) {
-    let rows = render_rows(response);
-    const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
-    const partB_conv_ratio = convertFloat(course_part_B_marks_final/course_partB_marks);
+    let rows;
+    if (is_theory_course) {
+        rows = render_rows_theoryCourse(response);
+    } else {
+        rows = render_rows_labCourse(response);
+    }
+    
     let table = `<table>
                     <thead>
                         <tr>
-                            <th>Registration No</th>
-                            <th>Part A Code</th>
-                            <th>Part B Code</th>
-                            <th>Part A [${course_partA_marks}]
-                                <div class="small text-info">conv. ratio: ${partA_conv_ratio}</div>
-                            </th>
-                            <th>Part B [${course_partB_marks}]
-                                <div class="small text-info">conv. ratio: ${partB_conv_ratio}</div>
-                            </th>
-                            <th>In Course [${course_incourse_marks}]</th>
-                            <th>Total</th>
+                            ${get_header_row_columns(response)}
                         </tr>
                     </thead>
                     <tbody>
@@ -374,7 +499,11 @@ function insertTable(response) {
     $("#tableContainer").html(table);
     $("#tablePlaceholder").hide(0, ()=>{
         $("#scoreBoard").show(0, function(){
-            activateScoreInputs()
+            if (is_theory_course) {
+                activateScoreInputs();
+            } else {
+                activateTotalScoreInput();
+            }
             activateEntryDetails()
         })
     });
@@ -727,7 +856,12 @@ $(document).ready( function() {
         if (!validated) {
             return;
         } else {
-            let data = processData()
+            let data;
+            if (is_theory_course) {
+                data = processData();
+            } else {
+                data = processLabcourseData();
+            }
             post_data(data)
         }
     })

@@ -340,6 +340,9 @@ class CourseResult(models.Model):
             totalScore = round_up_point_five(self.total_score)
             self.grade_point = calculate_grade_point(totalScore, self.course.total_marks)
             self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
+        else:
+            self.grade_point = None
+            self.letter_grade = None
         super().save(*args, **kwargs)
         # updating semester enrollment
         enrollment = self.course.enrollment.filter(student=self.student).first()

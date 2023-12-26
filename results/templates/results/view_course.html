@@ -477,6 +477,7 @@
     const course_result_delete_api = "{% url 'results:delete_course_result' %}";
     const generate_missing_entries_api = "{% url 'results:generate_missing_entries' course.id %}";
     const is_running_semester = ("{{course.semester.is_running}}" == "True");
+    const is_theory_course = ("{{course.is_theory_course}}" == 'True');
     const course_total_marks = {{course.total_marks}};
     const course_partA_marks = {{course.part_A_marks}};
     const course_partB_marks = {{course.part_B_marks}};

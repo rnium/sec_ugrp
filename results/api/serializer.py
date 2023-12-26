@@ -90,9 +90,13 @@ class StudentSerializer(ModelSerializer):
    
 class CourseResultSerializer(ModelSerializer):
     student = StudentSerializer(read_only=True)
+    is_theory_course = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = CourseResult
         exclude = ['updated', 'course']
+    
+    def get_is_theory_course(self, obj):
+        return obj.course.is_theory_course
 
 class StudentStatsSerializer(ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
