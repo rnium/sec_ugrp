@@ -92,6 +92,12 @@
                             <span class="roboto-font text-gray" style="font-size: 0.8rem;">{{course.num_pending_course}}/{{course.courseresult_set.count}} Pendings</span>
                         </div>
                     </div>
+                    {% if not course.is_theory_course %}
+                    <div class="lab-course-badge">
+                        <i class='bx bxs-flask'></i>
+                        <span>Lab</span>
+                    </div>
+                    {% endif %}
                 </a>
             </div>
             {% endfor %}
@@ -105,6 +111,12 @@
                         <i class='bx bx-unite text-gray fs-6 me-1'></i>
                         <span class="roboto-font text-gray" style="font-size: 0.8rem;">{{course.course_credit}} Credits</span>
                     </div>
+                    {% if not course.is_theory_course %}
+                    <div class="lab-course-badge">
+                        <i class='bx bxs-flask'></i>
+                        <span>Lab</span>
+                    </div>
+                    {% endif %}
                 </a>
             </div>
             {% endfor %}

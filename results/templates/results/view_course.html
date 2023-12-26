@@ -52,7 +52,7 @@
             </a>
         </div>
         <div class="course-info h4  text-center">
-            <div class="course-code">{{course.code}}</div>
+            <div class="course-code">{{course.code}} {% if not course.is_theory_course %}<span class="bg-secondary serif-font text-info shadow-sm px-2 rounded small">Lab</span>{% endif %} </div>
             <div class="title">
                 {{course.title}}
             </div>
