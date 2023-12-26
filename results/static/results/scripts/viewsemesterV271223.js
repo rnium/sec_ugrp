@@ -99,7 +99,7 @@ function getNewCourseData() {
     let is_theory_course = (selectedCourseType == 'theory')
     let courseCodeArray = courseCodeIn.split(" ")
     let courseCodeNumber = parseInt(courseCodeArray[1])
-    console.log(is_theory_course);
+    
     if (is_theory_course) {
         if (isNaN(totalMarksIn)
             || isNaN(creditsIn) 
