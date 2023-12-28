@@ -125,6 +125,9 @@ body.light .dept-tab-container .department-main .add-semester button:hover i, bo
 body.light .view-session-container .btn-container button i {
   color: #ff8801 !important;
 }
+body.light .view-session-container .btn-container button i.bx-export {
+  color: white !important;
+}
 body.light .view-session-container .btn-container button span {
   color: #555870;
 }
