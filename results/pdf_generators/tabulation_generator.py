@@ -17,8 +17,8 @@ h, w = TABLOID
 
 class SemesterDataContainer:
     def __init__(self, semester: Semester):
-        regular_coruses = sort_courses(semester.course_set.all(), semester.session.dept.name)
-        drop_courses = sort_courses(semester.drop_courses.all(), semester.session.dept.name)
+        regular_coruses = semester.course_set.all()
+        drop_courses = semester.drop_courses.all()
         self.semester = semester
         self.regular_courses = regular_coruses
         self.drop_courses = drop_courses

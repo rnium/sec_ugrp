@@ -112,8 +112,6 @@ class SemesterView(LoginRequiredMixin, DetailView):
         context =  super().get_context_data(**kwargs)
         semester = context['semester']
         context['request'] = self.request
-        context['courses_regular'] = sort_courses(semester.course_set.all(), semester.session.dept.name)
-        context['courses_drop'] = sort_courses(semester.drop_courses.all(), semester.session.dept.name)
         # drop courses semester for current semester
         
         if semester.is_running:
