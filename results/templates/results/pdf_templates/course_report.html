@@ -30,13 +30,13 @@
             <tr>
                 <td>{{result.student.registration}}</td>
                 {% if course.is_theory_course %}
-                <td>{{result.part_A_score}}</td>
-                <td>{{result.part_B_score}}</td>
-                <td>{{result.incourse_score}}</td>
+                <td>{% if result.part_A_score is None %}-{% else %}{{result.part_A_score}}{% endif %}</td>
+                <td>{% if result.part_B_score is None %}-{% else %}{{result.part_B_score}}{% endif %}</td>
+                <td>{% if result.incourse_score is None %}-{% else %}{{result.incourse_score}}{% endif %}</td>
                 {% else %}
                 <td>{{result.student.student_name}}</td>
                 {% endif %}
-                <td>{{result.total_score}}</td>
+                <td>{% if result.total_score %}-{% else %}{{result.total_score}}{% endif %}</td>
                 <td>{{result.grade_point}}</td>
                 <td>{{result.letter_grade}}</td>
             </tr>
