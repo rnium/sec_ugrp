@@ -112,6 +112,8 @@ class SemesterView(LoginRequiredMixin, DetailView):
         context =  super().get_context_data(**kwargs)
         semester = context['semester']
         context['request'] = self.request
+        context['courses_regular'] = semester.course_set.all().order_by('id')
+        context['courses_drop'] = semester.drop_courses.all().order_by('id')
         # drop courses semester for current semester
         
         if semester.is_running:

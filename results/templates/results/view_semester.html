@@ -77,7 +77,7 @@
         </div>
         <div class="courses row p-4">
             {% if semester.has_courses %}
-            {% for course in semester.course_set.all %}
+            {% for course in courses_regular %}
             <div class="col-md-6 col-lg-4 course-container">
                 <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}">
                     <div class="course-code text-center">{{course.code}}</div>
@@ -102,7 +102,7 @@
             </div>
             {% endfor %}
             {% comment %} Drop Courses {% endcomment %}
-            {% for course in semester.drop_courses.all %}
+            {% for course in courses_drop %}
             <div class="col-md-6 col-lg-4 course-container">
                 <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester course.code %}">
                     <div class="course-code text-center">{{course.code|upper}}</div>

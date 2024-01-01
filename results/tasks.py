@@ -44,6 +44,8 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                 user = User.objects.filter(username=sem_data['semester_meta']['added_by']).first()
                 if user:
                     sem_data['semester_meta']['added_by'] = user
+                else:
+                    sem_data['semester_meta']['added_by'] = None
             semester = Semester(**sem_data['semester_meta'])
             semester.save()
             count += 1
@@ -58,6 +60,8 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                     user = User.objects.filter(username=course_data['course_meta']['added_by']).first()
                     if user:
                         course_data['course_meta']['added_by'] = user
+                    else:
+                        course_data['course_meta']['added_by'] = None
                 course = Course(**course_data['course_meta'])
                 course.save()
                 count += 1
