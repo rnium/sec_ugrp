@@ -13,6 +13,7 @@ from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import get_transcript
 from results.utils import get_ordinal_number, render_error
+from results.api.utils import sort_courses
 from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
 import json
@@ -109,9 +110,12 @@ class SemesterView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        context['request'] = self.request
-        # drop courses semester for current semester
         semester = context['semester']
+        context['request'] = self.request
+        context['courses_regular'] = sort_courses(semester.course_set.all(), semester.session.dept.name)
+        context['courses_drop'] = sort_courses(semester.drop_courses.all(), semester.session.dept.name)
+        # drop courses semester for current semester
+        
         if semester.is_running:
             drop_semesters = Semester.objects.filter(is_running = True, 
                                                      year__lt = semester.year, 
