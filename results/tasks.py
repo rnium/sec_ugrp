@@ -54,7 +54,7 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
             # Courses
             for course_data in sem_data['courses']:
                 prev_id = course_data['course_meta']['id']
-                course_data['course_meta'].pop('id')
+                # course_data['course_meta'].pop('id')
                 course_data['course_meta']['semester'] = semester
                 if course_data['course_meta']['added_by']:
                     user = User.objects.filter(username=course_data['course_meta']['added_by']).first()

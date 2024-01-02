@@ -115,6 +115,19 @@
                   {% endfor %}
                 </div>
               </div>
+              
+            </div>
+            <div class="col-lg-5 right-col">
+              <div class="row mb-5 px-2">
+                <div class="col-lg-3 class-position">
+                  <div class="text-center position"><span class="num" id="position-num">#</span><span class="ordinal" id="position-suffix">*</span></div>
+                  <div class="label">in class</div>
+                </div>
+                <div class="col-lg-9 d-flex">
+                  <canvas id="cgpaChart" height="130"></canvas>
+                </div>
+              </div>
+
               <div class="card mb-4">
                 <div class="card-body">
                   <div class="row">
@@ -128,7 +141,7 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <p class="mb-0">Department</p>
+                      <p class="mb-0">Dept.</p>
                     </div>
                     <div class="col-sm-9">
                       <p class="text-muted mb-0">{{student.session.dept.fullname}}</p>
@@ -161,17 +174,6 @@
                       <p class="text-muted mb-0">{% if student.data.address %}{{student.data.address}} {% else %}[empty]{% endif %}</p>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-5 right-col">
-              <div class="row mb-5 px-2">
-                <div class="col-lg-3 class-position">
-                  <div class="text-center position"><span class="num" id="position-num">#</span><span class="ordinal" id="position-suffix">*</span></div>
-                  <div class="label">in class</div>
-                </div>
-                <div class="col-lg-9 d-flex">
-                  <canvas id="cgpaChart" height="130"></canvas>
                 </div>
               </div>
 
