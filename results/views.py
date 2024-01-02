@@ -26,6 +26,10 @@ def user_is_super_OR_dept_admin(request):
         return False
     
 
+def user_is_superAdmin(user):
+    return hasattr(user, 'adminaccount') and user.adminaccount.is_super_admin
+    
+
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "results/dashboard.html"
     
@@ -219,7 +223,7 @@ def download_semester_gradesheet(request, registration, semester_no):
 
 @login_required
 def download_transcript(request, registration):
-    has_permission = user_is_super_OR_dept_admin(request)
+    has_permission = user_is_superAdmin(request.user)
     if not has_permission:
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
