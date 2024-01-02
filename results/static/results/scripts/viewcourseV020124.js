@@ -227,7 +227,7 @@ function processLabcourseData() {
 
 
 
-function updateTotalMarks(registration) {
+function updateAndGetTotalMarks(registration) {
     let a_score = parseFloat($(`#part-A-${registration}`).val().trim());
     let b_score = parseFloat($(`#part-B-${registration}`).val().trim());
     let incourse_score = parseFloat($(`#incourse-raw-${registration}`).val().trim());
@@ -253,15 +253,20 @@ function updateTotalMarks(registration) {
             $(`#total-${registration}`).text(total);
             $(`#total-${registration}`).removeClass("pending");
         }
+        return total
     } else {
         $(`#total-${registration}`).text("Pending");
         $(`#total-${registration}`).addClass('pending');
+        return null;
     }
 }
 
 
-function updateLG(registration) {
-    let total_score = parseFloat($(`#total-inp-${registration}`).val().trim());
+function updateLG(registration, total=null, isLabCourse=true) {
+    let total_score = total;
+    if (isLabCourse) {
+        total_score = parseFloat($(`#total-inp-${registration}`).val().trim());
+    }
     if (!isNaN(total_score)) {
         let total = convertFloat(total_score);
         let letter_grade = calculateLetterGrade(total, course_total_marks);
@@ -284,7 +289,8 @@ function activateScoreInputs() {
         // update input class based on values
         check_input(inp_id)
         // update total marks after all other checkings
-        updateTotalMarks(registration)
+        let total = updateAndGetTotalMarks(registration)
+        updateLG(registration, total, false);
     })
 }
 
@@ -349,12 +355,6 @@ function render_rows_theoryCourse(response) {
                         <td class="student-info">
                             <a class="profile-link" style="cursor: pointer" data-courseresid="${record.id}">${record.student.registration}</a>
                         </td>
-                        <td class="code-inp-con">
-                            ${fields.partAcode}
-                        </td>
-                        <td class="code-inp-con">
-                            ${fields.partBcode}
-                        </td>
                         <td class="inp-con">
                             ${fields.partAscore}
                         </td>
@@ -365,6 +365,8 @@ function render_rows_theoryCourse(response) {
                             ${fields.inCourseScore}
                         </td>
                         ${fields.totalContainer}
+                        ${fields.lgContainer}
+                        ${fields.gpContainer}
                     </tr>`;
         rows += row;
     }
@@ -485,8 +487,6 @@ function get_header_row_columns(response) {
         const partA_conv_ratio = convertFloat(course_part_A_marks_final/course_partA_marks);
         const partB_conv_ratio = convertFloat(course_part_B_marks_final/course_partB_marks);
         return `<th>Registration No</th>
-                <th>Part A Code</th>
-                <th>Part B Code</th>
                 <th>Part A [${course_partA_marks}]
                     <div class="small text-info">conv. ratio: ${partA_conv_ratio}</div>
                 </th>
@@ -494,7 +494,9 @@ function get_header_row_columns(response) {
                     <div class="small text-info">conv. ratio: ${partB_conv_ratio}</div>
                 </th>
                 <th>In Course [${course_incourse_marks}]</th>
-                <th>Total</th>`;
+                <th>Total</th>
+                <th>LG</th>
+                <th>GP</th>`;
     } else {
         return `<th>Registration No</th>
                 <th>Student Name</th>
