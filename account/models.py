@@ -155,4 +155,12 @@ class StudentAccount(BaseAccount):
             if year_enrolls.count() == 2:
                 years.append(year)
         return years
-        
+    
+    @property
+    def is_transcript_available(self):
+        semesters = 0
+        for semester_no in range(1, 9):
+            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=semester_no, semester__is_running=False, semester_gpa__isnull=False)
+            if year_enrolls.count():
+                semesters += 1
+        return True if semesters == 8 else False

@@ -36,7 +36,7 @@
                 {% else %}
                 <td>{{result.student.student_name}}</td>
                 {% endif %}
-                <td>{% if result.total_score %}-{% else %}{{result.total_score}}{% endif %}</td>
+                <td>{% if result.total_score is None %}-{% else %}{{result.total_score}}{% endif %}</td>
                 <td>{{result.grade_point}}</td>
                 <td>{{result.letter_grade}}</td>
             </tr>
