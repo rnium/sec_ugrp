@@ -173,28 +173,6 @@ function processData() {
             dataset[registration]['incourse_score'] = score;
         }
     });
-    // second: Code inputs
-    let code_inp_fields = $(".code-inp");
-    $.each(code_inp_fields, function (indexInArray, valueOfElement) { 
-        const elem_id = valueOfElement.id;
-        const elem_selector = `#${elem_id}`;
-        const registration = $(elem_selector).data('registration')
-        let value = $(elem_selector).val().trim()
-        if (value.length == 0) {
-            value = null
-        }
-        const partAcode_id = `code-part-A-${registration}`;
-        const partBcode_id = `code-part-B-${registration}`;
-        // create the entry for the registration_no
-        if (!(registration in dataset)) {
-            dataset[registration] = {}
-        }
-        if (elem_id == partAcode_id) {
-            dataset[registration]['part_A_code'] = value;
-        } else if (elem_id == partBcode_id) {
-            dataset[registration]['part_B_code'] = value;
-        }
-    });
     
     return dataset
 }
@@ -271,7 +249,6 @@ function updateLG(registration, total=null, isLabCourse=true) {
         let total = convertFloat(total_score);
         let letter_grade = calculateLetterGrade(total, course_total_marks);
         let grade_point = calculateGradePoint(total, course_total_marks);
-        console.log(letter_grade);
         $(`#letter-grade-${registration}`).removeClass('pending');
         $(`#letter-grade-${registration}`).text(letter_grade);
         $(`#grade-point-${registration}`).text(grade_point);
