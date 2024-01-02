@@ -7,13 +7,15 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from io import BytesIO
 import fitz
 from PIL import Image
+import math
 from results.models import Semester, SemesterEnroll, CourseResult
 from typing import List, Tuple, Dict
-from results.utils import get_ordinal_number, get_letter_grade
+from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
 
 TABLE_FONT_SIZE = 10
 h, w = TABLOID
+
 
 class SemesterDataContainer:
     def __init__(self, semester: Semester):
@@ -46,7 +48,7 @@ def cumulative_semester_result(student, semesters):
     else:
         overall_grade_point = (total_points/total_credits)
         overall_letter_grade = get_letter_grade(overall_grade_point)
-        result['grade_point'] = round(overall_grade_point, 2)
+        result['grade_point'] = round_up(overall_grade_point, 2)
         result['letter_grade'] = overall_letter_grade
         result['total_credits'] = total_credits
     # {'grade_point':round(overall_grade_point, 2), 'letter_grade':overall_letter_grade, 'total_credits':total_credits},

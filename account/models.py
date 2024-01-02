@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.templatetags.static import static
 from results.models import Department, Session, CourseResult, SemesterEnroll
+from results.utils import round_up
 
 
 class InviteToken(models.Model):
@@ -134,7 +135,7 @@ class StudentAccount(BaseAccount):
     def student_cgpa(self):
         if self.total_points:
             cgpa = self.raw_cgpa
-            return "{}".format(round(cgpa, 2))
+            return "{}".format(round_up(cgpa, 2))
         else:
             return None
     

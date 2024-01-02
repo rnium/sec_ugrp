@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from typing import Dict
+import math
 
 SEC_GRADING_SCHEMA = {
     "A+" : {"min": 79, "max":100, "grade_point":4.0},
@@ -61,6 +62,11 @@ def round_up_point_five(num):
         return num_int+1;
     else:
         return num
+    
+    
+def round_up(n, decimals=0):
+    multiplier = 10 ** decimals
+    return math.floor(n*multiplier + 0.5) / multiplier
 
 
 def session_letter_grades_count(session) -> Dict[str, str]:
