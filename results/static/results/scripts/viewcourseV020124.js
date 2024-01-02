@@ -293,12 +293,12 @@ function generateRowElements(record) {
     let lgContainer = "";
     let gpContainer = "";
     if (total_score != null) {
-        totalContainer = `<td data-registration=${registration} class="total-score" id="total-${registration}">${convertFloat(total_score)}</td>`
+        totalContainer = `<td data-registration=${registration} class="total-score themetext" id="total-${registration}">${convertFloat(total_score)}</td>`
     } else {
         totalContainer = `<td data-registration=${registration} id="total-${registration}" class="total-score pending">Pending</td>`
     }
     if (letter_grade != null) {
-        lgContainer = `<td data-registration=${registration} class="total-score" id="letter-grade-${registration}">${letter_grade}</td>`
+        lgContainer = `<td data-registration=${registration} class="total-score themetext" id="letter-grade-${registration}">${letter_grade}</td>`
     } else {
         lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">Null</td>`
     }
