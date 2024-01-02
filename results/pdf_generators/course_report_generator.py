@@ -14,7 +14,8 @@ def get_fonts_css_txt(font_names):
     return css_text
 
 def render_coursereport(course):
-    html_text = render_to_string('results/pdf_templates/course_report.html', context={'course':course})
+    course_results = course.courseresult_set.all().order_by('-student__is_regular')
+    html_text = render_to_string('results/pdf_templates/course_report.html', context={'course':course, 'course_results':course_results})
     fonts = {
         'TimesNewRoman': 'timesnewroman.ttf',
         'TimesNewRomanBold': 'timesnewromanbold.ttf',

@@ -26,7 +26,7 @@
                 <th>GP</th>
                 <th>LG</th>
             </thead>
-            {% for result in course.courseresult_set.all %}
+            {% for result in course_results %}
             <tr>
                 <td>{{result.student.registration}}</td>
                 {% if course.is_theory_course %}
@@ -37,8 +37,8 @@
                 <td>{{result.student.student_name}}</td>
                 {% endif %}
                 <td>{% if result.total_score is None %}-{% else %}{{result.total_score}}{% endif %}</td>
-                <td>{{result.grade_point}}</td>
-                <td>{{result.letter_grade}}</td>
+                <td>{% if result.grade_point is None %}-{% else %}{{result.grade_point}}{% endif %}</td>
+                <td>{% if result.letter_grade is None %}-{% else %}{{result.letter_grade}}{% endif %}</td>
             </tr>
             {% endfor %}
         </table>
