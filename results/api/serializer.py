@@ -109,4 +109,7 @@ class StudentStatsSerializer(ModelSerializer):
     def get_name(self, obj):
         return obj.student_name
     def get_cgpa(self, obj):
-        return float(obj.student_cgpa)
+        if cgpa := obj.student_cgpa:
+            return float(cgpa)
+        else:
+            return 0 

@@ -856,7 +856,7 @@ def student_stats(request, registration):
     current_student = get_object_or_404(StudentAccount, registration=registration)
     current_student_cgpa = current_student.raw_cgpa
     session_students = current_student.session.studentaccount_set.all()
-    session_students_cgpa = [student.raw_cgpa for student in session_students]
+    session_students_cgpa = [student.raw_cgpa if student.raw_cgpa is not None else 0 for student in session_students]
     session_students_cgpa.sort(reverse=True)
     data = {
        'classes': {
@@ -866,7 +866,11 @@ def student_stats(request, registration):
             'F': 0,
         } 
     }
-    position_in_class = session_students_cgpa.index(current_student_cgpa) + 1
+    try:
+        position_in_class = session_students_cgpa.index(current_student_cgpa) + 1
+    except ValueError:
+        position_in_class = session_students.count()
+        
     data['position'] = position_in_class
     data['position_suffix'] = get_ordinal_suffix(position_in_class)
     data['letter_grade'] = get_letter_grade(current_student_cgpa)
