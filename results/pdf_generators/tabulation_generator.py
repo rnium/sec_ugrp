@@ -212,6 +212,10 @@ def render_normal_font_cell_style(num_rows: int, num_cols: int, nth_semester: in
         styles.append(('FONTNAME', (-2, i), (-2, i), 'Times-Roman'))
         if nth_semester > 1:
             styles.append(('FONTNAME', (-4, i), (-4, i), 'Times-Roman'))
+    if nth_semester == 1:
+        styles.append(('FONTSIZE', (2, 0), (-3, 1), TABLE_FONT_SIZE-2))
+    else:
+        styles.append(('FONTSIZE', (2, 0), (-5, 1), TABLE_FONT_SIZE-2))
     return styles
     
 
@@ -297,12 +301,11 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         # ('WORDWRAP', (0, 0), (-1, -1), True),   # Enable word wrap for all cells
         # ('SHRINK', (0, 0), (-1, -1), 1), 
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
-        ('FONTSIZE', (2, 0), (-5, 1), TABLE_FONT_SIZE-2), 
         # ('BACKGROUND', (0, 0), (-1, 0), colors.grey),    # Header row background color
         # ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),  # Header row text color
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),            # Center align all cells
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'),  # Bold font for header row
+        ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'), # By default: all bold
         *normal_font_styles,
         # # ('BOTTOMPADDING', (0, 0), (-1, 0), 12),           # Bottom padding for header row
         # ('BACKGROUND', (0, 1), (1, 2), colors.lightblue), # Background color for specific cells
