@@ -178,4 +178,7 @@ def parse_gradesheet_excel(excel_file, form_data, num_semesters):
         parsed_data['semester_2']['year_semester'] = form_data['second_sem_number']
         parsed_data['semester_2']['held_in'] = form_data['second_sem_held_in']
     return parsed_data
-    
+
+
+def rank_students(students):
+    return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))

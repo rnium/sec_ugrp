@@ -855,9 +855,11 @@ def student_stats(request, registration):
         return Response(data={"details": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
     current_student = get_object_or_404(StudentAccount, registration=registration)
     current_student_cgpa = current_student.raw_cgpa
-    session_students = current_student.session.studentaccount_set.all()
-    session_students_cgpa = [student.raw_cgpa if student.raw_cgpa is not None else 0 for student in session_students]
-    session_students_cgpa.sort(reverse=True)
+    session_students = current_student.session.studentaccount_set.all() 
+    session_students_with_cgpa = [student for student in session_students if student.raw_cgpa is not None]
+    session_students_sorted = utils.rank_students(session_students_with_cgpa)
+    session_students_cgpa = [student.raw_cgpa for student in session_students_sorted]
+    # session_students_cgpa.sort(reverse=True)
     data = {
        'classes': {
             'A+': 0, 'A': 0, 'A-': 0,
@@ -868,11 +870,12 @@ def student_stats(request, registration):
     }
     try:
         position_in_class = session_students_cgpa.index(current_student_cgpa) + 1
+        data['position_suffix'] = get_ordinal_suffix(position_in_class)
     except ValueError:
-        position_in_class = session_students.count()
-        
+        position_in_class = "Last"
+        data['position_suffix'] = ""
     data['position'] = position_in_class
-    data['position_suffix'] = get_ordinal_suffix(position_in_class)
+    
     data['letter_grade'] = get_letter_grade(current_student_cgpa)
     for cgpa in session_students_cgpa:
         data['classes'][get_letter_grade(cgpa)] += 1
