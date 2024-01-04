@@ -14,7 +14,8 @@ from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
 
 TABLE_FONT_SIZE = 10
-h, w = TABLOID
+pageSize = (792.0, 1304.0)
+h, w = pageSize
 
 
 class SemesterDataContainer:
@@ -353,7 +354,7 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config,
     # Create the PDF document 
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer,
-                            pagesize = landscape(TABLOID),
+                            pagesize = landscape(pageSize),
                             leftMargin = 1*inch,
                             rightMargin = 1*inch,
                             topMargin = 1*cm,
