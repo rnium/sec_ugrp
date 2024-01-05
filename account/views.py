@@ -41,7 +41,7 @@ def login_page(request):
             return redirect("results:dashboard")
     else:
         return render(request=request, template_name='account/login_page.html')
-    
+
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:

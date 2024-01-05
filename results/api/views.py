@@ -882,7 +882,10 @@ def student_stats(request, registration):
     
     return Response(data=data)
     
-    
+  
+@api_view(['GET'])
+def sust_student_data(request):
+    return Response(data={"info": "ok", "user": str(request.user)}) 
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 # def get_transcript_data(request, registration):

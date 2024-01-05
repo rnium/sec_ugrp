@@ -45,7 +45,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             context['semesters'] = semesters
         return context
     
-
+class SustAdminHome(TemplateView):
+    template_name = 'sustadmin/build/index.html'
 
 class DepartmentView(LoginRequiredMixin, DetailView):
     template_name = "results/view_department.html"
