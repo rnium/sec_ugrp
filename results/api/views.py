@@ -885,7 +885,40 @@ def student_stats(request, registration):
   
 @api_view(['GET'])
 def sust_student_data(request):
-    return Response(data={"info": "ok", "user": str(request.user)}) 
+    registration = request.GET.get('registration', None)
+    if registration is None:
+        raise BadrequestException("Registration is not provided")
+    student = get_object_or_404(StudentAccount, pk=registration)
+    response_data = {}
+    response_data['student'] = {
+        'registration': registration,
+        'name': student.student_name,
+        'cgpa': student.student_cgpa,
+        'email': '[empty]',
+        'phone': '[empty]',
+        'address': '[empty]',
+    }
+    response_data['semester_gradesheets'] = []
+    response_data['year_gradesheets'] = []
+    for sem_num in student.gradesheet_semesters:
+        response_data['semester_gradesheets'].append(
+            {
+                'semester_number': sem_num,
+                'url': reverse('results:download_semester_gradesheet', args=(registration, sem_num))
+            }
+        )
+    for year_num in student.gradesheet_years:
+        response_data['year_gradesheets'].append(
+            {
+                'year_number': year_num,
+                'url': reverse('results:download_year_gradesheet', args=(registration, year_num))
+            }
+        )
+    response_data['transcript_url'] = reverse('results:download_transcript', args=(registration,))
+    response_data['full_document_url'] = "/"
+    return Response(data=response_data) 
+
+
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 # def get_transcript_data(request, registration):
