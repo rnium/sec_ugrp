@@ -922,6 +922,14 @@ def sust_student_data(request):
     return Response(data=response_data) 
 
 
+@csrf_exempt
+def render_customdoc(request):
+    st = ""
+    excel_file = request.FILES.get("file", None)
+    admin_name = request.user.first_name + " " + request.user.last_name
+    document = utils.render_customdoc(excel_file, admin_name)
+    return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
+
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 # def get_transcript_data(request, registration):

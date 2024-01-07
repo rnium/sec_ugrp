@@ -8,6 +8,7 @@ urlpatterns = [
     path('results/api/', include("results.api.urls")),
     path('departments/', views.departments_all, name="all_departments"),
     path('sust/', views.SustAdminHome.as_view(), name="sustadminhome"),
+    path('sust/<path>/', views.SustAdminHome.as_view(), name="sust_routing"),
     path('departments/<str:dept_name>/', views.DepartmentView.as_view(), name="view_department"),
     path('departments/<str:dept_name>/<int:from_year>-<int:to_year>/', views.SessionView.as_view(), name="view_session"),
     path('departments/<str:dept_name>/<int:from_year>-<int:to_year>/semester/<int:year>-<int:semester>/', views.SemesterView.as_view(), name="view_semester"),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('extensions/transcript/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
     path('cachedpdf/<str:cache_key>/<str:filename>', views.download_cachedpdf, name="download_cachedpdf"),
+    path('customdoc/downloadtemplate/', views.download_customdoc_template, name="download_customdoc_template"),
 ]
 

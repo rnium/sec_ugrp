@@ -30,7 +30,9 @@ urlpatterns = [
     path('generate-gradesheet', views.generate_gradesheet, name="generate_gradesheet_api"),
     path('generate-transcript', views.generate_transcript, name="generate_transcript_api"),
     path('studentstats/<int:registration>', views.student_stats, name="student_stats_api"),
+    path('customdoc-export/', views.render_customdoc, name="render_customdoc"),
     # SUST API
-    path('sust-studentdata/', views.sust_student_data, name="sust_student_data")
+    path('sust-studentdata/', views.sust_student_data, name="sust_student_data"),
+    
 ]
 

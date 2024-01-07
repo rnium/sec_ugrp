@@ -6,7 +6,8 @@ from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
 from io import StringIO, BytesIO
-import json
+from . import excel_parsers
+from results.pdf_generators import customdoc_generator
 import openpyxl
 
 
@@ -179,6 +180,10 @@ def parse_gradesheet_excel(excel_file, form_data, num_semesters):
         parsed_data['semester_2']['held_in'] = form_data['second_sem_held_in']
     return parsed_data
 
+
+def render_customdoc(excel_file, admin_name):
+    data = excel_parsers.parse_customdoc_excel(excel_file)
+    customdoc_generator.render_customdoc(data, admin_name)
 
 def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))

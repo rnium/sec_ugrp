@@ -16,7 +16,8 @@ from results.utils import get_ordinal_number, render_error
 from results.api.utils import sort_courses
 from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
-import json
+from io import BytesIO
+from django.conf import settings
 
 
 def user_is_super_OR_dept_admin(request):
@@ -284,3 +285,11 @@ def download_cachedpdf(request, cache_key, filename):
 def pending_view(request):
     return render_error(request, 'This Section is Under Development!')
 
+@login_required
+def download_customdoc_template(request):
+    template_dir = settings.BASE_DIR / 'results/static/template_files/customdoc_temp.xlsx'
+    
+    with open(template_dir, 'rb') as file:
+        response = FileResponse(file, content_type='application/vnd.ms-excel', as_attachment=True)
+    response['Content-Disposition'] = 'attachment; filename="customdoc_template.xlsx"'
+    return response
