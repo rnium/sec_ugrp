@@ -886,17 +886,18 @@ def student_stats(request, registration):
 @api_view(['GET'])
 def sust_student_data(request):
     registration = request.GET.get('registration', None)
-    if registration is None:
-        raise BadrequestException("Registration is not provided")
+    if registration is None or (not str(registration).isdigit()):
+        raise BadrequestException("Required data not provided")
     student = get_object_or_404(StudentAccount, pk=registration)
     response_data = {}
     response_data['student'] = {
         'registration': registration,
         'name': student.student_name,
         'cgpa': student.student_cgpa,
+        'dept': student.session.dept.fullname,
+        'session': student.session.session_code,
+        'avatar_url': student.avatar_url,
         'email': '[empty]',
-        'phone': '[empty]',
-        'address': '[empty]',
     }
     response_data['semester_gradesheets'] = []
     response_data['year_gradesheets'] = []
@@ -904,6 +905,7 @@ def sust_student_data(request):
         response_data['semester_gradesheets'].append(
             {
                 'semester_number': sem_num,
+                'semester_suffix': get_ordinal_suffix(sem_num),
                 'url': reverse('results:download_semester_gradesheet', args=(registration, sem_num))
             }
         )
@@ -911,6 +913,7 @@ def sust_student_data(request):
         response_data['year_gradesheets'].append(
             {
                 'year_number': year_num,
+                'year_suffix': get_ordinal_suffix(year_num),
                 'url': reverse('results:download_year_gradesheet', args=(registration, year_num))
             }
         )

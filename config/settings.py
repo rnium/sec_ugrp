@@ -146,7 +146,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/sustadmin/build/static'
+    BASE_DIR / 'frontend/sustadmin/build/static',
 ]
 
 LOGIN_URL = '/account/login/'
