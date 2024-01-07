@@ -330,6 +330,16 @@ def migrate_sesion_of_student(request, registration):
     return Response(data={"status": "Complete"})       
 
  
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_sust_admin_info(request):
+    response = {
+        'firstname': request.user.first_name,
+        'lastname': request.user.last_name,
+        'email': request.user.email,
+        'avatar_url': request.user.adminaccount.avatar_url
+    }
+    return Response(data=response)
 
 # Account recovery
 def forgot_password_get(request):
