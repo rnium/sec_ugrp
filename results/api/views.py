@@ -18,7 +18,7 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin
-from results.models import (Department, Session, Semester, Course, 
+from results.models import (Department, Session, Semester, Course, PreviousPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup)
 from account.models import StudentAccount
 from . import utils
@@ -932,6 +932,25 @@ def render_customdoc(request):
     return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
     # return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
 
+
+
+@csrf_exempt
+def create_session_entrypoint_via_excel(request, pk):
+    try:
+        semester = Semester.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return JsonResponse({'details': "Semester not found"}, status=404)
+    if semester.semester_no == 1:
+            return JsonResponse({'details': 'Not allowed!'}, status=400)
+    if request.method == "POST" and request.FILES.get('excel'):
+        excel_file = request.FILES.get('excel')
+        prevPoint = PreviousPoint(session=semester.session, upto_semester_num=(semester.semester_no-1))
+        summary = utils.createStudentPointsFromExcel(excel_file, prevPoint)
+        return JsonResponse({'status':'Complete', 'summary':summary})
+    else:
+        return JsonResponse({'details': 'Not allowed!'}, status=400)
+
+    
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 # def get_transcript_data(request, registration):

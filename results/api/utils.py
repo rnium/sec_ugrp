@@ -1,13 +1,16 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from account.models import StudentAccount
-from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
+from results.models import (Session, Course, 
+                            CourseResult, Semester, SemesterEnroll,
+                            Department, StudentPoint)
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
 from io import StringIO, BytesIO
 from . import excel_parsers
 from results.pdf_generators import customdoc_generator
+from django.template.loader import render_to_string
 import openpyxl
 
 
@@ -187,3 +190,63 @@ def render_customdoc(excel_file, admin_name):
 
 def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))
+
+
+def createStudentPointsFromExcel(excel_file, prevPoint):
+    buffer = BytesIO(excel_file.read())
+    wb = openpyxl.load_workbook(buffer)
+    sheet = wb[wb.sheetnames[0]]
+    rows = list(sheet.rows)
+    header = [cell.value.lower().strip() for cell in rows[0]]
+    data_rows = rows[1:]
+    reg_col_idx = header.index('reg')
+    credits_col_idx = header.index('credits')
+    cgpa_col_idx = header.index('cgpa')
+    logs = {
+        'success': 0,
+        'errors': {
+            'parse_errors': [],
+            'save_errors': []
+        }
+    }
+    for r in range(len(data_rows)):
+        try:
+            registration = int(data_rows[r][reg_col_idx].value)
+        except Exception as e:
+            logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [cannot parse registration no.]')
+            continue
+        total_credits = data_rows[r][credits_col_idx].value
+        if total_credits is None:
+            logs['errors']['parse_errors'].append(f'registration: {registration}. Errors: [Total credits cannot be empty]')
+            continue
+        cgpa = data_rows[r][cgpa_col_idx].value
+        if cgpa is None:
+            logs['errors']['parse_errors'].append(f'registration: {registration}. Errors: [CGPA cannot be empty]')
+            continue
+        student_entrypoint_kwargs = {
+            'prev_point': prevPoint,
+            'student': registration,
+            'total_credits': total_credits,
+            'total_points': (total_credits * cgpa)
+        }
+        existing_point_qs = StudentPoint.objects.filter(student__registration=registration)
+        if existing_point_qs.count() > 0:
+            existing_point = existing_point.first()
+            existing_point.total_credits = student_entrypoint_kwargs['total_credits']
+            existing_point.total_points = student_entrypoint_kwargs['total_points']
+            existing_point.save()
+            logs['success'] += 1
+            continue
+        try:
+            StudentPoint.objects.create(**student_entrypoint_kwargs)
+        except Exception as e:
+            logs['errors']['save_errors'].append(f'Registration: {registration}. Errors: {e}')
+            continue
+        logs['success'] += 1
+    
+    logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
+    logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
+    
+    summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
+    return summary
+    # return JsonResponse({'status':'Complete', 'summary':summary})

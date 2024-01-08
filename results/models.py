@@ -201,7 +201,7 @@ class SemesterEnroll(models.Model):
 
 
 class PreviousPoint(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    session = models.OneToOneField(Session, on_delete=models.CASCADE)
     upto_semester_num = models.IntegerField()
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
