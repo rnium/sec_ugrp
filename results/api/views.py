@@ -940,8 +940,8 @@ def create_session_prevpoint_via_excel(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return JsonResponse({'details': "Semester not found"}, status=404)
-    if semester.semester_no == 1:
-            return JsonResponse({'details': 'Not allowed!'}, status=400)
+    if not semester.prevpoint_applicable:
+            return JsonResponse({'details': 'Not applicable!'}, status=400)
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
 

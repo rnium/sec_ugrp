@@ -155,6 +155,14 @@ class Semester(models.Model):
     def has_tabulation_sheet(self):
         if self.semesterdocument and self.semesterdocument.tabulation_sheet:
             return True
+        
+    @property
+    def prevpoint_applicable(self):
+        prev_semesters = self.session.semester_set.filter(semester_no__lt=self.semester_no)
+        if prev_semesters.count() or self.semester_no == 1:
+            return False
+        else:
+            return True
     
 
 class SemesterEnroll(models.Model):
