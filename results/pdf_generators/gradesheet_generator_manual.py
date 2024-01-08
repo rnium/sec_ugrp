@@ -11,9 +11,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
 from io import BytesIO
 from django.conf import settings
-from results.utils import get_letter_grade, get_ordinal_number
-from results.models import SemesterEnroll
-from results.api.utils import sort_courses
+from results.utils import get_letter_grade
 
 DEBUG_MODE = False
 
@@ -161,7 +159,7 @@ def build_semester(flowables, semester_data) -> None:
     num_courses = len(course_dataset)
     
     data = [
-        [f"{cardinal_repr(int(semester_data['year'].strip()))} Year {cardinal_repr(int(semester_data['year_semester'].strip()))} Semester", *course_title_extras, f"Held in: {semester_data['held_in']}", '', '', ''],
+        [f"{cardinal_repr(int(semester_data['year']))} Year {cardinal_repr(int(semester_data['year_semester']))} Semester", *course_title_extras, f"Held in: {semester_data['held_in']}", '', '', ''],
         ['Course No.', 'Course Title', *course_title_extras, 'Credit', 'Grade Obtained', ''],
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses

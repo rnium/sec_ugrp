@@ -1,5 +1,6 @@
 import openpyxl
 from io import BytesIO
+from results.utils import get_letter_grade
 
 def parse_student_data(wb: openpyxl.Workbook):
     student_data = {}
@@ -31,10 +32,15 @@ def parse_semester_data(wb: openpyxl.Workbook, sheetname):
             'title': row[course_title_idx].value,
             'credit': row[course_credit_idx].value,
             'gp': row[grade_point_idx].value,
+            'lg': get_letter_grade(row[grade_point_idx].value),
         })
     info_idx = headers.index('SEMESTER_INFO')
-    for row in rows[1:7]:
-        sem_data[row[info_idx].value] = row[info_idx+1].value
+    for row in rows[1:8]:
+        key = row[info_idx].value
+        value = row[info_idx+1].value
+        key = key.strip() if type(key) == str else key
+        
+        sem_data[key] = value
     return sem_data
     
 
