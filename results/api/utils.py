@@ -192,12 +192,12 @@ def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))
 
 
-def createStudentPointsFromExcel(excel_file, prevPoint):
+def createStudentPointsFromExcel(excel_file, prevPoint, session):
     buffer = BytesIO(excel_file.read())
     wb = openpyxl.load_workbook(buffer)
     sheet = wb[wb.sheetnames[0]]
     rows = list(sheet.rows)
-    header = [cell.value.lower().strip() for cell in rows[0]]
+    header = [cell.value.lower().strip() if type(cell.value) == str else cell.value for cell in rows[0]]
     data_rows = rows[1:]
     reg_col_idx = header.index('reg')
     credits_col_idx = header.index('credits')
@@ -212,8 +212,9 @@ def createStudentPointsFromExcel(excel_file, prevPoint):
     for r in range(len(data_rows)):
         try:
             registration = int(data_rows[r][reg_col_idx].value)
+            student_ac = StudentAccount.objects.get(registration=registration, session=session)
         except Exception as e:
-            logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [cannot parse registration no.]')
+            logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [Invalid registration no.]')
             continue
         total_credits = data_rows[r][credits_col_idx].value
         if total_credits is None:
@@ -225,7 +226,7 @@ def createStudentPointsFromExcel(excel_file, prevPoint):
             continue
         student_entrypoint_kwargs = {
             'prev_point': prevPoint,
-            'student': registration,
+            'student': student_ac,
             'total_credits': total_credits,
             'total_points': (total_credits * cgpa)
         }

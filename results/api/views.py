@@ -935,7 +935,7 @@ def render_customdoc(request):
 
 
 @csrf_exempt
-def create_session_entrypoint_via_excel(request, pk):
+def create_session_prevpoint_via_excel(request, pk):
     try:
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
@@ -944,8 +944,17 @@ def create_session_entrypoint_via_excel(request, pk):
             return JsonResponse({'details': 'Not allowed!'}, status=400)
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
-        prevPoint = PreviousPoint(session=semester.session, upto_semester_num=(semester.semester_no-1))
-        summary = utils.createStudentPointsFromExcel(excel_file, prevPoint)
+
+        if hasattr(semester.session, 'previouspoint'):
+            prevPoint = semester.session.previouspoint
+        else:
+            prevPoint = PreviousPoint(
+                session=semester.session, 
+                added_by=request.user, 
+                upto_semester_num=(semester.semester_no-1)
+            )
+            prevPoint.save()
+        summary = utils.createStudentPointsFromExcel(excel_file, prevPoint, semester.session)
         return JsonResponse({'status':'Complete', 'summary':summary})
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)

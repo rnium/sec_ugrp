@@ -494,6 +494,42 @@ function delete_semesterenroll() {
     });
 }
 
+// Create PrevPoint via Excel
+function uploadExcel(excel_file) {
+    let excel_form = new FormData
+    excel_form.append("excel", excel_file)
+    $.ajax({
+        type: "post",
+        url: create_session_prevpoint_api,
+        data: excel_form,
+        contentType: false,
+        processData: false,
+        beforeSend: function(xhr){
+            $("#process-excel-btn").attr("disabled", true)
+            $("#process-excel-btn .content").hide(0, ()=>{
+                $("#process-excel-btn .spinner").show()
+            });
+        },
+        success: function(response) {
+            $("#summary_list").html(response.summary);
+            $("#summary_list_container").show(200)
+        },
+        error: function(xhr, status, error) {
+            try {
+                alert(xhr.responseJSON.details);
+            } catch (error_) {
+                alert(error);
+            }
+        },
+        complete: function() {
+            $("#process-excel-btn").removeAttr("disabled");
+            $("#process-excel-btn .spinner").hide(0, ()=>{
+                $("#process-excel-btn .content").show()
+            });
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -542,4 +578,13 @@ $(document).ready(function () {
     // update semester 
     $("#update-semester-btn").on('click', updateSemester);
     $(".delete-enroll-icon").on('click', delete_semesterenroll);
+    // prevpoint export
+    $("#process-excel-btn").on('click', function() {
+        excel_file = $("#excelFile")[0].files
+        if (excel_file.length > 0) {
+            uploadExcel(excel_file[0]);
+        } else {
+            alert("Please choose an excel file!");
+        }
+    })
 });

@@ -31,6 +31,7 @@ urlpatterns = [
     path('generate-transcript', views.generate_transcript, name="generate_transcript_api"),
     path('studentstats/<int:registration>', views.student_stats, name="student_stats_api"),
     path('customdoc-export/', views.render_customdoc, name="render_customdoc"),
+    path('create-prevpoint/<int:pk>/', views.create_session_prevpoint_via_excel, name="create_session_prevpoint_via_excel"),
     # SUST API
     path('sust-studentdata/', views.sust_student_data, name="sust_student_data"),
     
