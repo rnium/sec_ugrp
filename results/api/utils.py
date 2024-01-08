@@ -214,7 +214,7 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
             registration = int(data_rows[r][reg_col_idx].value)
             student_ac = StudentAccount.objects.get(registration=registration, session=session)
         except Exception as e:
-            logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [Invalid registration no.]')
+            logs['errors']['parse_errors'].append(f'row: {r+2}. Errors: [Unmatched registration no.]')
             continue
         total_credits = data_rows[r][credits_col_idx].value
         if total_credits is None:
