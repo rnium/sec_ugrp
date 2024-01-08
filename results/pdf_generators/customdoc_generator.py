@@ -1,5 +1,7 @@
 from .transcript_generator_manual import get_transcript
 from .gradesheet_generator_manual import get_gradesheet
+import io
+import fitz  # PyMuPDF
 
 def map_context_for_transcript(data):
     context = {
@@ -48,6 +50,36 @@ def map_semester_for_gradesheet(data, year_num, year_semester):
     return semester_data
     
 
+def merge_pdfs_from_buffers(pdf_buffers):
+    # Create a new PDF document to store the merged pages
+    merged_pdf = fitz.open()
+
+    # Iterate through each PDF buffer and add pages to the merged document
+    for buffer in pdf_buffers:
+        pdf_document = fitz.open("pdf", buffer)
+        merged_pdf.insert_pdf(pdf_document)
+
+    # Save the merged PDF to a buffer
+    merged_buffer = io.BytesIO()
+    merged_pdf.save(merged_buffer)
+    merged_buffer.seek(0)  # Set the buffer's cursor to the beginning
+    merged_pdf.close()
+
+    return merged_buffer
+
+# Example list of PDF buffers (replace these with your actual PDF buffers)
+# pdf_buffers_list = [b'...', b'...', b'...']  # Replace with your PDF buffers
+
+# Merge the PDF buffers from the list
+# merged_buffer = merge_pdfs_from_buffers(pdf_buffers_list)
+
+# Now, merged_buffer contains the merged PDF in a buffer
+# You can save it to a file or use it as needed
+# For example, to save the merged PDF to a file:
+# with open('merged.pdf', 'wb') as output_file:
+#     output_file.write(merged_buffer.read())
+
+
 def render_customdoc(data, admin_name):
     transcript_context = map_context_for_transcript(data)
     transcript_context['admin_name'] = admin_name
@@ -65,5 +97,5 @@ def render_customdoc(data, admin_name):
         if num_semesters:= len(excel_data):
                 gradesheet = get_gradesheet(formdata, excel_data, num_semesters)
                 documents.append(gradesheet)
-                
-    print("customdoc generated!, len: " + str(len(documents)), flush=1)
+    merged_buffer = merge_pdfs_from_buffers(documents)
+    return merged_buffer.getvalue()

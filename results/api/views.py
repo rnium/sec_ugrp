@@ -928,7 +928,12 @@ def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     admin_name = request.user.first_name + " " + request.user.last_name
     document = utils.render_customdoc(excel_file, admin_name)
-    return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
+    pdf_base64 = base64.b64encode(document).decode('utf-8')
+    redis_key = str(int(time.time())) + request.user.username
+    cache.set(redis_key, pdf_base64)
+    filename = "document-" + str(int(time.time())) +  ".pdf"
+    return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+    # return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
 
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])

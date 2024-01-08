@@ -183,7 +183,7 @@ def parse_gradesheet_excel(excel_file, form_data, num_semesters):
 
 def render_customdoc(excel_file, admin_name):
     data = excel_parsers.parse_customdoc_excel(excel_file)
-    customdoc_generator.render_customdoc(data, admin_name)
+    return customdoc_generator.render_customdoc(data, admin_name)
 
 def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))

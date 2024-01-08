@@ -1,6 +1,7 @@
 import openpyxl
 from io import BytesIO
 from results.utils import get_letter_grade
+from datetime import datetime
 
 def parse_student_data(wb: openpyxl.Workbook):
     student_data = {}
@@ -39,7 +40,8 @@ def parse_semester_data(wb: openpyxl.Workbook, sheetname):
         key = row[info_idx].value
         value = row[info_idx+1].value
         key = key.strip() if type(key) == str else key
-        
+        if type(value) == datetime:
+            value = value.strftime("%B %Y")
         sem_data[key] = value
     return sem_data
     
