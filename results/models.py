@@ -237,6 +237,13 @@ class SemesterDocument(models.Model):
         name_str = basename(self.tabulation_sheet.name)
         return name_str
     
+    @property 
+    def thumb_url(self):
+        if thumb:= self.tabulation_thumbnail:
+            return thumb.url
+        else:
+            return ""
+    
     
 class Course(models.Model):
     semester = models.ForeignKey("Semester", on_delete=models.CASCADE)

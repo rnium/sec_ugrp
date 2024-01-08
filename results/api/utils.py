@@ -230,9 +230,8 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
             'total_credits': total_credits,
             'total_points': (total_credits * cgpa)
         }
-        existing_point_qs = StudentPoint.objects.filter(student__registration=registration)
-        if existing_point_qs.count() > 0:
-            existing_point = existing_point.first()
+        existing_point = StudentPoint.objects.filter(student__registration=registration).first()
+        if existing_point:
             existing_point.total_credits = student_entrypoint_kwargs['total_credits']
             existing_point.total_points = student_entrypoint_kwargs['total_points']
             existing_point.save()

@@ -8,7 +8,7 @@ from io import BytesIO
 import fitz
 from PIL import Image
 import math
-from results.models import Semester, SemesterEnroll, CourseResult
+from results.models import Semester, SemesterEnroll, CourseResult, StudentPoint
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
@@ -33,10 +33,21 @@ class SemesterDataContainer:
         
         
 
-def cumulative_semester_result(student, semesters):
+def cumulative_semester_result(student, semesters, pure_cumulative=True):
     total_credits = 0
     total_points = 0
+    # PreviousPoint data
+    prevpoint = None
+    if (pure_cumulative) and hasattr(student.session, 'previouspoint'):
+        prevpoint = student.session.previouspoint
+        student_point = StudentPoint.objects.filter(student=student, prev_point=prevpoint).first()
+        if student_point:
+            total_credits += student_point.total_credits
+            total_points += student_point.total_points
     for semester in semesters:
+        if prevpoint and (semester.semester_no <= prevpoint.upto_semester_num):
+            print(f"Ignoring sem: {semester.semester_no} of {len(semesters)}", flush=1)
+            continue
         enrollment = SemesterEnroll.objects.filter(semester=semester, student=student).first()
         if enrollment:
             total_credits += enrollment.semester_credits
@@ -64,7 +75,10 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
     title_semester_from_to = ""
     if has_overall_result:
         semester_from = dataContainer.semester.session.semester_set.all().first()
-        title_semester_from_to = f"{get_ordinal_number(semester_from.semester_no)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
+        sem_from_num = semester_from.semester_no
+        if hasattr(dataContainer.semester.session, 'previouspoint'):
+            sem_from_num = 1
+        title_semester_from_to = f"{get_ordinal_number(sem_from_num)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
     row1 = [ *['Course Number \u2192\nCredit of the course \u2192', '', '', ''] ,
             *[f"{course.code.upper()}\n{course.course_credit}" for course in dataContainer.course_list], # Drop courses
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
@@ -118,7 +132,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                     total_credits += course.course_credit
                     total_points += (course.course_credit * gp)
             # append semester result
-            semester_result = cumulative_semester_result(student, [semester]) # passing semester in a list beacuse the function expects an iterable
+            semester_result = cumulative_semester_result(student, [semester], False) # passing semester in a list beacuse the function expects an iterable
             if semester_result:
                 row_top.append(semester_result['total_credits'])
                 row_top.append(semester_result['grade_point'])
@@ -385,7 +399,11 @@ def get_tabulation_files(semester: Semester, render_config: Dict, footer_data_ra
     buffer = build_doc_buffer(datacontainer, dataset, render_config, footer_data)
     files = {}
     files['pdf_file'] = buffer.getvalue()
-    files['thumbnail_file'] = get_thumnail_image(files['pdf_file']) #thumbnail is in png format
+    try:
+        files['thumbnail_file'] = get_thumnail_image(files['pdf_file']) #thumbnail is in png format
+    except Exception as e:
+        files['thumbnail_file'] = None
+        print("Cannot create thumbnail", flush=True)
     return files
 
 
