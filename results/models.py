@@ -198,7 +198,21 @@ class SemesterEnroll(models.Model):
             self.semester_gpa = round(points_count/credits_count, 2)
             self.save()
             self.student.update_stats()
-        
+
+
+class PreviousPoint(models.Model):
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    upto_semester_num = models.IntegerField()
+    added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    added_in = models.DateTimeField(auto_now_add=True)
+
+
+class StudentPoint(models.Model):
+    prev_point = models.ForeignKey(PreviousPoint, on_delete=models.CASCADE)
+    student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
+    total_credits = models.FloatField(default=0)
+    total_points = models.FloatField(default=0)
+      
 
 class SemesterDocument(models.Model):
     def filepath(self, filename):

@@ -412,9 +412,6 @@ def delete_semester(request, pk):
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
-    # checking if it has courses
-    if semester.has_courses:
-        return Response(data={"details": "This semester cannot be deleted while it has courses"}, status=status.HTTP_406_NOT_ACCEPTABLE)
     # url to be redirected after deletion
     session_url = reverse('results:view_session', kwargs={
         'dept_name': semester.session.dept.name,
