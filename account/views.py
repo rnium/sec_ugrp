@@ -32,7 +32,7 @@ from results.api.utils import is_confirmed_user
 from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
-from results.models import Department, Session, CourseResult
+from results.models import Department, Session, CourseResult, StudentPoint
 from .tasks import send_html_email_task
 
     
@@ -66,7 +66,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
         context['enrollments'] = student.semesterenroll_set.all().order_by('semester__semester_no')
         context['gradesheet_years'] = student.gradesheet_years
         context['request'] = self.request
-        
+        context['prev_point'] = StudentPoint.objects.filter(student=student).first()
         try:
             student_reg_year = int(str(student.registration)[:4])
         except Exception as e:

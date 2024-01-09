@@ -83,6 +83,30 @@
               <div class="card mb-4 bg-material participated-sem">
                 <div class="card-body">
                   <div class="text-center h6 mb-3">Semester Enrollments</div>
+                  {% if prev_point %}
+                  <div class="semester-item prevHistory m-1">
+                    <div class="sem-codename history">
+                        PREVIOUS
+                    </div>
+                    <div class="info">
+                        <div class="semester-no">{{prev_point.semester_range_str}}</div>
+                        <div class="exam-stats">
+                            <span class="stats-item me-4">
+                              <span class="small text-muted">CGPA:</span>
+                              <span class="">{{prev_point.cgpa}}</span>
+                            </span>
+                            <span class="stats-item me-4">
+                              <span class="small text-muted">LG:</span>
+                              <span style="font-size: 0.9rem;">{{prev_point.letter_grade}}</span>
+                            </span>
+                            <span class="stats-item">
+                              <span class="small text-muted">Credits:</span>
+                              <span style="font-size: 0.9rem;">{{prev_point.total_credits}}</span>
+                            </span>
+                        </div>
+                    </div>    
+                  </div>
+                  {% endif %}
                   {% for enroll in enrollments %}
                   <a href="{% url "results:view_semester" enroll.semester.session.dept.name enroll.semester.session.from_year enroll.semester.session.to_year enroll.semester.year enroll.semester.year_semester %}" class="semester-item {% if enroll.semester.is_running %}running-semester{% endif %} m-1">
                     <div class="sem-codename">

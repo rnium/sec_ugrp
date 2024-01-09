@@ -426,6 +426,16 @@ body.light .student-profile-container .semester-item .text-muted {
 body.light .student-profile-container .semester-item.running-semester {
   background-color: rgb(83, 148, 135);
 }
+body.light .student-profile-container .semester-item.prevHistory {
+  background-color: rgb(134, 98, 156);
+  outline-color: rgb(194, 102, 194);
+}
+body.light .student-profile-container .semester-item.prevHistory .sem-codename.history {
+  background-color: rgb(108, 60, 114);
+}
+body.light .student-profile-container .semester-item.prevHistory .info .semester-no {
+  color: rgb(243, 210, 253);
+}
 body.light .student-profile-container .student-info .col-sm-3 p {
   color: #222325;
 }
@@ -1547,6 +1557,19 @@ body main .student-profile-container .semester-item.running-semester .info .seme
 body main .student-profile-container .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;
 }
+body main .student-profile-container .semester-item.prevHistory {
+  background-color: rgb(104, 73, 123);
+  outline-color: plum;
+}
+body main .student-profile-container .semester-item.prevHistory .sem-codename.history {
+  background-color: rgb(105, 33, 115);
+  box-shadow: 0 0 50px rgb(187, 0, 255);
+  font-family: "Silkscreen", cursive;
+  font-size: 1.5rem;
+}
+body main .student-profile-container .semester-item.prevHistory .info .semester-no {
+  color: rgb(229, 188, 241);
+}
 body main .student-profile-container .sem-gradesheet {
   display: flex;
   flex-direction: row;
@@ -1629,6 +1652,33 @@ body main .student-profile-container .class-position .label {
   color: #9090a7;
 }
 
+@media screen and (max-width: 1500px) {
+  body main .all-courses .header, body main .all-registrations .header {
+    font-size: 1.4rem !important;
+  }
+  body main .all-courses .courses .course-container, body main .all-registrations .courses .course-container {
+    padding: 5px;
+  }
+  body main .all-courses .courses .course-container .course, body main .all-registrations .courses .course-container .course {
+    padding: 1.3rem 0.4rem !important;
+  }
+  body main .all-courses .courses .course-container .course .course-code, body main .all-registrations .courses .course-container .course .course-code {
+    font-size: 1.8rem !important;
+  }
+  body main .all-courses .courses .course-container .course .course-title, body main .all-registrations .courses .course-container .course .course-title {
+    font-size: 0.9rem !important;
+  }
+  body main .all-courses .courses .course-container .course .lab-course-badge, body main .all-registrations .courses .course-container .course .lab-course-badge {
+    border-radius: 0 2px 0 5px;
+    padding: 0 5px;
+  }
+  body main .all-courses .courses .course-container .course .lab-course-badge i, body main .all-registrations .courses .course-container .course .lab-course-badge i {
+    font-size: 1rem !important;
+  }
+  body main .all-courses .courses .course-container .course .lab-course-badge span, body main .all-registrations .courses .course-container .course .lab-course-badge span {
+    font-size: 0.9rem !important;
+  }
+}
 .profile {
   position: absolute;
   top: 1.5rem;

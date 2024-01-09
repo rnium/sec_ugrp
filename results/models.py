@@ -1,17 +1,16 @@
-import math
 import base64
 from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.utils import (get_ordinal_number, calculate_grade_point, 
-                           calculate_letter_grade, round_up_point_five)
+from results.utils import (get_ordinal_number, calculate_grade_point, calculate_letter_grade,
+                           get_letter_grade, round_up_point_five, round_up)
 from os.path import join, basename
 
 
@@ -220,6 +219,24 @@ class StudentPoint(models.Model):
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
     total_credits = models.FloatField(default=0)
     total_points = models.FloatField(default=0)
+    
+    @property
+    def cgpa_raw(self):
+        return (self.total_points / self.total_credits)
+    
+    @property
+    def cgpa(self):
+        if self.total_points < 1:
+            return 0
+        return "{}".format(round_up(self.cgpa_raw, 2))
+    
+    @property
+    def letter_grade(self):
+        return get_letter_grade(self.cgpa_raw)
+    
+    @property
+    def semester_range_str(self):
+        return f"1st Semester to {get_ordinal_number(self.prev_point.upto_semester_num)} Semester"
       
 
 class SemesterDocument(models.Model):
