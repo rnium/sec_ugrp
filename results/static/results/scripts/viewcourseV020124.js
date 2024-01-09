@@ -516,9 +516,13 @@ function insertTable(response) {
 }
 
 function loadCourseResults() {
+    let load_course_res_api = course_result_api
+    if (!isNaN(FROM_SESSION)) {
+        load_course_res_api += `?from=${FROM_SESSION}`;
+    }
     $.ajax({
         type: "get",
-        url: course_result_api,
+        url: load_course_res_api,
         data: "data",
         dataType: "json",
         success: function (response) {

@@ -104,7 +104,7 @@
             {% comment %} Drop Courses {% endcomment %}
             {% for course in courses_drop %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester course.code %}">
+                <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester course.code %}?from={{ semester.session.id }}&sem={{ semester.id }}">
                     <div class="course-code text-center">{{course.code|upper}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:35}}</div>
                     <div class="credits mt-1 d-flex justify-content-center align-items-center">

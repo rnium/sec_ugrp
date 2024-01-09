@@ -47,9 +47,15 @@
 <div class="view-course-container m-5 pt-4">
     <div class="info">
         <div class="semester {% if course.semester.is_running %}running{% endif %}">
+            {% if from_semester %}
+            <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.session.from_year from_semester.session.to_year from_semester.year from_semester.year_semester %}">
+                {{from_semester.semester_code}}
+            </a>
+            {% else %}
             <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}">
                 {{course.semester.semester_code}}
             </a>
+            {% endif %}
         </div>
         <div class="course-info h4  text-center">
             <div class="course-code">{{course.code}} {% if not course.is_theory_course %}<span class="bg-secondary serif-font text-info shadow-sm px-2 rounded small">Lab</span>{% endif %} </div>
@@ -485,6 +491,7 @@
     const course_part_B_marks_final = {{course.part_B_marks_final}};
     const course_incourse_marks = {{course.incourse_marks}};
     const csrftoken = "{{csrf_token}}";
+    const FROM_SESSION = parseInt("{{from_session}}")
 </script>
 <script src="{% static 'results/scripts/viewcourseV020124.js' %}"></script>
 {% endblock script %}

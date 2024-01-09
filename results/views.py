@@ -151,6 +151,10 @@ class CourseView(LoginRequiredMixin, DetailView):
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
         course = context['course']
+        context['from_session'] = self.request.GET.get('from')
+        from_semester_pk = self.request.GET.get('sem')
+        if from_semester_pk is not None:
+            context['from_semester'] = get_object_or_404(Semester, pk=from_semester_pk)
         dept_running_semesters = Semester.objects.filter(
             is_running = True,
             session__dept = course.semester.session.dept,

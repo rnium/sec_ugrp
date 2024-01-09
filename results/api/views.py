@@ -195,7 +195,11 @@ class CourseResultList(ListAPIView):
     
     def get_queryset(self):
         course = self.get_object()
-        course_results = CourseResult.objects.filter(course=course).order_by('-student__is_regular', 'student__registration')
+        from_session = self.request.GET.get('from')
+        if from_session:
+            course_results = CourseResult.objects.filter(is_drop_course=True, course=course, student__session__id=from_session).order_by('-student__is_regular', 'student__registration')
+        else:
+            course_results = CourseResult.objects.filter(course=course, is_drop_course=False).order_by('-student__is_regular', 'student__registration')
         return course_results
     
     def check_or_generate_entries(self, course):
