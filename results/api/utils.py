@@ -250,3 +250,16 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
     return summary
     # return JsonResponse({'status':'Complete', 'summary':summary})
+    
+
+def get_or_create_entry_for_carryCourse(semester, registration, course):
+    enrollment = semester.semesterenroll_set.filter(student__registration=registration).first()
+    student = StudentAccount.objects.filter(registration=registration).first()
+    if (enrollment is None) or (student is None):
+        print(f'enroll: {semester} student: {registration}', flush=1)
+        return None
+    
+    course_res, created = CourseResult.objects.get_or_create(student=student, course=course, is_drop_course=True)
+    if created:
+        enrollment.courses.add(course)
+    return course_res

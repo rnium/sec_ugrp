@@ -594,6 +594,10 @@ def process_course_excel(request, pk):
         course_results = course.courseresult_set.all()
     except Course.DoesNotExist:
         return JsonResponse({'details': "Course not found"}, status=404)
+    from_semester_pk = str(request.POST.get('semester_from')).strip()
+    from_semester = None # For Carry Course Type
+    if from_semester_pk.isdigit():
+        from_semester = get_object_or_404(Semester, pk=from_semester_pk)
     if not course.semester.is_running:
         return JsonResponse({'details': "Semester is not running!"}, status=400)
     if request.method == "POST" and request.FILES.get('excel'):
@@ -637,7 +641,10 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                course_res = course_results.filter(student__registration=reg_no).first()
+                if from_semester:
+                    course_res = utils.get_or_create_entry_for_carryCourse(from_semester, reg_no, course)
+                else:
+                    course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
                     if total is None:
                         logs['errors']['parse_errors'].append(f'Reg no: {reg_no} Missing value for: total. Value set to : 0')
@@ -669,7 +676,10 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                course_res = course_results.filter(student__registration=reg_no).first()
+                if from_semester:
+                    course_res = utils.get_or_create_entry_for_carryCourse(from_semester, reg_no, course)
+                else:
+                    course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
                     for col, prop_name in course_props.items():
                         try:

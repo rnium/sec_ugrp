@@ -842,6 +842,8 @@ function addNewEntry() {
 function uploadExcel(excel_file) {
     let excel_form = new FormData
     excel_form.append("excel", excel_file)
+    excel_form.append("semester_from", FROM_SEMESTER)
+    
     $.ajax({
         type: "post",
         url: process_course_excel_api,
