@@ -133,4 +133,9 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
         count += len(enrolled_courses)
         progress_recorder.set_progress(count, total_objects)
     
-    
+@shared_task
+def update_student_accounts(reg_nums):
+    for reg in reg_nums:
+        account = StudentAccount.objects.filter(registration=reg).first()
+        if account:
+            account.update_stats()

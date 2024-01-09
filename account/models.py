@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.templatetags.static import static
-from results.models import Department, Session, CourseResult, SemesterEnroll
+from results.models import Department, Session, SemesterEnroll, StudentPoint
 from results.utils import round_up
 
 
@@ -104,11 +104,15 @@ class StudentAccount(BaseAccount):
         
     def update_stats(self):
         enrollments = SemesterEnroll.objects.filter(student=self)
+        student_prevPoint = StudentPoint.objects.filter(student=self).first()
         credits_count = 0
         points_count = 0
+        if student_prevPoint:
+            credits_count += student_prevPoint.total_credits
+            points_count += student_prevPoint.total_points
         for enroll in enrollments:
-            # Formula To be Changed after suggestion from Ashraful sir on 8th October 2023
-            # Tabulation generator to be changed as well
+            if (student_prevPoint and  (enroll.semester.semester_no <= student_prevPoint.prev_point.upto_semester_num)):
+                continue
             credits_count += enroll.semester_credits
             points_count += enroll.semester_points
         if points_count >= 0:
