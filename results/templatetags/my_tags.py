@@ -32,3 +32,9 @@ def count_carry_records(session_id, course):
         return None
     course_res = course.courseresult_set.filter(student__session__id=int(session_id))
     return course_res.count()
+
+@register.filter
+def count_pending_carryrecords(session_id, course):
+    if session_id is None:
+        return None
+    return course.courseresult_set.filter(total_score=None, student__session__id=session_id).count()

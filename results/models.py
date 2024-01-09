@@ -298,7 +298,7 @@ class Course(models.Model):
 
     @property
     def num_pending_course(self):
-        return self.courseresult_set.filter(total_score=None).count()
+        return self.courseresult_set.filter(total_score=None, is_drop_course=False).count()
     
     @property
     def num_missing_entries_for_session(self):
