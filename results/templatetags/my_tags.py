@@ -25,3 +25,10 @@ def point_zero_to_int_else_float(n):
         return int_n
     else:
         return n
+    
+@register.filter
+def count_carry_records(session_id, course):
+    if session_id is None:
+        return None
+    course_res = course.courseresult_set.filter(student__session__id=int(session_id))
+    return course_res.count()
