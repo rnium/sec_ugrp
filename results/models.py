@@ -163,6 +163,10 @@ class Semester(models.Model):
         else:
             return True
     
+    @property
+    def has_prevpoint_from_here(self):
+        ppoint = PreviousPoint.objects.filter(session=self.session, upto_semester_num=self.semester_no-1).first()
+        return bool(ppoint)
 
 class SemesterEnroll(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)

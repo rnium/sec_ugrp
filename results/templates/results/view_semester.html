@@ -317,10 +317,17 @@
         </div>
         <div class="btn-container mt-2 d-flex justify-content-center my-4">
             {% if semester.prevpoint_applicable %}
+            {% if semester.has_prevpoint_from_here %}
+            <button class="btn btn-primary btn-iconized px-4 shadow-sm me-2" data-bs-toggle="modal" data-bs-target="#excelEntryPointUploadModal">
+                <i class='bx bx-reset me-2 py-1'></i>
+                <span>Update Entrypoint</span>
+            </button>
+            {% else %}
             <button class="btn btn-primary btn-iconized px-4 shadow-sm me-2" data-bs-toggle="modal" data-bs-target="#excelEntryPointUploadModal">
                 <i class='bx bx-reset me-2 py-1'></i>
                 <span>Create Entrypoint</span>
             </button>
+            {% endif %}
             {% endif %}
             {% if semester.is_running %}
             <button class="btn btn-secondary btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
@@ -604,7 +611,7 @@
             <div class="modal-content bg-material">
                 <div class="modal-header">
                     <div class="modal-title text-info">
-                        Create Entrypoint From This Semester
+                        The Entrypoint From This Semester
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
