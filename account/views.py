@@ -208,6 +208,7 @@ def create_student_via_excel(request, pk):
             return JsonResponse({'details': "Some required columns not found"}, status=400)
         logs = {
             'success': 0,
+            'info': [],
             'errors': {
                 'parse_errors': [],
                 'save_errors': []
@@ -237,6 +238,19 @@ def create_student_via_excel(request, pk):
                 last_name = data_rows[r][last_name_col_idx].value
                 if last_name is not None and len(last_name) > 0:
                     account_kwargs['last_name'] = last_name.strip()
+            previous_account = StudentAccount.objects.filter(registration=registration).first()
+            if previous_account:
+                account_kwargs.pop('registration')
+                account_kwargs.pop('session')
+                changes = 0
+                for prop in account_kwargs:
+                    if account_kwargs[prop] != getattr(previous_account, prop):
+                        setattr(previous_account, prop, account_kwargs[prop])
+                        changes += 1
+                if changes:
+                    previous_account.save()
+                    logs['info'].append(f"Student info updated for registration no: {registration}")
+                continue
             try:
                 StudentAccount.objects.create(**account_kwargs)
             except Exception as e:

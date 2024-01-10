@@ -27,6 +27,7 @@ from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
 from results.tasks import restore_data_task
+from django.conf import settings
 from io import BytesIO
 from datetime import datetime
 import time
@@ -936,12 +937,15 @@ def sust_student_data(request):
 
 @csrf_exempt
 def render_customdoc(request):
-    st = ""
     excel_file = request.FILES.get("file", None)
-    admin_name = request.user.first_name + " " + request.user.last_name
+    if settings.DEBUG:
+        admin_name = "Anynymous"
+        redis_key = "anynymous"
+    else:
+        admin_name = request.user.first_namet + " " + request.user.last_name
+        redis_key = str(int(time.time())) + request.user.username
     document = utils.render_customdoc(excel_file, admin_name)
     pdf_base64 = base64.b64encode(document).decode('utf-8')
-    redis_key = str(int(time.time())) + request.user.username
     cache.set(redis_key, pdf_base64)
     filename = "document-" + str(int(time.time())) +  ".pdf"
     return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
