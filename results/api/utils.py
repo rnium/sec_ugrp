@@ -72,6 +72,7 @@ def sort_courses(courses, dept_name):
 def create_backup(dept: Department, session_id):
     backup_data = {
         "dept": dept.name,
+        "single_batch_type": session_id is not None,
         "sessions": []
     }
     if session_id:
@@ -82,12 +83,20 @@ def create_backup(dept: Department, session_id):
         session_data = {
             'session_meta' : model_to_dict(session),
             'students': [],
-            'semesters': []
+            'semesters': [],
+            'previous_point': None
         }
         for student in StudentAccount.objects.filter(session=session):
             student_data = model_to_dict(student)
             student_data.pop('profile_picture')
             session_data['students'].append(student_data)
+        if hasattr(session, 'previouspoint'):
+            session_data['previous_point'] = {
+                'prevpoint_meta': model_to_dict(session.previouspoint),
+                'student_points': []
+            }
+            for spoint in session.previouspoint.studentpoint_set.all():
+                session_data['previous_point']['student_points'].append(model_to_dict(spoint))
         semesters = Semester.objects.filter(session=session)
         for semester in semesters:
             # items: courses, enrollments
@@ -100,7 +109,7 @@ def create_backup(dept: Department, session_id):
             semester_data['semester_meta']['drop_courses'] = semester_drop_courses
             if (semester.added_by):
                 semester_data['semester_meta']['added_by'] = semester.added_by.username
-            courses = Course.objects.filter(semester=semester)
+            courses = Course.objects.filter(semester=semester).order_by('id')
             for course in courses:
                 course_data = {
                     'course_meta': model_to_dict(course),
@@ -203,9 +212,6 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     rows = list(sheet.rows)
     header = [cell.value.lower().strip() if type(cell.value) == str else cell.value for cell in rows[0]]
     data_rows = rows[1:]
-    reg_col_idx = header.index('reg')
-    credits_col_idx = header.index('credits')
-    cgpa_col_idx = header.index('cgpa')
     logs = {
         'success': 0,
         'errors': {
@@ -213,6 +219,13 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
             'save_errors': []
         }
     }
+    try:
+        reg_col_idx = header.index('reg')
+        credits_col_idx = header.index('credits')
+        cgpa_col_idx = header.index('cgpa')
+    except Exception as e:
+        logs['errors']['parse_errors'].append(f'Error: {e}')
+        data_rows = [] # Stopping the loop
     update_list = [] # For updating stats of studentAccounts
     for r in range(len(data_rows)):
         try:

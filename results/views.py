@@ -266,9 +266,12 @@ def download_backup(request, pk):
     backup = get_object_or_404(Backup, pk=pk) 
     if request.user.adminaccount.dept is not None and backup.department != request.user.adminaccount.dept:
         return render_error(request, 'Forbidden')
-    current_datetime = datetime.now()
-    formatted_datetime = current_datetime.strftime("%d-%m-%Y")
-    filename = f"RDB Backup-{backup.id} {backup.department.name.upper()} {formatted_datetime}"
+    creation_datetime = backup.created_at
+    formatted_datetime = creation_datetime.strftime("%c").replace(" ", "_").replace(":", "-")
+    if backup.session:
+        filename = f"RDB Backup-{backup.session.batch_name} {formatted_datetime}"
+    else:
+        filename = f"RDB Backup-{backup.department.name.upper()} {formatted_datetime}"
     response = JsonResponse(backup.data)
     response['Content-Disposition'] = f'attachment; filename="{filename}.json"'
     return response

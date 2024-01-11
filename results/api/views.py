@@ -736,10 +736,7 @@ def generate_backup(request):
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     # get backup data
     session_id = request.data.get('session_id')
-    try:
-        backup_data = utils.create_backup(dept, session_id)
-    except Exception as e:
-        return Response(data={"details": f"Cannot create backup. Error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    backup_data = utils.create_backup(dept, session_id)
     backup_kwargs = {
         'department': dept,
         'data': backup_data,
