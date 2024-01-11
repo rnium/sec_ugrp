@@ -87,6 +87,8 @@ class StudentAccount(BaseAccount):
     credits_completed = models.FloatField(default=0)
     total_points = models.FloatField(default=0)
     is_regular = models.BooleanField(default=True)
+    father_name = models.CharField(max_length=100, default="")
+    mother_name = models.CharField(max_length=100, default="")
     
     class Meta:
         ordering = ["-is_regular", "registration"]

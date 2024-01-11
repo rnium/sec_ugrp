@@ -25,7 +25,14 @@ def user_is_super_OR_dept_admin(request):
         return request.user.adminaccount.is_super_admin or (request.user.adminaccount.dept is not None)
     else:
         return False
-    
+
+def user_is_super_or_sust_admin(request):
+    if hasattr(request.user, 'adminaccount'):
+        is_super_admin = request.user.adminaccount.is_super_admin
+        is_sust_admin = (request.user.adminaccount.type == 'sust')
+        return  (is_super_admin or is_sust_admin)
+    else:
+        return False
 
 def user_is_superAdmin(user):
     return hasattr(user, 'adminaccount') and user.adminaccount.is_super_admin
@@ -192,7 +199,7 @@ def download_semester_tabulation(request, pk):
 
 @login_required
 def download_year_gradesheet(request, registration, year):
-    has_permission = user_is_super_OR_dept_admin(request)
+    has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
@@ -213,7 +220,7 @@ def download_year_gradesheet(request, registration, year):
 
 @login_required
 def download_semester_gradesheet(request, registration, semester_no):
-    has_permission = user_is_super_OR_dept_admin(request)
+    has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
@@ -233,7 +240,7 @@ def download_semester_gradesheet(request, registration, semester_no):
 
 @login_required
 def download_transcript(request, registration):
-    has_permission = user_is_superAdmin(request.user)
+    has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
