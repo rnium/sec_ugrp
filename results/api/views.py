@@ -783,8 +783,11 @@ def perform_restore(request):
         obj_count = utils.get_obj_count(data['sessions'])
     except Exception as e:
         return JsonResponse({'details': "Bad data"}, status=406)
-
-    utils.delete_all_of_dept(dept)
+    if (data['single_batch_type']):
+        session = Session.objects.filter(dept=dept, batch_no=data['sessions'][0]['session_meta']['batch_no']).first()
+        session.delete()
+    else:
+        utils.delete_all_of_dept(dept)
     result = restore_data_task.delay(dept.id, data['sessions'], obj_count)
     progress_url = reverse('celery_progress:task_status', args=(result.task_id,))
     return JsonResponse(data={'info': 'ok', 'progress_url': progress_url})

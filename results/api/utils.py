@@ -142,6 +142,8 @@ def get_obj_count(sessions_data):
     for session in sessions_data:
         obj_count += len(session['students'])        
         obj_count += len(session['semesters'])
+        if session['previous_point']:
+            obj_count += len(session['previous_point']['student_points'])
         for semester in session['semesters']:
             obj_count += len(semester['courses'])
             obj_count += len(semester['enrolls'])
