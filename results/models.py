@@ -409,7 +409,15 @@ class Backup(models.Model):
         return join(str(self.semester.session.dept.name), "Backups", filename)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     data = models.JSONField(null=True)
+    session = models.ForeignKey(Session, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         ordering = ["-created_at"]
+    
+    @property
+    def backup_name(self):
+        if self.session:
+            return f"Session Backup: {self.session.batch_name}"
+        else:
+            return f"Department Backup"

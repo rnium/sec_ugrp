@@ -740,10 +740,13 @@ def generate_backup(request):
         backup_data = utils.create_backup(dept, session_id)
     except Exception as e:
         return Response(data={"details": f"Cannot create backup. Error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    backup = Backup(
-        department = dept,
-        data = backup_data
-    )
+    backup_kwargs = {
+        'department': dept,
+        'data': backup_data,
+    }
+    if session_id:
+        backup_kwargs['session'] = Session.objects.get(id=session_id)
+    backup = Backup(**backup_kwargs)
     backup.save()
     backups_qs = Backup.objects.filter(department=dept)
     deleted_backups = []

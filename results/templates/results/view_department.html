@@ -131,8 +131,15 @@
                         {% for backup in department.backup_set.all  %}
                         <li class="list-group-item mb-1 bg-material-1" id="backup-{{backup.id}}">
                             <div class="d-flex align-items-center">
-                                <img src="{% static "results/images/cd-drive.png" %}" width="50px">
-                                <a class="ms-2 text-white" target="_blank" href="{% url 'results:download_backup' backup.id %}">Backup {{backup.id}}<span class="text-muted ms-2">{{backup.created_at|date:'r'}}</span></a>
+                                {% if backup.session %}
+                                <img src="{% static "results/images/database1.png" %}" width="50px">
+                                {% else %}
+                                <img src="{% static "results/images/database.png" %}" width="50px">
+                                {% endif %}
+                                <a class="ms-2 d-flex flex-column" target="_blank" href="{% url 'results:download_backup' backup.id %}">
+                                    <div class="d-block text-white">{{backup.backup_name}}</div>
+                                    <small class="text-muted">{{backup.created_at|date:'r'}}</small>
+                                </a>
                             </div>
                         </li>
                         {% endfor %}
