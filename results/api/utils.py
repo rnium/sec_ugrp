@@ -69,12 +69,15 @@ def sort_courses(courses, dept_name):
     sorted_courses = sorted(courses, key=lambda course: course_sorting_key(course, dept_name), reverse=True)
     return sorted_courses
 
-def create_backup(dept: Department):
+def create_backup(dept: Department, session_id):
     backup_data = {
         "dept": dept.name,
         "sessions": []
     }
-    sessions = Session.objects.filter(dept=dept)
+    if session_id:
+        sessions = Session.objects.filter(id=session_id, dept=dept)
+    else:
+        sessions = Session.objects.filter(dept=dept)
     for session in sessions:
         session_data = {
             'session_meta' : model_to_dict(session),

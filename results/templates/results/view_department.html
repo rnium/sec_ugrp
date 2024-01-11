@@ -146,6 +146,14 @@
                         {% endif %}
                         
                     </ul>
+                    <div class="mt-3">
+                        <select id="batchSelection" class="form-select" aria-label="Default select example">
+                            <option selected class="text-secondary">All Batches</option>
+                            {% for session in department.session_set.all %}
+                            <option class="text-secondary" value="{{session.id}}">{{session.batch_name}}&nbsp;({{session.session_code}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="btn-con mt-3 d-flex justify-content-end">
                         <button type="button" id="create_backup_btn" class="btn btn-outline-success">Create New Backup</button>
                     </div>

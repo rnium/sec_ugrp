@@ -84,7 +84,11 @@ function temporaryTextToggler(elem_id, new_text) {
 
 function createBackup() {
     payload = {
-        'department_id': dept_id
+        department_id: dept_id
+    }
+    let session_id = parseInt($("#batchSelection").val().trim());
+    if (!isNaN(session_id)) {
+        payload.session_id = session_id
     }
     if (payload) {
         $.ajax({
