@@ -13,7 +13,7 @@ function activateDeptAdminRadio() {
             $("#deptSelect").attr("disabled", "disabled");
         }
     })
-    $("#superAdminRadio").on("click", function() {
+    $(".non-dept").on("click", function() {
         let checked_status = $(this).prop("checked");
         if (checked_status) {
             $("#deptSelect").attr("disabled", "disabled");
@@ -36,7 +36,8 @@ function getInvitationData() {
         $("#invitationModal .alert").hide();
         data.to_email = to_email;
     }
-    if (actype != 'super') {
+    data.actype = actype;
+    if (actype === 'dept') {
         let to_user_dept = parseInt($("#deptSelect").val().trim());
         if (isNaN(to_user_dept)) {
             $("#invitationModal .alert").text("Please select a department!");
@@ -48,8 +49,6 @@ function getInvitationData() {
             data.is_to_user_superadmin = false;
             data.to_user_dept = to_user_dept;
         }
-    } else {
-        data.is_to_user_superadmin = true;
     }
     return data;
 }

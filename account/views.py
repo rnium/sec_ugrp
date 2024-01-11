@@ -461,31 +461,37 @@ class StudentAccountCreate(CreateAPIView):
 @api_view(['POST'])
 def send_signup_token(request):
     if not hasattr(request.user, 'adminaccount'):
-        print("no admin")
         return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
     try:
         to_user_email = request.data['to_email']
     except KeyError:
         return Response(data={'details': "No email provided"}, status=HTTP_400_BAD_REQUEST)
+    # checking if ac_type is provided or not
+    actype = request.data.get('actype')
+    if actype is None:
+        return Response(data={'details': "No ac type provided"}, status=HTTP_400_BAD_REQUEST)
     # checking if user exists with this email
     users = User.objects.filter(email=to_user_email)
     if users.count():
         return Response(data={'details': "User with this email already exists!"}, status=HTTP_400_BAD_REQUEST)
-    to_user_dept = None
-    if request.user.adminaccount.is_super_admin:
-        if not request.data.get('is_to_user_superadmin', True):
-            try:
-                to_user_dept = request.data['to_user_dept']
-            except KeyError:
-                return Response(data={'details': "No department provided"}, status=HTTP_400_BAD_REQUEST)
-    else:
-        to_user_dept = request.user.adminaccount.dept.id
+    to_user_dept = request.data.get('to_user_dept')
+    is_super_admin = request.user.adminaccount.is_super_admin
+    admin_from_same_dept = False
+    if dept:=request.user.adminaccount.dept:
+        admin_from_same_dept = (to_user_dept == dept.id)
+    if to_user_dept:
+        if is_super_admin or admin_from_same_dept:
+            pass
+        else:
+            return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
+    
     expiration = timezone.now() + timedelta(days=7)
     invite_token = InviteToken(
         from_user = request.user,
         user_email = to_user_email,
         to_user_dept_id = to_user_dept,
-        expiration = expiration
+        expiration = expiration,
+        actype = actype
     )
     invite_token.save()
     try:

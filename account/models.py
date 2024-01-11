@@ -21,6 +21,7 @@ class InviteToken(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)
     to_user_dept_id = models.IntegerField(null=True, blank=True)
     user_email = models.EmailField()
+    actype = models.CharField(max_length=10, null=True, blank=True)
     expiration = models.DateTimeField()
 
 
@@ -41,9 +42,13 @@ class BaseAccount(models.Model):
 
 
 class AdminAccount(BaseAccount):
+    limited_admin_user_types = [
+        ('sust', 'Sust Admin')
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_super_admin = models.BooleanField(default=False)
     dept = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
+    type = models.CharField(max_length=10, null=True, blank=True, choices=limited_admin_user_types)
     invited_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="inviting_user")
     
     class Meta:
