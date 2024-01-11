@@ -93,6 +93,25 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="sust-admins row text-center d-flex justify-content-center">
+                <hr class="mb-2 mt-3">
+                <p class="text-white roboto-font fs-5 text-center mb-2">SUST Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{sustdmins.count}}</span></p>
+                <hr class="mb-4">
+                {% for admin in sustdmins %}
+                <div class="col-xl-3 col-lg-4">
+                    <div class="mb-4">
+                        <div class="card-body text-center">
+                          <img src="{{admin.avatar_url}}" alt="avatar"
+                            class="rounded-circle img-fluid" style="width: 120px;">
+                          <h5 class="mt-3 text-secondary">{{admin.user_full_name}}</h5>
+                          <p class="text-white mb-1">{{admin.dept.name|upper}}</p>
+                          <p class="text-muted mb-1">{% if admin.user.email %}{{admin.user.email}} {% else %}No Email{% endif %}</p>
+                          <p class="text-muted mb-1">Invited by: {% if admin.invited_by %}<span class="text-white">{{admin.invited_by.adminaccount.user_full_name}}</span>{% else %}<span class="badge bg-secondary">None</span>{% endif %}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             <div class="sys-admins row text-center d-flex justify-content-center">
                 <hr class="mb-2 mt-3">
                 <p class="text-white roboto-font fs-5 text-center mb-2">Site Admins <span class="bg-dark border shadow-lg rounded px-2 text-success">{{sysadmins.count}}</span></p>

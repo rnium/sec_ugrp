@@ -179,7 +179,8 @@ class StaffsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['superadmins'] = AdminAccount.objects.filter(is_super_admin=True, user__is_staff=False) 
-        context['deptadmins'] = AdminAccount.objects.filter(is_super_admin=False).order_by('dept') 
+        context['deptadmins'] = AdminAccount.objects.filter(dept__isnull=False).order_by('dept') 
+        context['sustdmins'] = AdminAccount.objects.filter(type='sust') 
         context['sysadmins'] = AdminAccount.objects.filter(user__is_staff=True) 
         context['request'] = self.request
         context['departments'] = Department.objects.all()
