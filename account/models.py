@@ -162,6 +162,21 @@ class StudentAccount(BaseAccount):
         return years
     
     @property
+    def father_name_repr(self):
+        father = self.father_name
+        if father == "":
+            return "[empty]"
+        return father    
+    
+    @property
+    def mother_name_repr(self):
+        mother = self.mother_name
+        if mother == "":
+            return "[empty]"
+        return mother
+        
+        
+    @property
     def is_transcript_available(self):
         semesters = 0
         for semester_no in range(1, 9):

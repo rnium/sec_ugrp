@@ -213,6 +213,13 @@ def create_student_via_excel(request, pk):
                 'save_errors': []
             }
         }
+        father_name_idx = None
+        mother_name_idx = None
+        try:
+            father_name_idx = header.index('father_name')
+            mother_name_idx = header.index('mother_name')
+        except ValueError:
+            pass
         # data saving
         try:
             last_name_col_idx = header.index('last_name')
@@ -237,7 +244,18 @@ def create_student_via_excel(request, pk):
                 last_name = data_rows[r][last_name_col_idx].value
                 if last_name is not None and len(last_name) > 0:
                     account_kwargs['last_name'] = last_name.strip()
-            previous_account = StudentAccount.objects.filter(registration=registration).first()
+            
+            if father_name_idx is not None:
+                father_name = data_rows[r][father_name_idx].value
+                if father_name is not None and len(father_name) > 0:
+                    account_kwargs['father_name'] = father_name.strip()
+            
+            if mother_name_idx is not None:
+                mother_name = data_rows[r][mother_name_idx].value
+                if mother_name is not None and len(mother_name) > 0:
+                    account_kwargs['mother_name'] = mother_name.strip()
+            
+            previous_account = StudentAccount.objects.filter(registration=registration, session=session).first()
             if previous_account:
                 account_kwargs.pop('registration')
                 account_kwargs.pop('session')
