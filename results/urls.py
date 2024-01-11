@@ -4,7 +4,7 @@ from results import views
 app_name = "results"
 
 urlpatterns = [
-    path('', views.DashboardView.as_view(), name="dashboard"),
+    path('', views.homepage, name="dashboard"),
     path('results/api/', include("results.api.urls")),
     path('departments/', views.departments_all, name="all_departments"),
     path('sust/', views.SustAdminHome.as_view(), name="sustadminhome"),

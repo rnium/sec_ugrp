@@ -29,22 +29,26 @@ def user_is_super_OR_dept_admin(request):
 
 def user_is_superAdmin(user):
     return hasattr(user, 'adminaccount') and user.adminaccount.is_super_admin
-    
 
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = "results/dashboard.html"
-    
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context =  super().get_context_data(**kwargs)
-        context['request'] = self.request
+@login_required
+def homepage(request):
+    if not hasattr(request.user, 'adminaccount'):
+        return render_error(request, "Unauthorized")
+    if request.user.adminaccount.type == "sust":
+        return redirect('results:sustadminhome')
+    else:
+        # SuperAdmin or dept admin
+        context = {}
+        context['request'] = request
         semesters = []
-        if self.request.user.adminaccount.is_super_admin:
+        if request.user.adminaccount.is_super_admin:
             semesters = Semester.objects.all().order_by("-is_running", 'session__from_year', "-added_in")[:4]
         else:
-            semesters = Semester.objects.filter(session__dept=self.request.user.adminaccount.dept).order_by("-is_running", "session__from_year", "-semester_no", "added_in")[:4]
+            semesters = Semester.objects.filter(session__dept=request.user.adminaccount.dept).order_by("-is_running", "session__from_year", "-semester_no", "added_in")[:4]
         if (len(semesters) > 0):
             context['semesters'] = semesters
-        return context
+        return render(request, "results/dashboard.html", context=context)
+    
     
 class SustAdminHome(LoginRequiredMixin, TemplateView):
     template_name = 'sustadmin/build/index.html'

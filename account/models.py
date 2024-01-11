@@ -51,13 +51,6 @@ class AdminAccount(BaseAccount):
     type = models.CharField(max_length=10, null=True, blank=True, choices=limited_admin_user_types)
     invited_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="inviting_user")
     
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check = models.Q(is_super_admin=True, dept__isnull=True) | models.Q(is_super_admin=False, dept__isnull=False),
-                name = "admin_user_is_not_a_dept_user"
-            )
-        ]
         
     def __str__(self):
         return self.user.username

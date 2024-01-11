@@ -98,7 +98,6 @@ def signup_admin(request):
     # to user dept (if specified in the invitation)
     if token.to_user_dept_id:
         try:
-            print(token.to_user_dept_id)
             dept = Department.objects.get(id=token.to_user_dept_id)
         except Department.DoesNotExist:
             return render_error(request, "This Invitation Is Corrupted", "Request for a new invitation to existing admins")
@@ -411,14 +410,14 @@ def create_admin_account(request, tokenId):
     }
     if token.to_user_dept_id:
         try:
-            print(token.to_user_dept_id)
             dept = Department.objects.get(id=token.to_user_dept_id)
         except Department.DoesNotExist:
             return Response(data={"details": "Corrupted token"}, status=HTTP_400_BAD_REQUEST)
         admin_account_data['dept'] = dept
-        admin_account_data['is_super_admin'] = False
-    else:
+    if token.actype == 'super':
         admin_account_data['is_super_admin'] = True
+    elif token.actype == 'sust':
+        admin_account_data['type'] = 'sust'
     # user cration
     user_data = {
         "username": token.user_email,
