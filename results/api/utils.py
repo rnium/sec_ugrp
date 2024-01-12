@@ -153,7 +153,19 @@ def get_obj_count(sessions_data):
             obj_count += sum(len(course['course_results']) for course in semester['courses'])
             obj_count += sum(len(enroll['courses']) for enroll in semester['enrolls'])
     return obj_count
-            
+
+def check_session_dependancy(session_data):
+    drop_course_identifiers = []
+    for semester_data in session_data['semesters']:
+        drop_course_identifiers.extend(semester_data['semester_meta']['drop_courses'])
+    for identifier in drop_course_identifiers:
+        try:
+            Course.objects.get(identifier=identifier)
+        except Course.DoesNotExist:
+            return (False, f"Course with identifier: <{identifier}> does not exists")
+    print(drop_course_identifiers, flush=1)
+    return (True, "All Dependancy Exists")
+                
             
 def parse_gradesheet_excel(excel_file, form_data, num_semesters):    
     buffer = BytesIO(excel_file.read())

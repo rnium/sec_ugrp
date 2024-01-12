@@ -785,6 +785,10 @@ def perform_restore(request):
         print(e, flush=1)
         return JsonResponse({'details': "Bad data"}, status=406)
     if (data.get('single_batch_type') == True):
+        clear, message = utils.check_session_dependancy(data['sessions'][0])
+        print(clear, message, flush=1)
+        if not clear:
+            return JsonResponse({'details': message}, status=400)
         session = Session.objects.filter(dept=dept, batch_no=data['sessions'][0]['session_meta']['batch_no']).first()
         session.delete()
     else:
