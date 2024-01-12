@@ -105,8 +105,19 @@ def create_backup(dept: Department, session_id):
                 'courses': [],
                 'enrolls': []
             }
-            semester_drop_courses = [course.identifier for course in semester_data['semester_meta']['drop_courses']]
-            semester_data['semester_meta']['drop_courses'] = semester_drop_courses
+            semester_drop_courses = semester_data['semester_meta']['drop_courses']
+            semester_drop_courses_ids = [course.id for course in semester_drop_courses]
+            semester_data['semester_meta']['drop_courses'] = semester_drop_courses_ids
+            # adding drop course results in the semester if creating backup for session
+            if session_id:
+                semester_drop_courses_courseresults_data = {} 
+                for d_course in semester_drop_courses:
+                    drop_course_results = d_course.courseresult_set.filter(student__session=semester.session)
+                    drop_course_courseresults_data = []
+                    for result in drop_course_results:
+                        drop_course_courseresults_data.append(model_to_dict(result))
+                    semester_drop_courses_courseresults_data[d_course.id] = drop_course_courseresults_data
+                semester_data['drop_course_courseresults'] = semester_drop_courses_courseresults_data
             if (semester.added_by):
                 semester_data['semester_meta']['added_by'] = semester.added_by.username
             courses = Course.objects.filter(semester=semester).order_by('id')
@@ -126,7 +137,7 @@ def create_backup(dept: Department, session_id):
             enrolls = SemesterEnroll.objects.filter(semester=semester)
             for enroll in enrolls:
                 enroll_data = model_to_dict(enroll)
-                enrolled_courses = [course.identifier for course in enroll_data['courses']]
+                enrolled_courses = [course.id for course in enroll_data['courses']]
                 enroll_data['courses'] = enrolled_courses
                 semester_data['enrolls'].append(enroll_data)
                 
@@ -152,18 +163,22 @@ def get_obj_count(sessions_data):
             obj_count += len(semester['semester_meta']['drop_courses'])
             obj_count += sum(len(course['course_results']) for course in semester['courses'])
             obj_count += sum(len(enroll['courses']) for enroll in semester['enrolls'])
+            drop_courses_courseresults = semester.get('drop_course_courseresults')
+            if drop_courses_courseresults:
+                for drop_course in drop_courses_courseresults:
+                    obj_count += len(drop_courses_courseresults[drop_course])
+            
     return obj_count
 
 def check_session_dependancy(session_data):
-    drop_course_identifiers = []
+    drop_courses_ids = []
     for semester_data in session_data['semesters']:
-        drop_course_identifiers.extend(semester_data['semester_meta']['drop_courses'])
-    for identifier in drop_course_identifiers:
+        drop_courses_ids.extend(semester_data['semester_meta']['drop_courses'])
+    for course_id in drop_courses_ids:
         try:
-            Course.objects.get(identifier=identifier)
+            Course.objects.get(id=course_id)
         except Course.DoesNotExist:
-            return (False, f"Course with identifier: <{identifier}> does not exists")
-    print(drop_course_identifiers, flush=1)
+            return (False, f"Course with id: <{course_id}> does not exists")
     return (True, "All Dependancy Exists")
                 
             

@@ -202,8 +202,8 @@ class SemesterEnroll(models.Model):
         points_count = 0
         for course in self.courses.all():
             course_result = CourseResult.objects.filter(course=course, student=self.student).first()
-            grade_point = course_result.grade_point
-            if course_result and grade_point:
+            if course_result and course_result.grade_point:
+                grade_point = course_result.grade_point
                 credits_count += course_result.course.course_credit
                 points_count += (grade_point * course.course_credit)
         # calculation and store values
