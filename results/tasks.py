@@ -6,7 +6,7 @@ from celery_progress.backend import ProgressRecorder
 import time
 
 @shared_task(bind=True)
-def restore_data_task(self, dept_id, sessions_data, total_objects):
+def restore_dept_data_task(self, dept_id, sessions_data, total_objects):
     dept = Department.objects.get(id=dept_id)
     semester_drop_courses_prev_IDs = {}
     enrollment_courses_prev_IDs = {}
@@ -53,8 +53,7 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
             semester_hash[prev_sem_id] = semester
             # Courses
             for course_data in sem_data['courses']:
-                prev_id = course_data['course_meta']['id']
-                # course_data['course_meta'].pop('id')
+                course_data['course_meta'].pop('id')
                 course_data['course_meta']['semester'] = semester
                 if course_data['course_meta']['added_by']:
                     user = User.objects.filter(username=course_data['course_meta']['added_by']).first()
@@ -66,7 +65,7 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
                 course.save()
                 count += 1
                 progress_recorder.set_progress(count, total_objects)
-                courses_hash[prev_id] = course
+                courses_hash[course.identifier] = course
                 # Course Results
                 for result_data in course_data['course_results']:
                     result_id = result_data['id']
@@ -132,6 +131,98 @@ def restore_data_task(self, dept_id, sessions_data, total_objects):
             newEnroll.courses.add(courses_hash[prev_course_id])
         count += len(enrolled_courses)
         progress_recorder.set_progress(count, total_objects)
+    
+
+@shared_task(bind=True)
+def restore_session_data_task(self, dept_id, session_data, total_objects):
+    dept = Department.objects.get(id=dept_id)
+    courseresults_hash = {}      # key = previous, value = new object
+    retake_hash = {}    # key = new object, value = carry_of course_result id
+    progress_recorder = ProgressRecorder(self)
+    count = 0
+    session_meta = session_data['session_meta']
+    session_meta.pop('id')
+    session_meta['dept'] = dept
+    session = Session(**session_data['session_meta'])
+    session.save()
+    count += 1
+    progress_recorder.set_progress(count, total_objects)
+    # Students
+    for student_data in session_data['students']:
+        student_data.pop('user')
+        student_data['session'] = session
+        StudentAccount.objects.create(**student_data)
+        count += 1
+        progress_recorder.set_progress(count, total_objects)
+    # Semesters
+    for sem_data in session_data['semesters']:
+        sem_data['semester_meta'].pop('id')
+        drop_course_identifiers = sem_data['semester_meta']['drop_courses']
+        sem_data['semester_meta'].pop('drop_courses')
+        sem_data['semester_meta']['session'] = session
+        if sem_data['semester_meta']['added_by']:
+            user = User.objects.filter(username=sem_data['semester_meta']['added_by']).first()
+            if user:
+                sem_data['semester_meta']['added_by'] = user
+            else:
+                sem_data['semester_meta']['added_by'] = None
+        semester = Semester(**sem_data['semester_meta'])
+        semester.save()
+        count += 1
+        progress_recorder.set_progress(count, total_objects)
+        for identifier in drop_course_identifiers:
+            semester.drop_courses.add(Course.objects.get(identifier=identifier))
+            count += 1
+            progress_recorder.set_progress(count, total_objects)
+        # Courses
+        for course_data in sem_data['courses']:
+            # course_data['course_meta'].pop('id')
+            course_data['course_meta']['semester'] = semester
+            if course_data['course_meta']['added_by']:
+                user = User.objects.filter(username=course_data['course_meta']['added_by']).first()
+                if user:
+                    course_data['course_meta']['added_by'] = user
+                else:
+                    course_data['course_meta']['added_by'] = None
+            course = Course(**course_data['course_meta'])
+            course.save()
+            count += 1
+            progress_recorder.set_progress(count, total_objects)
+            # Course Results
+            for result_data in course_data['course_results']:
+                result_id = result_data['id']
+                result_data.pop('id')
+                result_data['course'] = course
+                result_data['student'] = StudentAccount.objects.get(registration=result_data['student'])
+                retake_of_id = result_data['retake_of']
+                result_data.pop('retake_of')
+                course_res_new = CourseResult(**result_data)
+                course_res_new.save()
+                courseresults_hash[result_id] = course_res_new
+                if retake_of_id:
+                    retake_hash[course_res_new] = retake_of_id
+                count += 1
+            progress_recorder.set_progress(count, total_objects)                    
+        # Enrolls
+        for enroll_data in sem_data['enrolls']:
+            enrolled_course_identifiers = enroll_data['courses']
+            enroll_data.pop('id')
+            enroll_data.pop('courses')
+            enroll_data['student'] = StudentAccount.objects.get(registration=enroll_data['student'])
+            enroll_data['semester'] = semester
+            enroll = SemesterEnroll(**enroll_data)
+            enroll.save()
+            count += 1
+            progress_recorder.set_progress(count, total_objects)
+            for identifier in enrolled_course_identifiers:
+                enroll.courses.add(Course.objects.get(identifier=identifier))
+                count += 1
+                progress_recorder.set_progress(count, total_objects)            
+    # Binding Retakings
+    for new_result, retake_of_id in retake_hash.items():
+        new_result.retake_of = courseresults_hash[retake_of_id]
+        new_result.save()
+    progress_recorder.set_progress(total_objects, total_objects)
     
 @shared_task
 def update_student_accounts(reg_nums):

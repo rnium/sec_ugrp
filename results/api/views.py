@@ -26,7 +26,7 @@ from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suff
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
-from results.tasks import restore_data_task
+from results.tasks import restore_dept_data_task, restore_session_data_task
 from django.conf import settings
 from io import BytesIO
 from datetime import datetime
@@ -446,9 +446,6 @@ def delete_session(request, pk):
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
-    # checking if it has courses
-    if session.has_semester:
-        return Response(data={"details": "This Session cannot be deleted while it has at least one semester"}, status=status.HTTP_406_NOT_ACCEPTABLE)
     # url to be redirected after deletion
     dept_url = reverse('results:view_department', kwargs={
         'dept_name': session.dept.name
@@ -786,14 +783,15 @@ def perform_restore(request):
         return JsonResponse({'details': "Bad data"}, status=406)
     if (data.get('single_batch_type') == True):
         clear, message = utils.check_session_dependancy(data['sessions'][0])
-        print(clear, message, flush=1)
         if not clear:
             return JsonResponse({'details': message}, status=400)
         session = Session.objects.filter(dept=dept, batch_no=data['sessions'][0]['session_meta']['batch_no']).first()
-        session.delete()
+        if session:
+            session.delete()
+        result = restore_session_data_task.delay(dept.id, data['sessions'][0], obj_count)
     else:
         utils.delete_all_of_dept(dept)
-    result = restore_data_task.delay(dept.id, data['sessions'], obj_count)
+        result = restore_dept_data_task.delay(dept.id, data['sessions'], obj_count)
     progress_url = reverse('celery_progress:task_status', args=(result.task_id,))
     return JsonResponse(data={'info': 'ok', 'progress_url': progress_url})
 
