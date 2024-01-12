@@ -76,6 +76,10 @@ class Session(models.Model):
     def num_students(self):
         return self.studentaccount_set.count()
     
+    @property
+    def course_identifier_prefix(self):
+        return self.dept.name.lower() + str(self.batch_no)
+    
        
 
 class Semester(models.Model):
@@ -271,6 +275,7 @@ class Course(models.Model):
     code = models.CharField(max_length=20)
     title = models.CharField(max_length=200)
     course_credit = models.FloatField(validators=[MinValueValidator(settings.MIN_COURSE_CREDIT), MaxValueValidator(settings.MAX_COURSE_CREDIT)])
+    identifier = models.CharField(max_length=20, unique=True, null=True, blank=True)
     total_marks = models.FloatField(validators=[MinValueValidator(1, "Total Marks must be greater than 0")])
     part_A_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
     part_B_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])
@@ -279,7 +284,7 @@ class Course(models.Model):
     incourse_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])  # so called TERMTEST 
     is_theory_course = models.BooleanField(default=True)
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    added_in = models.DateTimeField(auto_now_add=True)
+    added_in = models.DateTimeField(default=timezone.now)
 
     class Meta:
         constraints = [
@@ -289,11 +294,16 @@ class Course(models.Model):
     def __str__(self):
         return f"{self.semester} Course: {self.code}"
     
+    def get_identifier_code(self):
+        c = self.code.lower().replace(" ", "")
+        return  self.semester.session.course_identifier_prefix + c
+    
     def save(self, *args, **kwargs) -> None:
         if self.part_A_marks_final == 0:
             self.part_A_marks_final = self.part_A_marks
         if self.part_B_marks_final == 0:
             self.part_B_marks_final = self.part_B_marks
+        self.identifier = self.get_identifier_code()
         super().save(*args, **kwargs)
         
     @property

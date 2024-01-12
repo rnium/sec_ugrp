@@ -782,8 +782,9 @@ def perform_restore(request):
     try:
         obj_count = utils.get_obj_count(data['sessions'])
     except Exception as e:
+        print(e, flush=1)
         return JsonResponse({'details': "Bad data"}, status=406)
-    if (data['single_batch_type']):
+    if (data.get('single_batch_type') == True):
         session = Session.objects.filter(dept=dept, batch_no=data['sessions'][0]['session_meta']['batch_no']).first()
         session.delete()
     else:

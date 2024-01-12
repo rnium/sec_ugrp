@@ -105,14 +105,16 @@ def create_backup(dept: Department, session_id):
                 'courses': [],
                 'enrolls': []
             }
-            semester_drop_courses = [course.id for course in semester_data['semester_meta']['drop_courses']]
+            semester_drop_courses = [course.identifier for course in semester_data['semester_meta']['drop_courses']]
             semester_data['semester_meta']['drop_courses'] = semester_drop_courses
             if (semester.added_by):
                 semester_data['semester_meta']['added_by'] = semester.added_by.username
             courses = Course.objects.filter(semester=semester).order_by('id')
             for course in courses:
+                metadata = model_to_dict(course)
+                metadata['added_in'] = metadata['added_in'].isoformat()
                 course_data = {
-                    'course_meta': model_to_dict(course),
+                    'course_meta': metadata,
                     'course_results': []
                 }
                 if course.added_by:
@@ -124,7 +126,7 @@ def create_backup(dept: Department, session_id):
             enrolls = SemesterEnroll.objects.filter(semester=semester)
             for enroll in enrolls:
                 enroll_data = model_to_dict(enroll)
-                enrolled_courses = [course.id for course in enroll_data['courses']]
+                enrolled_courses = [course.identifier for course in enroll_data['courses']]
                 enroll_data['courses'] = enrolled_courses
                 semester_data['enrolls'].append(enroll_data)
                 
@@ -142,7 +144,7 @@ def get_obj_count(sessions_data):
     for session in sessions_data:
         obj_count += len(session['students'])        
         obj_count += len(session['semesters'])
-        if session['previous_point']:
+        if session.get('previous_point'):
             obj_count += len(session['previous_point']['student_points'])
         for semester in session['semesters']:
             obj_count += len(semester['courses'])
