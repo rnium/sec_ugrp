@@ -397,8 +397,9 @@ class CourseResult(models.Model):
         # Saving grade point
         if self.total_score is not None:
             totalScore = round_up_point_five(self.total_score)
-            self.grade_point = calculate_grade_point(totalScore, self.course.total_marks)
-            self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks)
+            is_carry = self.is_drop_course
+            self.grade_point = calculate_grade_point(totalScore, self.course.total_marks, is_carry)
+            self.letter_grade = calculate_letter_grade(totalScore, self.course.total_marks, is_carry)
         else:
             self.grade_point = None
             self.letter_grade = None

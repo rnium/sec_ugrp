@@ -11,30 +11,45 @@ const SEC_GRADING_SCHEMA = {
     "F": {"min": 0, "max":39.999, "grade_point":0.00}
 };
 
-function calculateLetterGrade(obtainedScore, maxMarks) {
+const SEC_GRADING_SCHEMA_CARRY = {
+    "A+": {"min": 80, "max":100, "grade_point":4.0},
+    "A": {"min": 75, "max":79.999, "grade_point":3.75},
+    "A-": {"min": 70, "max":74.999, "grade_point":3.50},
+    "B+": {"min": 65, "max":69.999, "grade_point":3.25},
+    "B": {"min": 60, "max":64.999, "grade_point":3.00},
+    "B-": {"min": 55, "max":59.999, "grade_point":2.75},
+    "C+": {"min": 50, "max":54.999, "grade_point":2.50},
+    "C": {"min": 45, "max":49.999, "grade_point":2.25},
+    "C-": {"min": 40, "max":44.999, "grade_point":2.00},
+    "F": {"min": 0, "max":39.999, "grade_point":0.00}
+};
+
+function calculateLetterGrade(obtainedScore, maxMarks, is_carry=false) {
     if (obtainedScore === null || obtainedScore === undefined) {
         return null;
     }
     const score = (obtainedScore / maxMarks) * 100;
-    for (const [LG, schema] of Object.entries(SEC_GRADING_SCHEMA)) {
+    const grading_schema = is_carry ? SEC_GRADING_SCHEMA_CARRY : SEC_GRADING_SCHEMA;
+    for (const [LG, schema] of Object.entries(grading_schema)) {
         if (schema.min <= score && score <= schema.max) {
             return LG;
         }
     }
-    return null; // Return null if grade is not found in the schema
+    return null;
 }
 
-function calculateGradePoint(obtainedScore, maxMarks) {
+function calculateGradePoint(obtainedScore, maxMarks, is_carry=false) {
     if (obtainedScore === null || obtainedScore === undefined) {
         return null;
     }
     const score = (obtainedScore / maxMarks) * 100;
-    for (const schema of Object.values(SEC_GRADING_SCHEMA)) {
+    const grading_schema = is_carry ? SEC_GRADING_SCHEMA_CARRY : SEC_GRADING_SCHEMA;
+    for (const schema of Object.values(grading_schema)) {
         if (schema.min <= score && score <= schema.max) {
             return schema.grade_point;
         }
     }
-    return null; // Return null if grade point is not found in the schema
+    return null;
 }
 
 
@@ -240,15 +255,16 @@ function updateAndGetTotalMarks(registration) {
 }
 
 
-function updateLG(registration, total=null, isLabCourse=true) {
+function updateLG(registration, total=null, isLabCourse=true, iscarry=false) {
     let total_score = total;
     if (isLabCourse) {
         total_score = parseFloat($(`#total-inp-${registration}`).val().trim());
     }
+    
     if (!isNaN(total_score)) {
         let total = convertFloat(total_score);
-        let letter_grade = calculateLetterGrade(total, course_total_marks);
-        let grade_point = calculateGradePoint(total, course_total_marks);
+        let letter_grade = calculateLetterGrade(total, course_total_marks, iscarry);
+        let grade_point = calculateGradePoint(total, course_total_marks, iscarry);
         $(`#letter-grade-${registration}`).removeClass('pending');
         $(`#letter-grade-${registration}`).text(letter_grade);
         $(`#grade-point-${registration}`).text(grade_point);
@@ -262,21 +278,23 @@ function updateLG(registration, total=null, isLabCourse=true) {
 function activateScoreInputs() {
     $(".score-inp").on('keyup', function(){
         let registration = $(this).data('registration');
+        let iscarry = $(this).data('iscarry')
         const inp_id = $(this).attr('id');
         // update input class based on values
         check_input(inp_id)
         // update total marks after all other checkings
         let total = updateAndGetTotalMarks(registration)
-        updateLG(registration, total, false);
+        updateLG(registration, total, false, iscarry);
     })
 }
 
 function activateTotalScoreInput() {
     $(".score-inp").on('keyup', function(){
         let registration = $(this).data('registration');
+        const iscarry = $(this).data('iscarry');
         const inp_id = $(this).attr('id');
         check_input(inp_id)
-        updateLG(registration)
+        updateLG(registration, null, true, iscarry)
     })
 }
 
@@ -289,13 +307,14 @@ function generateRowElements(record) {
     const total_score = record.total_score;
     const letter_grade = record.letter_grade;
     const grade_point = record.grade_point;
+    const is_drop_course = record.is_drop_course;
     let totalContainer = "";
     let lgContainer = "";
     let gpContainer = "";
     if (total_score != null) {
-        totalContainer = `<td data-registration=${registration} class="total-score themetext" id="total-${registration}">${convertFloat(total_score)}</td>`
+        totalContainer = `<td data-registration=${registration} data-iscarry=${is_drop_course} class="total-score themetext" id="total-${registration}">${convertFloat(total_score)}</td>`
     } else {
-        totalContainer = `<td data-registration=${registration} id="total-${registration}" class="total-score pending">Pending</td>`
+        totalContainer = `<td data-registration=${registration} data-iscarry=${is_drop_course} id="total-${registration}" class="total-score pending">Pending</td>`
     }
     if (letter_grade != null) {
         lgContainer = `<td data-registration=${registration} class="total-score themetext" id="letter-grade-${registration}">${letter_grade}</td>`
@@ -309,12 +328,12 @@ function generateRowElements(record) {
     }
     
     const elements = {
-        partAcode: `<input type="text" data-registration=${registration} id="code-part-A-${registration}" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
-        partBcode: `<input type="text" data-registration=${registration} id="code-part-B-${registration}" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
-        partAscore: `<input type="text" data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
-        partBscore: `<input type="text" data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
-        TotalScoreInp: `<input type="text" data-max="${course_total_marks}" id="total-inp-${registration}" data-registration=${registration} ${total_score != null ? `value="${total_score}" class="score-inp total-inp"` : 'class="score-inp empty total-inp"'} ${is_running_semester ? '': "disabled"}>`,
-        inCourseScore: `<input type="text" data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} ${is_running_semester ? '': "disabled"}>`,
+        partAcode: `<input type="text" data-iscarry=${is_drop_course} data-registration=${registration} id="code-part-A-${registration}" class="code-inp" ${record.part_A_code ? `value="${record.part_A_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
+        partBcode: `<input type="text" data-iscarry=${is_drop_course} data-registration=${registration} id="code-part-B-${registration}" class="code-inp" ${record.part_B_code ? `value="${record.part_B_code}"` : ``} ${is_running_semester ? '': "disabled"}>`,
+        partAscore: `<input type="text" data-iscarry=${is_drop_course} data-max="${course_partA_marks}" id="part-A-${registration}" data-registration=${registration} ${partAscore != null ? `value="${partAscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
+        partBscore: `<input type="text" data-iscarry=${is_drop_course} data-max="${course_partB_marks}" id="part-B-${registration}" data-registration=${registration} ${partBscore != null ? `value="${partBscore}" class="score-inp"` : 'class="score-inp empty"'} ${is_running_semester ? '': "disabled"}>`,
+        TotalScoreInp: `<input type="text" data-iscarry=${is_drop_course} data-max="${course_total_marks}" id="total-inp-${registration}" data-registration=${registration} ${total_score != null ? `value="${total_score}" class="score-inp total-inp"` : 'class="score-inp empty total-inp"'} ${is_running_semester ? '': "disabled"}>`,
+        inCourseScore: `<input type="text" data-iscarry=${is_drop_course} data-max="${course_incourse_marks}" id="incourse-raw-${registration}" data-registration=${registration} ${incourseScore != null ? `value="${incourseScore}" class="score-inp incourse-score"` : 'class="score-inp incourse-score empty"'} ${is_running_semester ? '': "disabled"}>`,
         totalContainer: totalContainer,
         lgContainer: lgContainer,
         gpContainer: gpContainer,
