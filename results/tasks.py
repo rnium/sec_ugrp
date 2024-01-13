@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from account.models import StudentAccount
-from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department
+from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department, PreviousPoint, StudentPoint
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 import time
@@ -31,6 +31,26 @@ def restore_dept_data_task(self, dept_id, sessions_data, total_objects):
             student_data['session'] = session
             StudentAccount.objects.create(**student_data)
             count += 1
+            progress_recorder.set_progress(count, total_objects)
+        # Previous Point
+        prev_point = session_data.get('previous_point')
+        if prev_point:
+            prev_point_meta = session_data['previous_point']['prevpoint_meta']
+            prev_point_meta['session'] = session
+            if added_by_userId:=prev_point_meta['added_by']:
+                user = User.objects.filter(username=added_by_userId).first()
+                if user:
+                    prev_point_meta['added_by'] = user
+                else:
+                    prev_point_meta['added_by'] = None
+            p_point = PreviousPoint(**prev_point_meta)
+            p_point.save()
+            for student_p_data in prev_point['student_points']:
+                student_p_data['student'] = StudentAccount.objects.get(registration=student_p_data['student'])
+                student_p_data['prev_point'] = p_point
+                student_p = StudentPoint(**student_p_data)
+                student_p.save()
+                count += 1
             progress_recorder.set_progress(count, total_objects)
         # Semesters
         for sem_data in session_data['semesters']:
@@ -146,6 +166,26 @@ def restore_session_data_task(self, dept_id, session_data, total_objects):
         student_data['session'] = session
         StudentAccount.objects.create(**student_data)
         count += 1
+        progress_recorder.set_progress(count, total_objects)
+    # Previous Point
+    prev_point = session_data.get('previous_point')
+    if prev_point:
+        prev_point_meta = session_data['previous_point']['prevpoint_meta']
+        prev_point_meta['session'] = session
+        if added_by_userId:=prev_point_meta['added_by']:
+            user = User.objects.filter(username=added_by_userId).first()
+            if user:
+                prev_point_meta['added_by'] = user
+            else:
+                prev_point_meta['added_by'] = None
+        p_point = PreviousPoint(**prev_point_meta)
+        p_point.save()
+        for student_p_data in prev_point['student_points']:
+            student_p_data['student'] = StudentAccount.objects.get(registration=student_p_data['student'])
+            student_p_data['prev_point'] = p_point
+            student_p = StudentPoint(**student_p_data)
+            student_p.save()
+            count += 1
         progress_recorder.set_progress(count, total_objects)
     # Semesters
     for sem_data in session_data['semesters']:
