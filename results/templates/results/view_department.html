@@ -184,7 +184,6 @@
 </div>
 {% endblock content %}
 {% block script %}
-<script src="{% static 'results/scripts/departments.js' %}"></script>
 <script>
     const create_session_api = "{% url 'results:create_session' %}";
     const backup_create_api = "{% url 'results:generate_backup' %}";
@@ -192,6 +191,6 @@
     const dept_id = {{department.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
-
+<script src="{% static 'results/scripts/departments130124.js' %}"></script>
 {% endblock script %}
 
