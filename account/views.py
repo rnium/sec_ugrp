@@ -198,7 +198,6 @@ def create_student_via_excel(request, pk):
             header = [cell.value.lower().strip() if cell.value else None for cell in rows[0]]
             data_rows = rows[1:]
         except Exception as e:
-            print(e, flush=1)
             return JsonResponse({'details': 'Can\'t open excel file'}, status=400)
             
         try:
