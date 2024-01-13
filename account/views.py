@@ -195,9 +195,10 @@ def create_student_via_excel(request, pk):
             wb = openpyxl.load_workbook(buffer)
             sheet = wb[wb.sheetnames[0]]
             rows = list(sheet.rows)
-            header = [cell.value.lower().strip() for cell in rows[0]]
+            header = [cell.value.lower().strip() if cell.value else None for cell in rows[0]]
             data_rows = rows[1:]
         except Exception as e:
+            print(e, flush=1)
             return JsonResponse({'details': 'Can\'t open excel file'}, status=400)
             
         try:
