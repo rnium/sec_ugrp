@@ -18,6 +18,17 @@ body.light .bg-material-1 {
 body.light .dashboard-container .sys-info .h2 {
   color: #555870;
 }
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item {
+  background-color: rgb(60, 81, 92);
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename {
+  background-color: rgba(15, 15, 15, 0.3);
+  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(90, 99, 112);
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item:hover {
+  box-shadow: none;
+  outline: 1px solid rgb(77, 86, 103);
+}
 body.light .dept-tab-container .sys-info .instituition {
   color: #224769;
   text-shadow: 0 0 5px #bcc9d5;
@@ -121,6 +132,18 @@ body.light .dept-tab-container .department-main .add-semester button i, body.lig
 }
 body.light .dept-tab-container .department-main .add-semester button:hover i, body.light .dept-tab-container .department-main .add-semester button:hover span {
   color: white !important;
+}
+body.light .dept-tab-container .department-main #backupRestoreModal .modal-body .list-group .bg-material-1 {
+  background-color: rgb(255, 255, 255);
+}
+body.light .dept-tab-container .department-main #backupRestoreModal .modal-body .list-group .text-white {
+  color: #455169 !important;
+}
+body.light .dept-tab-container .department-main #backupRestoreModal #restore-info {
+  color: #222325 !important;
+}
+body.light .dept-tab-container .department-main #backupRestoreModal .progress-con .progress.bg-dark {
+  background-color: rgb(162, 188, 210) !important;
 }
 body.light .view-session-container .btn-container button i {
   color: #ff8801 !important;
@@ -1406,6 +1429,20 @@ body main .view-session-container .container .semesters .semester-item {
   padding: 10px;
   border-radius: 10px;
   background-color: rgb(60, 81, 92);
+  position: relative;
+}
+body main .view-session-container .container .semesters .semester-item .entrybadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.1rem;
+  padding: 4px 7px;
+  background-color: rgb(105, 139, 208);
+  color: rgb(244, 244, 244);
+  border-radius: 0 0 0 7px;
+}
+body main .view-session-container .container .semesters .semester-item .entrybadge.running {
+  background-color: rgb(105, 208, 121);
 }
 body main .view-session-container .container .semesters .semester-item .sem-codename {
   padding: 5px;
@@ -1653,6 +1690,46 @@ body main .student-profile-container .class-position .label {
 }
 
 @media screen and (max-width: 1500px) {
+  body main .dashboard-container .sys-info img {
+    width: 6rem !important;
+  }
+  body main .dashboard-container .sys-info .h2 {
+    font-size: 1.7em !important;
+  }
+  body main .dashboard-container .sys-info .h4 {
+    font-size: 1.4rem !important;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li {
+    margin-bottom: 0.5rem;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item {
+    padding: 10px;
+    border-radius: 7px;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename {
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-right: 1.5rem;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename span {
+    font-size: 1.5rem;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info {
+    font-size: 0.8rem;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .label {
+    font-family: "Gemunu Libre", sans-serif;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 0 5px;
+    font-weight: 500;
+    border-radius: 4px;
+  }
+  body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month {
+    justify-content: flex-start;
+  }
   body main .all-courses .header, body main .all-registrations .header {
     font-size: 1.4rem !important;
   }
@@ -1677,6 +1754,16 @@ body main .student-profile-container .class-position .label {
   }
   body main .all-courses .courses .course-container .course .lab-course-badge span, body main .all-registrations .courses .course-container .course .lab-course-badge span {
     font-size: 0.9rem !important;
+  }
+  body .title-box .title {
+    padding: 0.2rem 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #ebeaef;
+    text-align: center;
+  }
+  body .title-box .content {
+    margin: 1rem 1.5rem;
   }
 }
 .profile {
@@ -1729,6 +1816,11 @@ body main .student-profile-container .class-position .label {
   color: #fdac41;
   border-radius: 5px;
   margin-right: 5px;
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: rgb(255, 255, 255);
+  --bs-tooltip-color: rgb(107, 107, 107);
 }
 
 .title-box {
