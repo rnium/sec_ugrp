@@ -228,16 +228,26 @@ def render_normal_font_cell_style(num_rows: int, num_cols: int, nth_semester: in
         if nth_semester > 1:
             styles.append(('FONTNAME', (-4, i), (-4, i), 'Times-Roman'))
     if nth_semester == 1:
-        styles.append(('FONTSIZE', (2, 0), (-3, 1), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 0), (-3, 0), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 1), (-3, 2), TABLE_FONT_SIZE))
     else:
-        styles.append(('FONTSIZE', (2, 0), (-5, 1), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 0), (-5, 0), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 1), (-5, 2), TABLE_FONT_SIZE))
     return styles
     
 
 def calculate_column_widths(num_columns):
     available_width = w - 2*inch  # Adjust this value based on your page width
     column_width = available_width / num_columns
-    return [column_width] * num_columns
+    return num_columns * [column_width]
+
+def calculate_table_column_widths(num_columns):
+    available_width = w - 2*inch  # Adjust this value based on your page width
+    column_width = available_width / num_columns
+    col_widths_array = [column_width for i in range(num_columns)]
+    col_widths_array[0] = (column_width * 0.4)
+    col_widths_array[1] = (column_width + (column_width * 0.6))
+    return col_widths_array
 
 
 def insert_header(flowables: list, semesterData: SemesterDataContainer, render_config):
@@ -245,7 +255,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("topTitle", 
                             styles["Normal"],
-                            fontName = "Times-Roman",
+                            fontName = "Times-Bold",
                             fontSize = 20,
                             alignment = TA_CENTER))
 
@@ -262,7 +272,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
 
     styles.add(ParagraphStyle("exam_title", 
                             styles["Normal"],
-                            fontName = "Times-Roman",
+                            fontName = "Times-Bold",
                             fontSize = 12,
                             alignment = TA_CENTER))
 
@@ -326,10 +336,12 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         # ('BACKGROUND', (0, 1), (1, 2), colors.lightblue), # Background color for specific cells
         # ('SPAN', (0, 1), (1, 1)),                         # Merge cells (rowspan and columnspan)
         ('GRID', (0, 0), (-1, -1), 1, colors.black),      # Add grid lines to all cells
+        ('FONTSIZE', (2, 3), (-1, -1), TABLE_FONT_SIZE+2),
+        ('FONTSIZE', (0, 1), (0, 1), TABLE_FONT_SIZE-2),
         *spans
     ])
 
-    table = Table(data, colWidths=calculate_column_widths(len(data[0])))
+    table = Table(data, colWidths=calculate_table_column_widths(len(data[0])))
     # Apply the custom TableStyle to the table
     table.setStyle(table_style)
     flowables.append(table)
