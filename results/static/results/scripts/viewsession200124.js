@@ -20,6 +20,7 @@ function showError(errorContainer, msg) {
 
 function getSemesterData() {
     let exam_month = $("#monthInput").val().trim();
+    let exam_duration = $("#durationInput").val().trim();
     let yearInput = $("#yearInput").val().trim();
     let semesterInput = $("#SemesterInput").val().trim();
     exam_month_array = exam_month.split(" ")
@@ -52,6 +53,9 @@ function getSemesterData() {
         "start_month": exam_month,
         "session": sessionId,
         "added_by": userId,
+    }
+    if (exam_duration.length > 0) {
+        data.exam_duration = exam_duration;
     }
     return data;
 }

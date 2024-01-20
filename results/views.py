@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from django.core.cache import cache
+from wsgiref.util import FileWrapper
 import base64
 from typing import Any, Dict
 from django.http import HttpResponse, JsonResponse
@@ -17,6 +18,7 @@ from results.api.utils import sort_courses
 from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
 from io import BytesIO
+import os
 from django.conf import settings
 
 
@@ -311,9 +313,11 @@ def pending_view(request):
 
 @login_required
 def download_customdoc_template(request):
-    template_dir = settings.BASE_DIR / 'results/static/template_files/customdoc_temp.xlsx'
-    
-    with open(template_dir, 'rb') as file:
-        response = FileResponse(file, content_type='application/vnd.ms-excel', as_attachment=True)
-    response['Content-Disposition'] = 'attachment; filename="customdoc_template.xlsx"'
-    return response
+    file_path = settings.BASE_DIR / 'results/template_files/customdoc_temp.xlsx'
+    file_name = 'template.xlsx'
+    with open(file_path, 'rb') as excel_file:
+        wrapper = FileWrapper(excel_file)
+        response = HttpResponse(excel_file, content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = f'attachment; filename={file_name}'
+        response['Content-Length'] = os.path.getsize(file_path)
+        return response

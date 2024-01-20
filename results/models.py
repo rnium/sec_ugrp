@@ -102,6 +102,7 @@ class Semester(models.Model):
         ]
     )
     start_month = models.CharField(max_length=15) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
+    exam_duration = models.CharField(max_length=50, null=True, blank=True)
     is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")
@@ -171,6 +172,12 @@ class Semester(models.Model):
     def has_prevpoint_from_here(self):
         ppoint = PreviousPoint.objects.filter(session=self.session, upto_semester_num=self.semester_no-1).first()
         return bool(ppoint)
+    
+    @property
+    def get_duration_info(self):
+        if duration:= self.exam_duration:
+            return duration
+        return "<DURATION UNSPECIFIED>"
 
 class SemesterEnroll(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)

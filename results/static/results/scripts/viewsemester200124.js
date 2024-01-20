@@ -398,6 +398,7 @@ function delete_semester() {
 
 function getSemesterData() {
     let exam_month = $("#monthInput").val().trim();
+    let exam_duration = $("#durationInput").val().trim();
     let yearInput = $("#yearInput").val().trim();
     let semesterInput = $("#SemesterInput").val().trim();
     exam_month_array = exam_month.split(" ")
@@ -428,6 +429,9 @@ function getSemesterData() {
         "year_semester": year_semester_no,
         "semester_no": nth_semester,
         "start_month": exam_month,
+    }
+    if (exam_duration.length > 0) {
+        data.exam_duration = exam_duration;
     }
     return data;
 }

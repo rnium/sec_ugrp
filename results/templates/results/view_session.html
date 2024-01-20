@@ -207,9 +207,15 @@
                             </div>              
                         </div>
                         <div class="col-md-12">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="monthInput" placeholder="">
                                 <label for="monthInput">Schedule of Examination (e.g., March 2023)</label>
+                            </div>            
+                        </div> 
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="durationInput" placeholder="">
+                                <label for="durationInput">Duration of Examination <small class="text-secondary">(e.g., 10/11/2023 to 05/12/2023)</small></label>
                             </div>            
                         </div>                                             
                     </div>
@@ -380,5 +386,5 @@
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsession.js' %}"></script>
+<script src="{% static 'results/scripts/viewsession200124.js' %}"></script>
 {% endblock script %}
