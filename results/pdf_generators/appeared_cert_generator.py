@@ -50,7 +50,7 @@ def render_appearance_certificate(info_dict):
         f"This is to certify that {info_dict['name']} son/daughter of "
         f"{info_dict['father_name']} and {info_dict['mother_name']} bearing "
         f"Registration No. {info_dict['registration']} and Session {info_dict['session']} "
-        f"completed 4 years academic program of B. Sc Engg. ({info_dict['dept']}) "
+        f"completed {info_dict['completed_years']} years academic program of B. Sc Engg. ({info_dict['dept']}) "
         f"and appeared the {info_dict['semester_no']}<super><font size=14>{info_dict['semester_suffix']}</font></super> semester final examination held on "
         f"{info_dict['exam_duration']}. "
     )

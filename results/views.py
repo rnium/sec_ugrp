@@ -298,6 +298,7 @@ def download_appeared_cert(request, registration):
             'registration': student.registration,
             'session': student.session.session_code_formal,
             'dept': student.session.dept.name.upper(),
+            'completed_years': last_sesmester_number//2,
             'semester_no': last_sesmester_number,
             'semester_suffix': get_ordinal_suffix(last_sesmester_number),
             'exam_duration': last_enroll.semester.duration_info,
