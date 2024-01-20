@@ -52,7 +52,7 @@ def render_coursemedium_cert(info_dict):
         "Applied Sciences & Technology, Shahjalal University of Science and Technology,\n"
         "Sylhet."
     )
-    middle_text = "During his or her studentship, the medium of instruction was English"
+    middle_text = "During his or her studentship, the medium of instruction was English."
     bottom_text = "I wish his or her every success in life."
     # Define styles for the paragraph
     styles = getSampleStyleSheet()
