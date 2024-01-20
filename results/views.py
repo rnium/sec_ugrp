@@ -17,6 +17,7 @@ from results.utils import get_ordinal_number, render_error
 from results.api.utils import sort_courses
 from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
+from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from io import BytesIO
 import os
 from django.conf import settings
@@ -260,6 +261,25 @@ def download_transcript(request, registration):
     else:
         return render_error(request, 'Transcript not available!')
 
+
+
+@login_required
+def download_coursemediumcert(request, registration):
+    has_permission = user_is_super_or_sust_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    student = get_object_or_404(StudentAccount, registration=registration)
+    info_dict = {
+        'name': student.student_name,
+        'registration': student.registration,
+        'session': student.session.session_code_formal,
+        'dept_name_full': student.session.dept.fullname,
+    }
+    sheet_pdf = render_coursemedium_cert(info_dict)
+    filename = f"CourseMedium Certificate - {student.registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    
+    
 @login_required
 def download_backup(request, pk):
     has_permission = user_is_super_OR_dept_admin(request)

@@ -18,6 +18,7 @@ urlpatterns = [
     path('student/<int:registration>/semestergradesheet/<int:semester_no>/', views.download_semester_gradesheet, name="download_semester_gradesheet"),
     path('coursereport/<str:b64_id>', views.download_coruse_report, name="download_coruse_report"),
     path('student/<int:registration>/transcript/', views.download_transcript, name="download_transcript"),
+    path('student/<int:registration>/coursemediumcert/', views.download_coursemediumcert, name="download_coursemediumcert"),
     path('staffs/', views.StaffsView.as_view(), name="stuffs_view"),
     path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
     path('extensions/gradesheet/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
