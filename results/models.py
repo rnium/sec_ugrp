@@ -174,7 +174,7 @@ class Semester(models.Model):
         return bool(ppoint)
     
     @property
-    def get_duration_info(self):
+    def duration_info(self):
         if duration:= self.exam_duration:
             return duration
         return "<DURATION UNSPECIFIED>"

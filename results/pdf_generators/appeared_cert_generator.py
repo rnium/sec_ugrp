@@ -41,7 +41,7 @@ def insert_principal_table(flowables):
     flowables.append(tbl)
     
 
-def render_coursemedium_certificate(info_dict):
+def render_appearance_certificate(info_dict):
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer, pagesize=A4, title="Appeared_certificate.pdf")
     # Sample application letter body

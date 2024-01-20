@@ -13,11 +13,12 @@ from results.models import (Semester, SemesterEnroll, Department, Session, Cours
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import get_transcript
-from results.utils import get_ordinal_number, render_error
+from results.utils import get_ordinal_number, render_error, get_ordinal_suffix
 from results.api.utils import sort_courses
 from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
+from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from io import BytesIO
 import os
 from django.conf import settings
@@ -279,7 +280,34 @@ def download_coursemediumcert(request, registration):
     filename = f"CourseMedium Certificate - {student.registration}.pdf"
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
-    
+
+@login_required
+def download_appeared_cert(request, registration):
+    has_permission = user_is_super_or_sust_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    student = get_object_or_404(StudentAccount, registration=registration)
+    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    last_sesmester_number = last_enroll.semester.semester_no
+    # if last_sesmester_number == 8:
+    if last_sesmester_number is not None:
+        info_dict = {
+            'name': student.student_name,
+            'father_name': student.father_name,
+            'mother_name': student.mother_name,
+            'registration': student.registration,
+            'session': student.session.session_code_formal,
+            'dept': student.session.dept.name.upper(),
+            'semester_no': last_sesmester_number,
+            'semester_suffix': get_ordinal_suffix(last_sesmester_number),
+            'exam_duration': last_enroll.semester.duration_info,
+        }
+        sheet_pdf = render_appearance_certificate(info_dict)
+        filename = f"Appeared Certificate - {student.registration}.pdf"
+        return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    else:
+        return render_error(request, 'Appearance Certificate not available!')
+
 @login_required
 def download_backup(request, pk):
     has_permission = user_is_super_OR_dept_admin(request)
