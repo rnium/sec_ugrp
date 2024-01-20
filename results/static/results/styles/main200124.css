@@ -133,6 +133,18 @@ body.light .dept-tab-container .department-main .add-semester button i, body.lig
 body.light .dept-tab-container .department-main .add-semester button:hover i, body.light .dept-tab-container .department-main .add-semester button:hover span {
   color: white !important;
 }
+body.light .dept-tab-container .department-main #backupRestoreModal .modal-body .list-group .bg-material-1 {
+  background-color: rgb(255, 255, 255);
+}
+body.light .dept-tab-container .department-main #backupRestoreModal .modal-body .list-group .text-white {
+  color: #455169 !important;
+}
+body.light .dept-tab-container .department-main #backupRestoreModal #restore-info {
+  color: #222325 !important;
+}
+body.light .dept-tab-container .department-main #backupRestoreModal .progress-con .progress.bg-dark {
+  background-color: rgb(162, 188, 210) !important;
+}
 body.light .view-session-container .btn-container button i {
   color: #ff8801 !important;
 }
@@ -506,6 +518,14 @@ body.light .student-profile-container .class-position .position span.ordinal {
 }
 body.light .student-profile-container .class-position .label {
   color: #9090a7;
+}
+body.light .student-profile-container .cert-container .cert {
+  background-color: rgb(207, 207, 207);
+  border: 1px solid gray;
+}
+body.light .student-profile-container .cert-container .cert .title {
+  color: #56626f;
+  transition: all 200ms;
 }
 body.light .admin-profile-edit h5 {
   color: #555870 !important;
@@ -1675,6 +1695,35 @@ body main .student-profile-container .class-position .position span.ordinal {
 }
 body main .student-profile-container .class-position .label {
   color: #9090a7;
+}
+body main .student-profile-container .cert-container .cert {
+  border: 1px solid gray;
+  transition: all 200ms;
+  background-color: #4c5353;
+}
+body main .student-profile-container .cert-container .cert .title {
+  transition: all 200ms;
+}
+body main .student-profile-container .cert-container .cert.course-medium:hover {
+  background-color: rgba(106, 93, 207, 0.2);
+  border: 1px solid rgba(98, 88, 174, 0.5);
+}
+body main .student-profile-container .cert-container .cert.course-medium:hover .title {
+  color: #6b5dcf;
+}
+body main .student-profile-container .cert-container .cert.appearance:hover {
+  background-color: rgba(208, 144, 110, 0.2);
+  border: 1px solid rgba(208, 144, 110, 0.5);
+}
+body main .student-profile-container .cert-container .cert.appearance:hover .title {
+  color: #d0916e;
+}
+body main .student-profile-container .cert-container .cert.testimonial:hover {
+  background-color: rgba(0, 126, 161, 0.1);
+  border: 1px solid rgba(0, 126, 161, 0.5);
+}
+body main .student-profile-container .cert-container .cert.testimonial:hover .title {
+  color: #007da1;
 }
 
 @media screen and (max-width: 1500px) {

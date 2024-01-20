@@ -139,6 +139,31 @@
                   {% endfor %}
                 </div>
               </div>
+              <div class="cert-container mt-2">
+                <a href="">
+                  <div class="cert testimonial d-flex justify-content-center align-items-center rounded py-3">
+                    <img src="{% static 'results/images/review.svg' %}" width="70px" alt="">
+                    <div class="h6 ms-3 m-0 title">Testimonial</div>
+                  </div>
+                </a>
+              </div>
+              <div class="cert-container mt-2">
+                <a href="{% url "results:download_coursemediumcert" student.registration %}" target="_blank">
+                  <div class="cert course-medium d-flex justify-content-center align-items-center rounded py-1">
+                    <img src="{% static 'results/images/certificate.png' %}" width="100px" alt="">
+                    <div class="h6 ms-3 m-0 title">Course Medium Certificate</div>
+                  </div>
+                </a>
+              </div>
+              <div class="cert-container mt-2">
+                <a href="">
+                  <div class="cert appearance d-flex justify-content-center align-items-center rounded py-1">
+                    <img src="{% static 'results/images/certificate.png' %}" width="100px" alt="">
+                    <div class="h6 ms-3 m-0 title">Appeared Certificate</div>
+                  </div>
+                </a>
+              </div>
+              
               
             </div>
             <div class="col-lg-5 right-col">
@@ -265,6 +290,7 @@
                 </div>
               </div>
               {% endif %}
+              
             </div>
             
           </div>
