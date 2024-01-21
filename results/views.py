@@ -19,6 +19,7 @@ from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
+from results.pdf_generators.testimonial_generator import render_testimonial
 from io import BytesIO
 import os
 from django.conf import settings
@@ -288,9 +289,9 @@ def download_appeared_cert(request, registration):
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
-    last_sesmester_number = last_enroll.semester.semester_no
     # if last_sesmester_number == 8:
-    if last_sesmester_number is not None:
+    if last_enroll is not None:
+        last_sesmester_number = last_enroll.semester.semester_no
         info_dict = {
             'name': student.student_name,
             'father_name': student.father_name,
@@ -307,7 +308,38 @@ def download_appeared_cert(request, registration):
         filename = f"Appeared Certificate - {student.registration}.pdf"
         return FileResponse(ContentFile(sheet_pdf), filename=filename)
     else:
-        return render_error(request, 'Appearance Certificate not available!')
+        return render_error(request, 'Appearance Certificate not available without a semester participated!')    
+
+
+@login_required
+def download_testimonial(request, registration):
+    has_permission = user_is_super_or_sust_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    student = get_object_or_404(StudentAccount, registration=registration)
+    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    # if last_sesmester_number == 8:
+    if last_enroll is not None:
+        last_sem = last_enroll.semester
+        last_sem_no = last_sem.semester_no
+        context = {
+            'name': student.student_name,
+            'registration': student.registration,
+            'father_name': student.father_name,
+            'mother_name': student.mother_name,
+            'session': student.session.session_code_formal,
+            'dept': student.session.dept.name.upper(),
+            'years_completed': last_sem_no/2,
+            'semesters_completed': last_sem_no,
+            'exam': last_sem.semester_name,
+            'exam_held_in': last_sem.start_month,
+            'cgpa': student.student_cgpa,
+        }
+        sheet_pdf = render_testimonial(context)
+        filename = f"Testimonial - {student.registration}.pdf"
+        return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    else:
+        return render_error(request, 'Testimonial not available without a semester participated!')
 
 @login_required
 def download_backup(request, pk):

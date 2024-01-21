@@ -1,0 +1,59 @@
+@page {
+    margin: 1in;
+    size: 'A4';
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+}
+
+h2 .text {
+    border-bottom: 1px solid;
+    font-family: Bodoni;
+}
+
+section p {
+    margin-top: 5rem;
+    text-align: justify;
+    font-size: 20px;
+    font-family: ScriptMT;
+    line-height: 2.3;
+}
+
+.bottom-p {
+    margin-top: 1.5rem;
+    line-height: 1.5;
+}
+
+.field {
+    border-bottom: 2px dotted black;
+    padding: 0 5rem;
+}
+
+.field-medium {
+    padding: 0 3rem;
+}
+
+.field-small {
+    padding: 0 2rem;
+}
+
+.principal-info {
+    width: 45%;
+    margin-top: 10rem;
+    margin-left: auto;
+}
+
+.principal-info .info {
+    text-align: center;
+    font-family: Times-roman
+}

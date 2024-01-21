@@ -20,6 +20,7 @@ urlpatterns = [
     path('student/<int:registration>/transcript/', views.download_transcript, name="download_transcript"),
     path('student/<int:registration>/coursemediumcert/', views.download_coursemediumcert, name="download_coursemediumcert"),
     path('student/<int:registration>/appearedcert/', views.download_appeared_cert, name="download_appeared_cert"),
+    path('student/<int:registration>/download_testimonial/', views.download_testimonial, name="download_testimonial"),
     path('staffs/', views.StaffsView.as_view(), name="stuffs_view"),
     path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
     path('extensions/gradesheet/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
