@@ -139,6 +139,7 @@
                   {% endfor %}
                 </div>
               </div>
+              {% if request.user.adminaccount.is_super_admin %}
               <div class="cert-container mt-2">
                 <a href="{% url "results:download_testimonial" student.registration %}" target="_blank">
                   <div class="cert testimonial d-flex justify-content-center align-items-center rounded py-3">
@@ -163,6 +164,7 @@
                   </div>
                 </a>
               </div>
+              {% endif %}
               
               
             </div>
@@ -243,7 +245,8 @@
                   </div>
                 </div>
               </div>
-
+              
+              {% if request.user.adminaccount.is_super_admin %}
               <div class="container">
                 <p class="mb-2 text-center"><span class="text-muted roboto-font fs-5">Grade Sheets</span></p>
                 <div class="row g-1 row-cols-2 mb-2">
@@ -289,6 +292,7 @@
                   </div>
                 </div>
               </div>
+              {% endif %}
               {% endif %}
               
             </div>

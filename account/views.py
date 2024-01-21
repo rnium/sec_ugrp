@@ -2,7 +2,7 @@ import openpyxl
 from io import BytesIO
 from typing import Any, Dict
 from datetime import timedelta
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
@@ -35,10 +35,16 @@ from results.utils import render_error
 from results.models import Department, Session, CourseResult, StudentPoint
 from .tasks import send_html_email_task
 
-    
+
+def user_is_super_OR_specific_dept_admin(request, dept):
+    if hasattr(request.user, 'adminaccount'):
+        return request.user.adminaccount.is_super_admin or (request.user.adminaccount.dept == dept)
+    else:
+        return False
+        
 def login_page(request):
     if request.user.is_authenticated:
-            return redirect("results:dashboard")
+        return redirect("results:dashboard")
     else:
         return render(request=request, template_name='account/login_page.html')
 
@@ -51,6 +57,13 @@ class LogoutView(View):
 
 class StudentProfileView(LoginRequiredMixin, DetailView):
     template_name = "account/view_student_profile.html"
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        dept = self.get_object().session.dept
+        if user_is_super_OR_specific_dept_admin(request, dept):
+            return super().get(request, *args, **kwargs)
+        else:
+            return render_error(request, 'Forbidden', "You're not supposed to see this!")
     
     def get_object(self):
         student = get_object_or_404(
