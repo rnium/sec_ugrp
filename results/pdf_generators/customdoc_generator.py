@@ -1,7 +1,6 @@
 from .transcript_generator_manual import get_transcript
 from .gradesheet_generator_manual import get_gradesheet
-import io
-import fitz  # PyMuPDF
+from .utils import merge_pdfs_from_buffers
 
 def map_context_for_transcript(data):
     context = {
@@ -50,22 +49,7 @@ def map_semester_for_gradesheet(data, year_num, year_semester):
     return semester_data
     
 
-def merge_pdfs_from_buffers(pdf_buffers):
-    # Create a new PDF document to store the merged pages
-    merged_pdf = fitz.open()
 
-    # Iterate through each PDF buffer and add pages to the merged document
-    for buffer in pdf_buffers:
-        pdf_document = fitz.open("pdf", buffer)
-        merged_pdf.insert_pdf(pdf_document)
-
-    # Save the merged PDF to a buffer
-    merged_buffer = io.BytesIO()
-    merged_pdf.save(merged_buffer)
-    merged_buffer.seek(0)  # Set the buffer's cursor to the beginning
-    merged_pdf.close()
-
-    return merged_buffer
 
 # Example list of PDF buffers (replace these with your actual PDF buffers)
 # pdf_buffers_list = [b'...', b'...', b'...']  # Replace with your PDF buffers

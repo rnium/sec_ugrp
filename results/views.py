@@ -12,14 +12,13 @@ from django.http.response import FileResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup)
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
-from results.pdf_generators.transcript_generator import get_transcript
+from results.pdf_generators.transcript_generator import render_transcript_for_student
 from results.utils import get_ordinal_number, render_error, get_ordinal_suffix
-from results.api.utils import sort_courses
-from datetime import datetime
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
+from results.pdf_generators.utils import merge_pdfs_from_buffers
 from io import BytesIO
 import os
 from django.conf import settings
@@ -249,20 +248,43 @@ def download_transcript(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
         return render_error(request, 'Forbidden')
-    student = get_object_or_404(StudentAccount, registration=registration)
-    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
-    if last_enroll is not None:
-        context = {
-            'admin_name': request.user.adminaccount.user_full_name,
-            'student': student,
-            'last_semester': last_enroll.semester
-        }
-        sheet_pdf = get_transcript(context=context)
-        filename = f"Transcript - {student.registration}.pdf"
-        return FileResponse(ContentFile(sheet_pdf), filename=filename)
-    else:
-        return render_error(request, 'Transcript not available!')
+    try:
+        sheet_pdf = render_transcript_for_student(request, registration)
+    except Exception as e:
+        return render_error(request, e)
+    filename = f"Transcript - {registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    
 
+
+@login_required
+def download_full_document(request, registration):
+    has_permission = user_is_super_or_sust_admin(request)
+    if not has_permission:
+        return render_error(request, 'Forbidden')
+    student = get_object_or_404(StudentAccount, registration=registration)
+    docs = []
+    docs.append(render_transcript_for_student(request, registration=None, student=student))
+    gradesheets_semesters = student.gradesheet_semesters
+    gradesheets_semester_groups = [gradesheets_semesters[i:i+2] for i in range(0, len(gradesheets_semesters), 2)]
+    for year_semester_list in gradesheets_semester_groups:
+        year_first_semester = None
+        year_second_semester = None
+        try:
+            year_first_semester = SemesterEnroll.objects.get(student=student, semester__semester_no=year_semester_list[0])
+            if len(year_semester_list) == 2:
+                year_second_semester = SemesterEnroll.objects.get(student=student, semester__semester_no=year_semester_list[1])
+        except:
+            render_error(request, 'All the gradesheets of the document is not available!')
+        docs.append(get_gradesheet(
+            student = student,
+            year_first_sem_enroll = year_first_semester,
+            year_second_sem_enroll = year_second_semester
+        ))
+    merged_pdf = merge_pdfs_from_buffers(docs).getvalue()
+    filename = f"Transcript & Gradesheets - {registration}.pdf"
+    return FileResponse(ContentFile(merged_pdf), filename=filename)
+    
 
 
 @login_required
@@ -376,6 +398,7 @@ def download_coruse_report(request, b64_id):
     report_pdf = render_coursereport(course, from_session)
     filename = f"{str(course)} Report.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
+    
     
 @login_required
 def download_cachedpdf(request, cache_key, filename):

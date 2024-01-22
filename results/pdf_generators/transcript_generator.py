@@ -1,6 +1,9 @@
 from typing import List, Dict
 from io import BytesIO
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
+from account.models import StudentAccount
 from reportlab.lib import colors
 from reportlab.lib.units import inch, cm
 from reportlab.lib.pagesizes import A4
@@ -294,4 +297,19 @@ def get_transcript(context: Dict):
    
     doc.build(story, onFirstPage=lambda canv, doc: add_footer(canvas=canv, doc=doc, context=context))
     return buffer.getvalue()
-    
+
+
+def render_transcript_for_student(request, registration, student=None):
+    if student is None:
+        student = get_object_or_404(StudentAccount, registration=registration)
+    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    if last_enroll is not None:
+        context = {
+            'admin_name': request.user.adminaccount.user_full_name,
+            'student': student,
+            'last_semester': last_enroll.semester
+        }
+        sheet_pdf = get_transcript(context=context)
+        return sheet_pdf
+    else:
+        raise ValidationError('Transcript not available!')
