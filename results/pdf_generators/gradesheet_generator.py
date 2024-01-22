@@ -280,7 +280,7 @@ def add_footer(canvas, doc, final_cumulative, margin_y=cm):
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
 
-def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=False) -> bytes:
+def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=None) -> bytes:
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title=f"gradesheet: {student.registration}")
     story = []
@@ -288,7 +288,7 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=False)
     build_header(story, student)
     story.append(Spacer(1, 20))
     
-    if year_second_sem_enroll != False:
+    if year_second_sem_enroll != None:
         first_sem_cumulative = cumulative_semester_data(student, year_first_sem_enroll.semester.semester_no)
         build_semester(story, year_first_sem_enroll, first_sem_cumulative)
         second_sem_cumulative = cumulative_semester_data(student, year_second_sem_enroll.semester.semester_no)
