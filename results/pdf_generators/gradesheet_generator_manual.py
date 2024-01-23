@@ -208,7 +208,7 @@ def build_semester(flowables, semester_data) -> None:
     flowables.append(table)
   
     
-def get_footer(formdata):
+def get_footer(last_semester_data):
     header_style = ParagraphStyle(
         name='bold_paragraph_style',
         fontName='roboto-bold',  # Specify the bold font
@@ -218,7 +218,7 @@ def get_footer(formdata):
     footer_top_data = [
         ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', 'With Distinction'],
         ['', 'Cumulative', 'Credit', 'CGPA', 'Letter Grade', ''],
-        ['', 'Final Result', formdata['final_res_credit'], formdata['final_res_cgpa'], formdata['final_res_letter_grade'], '']
+        ['', 'Final Result', last_semester_data['cumulative_credits'], last_semester_data['cumulative_gp'], last_semester_data['cumulative_lg'], '']
     ]
     footer_top_style_config = [
         ('SPAN', (1, 0), (-2, 0)),
@@ -258,8 +258,8 @@ def get_footer(formdata):
     ])
     return footer_table
     
-def add_footer(canvas, doc, formdata, margin_y=cm):
-    footer = get_footer(formdata)
+def add_footer(canvas, doc, last_sem_data, margin_y=cm):
+    footer = get_footer(last_sem_data)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
 
@@ -279,14 +279,16 @@ def get_gradesheet(formdata, excel_data, num_semesters) -> bytes:
     else:
         story.append(Spacer(1, 40))
         build_semester(story, excel_data['semester_1'])
-        
+    last_semester_number = max([int(k.split('_')[-1]) for k in excel_data.keys()])
+    last_semester_key = f"semester_{last_semester_number}"
     if TOTAL_NUMBER_OF_COURSES <= 22:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, formdata))
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key]))
     elif TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, formdata, 0.4*cm))
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key], 0.4*cm))
     else:
         story.append(Spacer(1, 40))
-        story.append(get_footer(formdata))
+        
+        story.append(get_footer(excel_data[last_semester_key]))
         doc.build(story)
     return buffer.getvalue()
     

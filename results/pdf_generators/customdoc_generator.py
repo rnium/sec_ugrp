@@ -42,7 +42,7 @@ def map_semester_for_gradesheet(data, year_num, year_semester):
         'held_in': semester['held_in'],
         'semester_credits': semester['semester_credits'],
         'semester_gp': semester['semester_gp'],
-        'cumulative_credits': semester['semester_credits'],
+        'cumulative_credits': semester['cumulative_credits'],
         'cumulative_gp': semester['cumulative_gp'],
         'cumulative_lg': semester['cumulative_lg'],
         'courses': semester['courses']
