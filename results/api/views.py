@@ -937,9 +937,9 @@ def sust_student_data(request):
                 'url': reverse('results:download_year_gradesheet', args=(registration, year_num))
             }
         )
+    response_data['full_document_url'] = reverse('results:download_full_document', args=(registration,))
     response_data['transcript_url'] = reverse('results:download_transcript', args=(registration,))
-    response_data['full_document_url'] = "/"
-    return Response(data=response_data) 
+    return Response(data=response_data)
 
 
 @csrf_exempt

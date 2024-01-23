@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
