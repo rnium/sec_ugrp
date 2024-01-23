@@ -946,8 +946,8 @@ def sust_student_data(request):
 def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     if settings.DEBUG:
-        admin_name = "Anynymous"
-        redis_key = "anynymous"
+        admin_name = "Anonymous"
+        redis_key = "anonymous"
     else:
         admin_name = request.user.first_namet + " " + request.user.last_name
         redis_key = str(int(time.time())) + request.user.username

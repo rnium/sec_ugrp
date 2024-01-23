@@ -419,9 +419,4 @@ def pending_view(request):
 def download_customdoc_template(request):
     file_path = settings.BASE_DIR / 'results/template_files/customdoc_temp.xlsx'
     file_name = 'template.xlsx'
-    with open(file_path, 'rb') as excel_file:
-        wrapper = FileWrapper(excel_file)
-        response = HttpResponse(excel_file, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = f'attachment; filename={file_name}'
-        response['Content-Length'] = os.path.getsize(file_path)
-        return response
+    return FileResponse(open(file_path, 'rb'), content_type='application/vnd.ms-excel', filename=file_name, as_attachment=True)
