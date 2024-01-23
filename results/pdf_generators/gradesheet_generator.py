@@ -11,8 +11,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
 from io import BytesIO
 from django.conf import settings
-from results.utils import get_letter_grade, get_ordinal_number
-from results.models import SemesterEnroll
+from results.utils import get_letter_grade, get_ordinal_number, round_up
+from results.models import SemesterEnroll, StudentPoint
 from results.api.utils import sort_courses
 
 DEBUG_MODE = False
@@ -143,13 +143,18 @@ def cumulative_semester_data(student, semester_upto):
     enrolls = SemesterEnroll.objects.filter(semester__semester_no__lte=semester_upto, student=student)
     credits_count = 0
     points_count = 0
+    prev_student_point = StudentPoint.objects.filter(student=student).first()
+    if prev_student_point and (prev_student_point.prev_point.upto_semester_num < semester_upto):
+        credits_count += prev_student_point.total_credits
+        points_count += prev_student_point.total_points
     for enroll in enrolls:
         credits_count += enroll.semester_credits
         points_count += enroll.semester_points
     if points_count:
         data['credit'] = credits_count
-        data['grade_point'] = points_count / credits_count
+        data['grade_point'] = round_up(points_count / credits_count, 2)
         data['letter_grade'] = get_letter_grade(data['grade_point'])
+    
     return data
         
 
@@ -182,7 +187,7 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
         # courses
         *course_dataset,
         [*course_title_extras, 'This Semester Total:', '', semester_enroll.semester_credits, f'{semester_enroll.semester_gpa:.2f}', get_letter_grade(semester_enroll.semester_gpa)],
-        [*course_title_extras, 'Cumulative:', '', cumulative_data['credit'], f"{cumulative_data['grade_point']:.2f}", cumulative_data['letter_grade']],
+        [*course_title_extras, 'Cumulative:', '', cumulative_data['credit'], f"{cumulative_data['grade_point']}", cumulative_data['letter_grade']],
     ]
     header_row_heights = [15] * 3
     course_row_heights = [14] * num_courses
