@@ -11,6 +11,8 @@ def parse_student_data(wb: openpyxl.Workbook):
     value_idx = headers.index('VALUES')
     for row in rows[1:]:
         value = row[value_idx].value
+        if type(value) == datetime:
+            value = value.strftime("%Y")
         key = row[key_idx].value
         key = key.strip() if type(value) == str else key
         student_data[key] = value.strip() if type(value) == str else value
@@ -64,7 +66,7 @@ def parse_customdoc_excel(excel_file):
     for sheetname in wb.sheetnames:
         if sheetname.startswith("SEM"):
             semester_data = parse_semester_data(wb, sheetname)
-            if len(semester_data['courses']) > 1:
+            if len(semester_data['courses']) >= 1:
                 sem_num = int(sheetname.split("_")[1])
                 parsed_data['years'][get_year(sem_num)][get_year_semester(sem_num)] = semester_data
     return parsed_data

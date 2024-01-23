@@ -30,6 +30,7 @@ def map_formdata_for_gradesheet(data):
     }
     return formdata
 
+
 def map_semester_for_gradesheet(data, year_num, year_semester):
     year = data['years'][year_num]
     if len(year) == 0:
@@ -48,21 +49,6 @@ def map_semester_for_gradesheet(data, year_num, year_semester):
     }
     return semester_data
     
-
-
-
-# Example list of PDF buffers (replace these with your actual PDF buffers)
-# pdf_buffers_list = [b'...', b'...', b'...']  # Replace with your PDF buffers
-
-# Merge the PDF buffers from the list
-# merged_buffer = merge_pdfs_from_buffers(pdf_buffers_list)
-
-# Now, merged_buffer contains the merged PDF in a buffer
-# You can save it to a file or use it as needed
-# For example, to save the merged PDF to a file:
-# with open('merged.pdf', 'wb') as output_file:
-#     output_file.write(merged_buffer.read())
-
 
 def render_customdoc(data, admin_name):
     transcript_context = map_context_for_transcript(data)

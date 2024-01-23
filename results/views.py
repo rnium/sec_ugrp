@@ -419,6 +419,10 @@ def pending_view(request):
 
 @login_required
 def download_customdoc_template(request):
-    file_path = settings.BASE_DIR / 'results/template_files/customdoc_temp.xlsx'
-    file_name = 'template.xlsx'
-    return FileResponse(open(file_path, 'rb'), content_type='application/vnd.ms-excel', filename=file_name, as_attachment=True)
+    file_name = "customdoc_template.xlsx"
+    file_path = settings.BASE_DIR / ('results/template_files/'+file_name)
+    return FileResponse(
+        open(file_path, 'rb'), 
+        content_type='application/vnd.ms-excel', 
+        filename=file_name, as_attachment=True
+    )
