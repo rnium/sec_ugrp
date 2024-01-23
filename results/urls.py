@@ -26,6 +26,7 @@ urlpatterns = [
     path('extensions/', views.ExtensionsView.as_view(), name="extensions_view"),
     path('extensions/gradesheet/', views.GradesheetMakerView.as_view(), name="gradesheetmaker_view"),
     path('extensions/transcript/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
+    path('extensions/customdocument/', views.CustomdocMakerView.as_view(), name="customdocmaker_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
     path('cachedpdf/<str:cache_key>/<str:filename>', views.download_cachedpdf, name="download_cachedpdf"),
     path('customdoc/downloadtemplate/', views.download_customdoc_template, name="download_customdoc_template"),

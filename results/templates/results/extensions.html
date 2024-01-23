@@ -45,30 +45,15 @@
 <div class="container py-4 px-5 mt-5">
     <div class="row px-3 mt-5">
         <div class="col-md-6">
-            <a href="{% url 'results:gradesheetmaker_view' %}" class="card shadow-sm bg-material mb-3 rounded-l" style="max-width: 540px;">
+            <a href="{% url 'results:customdocmaker_view' %}" class="card shadow-sm bg-material mb-3 rounded-l" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
                     <img src="{% static 'results/images/newdoc.svg' %}" class="img-fluid ps-3 py-3 rounded-start" alt="">
                     </div>
                     <div class="col-md-8">
                     <div class="card-body h-100 d-flex flex-column justify-content-center">
-                        <h5 class="card-title text-info">Gradesheet Compiler</h5>
-                        <p class="card-text small">Create Gradesheets with custom data</p>
-                    </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6">
-            <a href="{% url 'results:transcriptmaker_view' %}" class="card bg-material mb-3 rounded-l" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                    <img src="{% static 'results/images/transcript.svg' %}" class="img-fluid ps-3 py-3 rounded-start" alt="">
-                    </div>
-                    <div class="col-md-8">
-                    <div class="card-body h-100 d-flex flex-column justify-content-center">
-                        <h5 class="card-title text-info">Transcript Compiler</h5>
-                        <p class="card-text small">Create Transcripts with custom data</p>
+                        <h5 class="card-title text-info">Custom Document</h5>
+                        <p class="card-text small">Create Transcript and Gradesheets with custom data</p>
                     </div>
                     </div>
                 </div>

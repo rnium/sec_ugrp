@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from django.core.cache import cache
-from wsgiref.util import FileWrapper
 import base64
 from typing import Any, Dict
 from django.http import HttpResponse, JsonResponse
@@ -83,7 +82,10 @@ class GradesheetMakerView(LoginRequiredMixin, TemplateView):
     template_name = "results/gradesheetmaker.html"     
 
 class TranscriptMakerView(LoginRequiredMixin, TemplateView):
-    template_name = "results/transcriptmaker.html"
+    template_name = "results/transcriptmaker.html"  
+
+class CustomdocMakerView(LoginRequiredMixin, TemplateView):
+    template_name = "results/customdocmaker.html"
     
 
 @login_required 

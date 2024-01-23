@@ -1,0 +1,101 @@
+{% extends 'results/base.html' %} {% load static %}
+{% block head %}
+<title>Extension: CustomDocument</title>
+{% endblock head %}
+{% block nav %}
+<ul class="nav">
+    <li class="nav-item">
+        <a href="{% url 'results:dashboard' %}" class="nav-link">
+            <i class='bx bxs-dashboard'></i>
+            <span>Dashboard</span>
+        </a>
+        <div class="tooltip">Dashboard</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:all_departments' %}" class="nav-link">
+            <i class='bx bx-archive'></i>
+            <span>Department</span>
+        </a>
+        <div class="tooltip">Department</div>
+    </li>
+    <li class="nav-item active">
+        <a href="{% url 'results:extensions_view' %}" class="nav-link">
+            <i class='bx bx-extension'></i>
+            <span>Extensions</span>
+        </a>
+        <div class="tooltip">Extensions</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'results:stuffs_view' %}" class="nav-link">
+            <i class='bx bx-user'></i>
+            <span>Staffs</span>
+        </a>
+        <div class="tooltip">Staffs</div>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'account:view_admin_profile_edit' %}" class="nav-link">
+            <i class='bx bxs-spray-can'></i>
+            <span>Profile</span>
+        </a>
+        <div class="tooltip">Profile</div>
+    </li>
+</ul>
+{% endblock nav %}
+{% block content %}
+<div class="container py-4 px-5 mt-5">
+    <div class="row g-3 px-5">
+        <div class="col-md-12 d-flex text-center align-items-center mt-5">
+          <i class='bx bx-extension text-muted fs-1 me-3'></i>
+          <div class="text-center fs-4 text-secondary mb-2 roboto-font">CustomDocument Renderer</div>
+        </div>
+        <div class="col-md-12 py-5">
+          <div class="text-muted fs-5 text-center mb-2">Instructions</div>
+          <ul class="mb-0">
+              <li class="text-success ">Use the provided excel workbook as a template.</li>
+              <li class="text-success ">Do not alter the field names, enter only the corresponding data.</li>
+              <li class="text-success ">Maintaining the order of the sheets is not necessary but don't change the name of the sheets.</li>
+              <li class="text-success ">Verify the data and the specified formatting before rendering.</li>
+          </ul>
+          <div class="d-flex justify-content-center mt-5">
+            {% comment %} <a class="btn btn-outline-info btn-iconized" href="{% url "results:download_customdoc_template" %}">Download Template</a> {% endcomment %}
+            <div class="btn-container d-flex">
+              <a class="download-btn" href="{% url "results:download_customdoc_template" %}" target="_blank" id="tabulation-download">
+                  <i class='bx bxs-download'></i>
+                  <span>Download Template</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="">
+            <label class="form-label">Select Excel File</label>
+            <input class="form-control" type="file" id="excelInp">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="mt-3 btn-container d-flex justify-content-end align-content-start">
+            <button class="ms-auto btn btn-primary btn-iconized px-4 shadow-sm" id="render-cd-btn">
+                <div class="content">
+                    <div class="d-flex align-items-center">
+                        <i class='bx bxs-cog me-2 py-1'></i>
+                        <span class="roboto-font ">Render</span>
+                    </div>
+                </div>
+                <div class="spinner spinner-border mx-4" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </button>
+          </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    const generate_customdoc_api = "{% url 'results:render_customdoc' %}";
+    const csrftoken = "{{csrf_token}}";
+</script>
+<script src="{% static 'results/scripts/generate_customdoc.js' %}"></script>
+{% endblock script %}

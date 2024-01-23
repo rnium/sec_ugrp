@@ -1,4 +1,5 @@
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
@@ -943,14 +944,11 @@ def sust_student_data(request):
 
 
 @csrf_exempt
+@login_required
 def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
-    if settings.DEBUG:
-        admin_name = "Anonymous"
-        redis_key = "anonymous"
-    else:
-        admin_name = request.user.first_namet + " " + request.user.last_name
-        redis_key = str(int(time.time())) + request.user.username
+    admin_name = request.user.first_name + " " + request.user.last_name
+    redis_key = str(int(time.time())) + request.user.username
     document = utils.render_customdoc(excel_file, admin_name)
     pdf_base64 = base64.b64encode(document).decode('utf-8')
     cache.set(redis_key, pdf_base64)
