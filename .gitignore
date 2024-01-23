@@ -27,7 +27,6 @@ fixtures.json
 *.so
 
 # Distribution / packaging
-build/
 .Python
 develop-eggs/
 dist/
