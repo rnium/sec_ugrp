@@ -377,7 +377,7 @@ def migrate_sesion_of_student(request, registration):
  
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_sust_admin_info(request):
+def get_admin_user_info(request):
     response = {
         'firstname': request.user.first_name,
         'lastname': request.user.last_name,

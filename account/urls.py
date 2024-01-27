@@ -23,6 +23,6 @@ urlpatterns = [
     path('api/recovery/sendmail', views.send_recovery_email_api, name="send_recovery_email_api"),
     path('recovery/<uidb64>/<token>', views.reset_password_get, name="reset_password_get"),
     path('api/recovery/setpassword/<uidb64>/<emailb64>', views.reset_password_api, name="reset_password_api"),
-    path('get-sustuserinfo/', views.get_sust_admin_info, name="get_sust_admin_info"),
+    path('get-userinfo/', views.get_admin_user_info, name="get_admin_user_info"),
 ]
    
