@@ -34,6 +34,8 @@ urlpatterns = [
     path('create-prevpoint/<int:pk>/', views.create_session_prevpoint_via_excel, name="create_session_prevpoint_via_excel"),
     # SUST API
     path('sust-studentdata/', views.sust_student_data, name="sust_student_data"),
+    # Academic Section
+    path('academic-studentcerts/', views.academic_studentcerts_data, name="academic_studentcerts_data"),
     
 ]
 
