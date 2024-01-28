@@ -450,8 +450,8 @@ def create_admin_account(request, tokenId):
         admin_account_data['dept'] = dept
     if token.actype == 'super':
         admin_account_data['is_super_admin'] = True
-    elif token.actype == 'sust':
-        admin_account_data['type'] = 'sust'
+    elif token.actype is not None:
+        admin_account_data['type'] = token.actype
     # user cration
     user_data = {
         "username": token.user_email,
@@ -531,7 +531,7 @@ def send_signup_token(request):
         utils.send_signup_email(request, invite_token)
     except Exception as e:
         return Response(data={'details': str(e)}, status=status.HTTP_502_BAD_GATEWAY)
-    return Response(data={"status": "Invitation email will be sent"}, status=HTTP_200_OK)
+    return Response(data={"status": "Invitation email sent"}, status=HTTP_200_OK)
     
 # Account Recovery API's
 @api_view(["POST"])

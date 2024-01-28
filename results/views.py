@@ -192,6 +192,7 @@ class StaffsView(LoginRequiredMixin, TemplateView):
         context['superadmins'] = AdminAccount.objects.filter(is_super_admin=True, user__is_staff=False) 
         context['deptadmins'] = AdminAccount.objects.filter(dept__isnull=False).order_by('dept') 
         context['sustdmins'] = AdminAccount.objects.filter(type='sust') 
+        context['secacademics'] = AdminAccount.objects.filter(type='academic') 
         context['sysadmins'] = AdminAccount.objects.filter(user__is_staff=True) 
         context['request'] = self.request
         context['departments'] = Department.objects.all()
