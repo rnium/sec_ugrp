@@ -396,7 +396,6 @@ def download_coruse_report(request, b64_id):
     from_session = None
     if from_session_pk.isdigit():
         from_session = get_object_or_404(Session, pk=from_session_pk)
-    print(type(from_session), flush=1)
     report_pdf = render_coursereport(course, from_session)
     filename = f"{str(course)} Report.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)

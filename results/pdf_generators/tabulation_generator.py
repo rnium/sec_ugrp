@@ -46,7 +46,6 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
             total_points += student_point.total_points
     for semester in semesters:
         if prevpoint and (semester.semester_no <= prevpoint.upto_semester_num):
-            print(f"Ignoring sem: {semester.semester_no} of {len(semesters)}", flush=1)
             continue
         enrollment = SemesterEnroll.objects.filter(semester=semester, student=student).first()
         if enrollment:
@@ -415,7 +414,6 @@ def get_tabulation_files(semester: Semester, render_config: Dict, footer_data_ra
         files['thumbnail_file'] = get_thumnail_image(files['pdf_file']) #thumbnail is in png format
     except Exception as e:
         files['thumbnail_file'] = None
-        print("Cannot create thumbnail", flush=True)
     return files
 
 

@@ -332,7 +332,6 @@ def update_course_results(request, pk):
         try:
             course_result.save()
         except Exception as e:
-            print(e)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     ## updating stats data: credits, points and gpa for each enrolls
     # romoved: (note: each courseresult related enrollments are now updated after saving the course_result in save() method)
@@ -780,7 +779,6 @@ def perform_restore(request):
     try:
         obj_count = utils.get_obj_count(data['sessions'])
     except Exception as e:
-        print(e, flush=1)
         return JsonResponse({'details': "Bad data"}, status=406)
     if (data.get('single_batch_type') == True):
         clear, message = utils.check_session_dependancy(data['sessions'][0])
