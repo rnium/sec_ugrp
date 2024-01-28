@@ -54,9 +54,9 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
             total_points += enrollment.semester_points
     result = {}
     if total_credits == 0:
-        result['grade_point'] = ""; 
-        result['letter_grade'] = ""
-        result['total_credits'] = ""
+        result['grade_point'] = "0"; 
+        result['letter_grade'] = "F"
+        result['total_credits'] = 0
     else:
         overall_grade_point = (total_points/total_credits)
         overall_letter_grade = get_letter_grade(overall_grade_point)
@@ -122,9 +122,9 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 
                 if gp is None or lg is None:
                     if gp is None:
-                        row_top.append("")
+                        row_top.append('A')
                     if lg is None:
-                        row_bottom.append("")
+                        row_bottom.append('F')
                     continue
                 row_top.append(gp)
                 row_bottom.append(lg)
