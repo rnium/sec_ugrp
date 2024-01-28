@@ -43,7 +43,8 @@ class BaseAccount(models.Model):
 
 class AdminAccount(BaseAccount):
     limited_admin_user_types = [
-        ('sust', 'Sust Admin')
+        ('sust', 'Sust Admin'),
+        ('academic', 'SEC Academic'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_super_admin = models.BooleanField(default=False)

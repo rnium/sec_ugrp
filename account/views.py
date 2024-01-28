@@ -378,6 +378,8 @@ def migrate_sesion_of_student(request, registration):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_admin_user_info(request):
+    if not hasattr(request.user, 'adminaccount'):
+        return Response(data={'details': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
     response = {
         'firstname': request.user.first_name,
         'lastname': request.user.last_name,

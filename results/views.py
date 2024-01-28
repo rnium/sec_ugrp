@@ -46,6 +46,8 @@ def homepage(request):
         return render_error(request, "Unauthorized")
     if request.user.adminaccount.type == "sust":
         return redirect('results:sustadminhome')
+    if request.user.adminaccount.type == "academic":
+        return redirect('results:secacademichome')
     else:
         # SuperAdmin or dept admin
         context = {}
@@ -61,7 +63,10 @@ def homepage(request):
     
     
 class SustAdminHome(LoginRequiredMixin, TemplateView):
-    template_name = 'sustadmin/build/index.html'
+    template_name = 'sustadmin/build/index.html'   
+     
+class SecAcademicHome(LoginRequiredMixin, TemplateView):
+    template_name = 'sec_academic/build/index.html'
 
 class DepartmentView(LoginRequiredMixin, DetailView):
     template_name = "results/view_department.html"
