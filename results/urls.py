@@ -30,6 +30,7 @@ urlpatterns = [
     path('extensions/transcript/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
     path('extensions/customdocument/', views.CustomdocMakerView.as_view(), name="customdocmaker_view"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
+    path('semesterdata/json/', views.get_semester_data, name="get_semester_data"),
     path('cachedpdf/<str:cache_key>/<str:filename>', views.download_cachedpdf, name="download_cachedpdf"),
     path('customdoc/downloadtemplate/', views.download_customdoc_template, name="download_customdoc_template"),
 ]

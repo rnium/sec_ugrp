@@ -18,6 +18,8 @@ from results.pdf_generators.coursemedium_cert_generator import render_coursemedi
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.utils import merge_pdfs_from_buffers
+from .data_processors import get_semester_table_data
+from openpyxl import Workbook
 from io import BytesIO
 import os
 from django.conf import settings
@@ -431,3 +433,28 @@ def download_customdoc_template(request):
         content_type='application/vnd.ms-excel', 
         filename=file_name, as_attachment=True
     )
+    
+def get_semester_data(request):
+    sem = Semester.objects.get(session__from_year=2018, semester_no=7)
+    data = get_semester_table_data(sem)
+    workbook = Workbook()
+    # Get the active worksheet
+    worksheet = workbook.active
+
+    # Write the data to the worksheet
+    for row_index, row_data in enumerate(data):
+        for column_index, cell_value in enumerate(row_data):
+            worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
+
+    # Create an in-memory buffer
+    buffer = BytesIO()
+
+    # Save the workbook to the buffer
+    workbook.save(buffer)
+    filename = 'semester_data.xlsx'
+    return FileResponse(
+        ContentFile(buffer.getvalue()),
+        content_type='application/vnd.ms-excel', 
+        filename=filename, as_attachment=True
+    )
+    
