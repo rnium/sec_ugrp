@@ -1,13 +1,14 @@
+from django import http
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from django.core.cache import cache
 import base64
 from typing import Any, Dict
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
-from django.http.response import FileResponse
+from django.http.response import FileResponse, HttpResponse
 from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup)
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
@@ -66,9 +67,25 @@ def homepage(request):
     
 class SustAdminHome(LoginRequiredMixin, TemplateView):
     template_name = 'sustadmin/build/index.html'   
+    def dispatch(self, request, *args: Any, **kwargs: Any) -> HttpResponse:
+        if hasattr(request.user, 'adminaccount'):
+            if request.user.adminaccount.type == 'sust':
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return render_error(request, "Forbidden: Only SUST staffs are allowed.")
+        else:
+            return HttpResponseForbidden("Forbidden: You must be an SUST staff to access this page.")
      
 class SecAcademicHome(LoginRequiredMixin, TemplateView):
     template_name = 'sec_academic/build/index.html'
+    def dispatch(self, request, *args: Any, **kwargs: Any) -> HttpResponse:
+        if hasattr(request.user, 'adminaccount'):
+            if request.user.adminaccount.type == 'academic':
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return render_error(request, "Forbidden: Only academic staffs are allowed.")
+        else:
+            return HttpResponseForbidden("Forbidden: You must be an academic staff to access this page.")
 
 class DepartmentView(LoginRequiredMixin, DetailView):
     template_name = "results/view_department.html"
