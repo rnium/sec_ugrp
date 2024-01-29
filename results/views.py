@@ -19,10 +19,10 @@ from results.pdf_generators.coursemedium_cert_generator import render_coursemedi
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.utils import merge_pdfs_from_buffers
+from results.decorators import admin_required, superadmin_required, superadmin_or_deptadmin_required
 from .data_processors import get_semester_table_data
 from openpyxl import Workbook
 from io import BytesIO
-import os
 from django.conf import settings
 
 
@@ -112,7 +112,7 @@ class CustomdocMakerView(LoginRequiredMixin, TemplateView):
     template_name = "results/customdocmaker.html"
     
 
-@login_required 
+@superadmin_or_deptadmin_required 
 def departments_all(request):
     if request.user.adminaccount.is_super_admin:
         context = {
@@ -218,7 +218,7 @@ class StaffsView(LoginRequiredMixin, TemplateView):
         return context
     
 
-@login_required
+@admin_required
 def download_semester_tabulation(request, pk):
     semester = get_object_or_404(Semester, pk=pk)
     if semester.has_tabulation_sheet:
@@ -229,7 +229,7 @@ def download_semester_tabulation(request, pk):
         return render_error(request, 'No Tabulation sheet')
 
 
-@login_required
+@admin_required
 def download_year_gradesheet(request, registration, year):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -250,7 +250,7 @@ def download_year_gradesheet(request, registration, year):
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
 
-@login_required
+@admin_required
 def download_semester_gradesheet(request, registration, semester_no):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -270,7 +270,7 @@ def download_semester_gradesheet(request, registration, semester_no):
     filename = f"{get_ordinal_number(semester_no)} semester gradesheet - {student.registration}.pdf"
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
-@login_required
+@admin_required
 def download_transcript(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -284,7 +284,7 @@ def download_transcript(request, registration):
     
 
 
-@login_required
+@admin_required
 def download_full_document(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -314,7 +314,7 @@ def download_full_document(request, registration):
     
 
 
-@login_required
+@admin_required
 def download_coursemediumcert(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -331,7 +331,7 @@ def download_coursemediumcert(request, registration):
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 
-@login_required
+@admin_required
 def download_appeared_cert(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -360,7 +360,7 @@ def download_appeared_cert(request, registration):
         return render_error(request, 'Appearance Certificate not available without a semester participated!')    
 
 
-@login_required
+@admin_required
 def download_testimonial(request, registration):
     has_permission = user_is_super_or_sust_admin(request)
     if not has_permission:
@@ -390,7 +390,7 @@ def download_testimonial(request, registration):
     else:
         return render_error(request, 'Testimonial not available without a semester participated!')
 
-@login_required
+@superadmin_required
 def download_backup(request, pk):
     has_permission = user_is_super_OR_dept_admin(request)
     if not has_permission:
@@ -409,7 +409,7 @@ def download_backup(request, pk):
     return response
 
 
-@login_required
+@superadmin_or_deptadmin_required
 def download_coruse_report(request, b64_id):
     try:
         str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
@@ -441,7 +441,7 @@ def download_cachedpdf(request, cache_key, filename):
 def pending_view(request):
     return render_error(request, 'This Section is Under Development!')
 
-@login_required
+@admin_required
 def download_customdoc_template(request):
     file_name = "customdoc_template.xlsx"
     file_path = settings.BASE_DIR / ('results/template_files/'+file_name)
@@ -451,22 +451,17 @@ def download_customdoc_template(request):
         filename=file_name, as_attachment=True
     )
 
-@login_required 
+@superadmin_or_deptadmin_required 
 def get_semester_excel(request, pk):
+    print(dir(request.user), flush=1)
     sem = get_object_or_404(Semester, pk=pk)
     data = get_semester_table_data(sem)
     workbook = Workbook()
-    # Get the active worksheet
     worksheet = workbook.active
-
-    # Write the data to the worksheet
     for row_index, row_data in enumerate(data):
         for column_index, cell_value in enumerate(row_data):
             worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
-    # Create an in-memory buffer
     buffer = BytesIO()
-
-    # Save the workbook to the buffer
     workbook.save(buffer)
     filename = f'semester_data {sem.semester_code}.xlsx'
     return FileResponse(
