@@ -433,9 +433,10 @@ def download_customdoc_template(request):
         content_type='application/vnd.ms-excel', 
         filename=file_name, as_attachment=True
     )
-    
-def get_semester_data(request):
-    sem = Semester.objects.get(session__from_year=2018, semester_no=7)
+
+@login_required 
+def get_semester_excel(request, pk):
+    sem = get_object_or_404(Semester, pk=pk)
     data = get_semester_table_data(sem)
     workbook = Workbook()
     # Get the active worksheet
@@ -445,13 +446,12 @@ def get_semester_data(request):
     for row_index, row_data in enumerate(data):
         for column_index, cell_value in enumerate(row_data):
             worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
-
     # Create an in-memory buffer
     buffer = BytesIO()
 
     # Save the workbook to the buffer
     workbook.save(buffer)
-    filename = 'semester_data.xlsx'
+    filename = f'semester_data {sem.semester_code}.xlsx'
     return FileResponse(
         ContentFile(buffer.getvalue()),
         content_type='application/vnd.ms-excel', 

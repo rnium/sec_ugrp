@@ -13,15 +13,15 @@ def generate_table_header_data(dataContainer: SemesterDataContainer):
         if hasattr(dataContainer.semester.session, 'previouspoint'):
             sem_from_num = 1
         title_semester_from_to = f"{get_ordinal_number(sem_from_num)} to {get_ordinal_number(dataContainer.semester.semester_no)} Semester"
-    row1 = [ *['Course Numbber (Credit of the course)'] ,
+    row1 = [ *['Course Numbber (Credit)'] ,
             *[f"{course.code.upper()} ({course.course_credit})" for course in dataContainer.course_list],
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     
-    row2 = [*["Registration"], 
+    row2 = [*["SL NO.", "Registration"], 
             *['GP' for i in range(dataContainer.num_courses)], 
             *["Credit", "GPA", *(["Credit", "CGPA"] if has_overall_result else [])]]
     
-    row3 = [*["Student's Name"], 
+    row3 = [*["", "Student's Name"], 
             *['LG' for i in range(dataContainer.num_courses)], 
             *["","LG", *(["", "LG"] if has_overall_result else [])]]
     return [row1, row2, row3]
@@ -31,9 +31,11 @@ def prepare_table_data(dataContainer: SemesterDataContainer):
     header_data = generate_table_header_data(dataContainer)
     students_data = [*header_data]
     semester = dataContainer.semester
+    sl_number = 1
     for student in dataContainer.students:
-        row_top = [student.registration]
-        row_bottom = [student.student_name]
+        row_top = [sl_number, student.registration]
+        row_bottom = ['', student.student_name]
+        sl_number += 1
         #courses
         total_credits = 0
         total_points = 0
