@@ -1,5 +1,6 @@
 from functools import wraps
 from django.shortcuts import redirect
+from django.http import HttpResponseForbidden
 from results.utils import render_error
 
 def admin_required(view_func):
@@ -34,3 +35,15 @@ def superadmin_or_deptadmin_required(view_func):
         else:
             return render_error(request, "Forbidden", "You don't have superadmin or dept. admin privileges")
     return wrapper
+
+
+class DeptAdminRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if hasattr(request.user, 'adminaccount'):
+            dept = self.get_dept()
+            if request.user.adminaccount.is_super_admin or request.user.adminaccount.dept == dept:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return render_error(request, "Forbidden")
+        else:
+            return HttpResponseForbidden("Forbidden: You must be a staff to access this page.")

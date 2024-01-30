@@ -74,6 +74,7 @@
             </div>
         </div>
 
+        {% if request.user.adminaccount.is_super_admin %}
         <!-- Backup & restore btn -->
         <div class="delete-btn-container mt-4">
             <button class="btn btn-secondary btn-iconized px-4 shadow" id="add-new" data-bs-toggle="modal" data-bs-target="#backupRestoreModal">
@@ -83,6 +84,7 @@
                 </div>
             </button>
         </div>
+        {% endif %}
         
         <!-- New Entry Modal -->
         <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

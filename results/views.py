@@ -19,7 +19,10 @@ from results.pdf_generators.coursemedium_cert_generator import render_coursemedi
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.utils import merge_pdfs_from_buffers
-from results.decorators import admin_required, superadmin_required, superadmin_or_deptadmin_required
+from results.decorators_and_mixins import (admin_required, 
+                                           superadmin_required, 
+                                           superadmin_or_deptadmin_required,
+                                           DeptAdminRequiredMixin)
 from .data_processors import get_semester_table_data
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment
@@ -88,8 +91,11 @@ class SecAcademicHome(LoginRequiredMixin, TemplateView):
         else:
             return HttpResponseForbidden("Forbidden: You must be an academic staff to access this page.")
 
-class DepartmentView(LoginRequiredMixin, DetailView):
+class DepartmentView(DeptAdminRequiredMixin, DetailView):
     template_name = "results/view_department.html"
+    
+    def get_dept(self):
+        return self.get_object()
     
     def get_object(self):
         department = get_object_or_404(Department, name=self.kwargs.get("dept_name", ""))
@@ -125,8 +131,11 @@ def departments_all(request):
         return redirect('results:view_department', dept_name=request.user.adminaccount.dept.name)
 
 
-class SessionView(LoginRequiredMixin, DetailView):
+class SessionView(DeptAdminRequiredMixin, DetailView):
     template_name = "results/view_session.html"
+    
+    def get_dept(self):
+        return self.get_object().dept
     
     def get_object(self):
         session = get_object_or_404(
@@ -143,8 +152,12 @@ class SessionView(LoginRequiredMixin, DetailView):
         return context
 
 
-class SemesterView(LoginRequiredMixin, DetailView):
+class SemesterView(DeptAdminRequiredMixin, DetailView):
     template_name = "results/view_semester.html"
+    
+    def get_dept(self):
+        return self.get_object().session.dept
+    
     def get_object(self):
         semester = get_object_or_404(
             Semester, 
@@ -175,8 +188,12 @@ class SemesterView(LoginRequiredMixin, DetailView):
         return context
     
 
-class CourseView(LoginRequiredMixin, DetailView):
+class CourseView(DeptAdminRequiredMixin, DetailView):
     template_name = "results/view_course.html"
+    
+    def get_dept(self):
+        return self.get_object().semester.session.dept
+    
     def get_object(self):
         course = get_object_or_404(
             Course, 
