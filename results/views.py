@@ -22,6 +22,7 @@ from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators import admin_required, superadmin_required, superadmin_or_deptadmin_required
 from .data_processors import get_semester_table_data
 from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Alignment
 from io import BytesIO
 from django.conf import settings
 
@@ -453,7 +454,6 @@ def download_customdoc_template(request):
 
 @superadmin_or_deptadmin_required 
 def get_semester_excel(request, pk):
-    print(dir(request.user), flush=1)
     sem = get_object_or_404(Semester, pk=pk)
     data = get_semester_table_data(sem)
     workbook = Workbook()
@@ -461,6 +461,20 @@ def get_semester_excel(request, pk):
     for row_index, row_data in enumerate(data):
         for column_index, cell_value in enumerate(row_data):
             worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
+    # Stylings
+    num_cols = worksheet.max_column
+    for i in range(num_cols):
+        if i == 0:
+            worksheet.column_dimensions[chr(ord('A')+i)].width = 10
+        elif i == 1:
+            worksheet.column_dimensions[chr(ord('A')+i)].width = 35
+        else:
+            worksheet.column_dimensions[chr(ord('A')+i)].width = 15
+        if i > 25:
+            break
+    for row in worksheet.iter_rows():
+        for cell in row:
+            cell.alignment = Alignment(horizontal='center', vertical='center')
     buffer = BytesIO()
     workbook.save(buffer)
     filename = f'semester_data {sem.semester_code}.xlsx'
