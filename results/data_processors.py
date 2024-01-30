@@ -13,7 +13,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer):
         if hasattr(dataContainer.semester.session, 'previouspoint'):
             sem_from_num = 1
         title_semester_from_to = f"{get_ordinal_number(sem_from_num)} to {get_ordinal_number(dataContainer.semester.semester_no)} Semester"
-    row1 = [ *['Course Numbber (Credit)'] ,
+    row1 = [ *["", "Course Numbber (Credit)"] ,
             *[f"{course.code.upper()} ({course.course_credit})" for course in dataContainer.course_list],
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     
