@@ -3,7 +3,7 @@ from reportlab.lib.units import cm, inch
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
 import fitz
 from PIL import Image
@@ -13,8 +13,8 @@ from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
 
-TABLE_FONT_SIZE = 10
-pageSize = (792.0, 1304.0)
+TABLE_FONT_SIZE = 7
+pageSize = (8.5*inch, 14*inch)
 h, w = pageSize
 
 
@@ -171,8 +171,11 @@ def get_table_data(dataContainer: SemesterDataContainer, render_config: Dict):
     return table_data
     
 def get_footer_data(footer_data_raw: Dict):
-    style = getSampleStyleSheet()
-    main_label = Paragraph("<b>Name, Signature & Date:</b>")
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle("topTitle", 
+                            styles["Normal"],
+                            fontSize = 8))
+    main_label = Paragraph("<b>Name, Signature & Date:</b>", style=styles['topTitle'])
     chairman_name = ""
     if footer_data_raw["chairman"] is not None:
         chairman_name = footer_data_raw["chairman"]
@@ -227,21 +230,21 @@ def render_normal_font_cell_style(num_rows: int, num_cols: int, nth_semester: in
         if nth_semester > 1:
             styles.append(('FONTNAME', (-4, i), (-4, i), 'Times-Roman'))
     if nth_semester == 1:
-        styles.append(('FONTSIZE', (2, 0), (-3, 0), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 0), (-3, 0), TABLE_FONT_SIZE-1))
         styles.append(('FONTSIZE', (2, 1), (-3, 2), TABLE_FONT_SIZE))
     else:
-        styles.append(('FONTSIZE', (2, 0), (-5, 0), TABLE_FONT_SIZE-2))
+        styles.append(('FONTSIZE', (2, 0), (-5, 0), TABLE_FONT_SIZE-1))
         styles.append(('FONTSIZE', (2, 1), (-5, 2), TABLE_FONT_SIZE))
     return styles
     
 
 def calculate_column_widths(num_columns):
-    available_width = w - 2*inch  # Adjust this value based on your page width
+    available_width = w - 1.5*inch  # Adjust this value based on your page width
     column_width = available_width / num_columns
     return num_columns * [column_width]
 
 def calculate_table_column_widths(num_columns):
-    available_width = w - 2*inch  # Adjust this value based on your page width
+    available_width = w - 1.5*inch  # Adjust this value based on your page width
     column_width = available_width / num_columns
     col_widths_array = [column_width for i in range(num_columns)]
     col_widths_array[0] = (column_width * 0.4)
@@ -255,30 +258,31 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     styles.add(ParagraphStyle("topTitle", 
                             styles["Normal"],
                             fontName = "Times-Bold",
-                            fontSize = 20,
+                            fontSize = 16,
                             alignment = TA_CENTER))
 
     styles.add(ParagraphStyle("tablulatio_title", 
                             styles["Normal"],
                             fontName = "Times-Bold",
-                            fontSize = 16,
+                            fontSize = 13,
                             alignment = TA_CENTER))
 
     styles.add(ParagraphStyle("institute_title", 
                             styles["Normal"],
                             fontName = "Times-Bold",
-                            fontSize = 12))
+                            fontSize = 9,
+                            alignment = TA_LEFT))
 
     styles.add(ParagraphStyle("exam_title", 
                             styles["Normal"],
                             fontName = "Times-Bold",
-                            fontSize = 12,
+                            fontSize = 9,
                             alignment = TA_CENTER))
 
     styles.add(ParagraphStyle("bottom_row_paragraph1", 
                             styles["Normal"],
                             fontName = "Times-Bold",
-                            fontSize = 12))
+                            fontSize = 9))
 
     styles.add(ParagraphStyle("bottom_row_paragraph2", 
                             styles["bottom_row_paragraph1"],
@@ -289,7 +293,10 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
                             alignment = TA_RIGHT))
     
     bottom_table_style = TableStyle([
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        # ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('SPAN', (0, 0), (-1, 0)),
         # ('ALIGN', (1, 0), (2, 0), 'CENTER')
     ])
     
@@ -300,21 +307,19 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     dept_title = f"Name of the Department: {semester.session.dept.fullname}"
     exam_held_month = f"Examination Held in {render_config.get('tabulation_exam_time', semester.start_month)}"
     session = f"Session: {semester.session.session_code_formal}"
-    label_data = [[
-        Paragraph(dept_title, style=styles["bottom_row_paragraph1"]),
+    label_data = [
+        [Paragraph(institute_title, style=styles["institute_title"]), '', ''],
+        ['', Paragraph(exam_title, style=styles["exam_title"]), ''],
+        [Paragraph(dept_title, style=styles["bottom_row_paragraph1"]),
         Paragraph(exam_held_month, style=styles["bottom_row_paragraph2"]),
-        Paragraph(session, style=styles["bottom_row_paragraph3"]),
-    ]]
+        Paragraph(session, style=styles["bottom_row_paragraph3"]),]
+    ]
     flowables.append(Paragraph(title_text, style=styles["topTitle"]))
-    flowables.append(Spacer(1, 0.5*cm))
+    flowables.append(Spacer(1, 0.2*cm))
     flowables.append(Paragraph(tablulatio_title, style=styles["tablulatio_title"]))
-    flowables.append(Spacer(1, 0.5*cm))
-    flowables.append(Paragraph(institute_title, style=styles["institute_title"]))
-    # flowables.append(Spacer(1, 0.1*cm))
-    flowables.append(Paragraph(exam_title, style=styles["exam_title"]))
     flowables.append(Spacer(1, 0.2*cm))
     table = Table(data=label_data, colWidths=calculate_column_widths(len(label_data[0])))
-    # table.setStyle(bottom_table_style)
+    table.setStyle(bottom_table_style)
     flowables.append(table)
 
 
@@ -331,7 +336,8 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'), # By default: all bold
         *normal_font_styles,
-        # # ('BOTTOMPADDING', (0, 0), (-1, 0), 12),           # Bottom padding for header row
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0.5),
+        ('TOPPADDING', (0, 0), (-1, -1), 0.5),
         # ('BACKGROUND', (0, 1), (1, 2), colors.lightblue), # Background color for specific cells
         # ('SPAN', (0, 1), (1, 1)),                         # Merge cells (rowspan and columnspan)
         ('GRID', (0, 0), (-1, -1), 1, colors.black),      # Add grid lines to all cells
@@ -351,9 +357,10 @@ def get_footer(footer_data: List[List]):
     PADDING_STYLES = []
     if len(footer_data) > 2:
         for row in range(2, len(footer_data), 2):
-            PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 12))
+            PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 6))
     ts = TableStyle([
         # ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
         *PADDING_STYLES
     ])
     table = Table(footer_data, colWidths=calculate_column_widths(len(footer_data[0])))
@@ -364,7 +371,7 @@ def get_footer(footer_data: List[List]):
 def add_footer(canvas, doc, footer_data, margin_y=cm):
     footer = get_footer(footer_data)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=2.5*cm, y=margin_y)
+    footer.drawOn(canvas=canvas, x=0.7*inch, y=margin_y)
 
 
 def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config, footer_data) -> BytesIO:
@@ -380,10 +387,10 @@ def build_doc_buffer(semesterData:SemesterDataContainer, dataset, render_config,
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer,
                             pagesize = landscape(pageSize),
-                            leftMargin = 1*inch,
-                            rightMargin = 1*inch,
-                            topMargin = 1*cm,
-                            bottomMargin = 1*cm,
+                            # leftMargin = 1*inch,
+                            # rightMargin = 1*inch,
+                            topMargin = 0.8*cm,
+                            bottomMargin = 0.8*cm,
                             title=f"Tabulation sheet"
                             )
     # Building
