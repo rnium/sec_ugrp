@@ -336,8 +336,8 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'), # By default: all bold
         *normal_font_styles,
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 0.5),
-        ('TOPPADDING', (0, 0), (-1, -1), 0.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0.7),
+        ('TOPPADDING', (0, 0), (-1, -1), 0.7),
         # ('BACKGROUND', (0, 1), (1, 2), colors.lightblue), # Background color for specific cells
         # ('SPAN', (0, 1), (1, 1)),                         # Merge cells (rowspan and columnspan)
         ('GRID', (0, 0), (-1, -1), 1, colors.black),      # Add grid lines to all cells
@@ -354,10 +354,10 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
 
 
 def get_footer(footer_data: List[List]):
-    PADDING_STYLES = []
+    PADDING_STYLES = [('BOTTOMPADDING', (0, 0), (-1, -1), 0), ('TOPPADDING', (0, 0), (-1, -1), 0)]
     if len(footer_data) > 2:
         for row in range(2, len(footer_data), 2):
-            PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 6))
+            PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 8))
     ts = TableStyle([
         # ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
