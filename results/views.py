@@ -23,7 +23,7 @@ from results.decorators_and_mixins import (admin_required,
                                            superadmin_required, 
                                            superadmin_or_deptadmin_required,
                                            DeptAdminRequiredMixin)
-from .data_processors import get_semester_table_data
+from .data_processors import get_semester_table_data, get_courseresults_data
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment
 from io import BytesIO
@@ -468,6 +468,44 @@ def download_customdoc_template(request):
         content_type='application/vnd.ms-excel', 
         filename=file_name, as_attachment=True
     )
+
+@superadmin_or_deptadmin_required
+def get_course_excel(request, b64_id):
+    try:
+        str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
+        pk = int(str(str_pk))
+    except Exception as e:
+        return render_error(request, "Invalid Course ID")
+    course = get_object_or_404(Course, pk=pk)
+    from_session_pk = str(request.GET.get('from')).strip()
+    from_session = None
+    if from_session_pk.isdigit():
+        from_session = get_object_or_404(Session, pk=from_session_pk)
+    data = get_courseresults_data(course, from_session)
+    workbook = Workbook()
+    worksheet = workbook.active
+    for row_index, row_data in enumerate(data):
+        for column_index, cell_value in enumerate(row_data):
+            worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
+    filename = f"{str(course)} Report.pdf"
+    # Stylings
+    num_cols = worksheet.max_column
+    for i in range(num_cols):
+        worksheet.column_dimensions[chr(ord('A')+i)].width = 15
+        if i > 25:
+            break
+    for row in worksheet.iter_rows():
+        for cell in row:
+            cell.alignment = Alignment(horizontal='center', vertical='center')
+    buffer = BytesIO()
+    workbook.save(buffer)
+    filename = f'{str(course)} Data.xlsx'
+    return FileResponse(
+        ContentFile(buffer.getvalue()),
+        content_type='application/vnd.ms-excel', 
+        filename=filename, as_attachment=True
+    )
+    
 
 @superadmin_or_deptadmin_required 
 def get_semester_excel(request, pk):

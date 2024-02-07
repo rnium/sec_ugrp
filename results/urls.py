@@ -32,6 +32,6 @@ urlpatterns = [
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
     path('semesterexcel/<int:pk>/', views.get_semester_excel, name="get_semester_excel"),
     path('cachedpdf/<str:cache_key>/<str:filename>', views.download_cachedpdf, name="download_cachedpdf"),
-    path('customdoc/downloadtemplate/', views.download_customdoc_template, name="download_customdoc_template"),
+    path('courseexcel/<str:b64_id>/', views.get_course_excel, name="get_course_excel"),
 ]
 

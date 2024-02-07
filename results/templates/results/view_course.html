@@ -64,7 +64,7 @@
                 {{course.title}}
             </div>
         </div>
-        <div class="d-flex mt-1 justify-content-around">
+        <div class="d-flex mt-1 justify-content-between">
             <div class="credits d-flex justify-content-center align-items-center">
                 <i class='bx bxs-pyramid text-info fs-5 me-2'></i>
                 <span class="roboto-font text-info" style="font-size: 0.9rem;">{{course.course_credit}} Credits</span>
@@ -90,7 +90,6 @@
                     <span class="roboto-font">Report</span>
                 </a>
             </div>
-            
             {% if course.semester.is_running %}
             <div class="d-flex justify-content-end align-items-center">
                 <button class="btn btn-secondary btn-iconized px-4" data-bs-toggle="modal" data-bs-target="#excelUploadModal">
@@ -101,7 +100,7 @@
             {% endif %}
         </div>
         
-        <div class="row mt-3 bg-dark py-1 rounded" style="display: none;">
+        {% comment %} <div class="row mt-3 bg-dark py-1 rounded" style="display: none;">
             <div class="text-center col-md-4">
                 <span class="label">Credit:&nbsp;</span>
                 <span class="value">3</span>
@@ -114,7 +113,7 @@
                 <span class="label">Registered Students:&nbsp;</span>
                 <span class="value">54</span>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
     
     <div class="placeholder-container mt-4 px-5" id="tablePlaceholder">
@@ -167,6 +166,10 @@
                         <span class="text-info">Insert Remaining {{course.num_missing_entries_for_session}}</span>
                     </button>
                     {% endif %}
+                    <a href="{% url 'results:get_course_excel' course.b64_id %}?from={{from_session}}" target="_blank" class="btn btn-success btn-iconized px-4 ms-2">
+                        <i class='bx bx-table fs-3 me-2'></i>
+                        <span class="">Excel Data</span>
+                    </a>
                 </div>
 
                 <button class="btn btn-primary btn-iconized px-4" id="table-save-btn">

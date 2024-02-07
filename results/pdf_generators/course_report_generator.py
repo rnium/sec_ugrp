@@ -18,7 +18,7 @@ def render_coursereport(course, from_session):
         course_results = course.courseresult_set.filter(is_drop_course=True, student__session=from_session)
     else:
         course_results = course.courseresult_set.filter(is_drop_course=False)
-    course_results.order_by('-student__is_regular', 'student__registration')
+    course_results = course_results.order_by('-student__is_regular', 'student__registration')
     html_text = render_to_string('results/pdf_templates/course_report.html', context={'course':course, 'from_session':from_session, 'course_results':course_results})
     fonts = {
         'TimesNewRoman': 'timesnewroman.ttf',
