@@ -222,6 +222,7 @@ function append_carry_entries(response) {
                         </div>
                         </td>
                         ${response[record].remaining_credits == 0 ? `<td class="text-center text-muted">${response[record].remaining_credits}</td>` : `<td class="text-center text-danger">${response[record].remaining_credits}</td>`}
+                        <td class="text-center text-danger">${response[record].credits_completed}</td>
                         <td colspan="2">
                             ${carry_courses}
                         </td>

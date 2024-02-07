@@ -291,6 +291,7 @@ def session_retake_list(request, pk):
     for student in students:
         student_record = {
             "avatar_url": student.avatar_url,
+            "credits_completed": student.credits_completed,
             "remaining_credits": 0,
             "records": []
         }
