@@ -101,16 +101,29 @@ def get_courseresults_data(course, from_session):
     else:
         course_results = course.courseresult_set.filter(is_drop_course=False)
     course_results = course_results.order_by('-student__is_regular', 'student__registration')
-    data = [['Registration', 'Part A', 'Part B', 'Termtest', 'Total', 'Grade Point', 'Letter Grade']]
-    for courseres in course_results:
-        result_data = [
-            courseres.student.registration,
-            courseres.part_A_score,
-            courseres.part_B_score,
-            courseres.incourse_score,
-            courseres.total_score,
-            courseres.grade_point,
-            courseres.letter_grade,
-        ]
-        data.append(result_data)
+    data = []
+    if course.is_theory_course:
+        data.append(['Registration', 'Part A', 'Part B', 'Termtest', 'Total', 'Grade Point', 'Letter Grade'])
+        for courseres in course_results:
+            result_data = [
+                courseres.student.registration,
+                courseres.part_A_score,
+                courseres.part_B_score,
+                courseres.incourse_score,
+                courseres.total_score,
+                courseres.grade_point,
+                courseres.letter_grade,
+            ]
+            data.append(result_data)
+    else:
+        data.append(['Registration', 'Total', 'Grade Point', 'Letter Grade'])
+        for courseres in course_results:
+            result_data = [
+                courseres.student.registration,
+                courseres.total_score,
+                courseres.grade_point,
+                courseres.letter_grade,
+            ]
+            data.append(result_data)
+    
     return data
