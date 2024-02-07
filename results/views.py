@@ -487,7 +487,6 @@ def get_course_excel(request, b64_id):
     for row_index, row_data in enumerate(data):
         for column_index, cell_value in enumerate(row_data):
             worksheet.cell(row=row_index + 1, column=column_index + 1, value=cell_value)
-    filename = f"{str(course)} Report.pdf"
     # Stylings
     num_cols = worksheet.max_column
     for i in range(num_cols):
@@ -499,7 +498,7 @@ def get_course_excel(request, b64_id):
             cell.alignment = Alignment(horizontal='center', vertical='center')
     buffer = BytesIO()
     workbook.save(buffer)
-    filename = f'{str(course)} Data.xlsx'
+    filename = f'{str(course)}.xlsx'
     return FileResponse(
         ContentFile(buffer.getvalue()),
         content_type='application/vnd.ms-excel', 
