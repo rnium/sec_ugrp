@@ -7,7 +7,7 @@ def admin_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            redirect("account:user_login_get")
+            return redirect("account:user_login_get")
         if hasattr(request.user, 'adminaccount'):
             return view_func(request, *args, **kwargs)
         else:
@@ -18,7 +18,7 @@ def superadmin_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            redirect("account:user_login_get")
+            return redirect("account:user_login_get")
         if hasattr(request.user, 'adminaccount') and (request.user.adminaccount.is_super_admin):
             return view_func(request, *args, **kwargs)
         else:
@@ -48,4 +48,4 @@ class DeptAdminRequiredMixin:
             else:
                 return render_error(request, "Forbidden")
         else:
-            return HttpResponseForbidden("Forbidden: You must have to be a staff to access this page.")
+            return render_error(request, "Forbidden", "You must have to be a staff to access this page.")
