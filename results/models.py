@@ -341,6 +341,8 @@ class Course(models.Model):
     
     @property
     def num_missing_entries_for_session(self):
+        if self.is_carry_course:
+            return 0
         num_enrolled_regular = self.courseresult_set.filter(student__session=self.semester.session).count()
         return (self.semester.session.studentaccount_set.count() - num_enrolled_regular)
     

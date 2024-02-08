@@ -304,6 +304,8 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     
 
 def get_or_create_entry_for_carryCourse(semester, registration, course):
+    if semester is None:
+        semester = course.semester
     enrollment = semester.semesterenroll_set.filter(student__registration=registration).first()
     student = StudentAccount.objects.filter(registration=registration).first()
     if (enrollment is None) or (student is None):
@@ -312,5 +314,6 @@ def get_or_create_entry_for_carryCourse(semester, registration, course):
     
     course_res, created = CourseResult.objects.get_or_create(student=student, course=course, is_drop_course=True)
     if created:
+        print(f'Adding it, enrollid: {enrollment.id}', flush=1)
         enrollment.courses.add(course)
     return course_res

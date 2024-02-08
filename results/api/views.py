@@ -110,7 +110,8 @@ class CourseCreate(CreateAPIView):
             course_id = serializer.data.get('id')
             course = Course.objects.get(id=course_id)
             utils.add_course_to_enrollments(course=course)
-            utils.create_course_results(course=course)
+            if not request.data.get('is_carry_course', False):
+                utils.create_course_results(course=course)
             return Response(serializer.data, status=201)
         else:
             return Response(serializer.errors, status=400)
@@ -641,7 +642,7 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                if from_semester:
+                if from_semester or course.is_carry_course:
                     course_res = utils.get_or_create_entry_for_carryCourse(from_semester, reg_no, course)
                 else:
                     course_res = course_results.filter(student__registration=reg_no).first()

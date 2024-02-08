@@ -103,7 +103,7 @@
             {% endfor %}
             {% for course in courses_created_drop %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course created-drop-course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}">
+                <a class="course created-drop-course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}?from={{ semester.session.id }}&sem={{ semester.id }}">
                     <div class="course-code text-center">{{course.code}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:30}}</div>
                     <div class="d-flex justify-content-center mt-2">
