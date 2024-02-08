@@ -29,7 +29,7 @@ def superadmin_or_deptadmin_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            redirect("account:user_login_get")
+            return redirect("account:user_login_get")
         if hasattr(request.user, 'adminaccount') and (request.user.adminaccount.dept is not None or (request.user.adminaccount.is_super_admin)):
             return view_func(request, *args, **kwargs)
         else:
