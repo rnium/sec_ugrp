@@ -133,7 +133,7 @@
         <div class="course-adder-container mt-2 d-flex justify-content-end border-top pt-3">
             <button class="btn btn-primary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#newEntryModal">
                 <i class='bx bx-list-plus me-2'></i>
-                <span class="roboto-font">Create Regular Course</span>
+                <span class="roboto-font">Create Course</span>
             </button>
             <button class="btn btn-secondary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#dropCourseModal">
                 <i class='bx bx-paperclip me-2'></i>
@@ -208,13 +208,13 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="chairman" placeholder="" value="{{config.footer_data.chairman}}">
+                            <input type="text" autocomplete="off" class="form-control" id="chairman" placeholder="" value="{{config.footer_data.chairman}}">
                             <label for="chairman">Chairman of Exam Committe</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="controller" placeholder="" value="{{config.footer_data.controller}}">
+                            <input type="text" autocomplete="off" class="form-control" id="controller" placeholder="" value="{{config.footer_data.controller}}">
                             <label for="controller">Controller of Examination</label>
                         </div>
                     </div>
@@ -222,25 +222,25 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control member" id="member1" placeholder="" value="{{config.footer_data.committee_mem_1}}">
+                            <input type="text" autocomplete="off" class="form-control member" id="member1" placeholder="" value="{{config.footer_data.committee_mem_1}}">
                             <label for="member1">Exam Committe Member 1</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control member" id="member2" placeholder="" value="{{config.footer_data.committee_mem_2}}">
+                            <input type="text" autocomplete="off" class="form-control member" id="member2" placeholder="" value="{{config.footer_data.committee_mem_2}}">
                             <label for="member2">Exam Committe Member 2</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control member" id="member3" placeholder="" value="{{config.footer_data.committee_mem_3}}">
+                            <input type="text" autocomplete="off" class="form-control member" id="member3" placeholder="" value="{{config.footer_data.committee_mem_3}}">
                             <label for="member3">Exam Committe Member 3</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control member" id="member4" placeholder="" value="{{config.footer_data.committee_mem_4}}">
+                            <input type="text" autocomplete="off" class="form-control member" id="member4" placeholder="" value="{{config.footer_data.committee_mem_4}}">
                             <label for="member4">Exam Committe Member 4</label>
                         </div>
                     </div>
@@ -248,25 +248,25 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control tabulator" id="tabulator1" placeholder="" value="{{config.footer_data.tabulator_1}}">
+                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator1" placeholder="" value="{{config.footer_data.tabulator_1}}">
                             <label for="tabulator1">Tabulator 1</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control tabulator" id="tabulator2" placeholder="" value="{{config.footer_data.tabulator_2}}">
+                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator2" placeholder="" value="{{config.footer_data.tabulator_2}}">
                             <label for="tabulator2">Tabulator 2</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control tabulator" id="tabulator3" placeholder="" value="{{config.footer_data.tabulator_3}}">
+                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator3" placeholder="" value="{{config.footer_data.tabulator_3}}">
                             <label for="tabulator3">Tabulator 3</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" class="form-control tabulator" id="tabulator4" placeholder="" value="{{config.footer_data.tabulator_4}}">
+                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator4" placeholder="" value="{{config.footer_data.tabulator_4}}">
                             <label for="tabulator4">Tabulator 4</label>
                         </div>
                     </div>
@@ -443,7 +443,16 @@
                     </div>
                     
                 </div>
-                <div class="d-flex justify-end pb-3 pe-3 justify-content-end">
+                <div class="d-flex  pb-3 pe-3 justify-content-between">
+                    <div class="switch-con ms-3">
+                        <div class="inner d-flex justify-content-end">
+                            <div class="switch">
+                                <input type="checkbox" name="" id="switch-show-complete">
+                                <label for="switch-show-complete"></label>
+                            </div>
+                            <div class="info me-2 text-muted ms-2">Add as a carry course</div>
+                        </div>
+                    </div>
                     <button type="button" id="createCourseAddBtn" class="btn btn-primary">Add</button>
                 </div>
             </div>
