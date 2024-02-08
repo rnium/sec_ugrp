@@ -39,6 +39,8 @@ def superadmin_or_deptadmin_required(view_func):
 
 class DeptAdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("account:user_login_get")
         if hasattr(request.user, 'adminaccount'):
             dept = self.get_dept()
             if request.user.adminaccount.is_super_admin or request.user.adminaccount.dept == dept:
@@ -46,4 +48,4 @@ class DeptAdminRequiredMixin:
             else:
                 return render_error(request, "Forbidden")
         else:
-            return HttpResponseForbidden("Forbidden: You must be a staff to access this page.")
+            return HttpResponseForbidden("Forbidden: You must have to be a staff to access this page.")
