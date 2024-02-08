@@ -74,7 +74,7 @@ def get_letter_grade(grade_point):
 def round_up_point_five(num):
     num_int = int(num)
     if (num - num_int) >= 0.5:
-        return num_int+1;
+        return num_int+1
     else:
         return num
     

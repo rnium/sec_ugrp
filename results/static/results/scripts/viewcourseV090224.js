@@ -38,6 +38,15 @@ function calculateLetterGrade(obtainedScore, maxMarks, is_carry=false) {
     return null;
 }
 
+function roundUpPointFive(num) {
+    var numInt = Math.floor(num);
+    if ((num - numInt) >= 0.5) {
+        return numInt + 1;
+    } else {
+        return num;
+    }
+}
+
 function calculateGradePoint(obtainedScore, maxMarks, is_carry=false) {
     if (obtainedScore === null || obtainedScore === undefined) {
         return null;
@@ -246,7 +255,7 @@ function updateAndGetTotalMarks(registration) {
             $(`#total-${registration}`).text(total);
             $(`#total-${registration}`).removeClass("pending");
         }
-        return total
+        return roundUpPointFive(total);
     } else {
         $(`#total-${registration}`).text("Pending");
         $(`#total-${registration}`).addClass('pending');
@@ -259,6 +268,7 @@ function updateLG(registration, total=null, isLabCourse=true, iscarry=false) {
     let total_score = total;
     if (isLabCourse) {
         total_score = parseFloat($(`#total-inp-${registration}`).val().trim());
+        total_score = roundUpPointFive(total_score);
     }
     
     if (!isNaN(total_score)) {
