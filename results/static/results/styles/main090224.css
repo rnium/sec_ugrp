@@ -263,11 +263,31 @@ body.light .view-semester-container .all-courses .course:hover .lab-course-badge
 body.light .view-semester-container .all-courses .course:hover .lab-course-badge i, body.light .view-semester-container .all-courses .course:hover .lab-course-badge span {
   color: #ebeaef !important;
 }
+body.light .view-semester-container .all-courses .course.created-drop-course {
+  border: 1px solid #ac5cd9 !important;
+  border-left: 5px solid #ac5cd9 !important;
+  border-right: 5px solid #ac5cd9 !important;
+  background-color: rgba(128, 30, 193, 0.1) !important;
+}
+body.light .view-semester-container .all-courses .course.created-drop-course .course-code {
+  color: #ac5cd9 !important;
+}
+body.light .view-semester-container .all-courses .course.created-drop-course .lab-course-badge {
+  background-color: #ac5cd9 !important;
+}
+body.light .view-semester-container .all-courses .course.created-drop-course:hover {
+  border-color: #dea5e8;
+  box-shadow: 0 0 10px #28293d;
+  background-color: rgba(128, 30, 193, 0.2) !important;
+}
 body.light .view-semester-container .all-courses .course.drop-course {
   border: 1px solid #ff8080 !important;
   border-left: 5px solid #ff8080 !important;
   border-right: 5px solid #ff8080 !important;
   background-color: rgba(237, 41, 41, 0.1) !important;
+}
+body.light .view-semester-container .all-courses .course.drop-course .course-code {
+  color: #ff5c5c !important;
 }
 body.light .view-semester-container .all-courses .course.drop-course .lab-course-badge {
   background-color: #ff8080 !important;
@@ -1272,6 +1292,19 @@ body main .view-semester-container .all-courses .courses .course-container .cour
 }
 body main .view-semester-container .all-courses .courses .course-container .course:hover .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course:hover .lab-course-badge {
   background-color: #00cfdd;
+}
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course {
+  border: 1px solid #ac5cd9;
+  border-left: 5px solid #ac5cd9;
+  border-right: 5px solid #ac5cd9;
+  background-color: rgba(128, 30, 193, 0.1);
+}
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course .lab-course-badge {
+  background-color: #ac5cd9;
+}
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course:hover {
+  box-shadow: 0 0 10px #28293d;
+  background-color: rgba(128, 30, 193, 0.3);
 }
 body main .view-semester-container .all-courses .courses .course-container .course.drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course {
   border: 1px solid #ff8080;
