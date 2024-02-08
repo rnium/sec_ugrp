@@ -121,7 +121,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 
                 if gp is None or lg is None:
                     if gp is None:
-                        row_top.append('A')
+                        row_top.append('Ab')
                     if lg is None:
                         row_bottom.append('F')
                     continue
