@@ -290,6 +290,7 @@ class Course(models.Model):
     part_B_marks_final = models.FloatField(default=0, validators=[MinValueValidator(0, "Marks must be non negative")])
     incourse_marks = models.FloatField(validators=[MinValueValidator(0, "Marks must be non negative")])  # so called TERMTEST 
     is_theory_course = models.BooleanField(default=True)
+    is_carry_course = models.BooleanField(default=False)
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(default=timezone.now)
 
