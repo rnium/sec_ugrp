@@ -173,7 +173,8 @@ class SemesterView(DeptAdminRequiredMixin, DetailView):
         context =  super().get_context_data(**kwargs)
         semester = context['semester']
         context['request'] = self.request
-        context['courses_regular'] = semester.course_set.all().order_by('id')
+        context['courses_regular'] = semester.course_set.filter(is_carry_course=False).order_by('id')
+        context['courses_created_drop'] = semester.course_set.filter(is_carry_course=True).order_by('id')
         context['courses_drop'] = semester.drop_courses.all().order_by('id')
         # drop courses semester for current semester
         

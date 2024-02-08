@@ -156,6 +156,7 @@ function getNewCourseData() {
         "part_B_marks_final": partBMarksInFinal,
         "incourse_marks": incourseMarksIn,
         "is_theory_course": is_theory_course,
+        "is_carry_course": $("#switch-addascarrycourse").is(':checked')
     }
 
     return data;
