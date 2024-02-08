@@ -20,12 +20,14 @@ h, w = pageSize
 
 class SemesterDataContainer:
     def __init__(self, semester: Semester):
-        regular_coruses = semester.course_set.all().order_by('id')
+        regular_coruses = semester.course_set.filter(is_carry_course=False).order_by('id')
+        created_drop_courses = semester.course_set.filter(is_carry_course=True).order_by('id')
         drop_courses = semester.drop_courses.all().order_by('id')
         self.semester = semester
         self.regular_courses = regular_coruses
+        self.created_drop_courses = created_drop_courses
         self.drop_courses = drop_courses
-        self.course_list = [*list(self.drop_courses), *list(self.regular_courses)]
+        self.course_list = [*list(self.drop_courses), *list(created_drop_courses), *list(self.regular_courses)]
         self.num_courses = len(self.course_list)
         self.students = [enroll.student for enroll in semester.semesterenroll_set.all()]
         self.num_students = len(self.students)
@@ -79,7 +81,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
             sem_from_num = 1
         title_semester_from_to = f"{get_ordinal_number(sem_from_num)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
     row1 = [ *['Course Number \u2192\nCredit of the course \u2192', '', '', ''] ,
-            *[f"{course.code.upper()}\n{course.course_credit}" for course in dataContainer.course_list], # Drop courses
+            *[f"{course.code.upper()}\n{course.course_credit}" for course in dataContainer.course_list],
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     
     row2 = [*["SL\nNO.", "Registration", '',''], 
