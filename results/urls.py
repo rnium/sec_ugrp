@@ -19,6 +19,7 @@ urlpatterns = [
     path('student/<int:registration>/gradesheet/<int:year>/', views.download_year_gradesheet, name="download_year_gradesheet"),
     path('student/<int:registration>/semestergradesheet/<int:semester_no>/', views.download_semester_gradesheet, name="download_semester_gradesheet"),
     path('coursereport/<str:b64_id>', views.download_coruse_report, name="download_coruse_report"),
+    path('coursescorelist/<str:b64_id>/', views.download_scorelist, name="download_scorelist"),
     path('student/<int:registration>/transcript/', views.download_transcript, name="download_transcript"),
     path('student/<int:registration>/fulldocument/', views.download_full_document, name="download_full_document"),
     path('student/<int:registration>/coursemediumcert/', views.download_coursemediumcert, name="download_coursemediumcert"),

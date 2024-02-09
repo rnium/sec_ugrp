@@ -262,7 +262,7 @@ class SemesterDocument(models.Model):
     tabulation_thumbnail = models.ImageField(upload_to=filepath, null=True, blank=True)
     tabulation_sheet_render_time = models.DateTimeField(null=True, blank=True)
     tabulation_sheet_render_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    tabulatiobn_sheet_render_config = models.JSONField(null=True, blank=True)    
+    tabulatiobn_sheet_render_config = models.JSONField(null=True, blank=True)  
     
     @property
     def tabulation_filename(self):
@@ -423,6 +423,10 @@ class CourseResult(models.Model):
     @property
     def course_points(self):
         return (self.grade_point * self.course.course_credit)
+    
+    @property
+    def total_round_up(self):
+        return round_up(self.total_score, 2)
     
     
 class Backup(models.Model):

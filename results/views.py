@@ -18,6 +18,7 @@ from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
+from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
@@ -442,6 +443,20 @@ def download_coruse_report(request, b64_id):
         from_session = get_object_or_404(Session, pk=from_session_pk)
     report_pdf = render_coursereport(course, from_session)
     filename = f"{str(course)} Report.pdf"
+    return FileResponse(ContentFile(report_pdf), filename=filename)
+
+
+@superadmin_or_deptadmin_required
+def download_scorelist(request, b64_id):
+    try:
+        str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
+        pk = int(str(str_pk))
+    except Exception as e:
+        return render_error(request, "Invalid Course ID")
+    course = get_object_or_404(Course, pk=pk)
+
+    report_pdf = render_scorelist(course)
+    filename = f"Sust-ScoreList {str(course)}.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
     
     
