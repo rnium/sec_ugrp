@@ -300,7 +300,7 @@ class Course(models.Model):
         ]
     
     def __str__(self):
-        return f"{self.semester} Course: {self.code}"
+        return f"{self.semester} {self.code}"
     
     def get_identifier_code(self):
         c = self.code.lower().replace(" ", "")
