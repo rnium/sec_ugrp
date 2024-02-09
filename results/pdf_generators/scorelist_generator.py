@@ -19,9 +19,9 @@ def get_fonts_css_txt(font_names):
     return css_text
 
 
-def render_scorelist(course):
+def render_scorelist(course, examiner, designation):
     course_results = course.courseresult_set.all()
-    course_results = list(course_results.order_by('-student__is_regular', 'student__registration'))
+    course_results = list(course_results.order_by('is_drop_course', '-student__is_regular', 'student__registration'))
     list_items = [course_results[i:i+entry_per_list] for i in range(0, len(course_results), entry_per_list)]
     pages = [list_items[i: i+2] for i in range(0, len(list_items), 2)]
     pages_context = []
@@ -49,6 +49,8 @@ def render_scorelist(course):
         curr_page_num += 1
         pages_context.append(page_context)
     context = {'pages': pages_context}
+    context['examiner'] = examiner
+    context['designation'] = designation
     context['course'] = course
     context['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
     context['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)

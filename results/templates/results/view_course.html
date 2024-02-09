@@ -170,6 +170,9 @@
                         <i class='bx bx-table fs-3 me-2'></i>
                         <span class="">Excel Data</span>
                     </a>
+                    <button class="btn btn-secondary px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#numberlist-modal">
+                        <span>SUST ScoreList</span>
+                    </button>
                 </div>
 
                 <button class="btn btn-primary btn-iconized px-4" id="table-save-btn">
@@ -183,9 +186,37 @@
     {% if course.semester.is_running %}
     <div class="delete-btn-container mt-4">
         <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">Delete Course</button>
-        <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#updateCourseModal">Edit Course</button>
+        <button class="btn btn-outline-info ms-2" data-bs-toggle="modal" data-bs-target="#updateCourseModal">Edit Course</button>
     </div>
     {% endif %}
+
+    <!-- NumberList Modal -->
+    <div class="modal fade" id="numberlist-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material">
+                <div class="modal-header">
+                    <div class="modal-title text-info">ScoreList for SUST</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="col-md-12 p-2">
+                        <form action="{% url 'results:download_scorelist' course.b64_id %}" target="_blank">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" placeholder=""  aria-label="Examiner" name="examiner" id="examiner">
+                                <label for="examiner">Examiner Name</label>
+                            </div>
+                            <div class="form-floating mt-2">
+                                <input type="text" class="form-control" placeholder="" aria-label="Registration" name="designation" id="designation">
+                                <label for="designation">Examiner Designation</label>
+                            </div>
+                            <input type="submit" class="btn btn-primary mt-3 w-100" value="Download">
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- New Entry Modal -->
     <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -235,7 +266,6 @@
             </div>
         </div>
     </div>
-
     
     <!-- Entry Info Modal -->
     <div class="modal fade" id="entryInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

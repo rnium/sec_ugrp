@@ -448,14 +448,17 @@ def download_coruse_report(request, b64_id):
 
 @superadmin_or_deptadmin_required
 def download_scorelist(request, b64_id):
+    examiner_name = request.GET.get('examiner', '')
+    examiner_designation = request.GET.get('designation', '')
+    if any([len(examiner_name) == 0, len(examiner_designation) == 0]):
+        return render_error(request, "Examiner Info Missing")
     try:
         str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
         pk = int(str(str_pk))
     except Exception as e:
         return render_error(request, "Invalid Course ID")
     course = get_object_or_404(Course, pk=pk)
-
-    report_pdf = render_scorelist(course)
+    report_pdf = render_scorelist(course, examiner_name, examiner_designation)
     filename = f"Sust-ScoreList {str(course)}.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
     
