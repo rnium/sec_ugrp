@@ -427,6 +427,8 @@ class CourseResult(models.Model):
     @property
     def total_round_up(self):
         score = self.total_score
+        if score is None:
+            return 'Ab'
         int_score = int(score)
         if score == int_score:
             return int_score
