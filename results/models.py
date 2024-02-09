@@ -426,7 +426,11 @@ class CourseResult(models.Model):
     
     @property
     def total_round_up(self):
-        return round_up(self.total_score, 2)
+        score = self.total_score
+        int_score = int(score)
+        if score == int_score:
+            return int_score
+        return round_up(score, 2)
     
     
 class Backup(models.Model):
