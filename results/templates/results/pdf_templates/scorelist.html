@@ -9,7 +9,7 @@
 <body>
     {% for page in pages  %}
     <section class="container">
-        {% for list_item in page %}
+        {% for list_item in page.list_items %}
         <div class="list-item">
             <div class="heading">
                 <div class="top">
@@ -53,6 +53,9 @@
         </div>
         {% endfor %}
     </section>
+    {% if page.has_next %}
+    <div class="page-break-after"></div>
+    {% endif %}
     {% endfor %}
 </body>
 </html>

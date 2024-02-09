@@ -18,6 +18,7 @@ def get_fonts_css_txt(font_names):
                         src: url(file://{font_path});}}"""
     return css_text
 
+
 def render_scorelist(course):
     course_results = course.courseresult_set.all()
     course_results = list(course_results.order_by('-student__is_regular', 'student__registration'))
@@ -25,8 +26,12 @@ def render_scorelist(course):
     pages = [list_items[i: i+2] for i in range(0, len(list_items), 2)]
     pages_context = []
     sl_num = 1
+    curr_page_num = 1
     for page in pages:
-        page_context = []
+        page_context = {
+            'list_items': [],
+            'has_next': (len(pages) - curr_page_num > 1)
+        }
         for li in page:
             li_context = {
                 'results': [],
@@ -40,7 +45,8 @@ def render_scorelist(course):
                 }
                 li_context['results'].append(res_context)
                 sl_num += 1
-            page_context.append(li_context)
+            page_context['list_items'].append(li_context)
+        curr_page_num += 1
         pages_context.append(page_context)
     context = {'pages': pages_context}
     context['course'] = course
