@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="detail-info bn-text">
-            .... {{year_num}}.... বর্ষ... {{year_semester_num}}.... সেমিস্টার...... {{held_in_year}}..... শিক্ষাবর্ষ..... {{session_code}}....বিভাগঃ......<span class="en-bold">{{course.semester.session.dept.name|upper}}<span>..... 
+            .... {{year_num}}.... বর্ষ... {{year_semester_num}}.... সেমিস্টার...... {{held_in_year}}..... শিক্ষাবর্ষ..... {{session_code}}....বিভাগঃ......<span>{{course.semester.session.dept.name|upper}}<span>..... 
             কোর্স নম্বরঃ.....{{course.code}}........ কোর্সের শিরোনামঃ........{{course.title}}......... 
             পরীক্ষা কেন্দ্রঃ ......... সিলেট ইন্জিনিয়ারিং কলেজ...... পরীক্ষার সময়ঃ {{data.exam_time}}টা..... তাং-{{exam_date}} 
             যে সকল পরীক্ষার্থী পরীক্ষা দিয়েছে এবং খাতা এর সঙ্গে পাঠানো হয়েছে তাদের রেজিস্ট্রেশন নম্বরঃ
@@ -50,7 +50,7 @@
                 </tr>
                 {% endfor %}
                 <tr class="no-border">
-                    <td colspan="6">বহিষ্কৃত পরিক্ষার্থীর মোটসংখ্যাঃ {{expelled_count}}</td>
+                    <td class="bn-text" colspan="6">বহিষ্কৃত পরিক্ষার্থীর মোটসংখ্যাঃ {{expelled_count}}</td>
                 </tr>
             </table>
         </div>
@@ -59,20 +59,20 @@
                 <tr>
                     <td rowspan="2">
                         <div class="flexer-col">
-                            <div class="vis-name">{{data.chief_visitor_name}}</div>
+                            <div class="vis-name bn-text">{{data.chief_visitor_name}}</div>
                             <div class="hr"></div>
-                            <div>প্রধানপরিদর্শকের নাম</div>
+                            <div class="bn-text">প্রধানপরিদর্শকের নাম</div>
                         </div>
                     </td>
                     <td>
                         <div class="flexer-col">
                             <div class="hr"></div>
-                            <div>প্রধানপরিদর্শকের স্বাক্ষর</div>
+                            <div class="bn-text">প্রধানপরিদর্শকের স্বাক্ষর</div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="py-md">তারিখঃ............/............/............</td>
+                    <td class="py-md bn-text">তারিখঃ............/............/............</td>
                 </tr>
             </table>
         </div>
