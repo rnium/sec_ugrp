@@ -190,29 +190,23 @@
     </div>
     {% endif %}
 
-    <!-- NumberList Modal -->
+    <!-- SustDoc Modal -->
     <div class="modal fade" id="numberlist-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-material">
                 <div class="modal-header">
-                    <div class="modal-title text-info">ScoreList for SUST</div>
+                    <div class="modal-title text-info"></div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
-                    <div class="col-md-12 p-2">
-                        <form action="{% url 'results:download_scorelist' course.b64_id %}" target="_blank">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" placeholder=""  aria-label="Examiner" name="examiner" id="examiner">
-                                <label for="examiner">Examiner Name</label>
-                            </div>
-                            <div class="form-floating mt-2">
-                                <input type="text" class="form-control" placeholder="" aria-label="Registration" name="designation" id="designation">
-                                <label for="designation">Examiner Designation</label>
-                            </div>
-                            <input type="submit" class="btn btn-primary mt-3 w-100" value="Download">
-                        </form>
-                        
-                    </div>
+                    <a class="d-flex flex-column justify-content-center align-items-center mt-4 mb-5" href="#">
+                        <i class='bx bx-table me-2 fs-1 text-info'></i>
+                        <div class="text-muted">Download Excel Template</div>
+                    </a>
+                    <div class="input-group my-3">
+                        <input type="file" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload">
+                        <button class="btn btn-outline-info" type="button" id="inputGroupFileAddon03">Render</button>
+                    </div>                      
                 </div>
             </div>
         </div>
