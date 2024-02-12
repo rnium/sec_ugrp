@@ -95,6 +95,5 @@ def parse_course_sustdocs_excel(excel_file):
             parsed_data['additional_entries'].append(row_data)
         if expelled:=row[expelled_registrations_col_idx].value:
             parsed_data['expelled_registrations'].append(expelled)
-    print(parsed_data, flush=1)
     return parsed_data
  

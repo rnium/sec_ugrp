@@ -28,6 +28,8 @@ from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suff
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
+from results.pdf_generators.topsheet_generator import render_topsheet
+from results.pdf_generators.scorelist_generator import render_scorelist
 from results.tasks import restore_dept_data_task, restore_session_data_task
 from django.conf import settings
 from io import BytesIO
@@ -994,21 +996,23 @@ def render_course_sustdocs(request, pk):
     course = get_object_or_404(Course, pk=pk)
     excel_file = request.FILES.get("excel", None)
     if excel_file is None:
-        return JsonResponse(data={'details': 'No excel file provided'})
+        return JsonResponse(data={'details': 'No excel file provided'}, status=400)
     try:
         data = excel_parsers.parse_course_sustdocs_excel(excel_file)
     except Exception as e:
         print(e, flush=1)
-        return JsonResponse(data={'details': 'Cannot parse excel file'})
-    filename = excel_file.name.replace(' ', '').lower()
-    course_codename = course.code.replace(' ', '').lower()
-    return JsonResponse(data={'info': 'ok'})
-    # redis_key = str(int(time.time())) + request.user.username
-    # document = utils.render_customdoc(excel_file, admin_name)
-    # pdf_base64 = base64.b64encode(document).decode('utf-8')
-    # cache.set(redis_key, pdf_base64)
-    # filename = "document-" + str(int(time.time())) +  ".pdf"
-    # return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+        return JsonResponse(data={'details': 'Cannot parse excel file'}, status=400)
+    try:
+        topsheet = render_topsheet(course, data)
+        # scorelist = render_scorelist(course, data)
+    except Exception as e:
+        print(e, flush=1)
+        return JsonResponse(data={'details': 'Cannot render files'}, status=400)
+    redis_key = str(int(time.time())) + request.user.username
+    pdf_base64 = base64.b64encode(topsheet).decode('utf-8')
+    cache.set(redis_key, pdf_base64)
+    filename = "document-" + str(int(time.time())) +  ".pdf"
+    return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
     # return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
 
 

@@ -57,10 +57,13 @@ BANGLA_NUMBER_MAPPING = {
 def get_bangla_ordinal_upto_eight(n):
     return BANGLA_ORDINAL_MAPPING.get(n, '*')
 
-def get_year_number_in_bangla(year):
-    bn_year = ''
-    for c in str(year):
+def get_bangla_number(n):
+    bn_num = ''
+    for c in str(n):
         if bn_char:=BANGLA_NUMBER_MAPPING.get(int(c.strip()), False):
             print(bn_char, flush=1)
-            bn_year += bn_char
-    return bn_year
+            bn_num += bn_char
+    return bn_num
+
+def get_year_number_in_bangla(year):
+    return get_bangla_number(year)
