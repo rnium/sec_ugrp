@@ -61,10 +61,10 @@
   width: 105px;
 }
 .container .top-table td {
-  font-size: 16px;
+  font-size: 15px;
 }
 .container table.bottom-table td {
-  padding: 18px 0;
+  height: 40px;
 }
 .container table.bottom-table tr.no-border {
   border: 0;
@@ -76,6 +76,10 @@
 }
 .container table.visitor td {
   border: 0;
+}
+.container table.visitor td .vis-name {
+  width: 350px;
+  text-align: left;
 }
 .container table.visitor td:nth-child(1) .flexer-col {
   align-items: flex-start;

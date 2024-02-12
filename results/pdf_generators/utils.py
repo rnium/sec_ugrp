@@ -61,9 +61,17 @@ def get_bangla_number(n):
     bn_num = ''
     for c in str(n):
         if bn_char:=BANGLA_NUMBER_MAPPING.get(int(c.strip()), False):
-            print(bn_char, flush=1)
             bn_num += bn_char
     return bn_num
 
 def get_year_number_in_bangla(year):
     return get_bangla_number(year)
+
+def get_session_code_in_bangla(session_code):
+    code = session_code.split('-')
+    return '-'.join(list(map(get_bangla_number, code)))
+
+def get_bangla_date(formatted_date_str):
+    date_arr = formatted_date_str.split('/')
+    return '/'.join(list(map(get_bangla_number, date_arr)))
+    

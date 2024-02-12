@@ -4,7 +4,8 @@ from io import BytesIO
 from .utils import get_fonts_css_txt
 from django.conf import settings
 from django.template.loader import render_to_string
-from .utils import get_bangla_number
+from datetime import datetime
+from .utils import get_bangla_number, get_bangla_ordinal_upto_eight, get_session_code_in_bangla, get_bangla_date
 
 
 def get_table_rows(data_list, num_rows, num_cols):
@@ -33,7 +34,15 @@ def get_context_data(course, data):
     context_data['total_answersheets'] = get_bangla_number(data['total_answersheets'])
     context_data['part_A_answersheets'] = get_bangla_number(data['part_A_answersheets'])
     context_data['part_B_answersheets'] = get_bangla_number(data['part_B_answersheets'])
-    
+    context_data['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
+    context_data['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)
+    context_data['session_code'] = get_session_code_in_bangla(course.semester.session.session_code)
+    context_data['held_in_year'] = get_bangla_number(course.semester.start_month.strip().split(' ')[-1])
+    date = data['exam_date']
+    if isinstance(date, datetime):
+        formatted_date_str = date.strftime("%d/%m/%Y")
+        date = get_bangla_date(formatted_date_str)
+    context_data['exam_date'] = date
     return context_data
 
 def render_topsheet(course, data):
