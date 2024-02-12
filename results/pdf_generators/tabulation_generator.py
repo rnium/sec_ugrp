@@ -60,9 +60,8 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
         result['total_credits'] = 0
     else:
         overall_grade_point = (total_points/total_credits)
-        overall_letter_grade = get_letter_grade(overall_grade_point)
         result['grade_point'] = round_up(overall_grade_point, 2)
-        result['letter_grade'] = overall_letter_grade
+        result['letter_grade'] = get_letter_grade(result['grade_point'])
         result['total_credits'] = total_credits
     # {'grade_point':round(overall_grade_point, 2), 'letter_grade':overall_letter_grade, 'total_credits':total_credits},
     return result
