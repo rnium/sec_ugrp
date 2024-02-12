@@ -6,12 +6,14 @@ from django.template.loader import render_to_string
 from .utils import get_bangla_ordinal_upto_eight, get_year_number_in_bangla, get_fonts_css_txt
 
 
-entry_per_list = 31
+entry_per_list = 30
 
 
-def render_scorelist(course, examiner, designation):
-    course_results = course.courseresult_set.all()
-    course_results = list(course_results.order_by('is_drop_course', '-student__is_regular', 'student__registration'))
+def render_scorelist(course, excel_data):
+    course_results_qs = course.courseresult_set.all()
+    course_results_qs_ordered = course_results_qs.order_by('is_drop_course', '-student__is_regular', 'student__registration')
+    course_results = [[cr.student.registration, cr.total_round_up] for cr in course_results_qs_ordered]
+    course_results = [*course_results, *excel_data['additional_entries']]
     list_items = [course_results[i:i+entry_per_list] for i in range(0, len(course_results), entry_per_list)]
     pages = [list_items[i: i+2] for i in range(0, len(list_items), 2)]
     pages_context = []
@@ -30,8 +32,8 @@ def render_scorelist(course, examiner, designation):
             for res in li:
                 res_context = {
                     'sl_num': sl_num,
-                    'reg': res.student.registration,
-                    'total': res.total_round_up,
+                    'reg': res[0],
+                    'total': res[1],
                 }
                 li_context['results'].append(res_context)
                 sl_num += 1
@@ -39,8 +41,8 @@ def render_scorelist(course, examiner, designation):
         curr_page_num += 1
         pages_context.append(page_context)
     context = {'pages': pages_context}
-    context['examiner'] = examiner
-    context['designation'] = designation
+    context['examiner'] = "examiner"
+    context['designation'] = "designation"
     context['course'] = course
     context['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
     context['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)

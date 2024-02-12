@@ -1002,14 +1002,15 @@ def render_course_sustdocs(request, pk):
     except Exception as e:
         print(e, flush=1)
         return JsonResponse(data={'details': 'Cannot parse excel file'}, status=400)
-    try:
-        topsheet = render_topsheet(course, data)
-        # scorelist = render_scorelist(course, data)
-    except Exception as e:
-        print(e, flush=1)
-        return JsonResponse(data={'details': 'Cannot render files'}, status=400)
+    # try:
+    #     # topsheet = render_topsheet(course, data)
+    #     scorelist = render_scorelist(course, data)
+    # except Exception as e:
+    #     print(e, flush=1)
+    #     return JsonResponse(data={'details': 'Cannot render files'}, status=400)
+    scorelist = render_scorelist(course, data)
     redis_key = str(int(time.time())) + request.user.username
-    pdf_base64 = base64.b64encode(topsheet).decode('utf-8')
+    pdf_base64 = base64.b64encode(scorelist).decode('utf-8')
     cache.set(redis_key, pdf_base64)
     filename = "document-" + str(int(time.time())) +  ".pdf"
     return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
