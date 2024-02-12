@@ -24,11 +24,22 @@ def render_scorelist(course, excel_data):
             'list_items': [],
             'has_next': (len(pages) - curr_page_num > 1)
         }
-        for li in page:
+        for i in range(2):
             li_context = {
                 'results': [],
-                'empty': list(range(entry_per_list - len(li)))
             }
+            if i >= len(page):
+                li = []
+                li_context['blank_li'] = True
+            else:
+                li = page[i]
+                li_context['blank_li'] = False
+            li_context['empty'] = list(range(entry_per_list - len(li)))
+            print(li_context['empty'], flush=1)
+            if i == 0:
+                li_context['examiner'] = {'name': excel_data['examiner_name'], 'designation': excel_data['examiner_designation']}
+            else:
+                li_context['examiner'] = {'name': excel_data['external_examiner_name'], 'designation': excel_data['external_examiner_designation']}
             for res in li:
                 res_context = {
                     'sl_num': sl_num,
@@ -40,6 +51,7 @@ def render_scorelist(course, excel_data):
             page_context['list_items'].append(li_context)
         curr_page_num += 1
         pages_context.append(page_context)
+    print(pages_context, flush=1)
     context = {'pages': pages_context}
     context['examiner'] = "examiner"
     context['designation'] = "designation"
@@ -47,6 +59,7 @@ def render_scorelist(course, excel_data):
     context['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
     context['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)
     context['held_in_year'] = get_year_number_in_bangla(course.semester.start_month.strip().split(' ')[-1])
+    context['blank_table_rows'] = range(9)
     sust_logo = settings.BASE_DIR/'results/static/results/images/sust.png'
     context['sust_logo'] = sust_logo
     html_text = render_to_string('results/pdf_templates/scorelist.html', context=context)

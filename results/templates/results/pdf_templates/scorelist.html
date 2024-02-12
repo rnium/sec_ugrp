@@ -11,6 +11,7 @@
     <section class="container">
         {% for list_item in page.list_items %}
         <div class="list-item">
+            {% if not list_item.blank_li %}
             <div class="heading">
                 <div class="top">
                     <img src="file://{{sust_logo}}" alt="">
@@ -20,13 +21,31 @@
                 <div class="semester-name bn-text">... {{year_num}} ...... বর্ষ ....... {{year_semester_num}} ... সেমিস্টার, {{held_in_year}} .........</div>
                 <div class="course-name"><span class="bn-text">কোর্স নম্বরঃ</span>....... {{course.code}} ............................</div>
             </div>
+            {% else %}
             <div class="table-con">
                 <table>
+                    <tbody>
+                        {% for r in blank_table_rows %}
+                        <tr class="hidden-row">
+                            <td>00</td>
+                            <td>NN</td>
+                            <td>000</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            
+            <div class="table-con">
+                <table>
+                    {% if not list_item.blank_li %}
                     <thead>
                         <td class="bn-text">ক্রমিক নং</td>
                         <td class="bn-text">রোল নম্বর</td>
                         <td class="bn-text">প্রাপ্ত নম্বর</td>
                     </thead>
+                    {% endif %}
                     <tbody>
                         {% for res in list_item.results %}
                         <tr>
@@ -46,9 +65,9 @@
                         {% endif %}
                     </tbody>
                 </table>
-                <div class="exeminer-name bn-text mt-5">পরীক্ষকের নাম</div>
-                <div class="exeminer-name mt-2">{{examiner}}</div>
-                <div class="exeminer-name mt-1">{{designation}}</div>
+                <div class="exeminer-name bn-text mt-l">পরীক্ষকের নাম</div>
+                <div class="exeminer-name mt-1">{{list_item.examiner.name}}</div>
+                <div class="exeminer-name mt-1">{{list_item.examiner.designation}}</div>
             </div>
         </div>
         {% endfor %}
