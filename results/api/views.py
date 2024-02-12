@@ -30,6 +30,7 @@ from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
 from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.scorelist_generator import render_scorelist
+from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.tasks import restore_dept_data_task, restore_session_data_task
 from django.conf import settings
 from io import BytesIO
@@ -1002,15 +1003,15 @@ def render_course_sustdocs(request, pk):
     except Exception as e:
         print(e, flush=1)
         return JsonResponse(data={'details': 'Cannot parse excel file'}, status=400)
-    # try:
-    #     # topsheet = render_topsheet(course, data)
-    #     scorelist = render_scorelist(course, data)
-    # except Exception as e:
-    #     print(e, flush=1)
-    #     return JsonResponse(data={'details': 'Cannot render files'}, status=400)
-    scorelist = render_scorelist(course, data)
+    try:
+        topsheet = render_topsheet(course, data)
+        scorelist = render_scorelist(course, data)
+    except Exception as e:
+        print(e, flush=1)
+        return JsonResponse(data={'details': 'Cannot render files'}, status=400)
+    document = merge_pdfs_from_buffers([topsheet, scorelist])
     redis_key = str(int(time.time())) + request.user.username
-    pdf_base64 = base64.b64encode(scorelist).decode('utf-8')
+    pdf_base64 = base64.b64encode(document.getvalue()).decode('utf-8')
     cache.set(redis_key, pdf_base64)
     filename = "document-" + str(int(time.time())) +  ".pdf"
     return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
