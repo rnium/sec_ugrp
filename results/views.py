@@ -19,6 +19,7 @@ from results.pdf_generators.coursemedium_cert_generator import render_coursemedi
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.scorelist_generator import render_scorelist
+from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
@@ -458,7 +459,8 @@ def download_scorelist(request, b64_id):
     except Exception as e:
         return render_error(request, "Invalid Course ID")
     course = get_object_or_404(Course, pk=pk)
-    report_pdf = render_scorelist(course, examiner_name, examiner_designation)
+    # report_pdf = render_scorelist(course, examiner_name, examiner_designation)
+    report_pdf = render_topsheet(course)
     filename = f"Sust-ScoreList {str(course)}.pdf"
     return FileResponse(ContentFile(report_pdf), filename=filename)
     

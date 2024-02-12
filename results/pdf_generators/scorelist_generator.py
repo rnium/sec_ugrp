@@ -3,20 +3,10 @@ from weasyprint.text.fonts import FontConfiguration
 from io import BytesIO
 from django.conf import settings
 from django.template.loader import render_to_string
-from .utils import get_bangla_ordinal_upto_eight, get_year_number_in_bangla
+from .utils import get_bangla_ordinal_upto_eight, get_year_number_in_bangla, get_fonts_css_txt
 
 
 entry_per_list = 31
-
-
-def get_fonts_css_txt(font_names):
-    css_text = ""
-    for font_name in font_names.keys():
-        font_path = settings.BASE_DIR/f"results/pdf_generators/fonts/{font_names[font_name]}"
-        css_text += f"""@font-face {{
-                        font-family: {font_name};
-                        src: url(file://{font_path});}}"""
-    return css_text
 
 
 def render_scorelist(course, examiner, designation):
@@ -58,7 +48,6 @@ def render_scorelist(course, examiner, designation):
     sust_logo = settings.BASE_DIR/'results/static/results/images/sust.png'
     context['sust_logo'] = sust_logo
     html_text = render_to_string('results/pdf_templates/scorelist.html', context=context)
-    print(html_text, flush=1)
     fonts = {
         'BanglaFont': 'kalpurush.ttf',
         'BanglaUnicodeFont': 'SutonnyMJRegular.ttf',

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section class="container">
+        <div class="heading">
+            <img src="file://{{sust_logo}}" alt="">
+            <div class="info">
+                <div class="univ-name bn-unicode-text">kvnRvjvj weÁvb I cÖhyw³ wek¦we`¨vjq, wm‡jU</div>
+                <div class="title bn-unicode-text">UckxU</div>
+            </div>
+        </div>
+        <div class="detail-info bn-text">
+            .... ৩য়.... বর্ষ... ২য়.... সেমিস্টার...... ২০২১..... শিক্ষাবর্ষ..... ২০১৮-১৯....বিভাগঃ......<span class="en-bold">EEE<span>..... 
+            কোর্স নম্বরঃ.....EEE 601........ কোর্সের শিরোনামঃ........Digital Signal Processing......... 
+            পরীক্ষা কেন্দ্রঃ ......... সিলেট ইন্জিনিয়ারিং কলেজ...... পরীক্ষার সময়ঃ ০১.৩০-০৪.৩০ টা..... তাং-১২/১১/২০২২ 
+            যে সকল পরীক্ষার্থী পরীক্ষা দিয়েছে এবং খাতা এর সঙ্গে পাঠানো হয়েছে তাদের রেজিস্ট্রেশন নম্বরঃ
+        </div>
+        <div class="table-con">
+            <table class="top-table">
+                <tbody>
+                    {% for reg_row in registrations_row %}
+                    <tr>
+                        {% for reg in reg_row %}
+                        <td>{{reg}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <section class="detail-info">
+            <span class="bn-text me-1 small">সর্বমোট (১৪ পাতার) খাতার সংখ্যাঃ ১১০</span>
+            <span class="bn-text small me-1">সর্বমোট (<span class="en-bold">A</span>) খাতার সংখ্যাঃ ৫১</span>
+            <span class="bn-text small">সর্বমোট (<span class="en-bold">B</span>) খাতার সংখ্যাঃ ৫১</span>
+            <div class="bn-text mt-1">কোন পরীক্ষার্থী বহিষ্কৃত হয়ে থাকলে তার/তাদের রেজিষ্ট্রেশন নম্বরঃ</div>
+        </section>
+        <div class="table-con">
+            <table class="bottom-table">
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr class="no-border">
+                    <td colspan="6">বহিষ্কৃত পরিক্ষার্থীর মোটসংখ্যাঃ</td>
+                </tr>
+            </table>
+        </div>
+        <div class="table-con mt-xl">
+            <table class="visitor">
+                <tr>
+                    <td rowspan="2">
+                        <div class="flexer-col">
+                            <div class="hr"></div>
+                            <div>প্রধানপরিদর্শকের নাম</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flexer-col">
+                            <div class="hr"></div>
+                            <div>প্রধানপরিদর্শকের স্বাক্ষর</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-md">তারিখঃ............/............/............</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</body>
+</html>
