@@ -868,7 +868,7 @@ function addNewEntry() {
 }
 
 // Excel upload
-function uploadExcel(excel_file) {
+function uploadScoresExcel(excel_file) {
     let excel_form = new FormData
     excel_form.append("excel", excel_file)
     excel_form.append("semester_from", FROM_SEMESTER)
@@ -906,6 +906,35 @@ function uploadExcel(excel_file) {
     });
 }
 
+function uploadAndRenderSustDoc(excel_file) {
+    let excel_form = new FormData
+    excel_form.append("excel", excel_file);
+    $.ajax({
+        type: "post",
+        url: render_course_sustdocs_api,
+        data: excel_form,
+        contentType: false,
+        processData: false,
+        beforeSend: function(xhr){
+            $("#sustDocRenderBtn").attr("disabled", true);
+        },
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            try {
+                alert(xhr.responseJSON.details);
+            } catch (error_) {
+                alert(error);
+            }
+        },
+        complete: function() {
+            $("#sustDocRenderBtn").removeAttr("disabled");
+        }
+    });
+}
+
+
 $(document).ready( function() {
     loadCourseResults()
     $("#table-save-btn").on('click', function(){
@@ -935,13 +964,22 @@ $(document).ready( function() {
     })
     // new entry button
     $("#new_entry_add_button").on('click', addNewEntry)
-    // excel upload button
+    // course results excel upload button
     $("#process-excel-btn").on('click', function() {
         excel_file = $("#excelFile")[0].files
         if (excel_file.length > 0) {
-            uploadExcel(excel_file[0]);
+            uploadScoresExcel(excel_file[0]);
         } else {
             alert("Please choose an excel file!")
+        }
+    })
+    // sust docs
+    $("#sustDocRenderBtn").on('click', function() {
+        excel_file = $("#sustDocExcel")[0].files;
+        if (excel_file.length > 0) {
+            uploadAndRenderSustDoc(excel_file[0]);
+        } else {
+            alert("Please choose an excel file!");
         }
     })
     // focus reg input of addnewentry

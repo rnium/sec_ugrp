@@ -21,6 +21,7 @@ urlpatterns = [
     path('course/<int:pk>/delete/', views.delete_course, name="delete_course"),
     path('course/<int:pk>/addnewentry/', views.add_new_entry_to_course, name="add_new_entry_to_course"),
     path('course/<int:pk>/processexcel/', views.process_course_excel, name="process_course_excel"),
+    path('course/<int:pk>/sustdocs/', views.render_course_sustdocs, name="render_course_sustdocs"),
     path('createbackup/', views.generate_backup, name="generate_backup"),
     path('restorebackup/', views.perform_restore, name="perform_restore"),
     path('courseresult-entry-info/', views.course_result_entry_info, name="course_result_entry_info"),

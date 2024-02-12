@@ -23,6 +23,7 @@ from results.models import (Department, Session, Semester, Course, PreviousPoint
                             CourseResult, SemesterDocument, SemesterEnroll, Backup)
 from account.models import StudentAccount
 from . import utils
+from . import excel_parsers
 from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
@@ -973,7 +974,8 @@ def academic_studentcerts_data(request):
         })
     response_data['semesters'] = semesters
     return Response(data=response_data)
-    
+
+   
 @csrf_exempt
 @login_required
 def render_customdoc(request):
@@ -985,6 +987,28 @@ def render_customdoc(request):
     cache.set(redis_key, pdf_base64)
     filename = "document-" + str(int(time.time())) +  ".pdf"
     return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+
+@csrf_exempt
+@login_required
+def render_course_sustdocs(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    excel_file = request.FILES.get("excel", None)
+    if excel_file is None:
+        return JsonResponse(data={'details': 'No excel file provided'})
+    try:
+        data = excel_parsers.parse_course_sustdocs_excel(excel_file)
+    except Exception as e:
+        print(e, flush=1)
+        return JsonResponse(data={'details': 'Cannot parse excel file'})
+    filename = excel_file.name.replace(' ', '').lower()
+    course_codename = course.code.replace(' ', '').lower()
+    return JsonResponse(data={'info': 'ok'})
+    # redis_key = str(int(time.time())) + request.user.username
+    # document = utils.render_customdoc(excel_file, admin_name)
+    # pdf_base64 = base64.b64encode(document).decode('utf-8')
+    # cache.set(redis_key, pdf_base64)
+    # filename = "document-" + str(int(time.time())) +  ".pdf"
+    # return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
     # return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
 
 

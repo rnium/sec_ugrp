@@ -70,4 +70,31 @@ def parse_customdoc_excel(excel_file):
                 sem_num = int(sheetname.split("_")[1])
                 parsed_data['years'][get_year(sem_num)][get_year_semester(sem_num)] = semester_data
     return parsed_data
+
+
+def parse_course_sustdocs_excel(excel_file):
+    buffer = BytesIO(excel_file.read())
+    wb = openpyxl.load_workbook(buffer)
+    sheet = wb[wb.sheetnames[0]]
+    rows = list(sheet.rows)
+    header = [cell.value.lower().strip() if cell.value is not None else None for cell in rows[0]]
+    data_rows = rows[1:]
+    parsed_data = {}
+    fields_col_idx = header.index('field_name')
+    value_col_idx = header.index('value')
+    registrations_col_idx = header.index('additional_registrations')
+    total_score_col_idx = header.index('total_score')
+    expelled_registrations_col_idx = header.index('expelled_registrations')
+    for i in range(8):
+        parsed_data[data_rows[i][fields_col_idx].value] = data_rows[i][value_col_idx].value 
+    parsed_data['additional_entries'] = []
+    parsed_data['expelled_registrations'] = []
+    for row in data_rows:
+        row_data = [row[registrations_col_idx].value, row[total_score_col_idx].value]
+        if any(row_data):
+            parsed_data['additional_entries'].append(row_data)
+        if expelled:=row[expelled_registrations_col_idx].value:
+            parsed_data['expelled_registrations'].append(expelled)
+    print(parsed_data, flush=1)
+    return parsed_data
  

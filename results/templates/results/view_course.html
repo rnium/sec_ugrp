@@ -171,7 +171,7 @@
                         <span class="">Excel Data</span>
                     </a>
                     <button class="btn btn-secondary px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#numberlist-modal">
-                        <span>SUST ScoreList</span>
+                        <span>SUST Document</span>
                     </button>
                 </div>
 
@@ -203,10 +203,8 @@
                         <i class='bx bx-table me-2 fs-1 text-info'></i>
                         <div class="text-muted">Download Excel Template</div>
                     </a>
-                    <div class="input-group my-3">
-                        <input type="file" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload">
-                        <button class="btn btn-outline-info" type="button" id="inputGroupFileAddon03">Render</button>
-                    </div>                      
+                    <input type="file" class="form-control mb-3" id="sustDocExcel">
+                    <button class="btn btn-primary w-100 mb-3" type="button" id="sustDocRenderBtn">Render & Download</button>
                 </div>
             </div>
         </div>
@@ -509,6 +507,7 @@
     const delete_course_api = "{% url 'results:delete_course' course.id %}";
     const add_new_entry_to_course_api = "{% url 'results:add_new_entry_to_course' course.id %}";
     const process_course_excel_api = "{% url 'results:process_course_excel' course.id %}";
+    const render_course_sustdocs_api = "{% url 'results:render_course_sustdocs' course.id %}";
     const update_course_api = "{% url 'results:update_course' course.id %}";
     const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}";
     const student_retakings_api = "{% url 'results:student_retaking_list' %}";
