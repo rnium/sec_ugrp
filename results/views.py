@@ -489,6 +489,18 @@ def download_customdoc_template(request):
         content_type='application/vnd.ms-excel', 
         filename=file_name, as_attachment=True
     )
+    
+@admin_required
+def download_sustdocs_template(request, pk):
+    file_name = "sust_docs_temp.xlsx"
+    file_path = settings.BASE_DIR / ('results/template_files/'+file_name)
+    course = get_object_or_404(Course, pk=pk)
+    file_name = course.code.replace(' ', '') + "_" + file_name
+    return FileResponse(
+        open(file_path, 'rb'), 
+        content_type='application/vnd.ms-excel', 
+        filename=file_name, as_attachment=True
+    )
 
 @superadmin_or_deptadmin_required
 def get_course_excel(request, b64_id):
