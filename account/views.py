@@ -427,7 +427,7 @@ def api_login(request):
         actype = request.data.get('actype')
         adminac = user.adminaccount
         if actype == "principal" and not adminac.is_super_admin:
-            return Response({'status':'SuperUser not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'status':'Not the principal account'}, status=status.HTTP_404_NOT_FOUND)
         elif actype == "department" and adminac.dept==None:
             return Response({'status':'Department User not found'}, status=status.HTTP_404_NOT_FOUND)
         if actype == "academic" and adminac.type!='academic':

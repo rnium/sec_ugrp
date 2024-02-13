@@ -111,16 +111,20 @@ function submitForm() {
         dataType: "json",
         contentType: "application/json",
         beforeSend: function(xhr){
-            // $("#id_create_q_button").attr("disabled", true)
-            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            $("#login-btn").text("Logging in");
+            $("#login-btn").attr("disabled", true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
         },
         data: payload,
         cache: false,
         success: function(response) {
-            window.location = response['succes_url']
+            $("#login-btn").text("Successful");
+            window.location = response['succes_url'];
         },
         error: function(xhr, error, status) {
-            showError(xhr.responseJSON.status)
+            $("#login-btn").attr("disabled", false);
+            $("#login-btn").text("Login");
+            showError(xhr.responseJSON.status);
         }
     });
 
