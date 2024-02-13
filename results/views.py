@@ -482,7 +482,7 @@ def download_customdoc_template(request):
     
 @admin_required
 def download_sustdocs_template(request, pk):
-    file_name = "sust_docs_temp.xlsx"
+    file_name = "supplementary_docs_template.xlsx"
     file_path = settings.BASE_DIR / ('results/template_files/'+file_name)
     course = get_object_or_404(Course, pk=pk)
     file_name = course.code.replace(' ', '') + "_" + file_name

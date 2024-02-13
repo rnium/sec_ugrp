@@ -33,9 +33,18 @@ def get_context_data(course, data):
     context_data['registrations_row'] = get_table_rows(registrations, 17, 6)
     context_data['expelled_rows'] = get_table_rows(data['expelled_registrations'], 3, 6)
     context_data['expelled_count'] = get_bangla_number(len(data['expelled_registrations']))
-    context_data['total_answersheets'] = get_bangla_number(data['total_answersheets'])
-    context_data['part_A_answersheets'] = get_bangla_number(data['part_A_answersheets'])
-    context_data['part_B_answersheets'] = get_bangla_number(data['part_B_answersheets'])
+    total_answersheets = data['total_answersheets']
+    part_A_answersheets = data['part_A_answersheets']
+    part_B_answersheets = data['part_B_answersheets']
+    if part_A_answersheets == None:
+        part_A_answersheets = len(registrations)
+    if part_B_answersheets == None:
+        part_B_answersheets = len(registrations)
+    if total_answersheets == None:
+        total_answersheets = 2 * len(registrations)
+    context_data['total_answersheets'] = get_bangla_number(total_answersheets)
+    context_data['part_A_answersheets'] = get_bangla_number(part_A_answersheets)
+    context_data['part_B_answersheets'] = get_bangla_number(part_B_answersheets)
     context_data['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
     context_data['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)
     context_data['session_code'] = get_session_code_in_bangla(course.semester.session.session_code)
