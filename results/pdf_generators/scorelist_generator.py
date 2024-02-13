@@ -35,7 +35,6 @@ def render_scorelist(course, excel_data):
                 li = page[i]
                 li_context['blank_li'] = False
             li_context['empty'] = list(range(entry_per_list - len(li)))
-            print(li_context['empty'], flush=1)
             if i == 0:
                 li_context['examiner'] = {'name': excel_data['examiner_name'], 'designation': excel_data['examiner_designation']}
             else:
@@ -51,7 +50,6 @@ def render_scorelist(course, excel_data):
             page_context['list_items'].append(li_context)
         curr_page_num += 1
         pages_context.append(page_context)
-    print(pages_context, flush=1)
     context = {'pages': pages_context}
     context['examiner'] = "examiner"
     context['designation'] = "designation"
