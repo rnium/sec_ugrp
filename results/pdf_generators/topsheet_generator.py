@@ -26,7 +26,9 @@ def get_context_data(course, data):
     context_data = {}
     print(data, flush=1)
     additional_registrations = [d[0] for d in data['additional_entries']]
-    registrations = [res.student.registration for res in course.courseresult_set.all()]
+    course_results_qs = course.courseresult_set.all()
+    course_results_qs_ordered = course_results_qs.order_by('is_drop_course', '-student__is_regular', 'student__registration')
+    registrations = [res.student.registration for res in course_results_qs_ordered]
     registrations = [*registrations, *additional_registrations]
     context_data['registrations_row'] = get_table_rows(registrations, 17, 6)
     context_data['expelled_rows'] = get_table_rows(data['expelled_registrations'], 3, 6)
