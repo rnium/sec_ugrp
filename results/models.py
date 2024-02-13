@@ -400,7 +400,9 @@ class CourseResult(models.Model):
             self.total_score = total
                 
         else:          # Case 2: If total marks are provided
-            if self.total_score != None:
+            if self.course.is_theory_course:
+                self.total_score = None
+            elif self.total_score != None:
                 if self.total_score > self.course.total_marks:
                     raise ValidationError("Score cannot be more than defined marks")
                 

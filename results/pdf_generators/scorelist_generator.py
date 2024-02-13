@@ -4,13 +4,14 @@ from io import BytesIO
 from django.conf import settings
 from django.template.loader import render_to_string
 from .utils import get_bangla_ordinal_upto_eight, get_year_number_in_bangla, get_fonts_css_txt
+from results.models import CourseResult
 
 
 entry_per_list = 30
 
 
 def render_scorelist(course, excel_data):
-    course_results_qs = course.courseresult_set.all()
+    course_results_qs = CourseResult.objects.filter(course=course, total_score__isnull=False)
     course_results_qs_ordered = course_results_qs.order_by('is_drop_course', '-student__is_regular', 'student__registration')
     course_results = [[cr.student.registration, cr.total_round_up] for cr in course_results_qs_ordered]
     course_results = [*course_results, *excel_data['additional_entries']]
