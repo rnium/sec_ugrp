@@ -93,13 +93,16 @@ function pullxdev() {
 }
 
 function submitForm() {
-    let form_is_valid = checkForm()
+    let form_is_valid = checkForm();
     if (!form_is_valid) {
         return false
     }
+    var selectedAdmin = $("input[name='user-type']:checked").val();
+    console.log(selectedAdmin);
     let data = {
         "email": $("#emailInput").val().trim(),
-        "password": $("#passwordInput").val().trim()
+        "password": $("#passwordInput").val().trim(),
+        "actype": selectedAdmin
     }
     let payload = JSON.stringify(data)
     $.ajax({
@@ -125,13 +128,17 @@ function submitForm() {
 
 
 $(document).ready(function () {
+    console.log(particlejs_config);
+    particlesJS.load('particles-js', particlejs_config, function() {
+        console.log('callback - particles.js config loaded');
+    });      
     $("#passwordInput").on('keyup', function (e) { 
         if (e.key == 'Enter' || e.keyCode == 13) {
             submitForm()
         }
      })
     $("#login-btn").on('click', submitForm);
-    pullxdev()
+    pullxdev();
 });
 
 

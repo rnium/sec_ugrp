@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'account/styles/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'account/styles/auth130224.css' %}">
     <title>Login</title>
 </head>
 <body>
     <main data-bs-theme="dark">
+        <div id="particles-js"></div>
         <div class="login-container p-5">
             <div class="sys-info text-center">
                 <img src="{% static 'results/images/lg.svg' %}" alt="">
@@ -32,6 +33,39 @@
                         </div>              
                     </div>
                 </div>
+                <div class="user-types mb-3 d-flex flex-column align-items-center">
+                    <div class="label me-2 mb-2">Login As</div>
+                    <div class="d-flex">
+                        <div class="u-type me-2">
+                            <input type="radio" name="user-type" id="principal-radio" value="principal" checked>
+                            <label for="principal-radio">
+                                <img src="{% static 'account/images/principal_ac.png' %}" alt="">
+                                <div class="title ms-1">Principal</div>
+                            </label>
+                        </div>
+                        <div class="u-type me-2">
+                            <input type="radio" name="user-type" id="deptadmin-radio" value="department">
+                            <label for="deptadmin-radio">
+                                <img src="{% static 'account/images/dept_ac.png' %}" alt="">
+                                <div class="title ms-1">Department</div>
+                            </label>
+                        </div>
+                        <div class="u-type me-2">
+                            <input type="radio" name="user-type" id="academic-radio" value="academic">
+                            <label for="academic-radio">
+                                <img src="{% static 'account/images/academic_ac.png' %}" alt="">
+                                <div class="title ms-1">Academic</div>
+                            </label>
+                        </div>
+                        <div class="u-type">
+                            <input type="radio" name="user-type" id="sustadmin-radio" value="sustuser">
+                            <label for="sustadmin-radio">
+                                <img src="{% static 'account/images/sust.png' %}" alt="">
+                                <div class="title ms-1">SUST User</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6 text-left">
                       <a href="{% url 'account:forgot_password_get' %}" class="forgot-password">Forgot password?</a>
@@ -51,7 +85,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script> 
     <script>
         const login_api = "{% url 'account:user_login_api' %}";
+        const particlejs_config = "{% static 'account/scripts/particlesjs-config.json' %}";
     </script>
+    <script src="{% static 'account/scripts/particles.min.js' %}"></script>
     <script src="{% static 'account/scripts/login.js' %}"></script>
 </body>
 </html>

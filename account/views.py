@@ -421,6 +421,19 @@ class BadrequestException(APIException):
 def api_login(request):
     user = authenticate(username=request.data['email'], password=request.data['password'])
     if user:
+        if not hasattr(user, 'adminaccount'):
+            print(dir(user), flush=1)
+            return Response({'status':'Access Denied'}, status=status.HTTP_403_FORBIDDEN)
+        actype = request.data.get('actype')
+        adminac = user.adminaccount
+        if actype == "principal" and not adminac.is_super_admin:
+            return Response({'status':'SuperUser not found'}, status=status.HTTP_404_NOT_FOUND)
+        elif actype == "department" and adminac.dept==None:
+            return Response({'status':'Department User not found'}, status=status.HTTP_404_NOT_FOUND)
+        if actype == "academic" and adminac.type!='academic':
+            return Response({'status':'Academic user not found'}, status=status.HTTP_404_NOT_FOUND)
+        if actype == "sustuser" and adminac.type!='sust':
+            return Response({'status':'SUST User not found'}, status=status.HTTP_404_NOT_FOUND)
         login(request, user)
         success_url = reverse("results:dashboard")
         return Response({'status':'logged in', 'succes_url': success_url}, status=HTTP_200_OK)
