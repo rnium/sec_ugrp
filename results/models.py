@@ -377,8 +377,7 @@ class CourseResult(models.Model):
     def save(self, *args, **kwargs):
         ### Calculates total marks before saving
         if (self.part_A_score is not None or   # Case 1: If any component scores are provided, calculating total
-            self.part_B_score is not None or
-            self.incourse_score is not None):
+            self.part_B_score is not None):
             total = 0
             if self.part_A_score is not None:
                 if self.part_A_score > self.course.part_A_marks:

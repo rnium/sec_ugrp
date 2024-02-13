@@ -329,12 +329,12 @@ function generateRowElements(record) {
     if (letter_grade != null) {
         lgContainer = `<td data-registration=${registration} class="total-score themetext" id="letter-grade-${registration}">${letter_grade}</td>`
     } else {
-        lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">Null</td>`
+        lgContainer = `<td data-registration=${registration} id="letter-grade-${registration}" class="total-score pending">---</td>`
     }
     if (grade_point != null) {
         gpContainer = `<td data-registration=${registration} class="themetext" id="grade-point-${registration}">${grade_point}</td>`
     } else {
-        gpContainer = `<td data-registration=${registration} id="grade-point-${registration}" class="themetext">Undefined</td>`
+        gpContainer = `<td data-registration=${registration} id="grade-point-${registration}" class="themetext">---</td>`
     }
     
     const elements = {

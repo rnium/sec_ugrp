@@ -312,7 +312,6 @@ def download_full_document(request, registration):
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     docs = []
-    docs.append(render_transcript_for_student(request, registration=None, student=student))
     gradesheets_semesters = student.gradesheet_semesters
     gradesheets_semester_groups = [gradesheets_semesters[i:i+2] for i in range(0, len(gradesheets_semesters), 2)]
     for year_semester_list in gradesheets_semester_groups:
