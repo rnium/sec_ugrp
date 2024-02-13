@@ -72,7 +72,52 @@ body main .login-container .form-container .user-types .u-type label img {
 body main .login-container .form-container .user-types .u-type label .title {
   font-size: 10px;
 }
+body main .login-container .form-container .actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+body main .login-container .form-container .actions .forget a {
+  text-decoration: none;
+}
 
+@media screen and (max-width: 1200px) {
+  body main .login-container {
+    width: 60% !important;
+  }
+}
+@media screen and (max-width: 776px) {
+  body main .login-container {
+    width: 90% !important;
+  }
+  body main .login-container .actions {
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body main .login-container .actions .forget {
+    order: 2;
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+  }
+  body main .login-container .actions .btn-con {
+    order: 1;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  body main .login-container .actions .btn-con button {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 556px) {
+  body main .login-container {
+    width: 90% !important;
+  }
+  body main .login-container .form-container .user-types .u-type .title {
+    display: none !important;
+  }
+}
 @keyframes example {
   0% {
     text-shadow: 0 0 30px rgb(7, 245, 166);

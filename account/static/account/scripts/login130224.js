@@ -98,7 +98,6 @@ function submitForm() {
         return false
     }
     var selectedAdmin = $("input[name='user-type']:checked").val();
-    console.log(selectedAdmin);
     let data = {
         "email": $("#emailInput").val().trim(),
         "password": $("#passwordInput").val().trim(),
