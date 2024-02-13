@@ -34,6 +34,12 @@ body main .login-container {
           backdrop-filter: blur(3px);
   border-radius: 10px;
 }
+body main .login-container img.govt-logo {
+  width: 80px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 body main .login-container .sys-info img {
   width: 100px;
 }
@@ -115,7 +121,7 @@ body main .login-container .form-container .actions .forget a {
     width: 90% !important;
   }
   body main .login-container .form-container .user-types .u-type .title {
-    display: none !important;
+    font-size: 10px;
   }
 }
 @keyframes example {
