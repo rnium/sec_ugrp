@@ -337,9 +337,6 @@ def download_full_document(request, registration):
 
 @admin_required
 def download_coursemediumcert(request, registration):
-    has_permission = user_is_super_or_sust_admin(request)
-    if not has_permission:
-        return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     info_dict = {
         'name': student.student_name,
@@ -354,9 +351,6 @@ def download_coursemediumcert(request, registration):
 
 @admin_required
 def download_appeared_cert(request, registration):
-    has_permission = user_is_super_or_sust_admin(request)
-    if not has_permission:
-        return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
     # if last_sesmester_number == 8:
@@ -383,9 +377,6 @@ def download_appeared_cert(request, registration):
 
 @admin_required
 def download_testimonial(request, registration):
-    has_permission = user_is_super_or_sust_admin(request)
-    if not has_permission:
-        return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
     # if last_sesmester_number == 8:
