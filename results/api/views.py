@@ -945,6 +945,10 @@ def sust_student_data(request):
         )
     response_data['full_document_url'] = reverse('results:download_full_document', args=(registration,))
     response_data['transcript_url'] = reverse('results:download_transcript', args=(registration,))
+    if hasattr(student, 'studentcustomdocument'):
+        response_data['customdoc_url'] = reverse('results:download_customdoc', args=(registration,))
+    else:
+        response_data['customdoc_url'] = False
     return Response(data=response_data)
 
 
