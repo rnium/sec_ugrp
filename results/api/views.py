@@ -20,7 +20,7 @@ from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin
 from results.models import (Department, Session, Semester, Course, PreviousPoint,
-                            CourseResult, SemesterDocument, SemesterEnroll, Backup)
+                            CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument)
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
@@ -945,10 +945,21 @@ def sust_student_data(request):
         )
     response_data['full_document_url'] = reverse('results:download_full_document', args=(registration,))
     response_data['transcript_url'] = reverse('results:download_transcript', args=(registration,))
-    if hasattr(student, 'studentcustomdocument'):
-        response_data['customdoc_url'] = reverse('results:download_customdoc', args=(registration,))
-    else:
-        response_data['customdoc_url'] = False
+    custom_transcript = StudentCustomDocument.objects.filter(student=student, doc_type="transcript").first()
+    if custom_transcript:
+        response_data['transcript_url'] = reverse('results:download_customdoc', args=(registration,'transcript'))
+    response_data['custom_transcript_url'] = reverse('results:download_transcript', args=(registration,))
+    response_data['customdoc_url'] = False
+    response_data['custom_yearly_gradesheets'] = []
+    custom_y_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type="y_gs")
+    for y_gs in custom_y_gradesheets:
+        response_data['custom_yearly_gradesheets'].append(
+            {
+                'url': reverse('results:download_customdoc', args=(registration,'y_gs')) + f"?num={y_gs.sem_or_year_num}",
+                'year_number': y_gs.sem_or_year_num,
+                'year_suffix': get_ordinal_suffix(y_gs.sem_or_year_num,),
+            }
+        )
     return Response(data=response_data)
 
 
@@ -989,7 +1000,7 @@ def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     admin_name = request.user.first_name + " " + request.user.last_name
     customdocument = utils.render_and_save_customdoc(excel_file, admin_name, request.user)
-    return JsonResponse(data={'url': reverse('results:download_customdoc', args=(customdocument.student.registration,))})
+    return JsonResponse(data={'url': reverse('results:download_customdoc', args=(customdocument.student.registration,'all_gss'))})
 
 @csrf_exempt
 @login_required

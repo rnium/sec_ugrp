@@ -61,7 +61,11 @@ def render_customdoc(data, admin_name):
     transcript_context['admin_name'] = admin_name
     documents = []
     transcript = get_transcript(transcript_context)
-    t_doc = StudentCustomDocument(student=student, doc_type='transcript')
+    t_doc = StudentCustomDocument.objects.filter(student=student, doc_type='transcript').first()
+    if t_doc:
+        t_doc.document.delete()
+    else:
+        t_doc = StudentCustomDocument(student=student, doc_type='transcript')
     t_doc.document.save(f"{reg}_customtranscript"+'.pdf', ContentFile(transcript))
     t_doc.save()
     formdata = map_formdata_for_gradesheet(data)
@@ -74,8 +78,12 @@ def render_customdoc(data, admin_name):
                 excel_data[f'semester_{sem_num}'] = semester_data
         if num_semesters:= len(excel_data):
                 gradesheet = get_gradesheet(formdata, excel_data, num_semesters)
-                gs_doc = StudentCustomDocument(student=student, doc_type='y_gs', sem_or_year_num=year_num)
-                gs_doc.document.save(f"{reg}_customgradesheet_y{year_num}" + '.pdf', ContentFile(transcript))
+                gs_doc = StudentCustomDocument.objects.filter(student=student, doc_type='y_gs', sem_or_year_num=year_num).first()
+                if gs_doc:
+                    gs_doc.document.delete()
+                else:
+                    gs_doc = StudentCustomDocument(student=student, doc_type='y_gs', sem_or_year_num=year_num)
+                gs_doc.document.save(f"{reg}_customgradesheet_y{year_num}" + '.pdf', ContentFile(gradesheet))
                 gs_doc.save()
                 documents.append(gradesheet)
     merged_buffer = merge_pdfs_from_buffers(documents)
