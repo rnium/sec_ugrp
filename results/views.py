@@ -563,8 +563,8 @@ def get_semester_excel(request, pk):
 
 
 @admin_required
-def download_customdoc(request, pk):
-    cdoc = get_object_or_404(StudentCustomDocument, pk=pk)
+def download_customdoc(request, reg):
+    cdoc = get_object_or_404(StudentCustomDocument, student__registration=reg)
     filepath = cdoc.document.path
     filename = cdoc.document_filename
     return FileResponse(open(filepath, 'rb'), filename=filename)
