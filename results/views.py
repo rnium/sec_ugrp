@@ -366,6 +366,7 @@ def download_appeared_cert(request, registration):
             'semester_no': last_sesmester_number,
             'semester_suffix': get_ordinal_suffix(last_sesmester_number),
             'exam_duration': last_enroll.semester.duration_info,
+            'ref': request.GET.get('ref')
         }
         sheet_pdf = render_appearance_certificate(info_dict)
         filename = f"Appeared Certificate - {student.registration}.pdf"

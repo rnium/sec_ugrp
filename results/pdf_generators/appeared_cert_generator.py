@@ -2,17 +2,46 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 from reportlab.lib import colors
+from reportlab.lib.units import inch, cm, mm
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.platypus import Spacer
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from io import BytesIO
 from django.conf import settings
+import datetime
+
+
+pageSize = (217*mm, 281*mm)
+width, height = pageSize
+marginTop = 40*mm
+marginBottom = 20*mm
+sideMargin = 1.5*cm
+
 
 
 pdfmetrics.registerFont(TTFont('SCRIPT_MT_BOLD', settings.BASE_DIR/'results/static/results/fonts/SCRIPT_MT_BOLD.TTF'))
 pdfmetrics.registerFont(TTFont('BodoniMT', settings.BASE_DIR/'results/static/results/fonts/BOD_B.TTF'))
 pdfmetrics.registerFont(TTFont('BookAntiqua', settings.BASE_DIR/'results/static/results/fonts/BookAntiqua.ttf'))
+
+def insert_top_table(flowables, ref):
+    tbl_style = TableStyle([
+        # ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'RIGHT')
+    ])
+    styles = getSampleStyleSheet()
+    refStyle = ParagraphStyle(
+        'refStyle',
+        parent=styles['Normal'],
+        leftIndent=10
+    )
+    data = [
+        [Paragraph(ref, style=refStyle), datetime.datetime.now().strftime("%d/%m/%Y")]
+    ]
+    tbl = Table(data)
+    tbl.setStyle(tbl_style)
+    flowables.append(tbl)
+    
 
 
 def insert_principal_table(flowables):
@@ -43,7 +72,12 @@ def insert_principal_table(flowables):
 
 def render_appearance_certificate(info_dict):
     buffer = BytesIO()
-    pdf = SimpleDocTemplate(buffer, pagesize=A4, title="Appeared_certificate.pdf")
+    pdf = SimpleDocTemplate(buffer, pagesize=pageSize,
+        topMargin=marginTop,
+        bottomMargin=marginBottom,
+        leftMargin=sideMargin,
+        rightMargin=sideMargin, 
+        title="Appeared_certificate.pdf")
     # Sample application letter body
     title_text = "<u><b>APPEARED CERTIFICATE</b></u>"
     body_text = (
@@ -76,6 +110,8 @@ def render_appearance_certificate(info_dict):
     )
 
     flowables = []
+    insert_top_table(flowables, info_dict.get('ref', ''))
+    flowables.append(Spacer(1, 50))
     flowables.append(Paragraph(title_text, titleStyle))
     flowables.append(Spacer(1, 70))
     flowables.append(Paragraph(body_text, bodyStyle))
