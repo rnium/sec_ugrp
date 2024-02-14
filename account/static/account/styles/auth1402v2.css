@@ -53,6 +53,9 @@ body main .login-container .sys-info .instituition {
 body main .login-container .form-container {
   width: 100%;
 }
+body main .login-container .form-container .user-types .u-type {
+  height: 3.5rem;
+}
 body main .login-container .form-container .user-types .u-type input {
   display: none;
 }
@@ -67,6 +70,7 @@ body main .login-container .form-container .user-types .u-type label {
   align-items: center;
   padding: 5px 10px;
   border-radius: 5px;
+  height: 100%;
   background-color: rgba(123, 136, 132, 0.3);
   border: 1px solid rgb(123, 136, 132);
   transition: all 200ms;
@@ -74,9 +78,11 @@ body main .login-container .form-container .user-types .u-type label {
 }
 body main .login-container .form-container .user-types .u-type label img {
   width: 20px;
+  display: none;
 }
 body main .login-container .form-container .user-types .u-type label .title {
-  font-size: 10px;
+  font-size: 9px;
+  text-align: center;
 }
 body main .login-container .form-container .actions {
   display: flex;
