@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from django.shortcuts import get_object_or_404
 from account.models import StudentAccount
 from results.models import (Session, Course, 
                             CourseResult, Semester, SemesterEnroll,
-                            Department, StudentPoint)
+                            Department, StudentPoint, StudentCustomDocument)
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
@@ -228,9 +230,21 @@ def parse_gradesheet_excel(excel_file, form_data, num_semesters):
     return parsed_data
 
 
-def render_customdoc(excel_file, admin_name):
+def render_and_save_customdoc(excel_file, admin_name, user):
     data = excel_parsers.parse_customdoc_excel(excel_file)
-    return customdoc_generator.render_customdoc(data, admin_name)
+    reg = data['student_data']['registration']
+    student = get_object_or_404(StudentAccount, registration=reg)
+    document = customdoc_generator.render_customdoc(data, admin_name)
+    
+    if not hasattr(student, 'studentcustomdocument'):
+        customdoc = StudentCustomDocument(student=student)
+    else:
+        customdoc = student.studentcustomdocument
+        customdoc.document.delete()
+    customdoc.added_by = user
+    customdoc.document.save(f"{reg}_customdoc"+'.pdf', ContentFile(document))
+    customdoc.save()
+    return customdoc
 
 def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))

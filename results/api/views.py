@@ -984,12 +984,8 @@ def academic_studentcerts_data(request):
 def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     admin_name = request.user.first_name + " " + request.user.last_name
-    redis_key = str(int(time.time())) + request.user.username
-    document = utils.render_customdoc(excel_file, admin_name)
-    pdf_base64 = base64.b64encode(document).decode('utf-8')
-    cache.set(redis_key, pdf_base64)
-    filename = "document-" + str(int(time.time())) +  ".pdf"
-    return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+    customdocument = utils.render_and_save_customdoc(excel_file, admin_name, request.user)
+    return JsonResponse(data={'url': reverse('results:download_customdoc', args=(customdocument.id,))})
 
 @csrf_exempt
 @login_required

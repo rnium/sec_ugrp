@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse, HttpResponse
-from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup)
+from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup, StudentCustomDocument)
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
@@ -560,4 +560,12 @@ def get_semester_excel(request, pk):
         content_type='application/vnd.ms-excel', 
         filename=filename, as_attachment=True
     )
+
+
+@admin_required
+def download_customdoc(request, pk):
+    cdoc = get_object_or_404(StudentCustomDocument, pk=pk)
+    filepath = cdoc.document.path
+    filename = cdoc.document_filename
+    return FileResponse(open(filepath, 'rb'), filename=filename)
     
