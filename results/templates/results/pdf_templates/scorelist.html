@@ -9,68 +9,90 @@
 <body>
     {% for page in pages  %}
     <section class="container">
-        {% for list_item in page.list_items %}
-        <div class="list-item">
-            {% if not list_item.blank_li %}
-            <div class="heading">
-                <div class="top">
-                    <img src="file://{{sust_logo}}" alt="">
-                    <div class="title bn-text">একীকৃত নম্বরফর্দ</div>
+        <div class="list">
+            {% for list_item in page.list_items %}
+            <div class="list-item">
+                {% if not list_item.blank_li %}
+                <div class="heading">
+                    <div class="top">
+                        <img src="file://{{sust_logo}}" alt="">
+                        <div class="title bn-text">একীকৃত নম্বরফর্দ</div>
+                    </div>
+                    <div class="univ-name bn-text">শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় সিলেট</div>
+                    <div class="semester-name bn-text">... {{year_num}} ...... বর্ষ ....... {{year_semester_num}} ... সেমিস্টার, {{held_in_year}} .........</div>
+                    <div class="course-name"><span class="bn-text">কোর্স নম্বরঃ</span>....... {{course.code}} ............................</div>
                 </div>
-                <div class="univ-name bn-text">শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় সিলেট</div>
-                <div class="semester-name bn-text">... {{year_num}} ...... বর্ষ ....... {{year_semester_num}} ... সেমিস্টার, {{held_in_year}} .........</div>
-                <div class="course-name"><span class="bn-text">কোর্স নম্বরঃ</span>....... {{course.code}} ............................</div>
-            </div>
-            {% else %}
-            <div class="table-con">
-                <table>
-                    <tbody>
-                        {% for r in blank_table_rows %}
-                        <tr class="hidden-row">
-                            <td>00</td>
-                            <td>NN</td>
-                            <td>000</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-            
-            <div class="table-con">
-                <table>
-                    {% if not list_item.blank_li %}
-                    <thead>
-                        <td class="bn-text">ক্রমিক নং</td>
-                        <td class="bn-text">রোল নম্বর</td>
-                        <td class="bn-text">প্রাপ্ত নম্বর</td>
-                    </thead>
-                    {% endif %}
-                    <tbody>
-                        {% for res in list_item.results %}
-                        <tr>
-                            <td>{{res.sl_num}}</td>
-                            <td>{{res.reg}}</td>
-                            <td>{{res.total}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% if list_item.empty %}
-                        {% for i in list_item.empty %}
-                        <tr class="hidden-row">
-                            <td>00</td>
-                            <td>NN</td>
-                            <td>000</td>
-                        </tr>
-                        {% endfor %}
+                {% else %}
+                <div class="table-con">
+                    <table>
+                        <tbody>
+                            {% for r in blank_table_rows %}
+                            <tr class="hidden-row">
+                                <td>00</td>
+                                <td>NN</td>
+                                <td>000</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                
+                <div class="table-con">
+                    <table>
+                        {% if not list_item.blank_li %}
+                        <thead>
+                            <td class="bn-text">ক্রমিক নং</td>
+                            <td class="bn-text">রোল নম্বর</td>
+                            <td class="bn-text">প্রাপ্ত নম্বর</td>
+                        </thead>
                         {% endif %}
-                    </tbody>
-                </table>
-                <div class="exeminer-name bn-text mt-l">পরীক্ষকের নাম</div>
-                <div class="exeminer-name mt-1">{{list_item.examiner.name}}</div>
-                <div class="exeminer-name mt-1">{{list_item.examiner.designation}}</div>
+                        <tbody>
+                            {% for res in list_item.results %}
+                            <tr>
+                                <td>{{res.sl_num}}</td>
+                                <td>{{res.reg}}</td>
+                                <td>{{res.total}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% if list_item.empty %}
+                            {% for i in list_item.empty %}
+                            <tr class="hidden-row">
+                                <td>00</td>
+                                <td>NN</td>
+                                <td>000</td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="table-con">
+            <table class="examiner-table">
+                <tr>
+                    <td>
+                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
+                        <div class="exeminer-name mt-2">Name of Examiner</div>
+                        <div class="exeminer-name mt-1">Designation of Examiner</div>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
+                        <div class="exeminer-name mt-2">Name of Examiner</div>
+                        <div class="exeminer-name mt-1">Designation of Examiner</div>
+                    </td>
+                    <td>
+                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
+                        <div class="exeminer-name mt-2">Name of Examiner</div>
+                        <div class="exeminer-name mt-1">Designation of Examiner</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </section>
     {% if page.has_next %}
     <div class="page-break-after"></div>

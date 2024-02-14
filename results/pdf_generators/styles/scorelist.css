@@ -1,4 +1,5 @@
 @page {
+  size: 8.5in 14in;
   margin: 0;
 }
 * {
@@ -9,19 +10,26 @@
 
 .container {
   display: flex;
-  padding: 0 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.container .list-item {
+.container .list {
+  display: flex;
+  padding: 0 24px;
+  width: 7.7in;
+}
+.container .list .list-item {
   width: 3.8in;
   padding: 50px 24px;
 }
-.container .list-item .heading {
+.container .list .list-item .heading {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.container .list-item .heading .top {
+.container .list .list-item .heading .top {
   width: 280px;
   display: flex;
   flex-direction: row;
@@ -29,60 +37,67 @@
   align-items: center;
   justify-content: flex-start;
 }
-.container .list-item .heading .top img {
+.container .list .list-item .heading .top img {
   width: 50px;
 }
-.container .list-item .heading .top .title {
+.container .list .list-item .heading .top .title {
   margin-left: 20px;
   font-size: 1.2rem;
 }
-.container .list-item .heading .univ-name {
+.container .list .list-item .heading .univ-name {
   width: 280px;
   margin-top: 3px;
   font-size: 1.1rem;
   text-align: center;
 }
-.container .list-item .heading .semester-name {
+.container .list .list-item .heading .semester-name {
   width: 350px;
   font-size: 1rem;
   align-self: flex-start;
   margin-top: 1rem;
 }
-.container .list-item .heading .course-name {
+.container .list .list-item .heading .course-name {
   width: 350px;
   font-size: 1rem;
   align-self: flex-start;
   margin-top: 0;
 }
-.container .list-item .table-con {
+.container .list .list-item .table-con {
   margin-top: 30px;
 }
-.container .list-item .table-con table {
+.container .list .list-item .table-con table {
   width: 100%;
   border-collapse: collapse;
 }
-.container .list-item .table-con table td, .container .list-item .table-con table tr, .container .list-item .table-con table thead {
+.container .list .list-item .table-con table td, .container .list .list-item .table-con table tr, .container .list .list-item .table-con table thead {
   border: 1px solid black;
   text-align: center;
 }
-.container .list-item .table-con table tr td {
+.container .list .list-item .table-con table tr td {
   font-size: 16px;
 }
-.container .list-item .table-con table tr td:nth-child(1) {
+.container .list .list-item .table-con table tr td:nth-child(1) {
   width: 70px;
 }
-.container .list-item .table-con table tr td:nth-child(3) {
+.container .list .list-item .table-con table tr td:nth-child(3) {
   width: 80px;
 }
-.container .list-item .table-con table tr.hidden-row {
+.container .list .list-item .table-con table tr.hidden-row {
   border: 0;
 }
-.container .list-item .table-con table tr.hidden-row td {
+.container .list .list-item .table-con table tr.hidden-row td {
   border: 0;
   visibility: hidden;
 }
-.container .list-item .table-con .exeminer-name {
+.container table.examiner-table tr td {
+  width: 1.9in;
+  padding-top: 5rem;
+}
+.container table.examiner-table tr .exeminer-name {
   font-size: 1rem;
+}
+.container table.examiner-table tr:first-child td {
+  padding-top: 2rem;
 }
 
 @font-face {
@@ -119,10 +134,6 @@
 
 .mt-5 {
   margin-top: 40px;
-}
-
-.mt-l {
-  margin-top: 6rem;
 }
 
 .page-break-after {

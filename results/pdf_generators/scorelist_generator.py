@@ -9,6 +9,9 @@ from results.models import CourseResult
 
 entry_per_list = 30
 
+def get_examiner_table_rows(excel_data):
+    pass
+
 
 def render_scorelist(course, excel_data):
     course_results_qs = CourseResult.objects.filter(course=course, total_score__isnull=False)
