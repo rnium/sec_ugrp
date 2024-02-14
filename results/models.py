@@ -456,15 +456,24 @@ class Backup(models.Model):
 
 
 class StudentCustomDocument(models.Model):
+    type_choices = [
+        ('transcript', 'Transcript'),
+        ('sem_gs', 'Semester Gradesheet'),
+        ('y_gs', 'Yearly Gradesheet'),
+        ('all_gss', 'All Gradesheets'),
+    ]
     def filepath(self, filename):
-        return join(str(self.student.session.dept.name), str(self.student.session.session_code), filename)
-    student = models.OneToOneField("account.StudentAccount", on_delete=models.CASCADE)
+        return join(str(self.student.session.dept.name), str(self.student.session.session_code), str(self.student.registration), filename)
+    doc_type = models.CharField(choices=type_choices, max_length=20, default='all_gss')
+    sem_or_year_num = models.IntegerField(null=True, blank=True)
+    student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
     document = models.FileField(upload_to=filepath, null=True, blank=True)
-    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     added_at = models.DateTimeField(default=timezone.now)
     
     @property
     def document_filename(self):
         name_str = basename(self.document.name)
         return name_str
+    
+
     

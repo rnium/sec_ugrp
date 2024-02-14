@@ -565,7 +565,7 @@ def get_semester_excel(request, pk):
 
 @admin_required
 def download_customdoc(request, reg):
-    cdoc = get_object_or_404(StudentCustomDocument, student__registration=reg)
+    cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type="all_gss").first()
     filepath = cdoc.document.path
     filename = cdoc.document_filename
     return FileResponse(open(filepath, 'rb'), filename=filename)

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from account.models import StudentAccount
-from results.models import (Session, Course, 
+from results.models import (Session, Course,
                             CourseResult, Semester, SemesterEnroll,
                             Department, StudentPoint, StudentCustomDocument)
 from results.utils import get_letter_grade
@@ -235,11 +235,11 @@ def render_and_save_customdoc(excel_file, admin_name, user):
     reg = data['student_data']['registration']
     student = get_object_or_404(StudentAccount, registration=reg)
     document = customdoc_generator.render_customdoc(data, admin_name)
-    
-    if not hasattr(student, 'studentcustomdocument'):
-        customdoc = StudentCustomDocument(student=student)
+    all_gs_customdoc = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss').first()
+    if not all_gs_customdoc:
+        customdoc = StudentCustomDocument(student=student, doc_type='all_gss')
     else:
-        customdoc = student.studentcustomdocument
+        customdoc = all_gs_customdoc
         customdoc.document.delete()
     customdoc.added_by = user
     customdoc.document.save(f"{reg}_customdoc"+'.pdf', ContentFile(document))
