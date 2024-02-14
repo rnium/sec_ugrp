@@ -82,11 +82,17 @@ def parse_course_sustdocs_excel(excel_file):
     parsed_data = {}
     fields_col_idx = header.index('field_name')
     value_col_idx = header.index('value')
+    examiner_col_idx = header.index('examiner_name')
+    external_examiner_col_idx = header.index('external_examiner_name')
+    examiner_designation_col_idx = header.index('examiner_designation')
+    external_examiner_designation_col_idx = header.index('external_examiner_designation')
     registrations_col_idx = header.index('additional_registrations')
     total_score_col_idx = header.index('total_score')
     expelled_registrations_col_idx = header.index('expelled_registrations')
-    for i in range(10):
-        parsed_data[data_rows[i][fields_col_idx].value] = data_rows[i][value_col_idx].value 
+    for i in range(4):
+        parsed_data[data_rows[i][fields_col_idx].value] = data_rows[i][value_col_idx].value
+    parsed_data['examiners'] = []
+    parsed_data['external_examiners'] = []
     parsed_data['additional_entries'] = []
     parsed_data['expelled_registrations'] = []
     for row in data_rows:
@@ -95,5 +101,21 @@ def parse_course_sustdocs_excel(excel_file):
             parsed_data['additional_entries'].append(row_data)
         if expelled:=row[expelled_registrations_col_idx].value:
             parsed_data['expelled_registrations'].append(expelled)
+        row_data = [row[examiner_col_idx].value, row[examiner_designation_col_idx].value]
+        if all(row_data):
+            parsed_data['examiners'].append(
+                {
+                    'name': row_data[0],
+                    'designation': row_data[1],
+                }
+            )
+        row_data = [row[external_examiner_col_idx].value, row[external_examiner_designation_col_idx].value]
+        if all(row_data):
+            parsed_data['external_examiners'].append(
+                {
+                    'name': row_data[0],
+                    'designation': row_data[1],
+                }
+            )
     return parsed_data
  

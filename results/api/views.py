@@ -1020,7 +1020,7 @@ def render_course_sustdocs(request, pk):
         scorelist = render_scorelist(course, data)
     except Exception as e:
         print(e, flush=1)
-        return JsonResponse(data={'details': 'Cannot render files'}, status=400)
+        return JsonResponse(data={'details': 'Rendering failed. Check for missing data in Excel file'}, status=400)
     document = merge_pdfs_from_buffers([topsheet, scorelist])
     redis_key = str(int(time.time())) + request.user.username
     pdf_base64 = base64.b64encode(document.getvalue()).decode('utf-8')

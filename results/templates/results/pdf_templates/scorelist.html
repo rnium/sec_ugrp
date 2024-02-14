@@ -72,25 +72,19 @@
         </div>
         <div class="table-con">
             <table class="examiner-table">
+                {% for row in examiners_table  %}
                 <tr>
-                    <td>
-                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
-                        <div class="exeminer-name mt-2">Name of Examiner</div>
-                        <div class="exeminer-name mt-1">Designation of Examiner</div>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
-                        <div class="exeminer-name mt-2">Name of Examiner</div>
-                        <div class="exeminer-name mt-1">Designation of Examiner</div>
-                    </td>
-                    <td>
-                        <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
-                        <div class="exeminer-name mt-2">Name of Examiner</div>
-                        <div class="exeminer-name mt-1">Designation of Examiner</div>
-                    </td>
+                    {% for examiner in row %}
+                        {% if examiner %}
+                        <td>
+                            <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
+                            <div class="exeminer-name mt-2">{{examiner.name}}</div>
+                            <div class="exeminer-name mt-1">{{examiner.designation}}</div>
+                        </td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
+                {% endfor %}
             </table>
         </div>
     </section>

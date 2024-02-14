@@ -7,10 +7,21 @@ from .utils import get_bangla_ordinal_upto_eight, get_year_number_in_bangla, get
 from results.models import CourseResult
 
 
-entry_per_list = 30
+entry_per_list = 35
 
 def get_examiner_table_rows(excel_data):
-    pass
+    examiners = excel_data['examiners']
+    examiners_exterternal = excel_data['external_examiners']
+    table = []
+    for i in range(0,max(len(examiners), len(examiners_exterternal)),2):
+        e1 = examiners[i:i+2]
+        for i in range(2-len(e1)):
+            e1.append("")
+        e2 = examiners_exterternal[i:i+2]
+        for i in range(2-len(e2)):
+            e2.append("")
+        table.append([*e1, *e2])
+    return table
 
 
 def render_scorelist(course, excel_data):
@@ -18,6 +29,7 @@ def render_scorelist(course, excel_data):
     course_results_qs_ordered = course_results_qs.order_by('is_drop_course', '-student__is_regular', 'student__registration')
     course_results = [[cr.student.registration, cr.total_round_up] for cr in course_results_qs_ordered]
     course_results = [*course_results, *excel_data['additional_entries']]
+    entry_per_list = excel_data['records_per_column']
     list_items = [course_results[i:i+entry_per_list] for i in range(0, len(course_results), entry_per_list)]
     pages = [list_items[i: i+2] for i in range(0, len(list_items), 2)]
     pages_context = []
@@ -39,10 +51,6 @@ def render_scorelist(course, excel_data):
                 li = page[i]
                 li_context['blank_li'] = False
             li_context['empty'] = list(range(entry_per_list - len(li)))
-            if i == 0:
-                li_context['examiner'] = {'name': excel_data['examiner_name'], 'designation': excel_data['examiner_designation']}
-            else:
-                li_context['examiner'] = {'name': excel_data['external_examiner_name'], 'designation': excel_data['external_examiner_designation']}
             for res in li:
                 res_context = {
                     'sl_num': sl_num,
@@ -55,8 +63,7 @@ def render_scorelist(course, excel_data):
         curr_page_num += 1
         pages_context.append(page_context)
     context = {'pages': pages_context}
-    context['examiner'] = "examiner"
-    context['designation'] = "designation"
+    context['examiners_table'] = get_examiner_table_rows(excel_data)
     context['course'] = course
     context['year_num'] = get_bangla_ordinal_upto_eight(course.semester.year)
     context['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)

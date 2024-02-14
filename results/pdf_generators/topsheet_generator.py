@@ -33,15 +33,9 @@ def get_context_data(course, data):
     context_data['registrations_row'] = get_table_rows(registrations, 17, 6)
     context_data['expelled_rows'] = get_table_rows(data['expelled_registrations'], 3, 6)
     context_data['expelled_count'] = get_bangla_number(len(data['expelled_registrations']))
-    total_answersheets = data['total_answersheets']
-    part_A_answersheets = data['part_A_answersheets']
-    part_B_answersheets = data['part_B_answersheets']
-    if part_A_answersheets == None:
-        part_A_answersheets = len(registrations)
-    if part_B_answersheets == None:
-        part_B_answersheets = len(registrations)
-    if total_answersheets == None:
-        total_answersheets = 2 * len(registrations)
+    part_A_answersheets = len(registrations)
+    part_B_answersheets = len(registrations)
+    total_answersheets = 2 * len(registrations)
     context_data['total_answersheets'] = get_bangla_number(total_answersheets)
     context_data['part_A_answersheets'] = get_bangla_number(part_A_answersheets)
     context_data['part_B_answersheets'] = get_bangla_number(part_B_answersheets)
