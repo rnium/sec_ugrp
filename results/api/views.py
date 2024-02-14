@@ -950,6 +950,7 @@ def sust_student_data(request):
         response_data['transcript_url'] = reverse('results:download_customdoc', args=(registration,'transcript'))
     response_data['custom_transcript_url'] = reverse('results:download_transcript', args=(registration,))
     response_data['customdoc_url'] = False
+    response_data['custom_semester_gradesheets'] = []
     response_data['custom_yearly_gradesheets'] = []
     custom_y_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type="y_gs")
     for y_gs in custom_y_gradesheets:

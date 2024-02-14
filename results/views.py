@@ -30,6 +30,7 @@ from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment
 from io import BytesIO
 from django.conf import settings
+from django.core.files.storage import default_storage
 
 
 def user_is_super_OR_dept_admin(request):
@@ -328,6 +329,10 @@ def download_full_document(request, registration):
             year_first_sem_enroll = year_first_semester,
             year_second_sem_enroll = year_second_semester
         ))
+    custom_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss')
+    for c_gradesheet in custom_gradesheets:
+        with default_storage.open(c_gradesheet.document.path, 'rb') as pdf_file:
+            docs.append(pdf_file.read())
     merged_pdf = merge_pdfs_from_buffers(docs).getvalue()
     filename = f"Transcript & Gradesheets - {registration}.pdf"
     return FileResponse(ContentFile(merged_pdf), filename=filename)
