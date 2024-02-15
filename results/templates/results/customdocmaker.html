@@ -103,12 +103,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="session bg-light shadow-sm rounded p-3">
-                        <div class="text-center fs-5">EEE 2018-19 (4th Batch)</div>
-                        <div class="students mt-2">
-                            <button class="pill pill-green mb-1 border-0 px-4 py-1" data-reg="2018338500">2018338500</button>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="modal-footer bg-light">
                     <div class="w-100">
@@ -138,6 +133,7 @@
 {% block script %}
 <script>
     const generate_customdoc_api = "{% url 'results:render_customdoc' %}";
+    const customdoc_list_api = "{% url 'results:get_customdoc_list' %}";
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/generate_customdoc.js' %}"></script>

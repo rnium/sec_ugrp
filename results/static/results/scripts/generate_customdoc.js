@@ -14,6 +14,7 @@ function renderCustomdoc(excel_file) {
             });
         },
         success: function(response) {
+            insertList();
             var link = response.url;
             if (link) {
                 var newTab = window.open(link, '_blank');
@@ -38,7 +39,25 @@ function renderCustomdoc(excel_file) {
     });
 }
 
+function insertList() {
+    $.ajax({
+        type: "GET",
+        url: customdoc_list_api,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            $("#docsModal .modal-body").html(response.html);
+        },
+        error: function() {
+            console.log("Error loading list")
+        }
+
+    });
+}
+
 $(document).ready(function () {
+    insertList();
     $("#render-cd-btn").on('click', function(){
         excel_file = $("#excelInp")[0].files
         if (excel_file.length > 0) {

@@ -33,6 +33,7 @@ from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.tasks import restore_dept_data_task, restore_session_data_task
+from results.decorators_and_mixins import superadmin_required
 from django.conf import settings
 from io import BytesIO
 from datetime import datetime
@@ -1062,4 +1063,29 @@ def create_session_prevpoint_via_excel(request, pk):
     else:
         return JsonResponse({'details': 'Not allowed!'}, status=400)
 
+
+@api_view(['GET'])
+@superadmin_required
+def get_customdoc_list(request):
+    depts_qs = Department.objects.all()
+    all_dept_context = []
+    for dept in depts_qs:
+        dept_context = []
+        for session in dept.session_set.all():
+            students = session.studentaccount_set.all()
+            session_students_with_customdoc = []
+            for student in students:
+                if student.studentcustomdocument_set.count():
+                    session_students_with_customdoc.append(student)
+            if session_students_with_customdoc:
+                dept_context.append(
+                    {
+                        'name': f"{session.batch_name} ({session.session_code})",
+                        'students': session_students_with_customdoc
+                    }
+                )
+        if dept_context:
+            all_dept_context.append(dept_context)
+    list_html = render_to_string('results/components/customdoc_listing.html', context={'departments': all_dept_context})
+    return Response(data={'html': list_html})
     
