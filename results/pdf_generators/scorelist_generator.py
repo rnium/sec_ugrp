@@ -15,10 +15,10 @@ def get_examiner_table_rows(excel_data):
     table = []
     for i in range(0,max(len(examiners), len(examiners_exterternal)),2):
         e1 = examiners[i:i+2]
-        for i in range(2-len(e1)):
+        for _ in range(2-len(e1)):
             e1.append("")
         e2 = examiners_exterternal[i:i+2]
-        for i in range(2-len(e2)):
+        for _ in range(2-len(e2)):
             e2.insert(0, "")
         table.append([*e1, *e2])
     return table
