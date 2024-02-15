@@ -200,10 +200,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
-                    <a class="d-flex flex-column justify-content-center align-items-center mt-4 mb-5" href="{% url 'results:download_sustdocs_template' course.id %}" download>
+                    <a class="d-flex justify-content-center align-items-center mt-4 mb-5" href="{% url 'results:download_sustdocs_template' course.id %}" download>
                         <i class='bx bx-table me-2 fs-1 text-info'></i>
                         <div class="text-muted">Download Excel Template</div>
                     </a>
+                    {% if course.supplementarydocument %}
+                    <a class="d-flex py-3 border bg-white rounded flex-column justify-content-center align-items-center mt-4 mb-3" href="{% url 'results:download_supplementarydoc' course.b64_id %}" target="_blank">
+                        <div class="text-primary fs-5">Download Saved Document</div>
+                        <div class="text-muted small">Last render: {{course.supplementarydocument.added_at|date:"r"}}</div>
+                    </a>
+                    {% endif %}
                     <input type="file" class="form-control mb-3" id="sustDocExcel">
                     <button class="btn btn-primary w-100 mb-3" type="button" id="sustDocRenderBtn">Render & Download</button>
                 </div>
