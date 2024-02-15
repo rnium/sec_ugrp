@@ -20,7 +20,8 @@ from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin
 from results.models import (Department, Session, Semester, Course, PreviousPoint,
-                            CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument)
+                            CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
+                            SupplementaryDocument)
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
@@ -1022,11 +1023,16 @@ def render_course_sustdocs(request, pk):
         print(e, flush=1)
         return JsonResponse(data={'details': 'Rendering failed. Check for missing data in Excel file'}, status=400)
     document = merge_pdfs_from_buffers([topsheet, scorelist])
-    redis_key = str(int(time.time())) + request.user.username
-    pdf_base64 = base64.b64encode(document.getvalue()).decode('utf-8')
-    cache.set(redis_key, pdf_base64)
-    filename = "document-" + str(int(time.time())) +  ".pdf"
-    return JsonResponse(data={'url': reverse('results:download_cachedpdf', args=(redis_key, filename))})
+    filename = f"{course.b64_id}_supplemetaryDocument"+'.pdf'
+    if hasattr(course, 'supplementarydocument'):
+        s_doc = course.supplementarydocument
+        s_doc.document.delete()
+        s_doc.added_at = timezone.now()
+    else:
+        s_doc = SupplementaryDocument(course=course)
+    s_doc.document.save(filename, ContentFile(document.getvalue()))
+    s_doc.save()
+    return JsonResponse(data={'url': reverse('results:download_supplementarydoc', args=(s_doc.course.b64_id,))})
     # return JsonResponse(data={'type': st, 'files': str(type(request.FILES))})
 
 

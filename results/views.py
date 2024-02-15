@@ -575,8 +575,22 @@ def download_customdoc(request, reg, doctype):
         cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type=doctype, sem_or_year_num=num).first()
     else:
         cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type=doctype).first()
-    print(num, doctype, flush=1)
     filepath = cdoc.document.path
     filename = cdoc.document_filename
+    return FileResponse(open(filepath, 'rb'), filename=filename)
+
+@admin_required
+def download_supplementarydoc(request, b64_id):
+    try:
+        str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
+        pk = int(str(str_pk))
+    except Exception as e:
+        return render_error(request, "Invalid Course ID")
+    course = get_object_or_404(Course, pk=pk)
+    if not hasattr(course, 'supplementarydocument'):
+        return render_error(request, 'Document Doesn\'t exists')
+    s_doc = course.supplementarydocument
+    filepath = s_doc.document.path
+    filename = s_doc.document_filename
     return FileResponse(open(filepath, 'rb'), filename=filename)
     
