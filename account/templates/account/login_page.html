@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'account/styles/auth1402v2.css' %}">
+    <link rel="stylesheet" href="{% static 'account/styles/auth1502.css' %}">
     <title>Login</title>
 </head>
 <body>
@@ -36,35 +36,47 @@
                 </div>
                 <div class="user-types mb-3 d-flex flex-column align-items-center">
                     <div class="label me-2 mb-2">Login As</div>
-                    <div class="row">
-                        <div class="u-type col-md-2 mb-2">
+                    <div class="row user-list">
+                        <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="principal-radio" value="principal" checked>
                             <label for="principal-radio">
-                                <div class="title text-center">Super Admin, SEC</div>
+                                <i class='bx bx-user'></i>
+                                <div class="title">Super Admin</div>
+                                <div class="inst">SEC</div>
                             </label>
                         </div>
-                        <div class="u-type col-md-2 mb-2">
+                        <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="deptadmin-radio" value="department">
                             <label for="deptadmin-radio">
-                                <div class="title text-center">Department Section, SEC</div>
+                                <i class='bx bx-user'></i>
+                                <div class="title">Department Section</div>
+                                <div class="inst">SEC</div>
                             </label>
                         </div>
-                        <div class="u-type col-md-2 mb-2">
+                        <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="academic-radio" value="academic">
                             <label for="academic-radio">
-                                <div class="title text-center">Academic Section, SEC</div>
+                                <i class='bx bx-user'></i>
+                                <div class="title">Academic Section</div>
+                                <div class="inst">SEC</div>
                             </label>
                         </div>
-                        <div class="u-type col-md-3 mb-2">
+                    </div>
+                    <div class="row user-list">
+                        <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="sustadmin-radio" value="sustuser">
                             <label for="sustadmin-radio">
-                                <div class="title text-center">Assistant Programmer, SUST</div>
+                                <i class='bx bx-user'></i>
+                                <div class="title">Assistant Programmer</div>
+                                <div class="inst">SUST</div>
                             </label>
                         </div>
-                        <div class="u-type col-md-3 mb-2">
+                        <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="sustadmin-radio" value="sustuser">
                             <label for="sustadmin-radio">
-                                <div class="title text-center">Controller Section, SUST</div>
+                                <i class='bx bx-user'></i>
+                                <div class="title">Controller Section</div>
+                                <div class="inst">SUST</div>
                             </label>
                         </div>
                     </div>
