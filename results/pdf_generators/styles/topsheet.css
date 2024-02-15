@@ -1,6 +1,6 @@
 @page {
-  margin: 1.2in 1.5cm 1cm;
-  size: "A4";
+  margin: 1.5in 1.5cm 1cm;
+  size: 8.5in 14in;
 }
 * {
   margin: 0;
@@ -30,6 +30,7 @@
   justify-content: center;
   align-items: center;
   width: 450px;
+  margin-bottom: 2rem;
 }
 .container .heading .info .univ-name {
   width: 370px;
@@ -73,6 +74,9 @@
   border: 0;
   padding: 5px 0 0 0;
   text-align: left;
+}
+.container table.visitor {
+  margin-top: 3rem;
 }
 .container table.visitor td {
   border: 0;

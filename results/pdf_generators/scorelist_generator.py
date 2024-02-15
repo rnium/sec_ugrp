@@ -21,7 +21,6 @@ def get_examiner_table_rows(excel_data):
         for i in range(2-len(e2)):
             e2.insert(0, "")
         table.append([*e1, *e2])
-    print(table, flush=1)
     return table
 
 
