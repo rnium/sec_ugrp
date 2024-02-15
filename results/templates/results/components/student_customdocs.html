@@ -1,0 +1,15 @@
+<div class="text-secondary roboto-font text-center mb-2">{{title}}</div>
+<div class="docs d-flex justify-content-center">
+    <div class="row w-100">
+        {% for doc in documents %}
+        <div class="col-md-6 mb-2">
+            <a href="{{doc.url}}" class="doc w-100 px-4 py-3 d-inline-block bg-material rounded">
+                <div class="inner d-flex justify-content-center align-items-center">
+                    <i class='bx bxs-file-pdf fs-2 text-primary me-1'></i>
+                    <span class="title ">{{doc.title}}</span>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

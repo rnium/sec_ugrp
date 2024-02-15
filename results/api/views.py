@@ -1089,3 +1089,13 @@ def get_customdoc_list(request):
     list_html = render_to_string('results/components/customdoc_listing.html', context={'departments': all_dept_context})
     return Response(data={'html': list_html})
     
+@api_view()
+@superadmin_required
+def get_student_customdocs(request, reg):
+    student = get_object_or_404(StudentAccount, reg)
+    context = {
+        'documents': student.studentcustomdocument_set.all()
+    }
+    html_text = render_to_string('results/components/student_customdocs.html', context=context)
+    return Response(data={'html': html_text})
+    

@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.templatetags.static import static
@@ -475,6 +476,27 @@ class StudentCustomDocument(models.Model):
         name_str = basename(self.document.name)
         return name_str
     
+    @property
+    def url(self):
+        return reverse('results:download_customdoc', args=(self.student.registration, self.doc_type))
+    
+    @property
+    def title(self):
+        if self.doc_type == 'transcript':
+            return 'Academic Transcript'
+        elif self.doc_type == 'sem_gs':
+            if num:=self.sem_or_year_num:
+                return f"{get_ordinal_number(self.sem_or_year_num)} Semester Gradesheet"
+            return "Semester Gradesheet"
+        elif self.doc_type == 'y_gs':
+            if num:=self.sem_or_year_num:
+                return f"{get_ordinal_number(self.sem_or_year_num)} Year Gradesheet"
+            return "Year Gradesheet"
+        elif self.doc_type == 'all_gss':
+            return "All Gradesheets"
+        else:
+            return "Unknown type document"
+    
 
     
 class SupplementaryDocument(models.Model):
@@ -488,6 +510,6 @@ class SupplementaryDocument(models.Model):
     def document_filename(self):
         name_str = basename(self.document.name)
         return name_str
-    
+
 
     
