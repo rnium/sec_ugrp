@@ -101,9 +101,18 @@ def create_backup(dept: Department, session_id):
                 session_data['previous_point']['student_points'].append(model_to_dict(spoint))
         semesters = Semester.objects.filter(session=session)
         for semester in semesters:
-            # items: courses, enrollments
+            # items: document, courses, enrollments
+            semester_doc_dict = None
+            if hasattr(semester, 'semesterdocument'):
+                semester_doc_dict = model_to_dict(semester.semesterdocument)
+                semester_doc_dict.pop('tabulation_sheet')
+                semester_doc_dict.pop('tabulation_thumbnail')
+                semester_doc_dict['tabulation_sheet_render_time'] = None
+                semester_doc_dict['tabulation_sheet_render_by'] = None
+                print(semester_doc_dict, flush=1)
             semester_data = {
                 'semester_meta': model_to_dict(semester),
+                'semester_doc': semester_doc_dict,
                 'courses': [],
                 'enrolls': []
             }

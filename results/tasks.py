@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from account.models import StudentAccount
-from results.models import Session, Course, CourseResult, Semester, SemesterEnroll, Department, PreviousPoint, StudentPoint
+from results.models import (Session, Course, CourseResult, 
+                            Semester, SemesterEnroll, SemesterDocument, 
+                            Department, PreviousPoint, StudentPoint)
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 import time
@@ -69,6 +71,12 @@ def restore_dept_data_task(self, dept_id, sessions_data, total_objects):
             count += 1
             progress_recorder.set_progress(count, total_objects)
             semester_hash[sem_id] = semester
+            # semesterdoc
+            semesterdoc_dict = sem_data.get('semester_doc')
+            if semesterdoc_dict:
+                semesterdoc_dict['semester'] = semester
+                semesterdoc = SemesterDocument(**semesterdoc_dict)
+                semesterdoc.save()
             # Courses
             for course_data in sem_data['courses']:
                 course_data['course_meta']['semester'] = semester
@@ -202,6 +210,11 @@ def restore_session_data_task(self, dept_id, session_data, total_objects):
         semester.save()
         count += 1
         progress_recorder.set_progress(count, total_objects)
+        semesterdoc_dict = sem_data.get('semester_doc')
+        if semesterdoc_dict:
+            semesterdoc_dict['semester'] = semester
+            semesterdoc = SemesterDocument(**semesterdoc_dict)
+            semesterdoc.save()
         for dc_id in drop_course_ids:
             semester.drop_courses.add(Course.objects.get(id=dc_id))
             count += 1
