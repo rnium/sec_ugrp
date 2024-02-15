@@ -81,6 +81,8 @@
                             <div class="exeminer-name mt-2">{{examiner.name}}</div>
                             <div class="exeminer-name mt-1">{{examiner.designation}}</div>
                         </td>
+                        {% else %}
+                        <td></td>
                         {% endif %}
                     {% endfor %}
                 </tr>

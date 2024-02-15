@@ -19,8 +19,9 @@ def get_examiner_table_rows(excel_data):
             e1.append("")
         e2 = examiners_exterternal[i:i+2]
         for i in range(2-len(e2)):
-            e2.append("")
+            e2.insert(0, "")
         table.append([*e1, *e2])
+    print(table, flush=1)
     return table
 
 

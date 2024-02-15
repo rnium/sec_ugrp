@@ -477,3 +477,17 @@ class StudentCustomDocument(models.Model):
     
 
     
+class SupplementaryDocument(models.Model):
+    def filepath(self, filename):
+        return join(str(self.course.semester.session.dept.name), str(self.course.semester.session.session_code), str(self.course.semester.semester_no), str(self.course.code.replace(' ', '')), filename)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    document = models.FileField(upload_to=filepath, null=True, blank=True)
+    added_at = models.DateTimeField(default=timezone.now)
+    
+    @property
+    def document_filename(self):
+        name_str = basename(self.document.name)
+        return name_str
+    
+
+    
