@@ -1,3 +1,9 @@
+function showModal(id) {
+    const elem = document.getElementById(id)
+    const mBootstrap = new bootstrap.Modal(elem);
+    mBootstrap.show()
+}
+
 function renderCustomdoc(excel_file) {
     let excel_form = new FormData
     excel_form.append("file", excel_file)
@@ -14,14 +20,8 @@ function renderCustomdoc(excel_file) {
             });
         },
         success: function(response) {
-            insertList();
-            var link = response.url;
-            if (link) {
-                var newTab = window.open(link, '_blank');
-                newTab.focus();
-            } else {
-                console.error('No link found in the API response.');
-            }
+            insertList(() => showModal("docsModal"));
+            getStudentDocs(response.reg);
         },
         error: function(xhr, status, error) {
             try {
@@ -39,15 +39,45 @@ function renderCustomdoc(excel_file) {
     });
 }
 
-function insertList() {
+function getStudentDocs(reg) {
+    $.ajax({
+        type: "GET",
+        url: student_customdocs_api+`?reg=${reg}`,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $("#docsModal .modal-footer").hide(200);
+        },
+        success: function(response) {
+            $("#docsModal .student-docs-detail").html(response.html);
+            $("#docsModal .modal-footer").show(200);
+        },
+        error: function() {
+            console.log("Error loading list")
+        }
+
+    });
+}
+
+function bindBtnEvent() {
+    $(".student-reg").on('click', function() {
+        let reg = parseInt($(this).attr('data-reg'));
+        getStudentDocs(reg);
+    })
+}
+
+function insertList(callback=null) {
     $.ajax({
         type: "GET",
         url: customdoc_list_api,
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log(response);
             $("#docsModal .modal-body").html(response.html);
+            bindBtnEvent();
+            if (callback) {
+                callback();
+            }
         },
         error: function() {
             console.log("Error loading list")
@@ -66,4 +96,5 @@ $(document).ready(function () {
             alert("Please choose an excel file!");
         }
     });
+    
 });

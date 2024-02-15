@@ -105,21 +105,8 @@
                 <div class="modal-body">
                     
                 </div>
-                <div class="modal-footer bg-light">
-                    <div class="w-100">
-                        <div class="text-secondary roboto-font text-center mb-2">Documents of 2018338500</div>
-                        <div class="docs d-flex justify-content-center">
-                            <div class="row w-100">
-                                <div class="col-md-6 mb-2">
-                                    <a href="#" class="doc w-100 px-4 py-3 d-inline-block bg-material rounded">
-                                        <div class="inner d-flex justify-content-center align-items-center">
-                                            <i class='bx bxs-file-pdf fs-2 text-primary me-1'></i>
-                                            <span class="title ">1st Year Gradesheet</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                <div class="modal-footer bg-light" style="display: none">
+                    <div class="w-100 student-docs-detail">
                     </div>
                 </div>            
             </div>
@@ -134,6 +121,7 @@
 <script>
     const generate_customdoc_api = "{% url 'results:render_customdoc' %}";
     const customdoc_list_api = "{% url 'results:get_customdoc_list' %}";
+    const student_customdocs_api = "{% url 'results:get_student_customdocs' %}";
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/generate_customdoc.js' %}"></script>

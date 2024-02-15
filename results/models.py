@@ -478,7 +478,10 @@ class StudentCustomDocument(models.Model):
     
     @property
     def url(self):
-        return reverse('results:download_customdoc', args=(self.student.registration, self.doc_type))
+        if self.sem_or_year_num:
+            return reverse('results:download_customdoc', args=(self.student.registration, self.doc_type)) + f"?num={self.sem_or_year_num}"
+        else:
+            return reverse('results:download_customdoc', args=(self.student.registration, self.doc_type))
     
     @property
     def title(self):

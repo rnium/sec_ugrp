@@ -575,6 +575,8 @@ def download_customdoc(request, reg, doctype):
         cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type=doctype, sem_or_year_num=num).first()
     else:
         cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type=doctype).first()
+    if not cdoc:
+        return render_error(request, "No Document Found")
     filepath = cdoc.document.path
     filename = cdoc.document_filename
     return FileResponse(open(filepath, 'rb'), filename=filename)

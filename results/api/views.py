@@ -1002,8 +1002,8 @@ def academic_studentcerts_data(request):
 def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     admin_name = request.user.first_name + " " + request.user.last_name
-    customdocument = utils.render_and_save_customdoc(excel_file, admin_name, request.user)
-    return JsonResponse(data={'url': reverse('results:download_customdoc', args=(customdocument.student.registration,'all_gss'))})
+    doc = utils.render_and_save_customdoc(excel_file, admin_name, request.user)
+    return JsonResponse(data={'info': f'Documents Generated for: {doc.student.registration}', 'reg': doc.student.registration})
 
 @csrf_exempt
 @login_required
@@ -1091,10 +1091,14 @@ def get_customdoc_list(request):
     
 @api_view()
 @superadmin_required
-def get_student_customdocs(request, reg):
-    student = get_object_or_404(StudentAccount, reg)
+def get_student_customdocs(request):
+    reg = request.GET.get('reg')
+    if not reg:
+        return Response(data={'details': "Registration not provided"}, status=status.HTTP_400_BAD_REQUEST)
+    student = get_object_or_404(StudentAccount, registration=reg)
     context = {
-        'documents': student.studentcustomdocument_set.all()
+        'title': f"Generated Documents of {reg}",
+        'documents': student.studentcustomdocument_set.all().order_by('doc_type')
     }
     html_text = render_to_string('results/components/student_customdocs.html', context=context)
     return Response(data={'html': html_text})
