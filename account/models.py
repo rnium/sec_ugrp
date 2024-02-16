@@ -104,7 +104,7 @@ class StudentAccount(BaseAccount):
         super().save(*args, **kwargs)
         
     def update_stats(self):
-        enrollments = SemesterEnroll.objects.filter(student=self)
+        enrollments = SemesterEnroll.objects.filter(student=self, is_publishable=True)
         student_prevPoint = StudentPoint.objects.filter(student=self).first()
         credits_count = 0
         points_count = 0

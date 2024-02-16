@@ -509,6 +509,7 @@ def toggle_enrollment_is_publishable(request):
     enroll = get_object_or_404(SemesterEnroll, pk=enrollid)
     enroll.is_publishable = not enroll.is_publishable
     enroll.save()
+    enroll.student.update_stats()
     return Response(data={'is_publishable': enroll.is_publishable})
     
 
