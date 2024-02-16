@@ -586,6 +586,9 @@ body.light .view-session-container .session .value .batch-no, body.light .view-s
   color: #1d5461;
   background-color: #ebeaef;
 }
+body.light .view-session-container .all-registrations .student .student-profile, body.light .view-semester-container .all-registrations .student .student-profile {
+  background-color: rgba(236, 238, 238, 0.7);
+}
 body.light header .navbar {
   background-color: #c6d5da;
   box-shadow: 0 0 20px rgb(218, 218, 218);
@@ -1351,33 +1354,42 @@ body main .view-semester-container .semester-info i.bg {
   bottom: -2rem;
   right: -1.5rem;
 }
-body main .view-semester-container .students-list {
+body main .view-semester-container .all-registrations {
   padding: 1rem;
 }
-body main .view-semester-container .students-list .student {
-  background-color: #414958;
+body main .view-semester-container .all-registrations .student {
   display: flex;
   flex-direction: row;
-  padding: 10px 15px;
   margin: 3px;
-  position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-body main .view-semester-container .students-list .student .info div {
+body main .view-semester-container .all-registrations .student .student-profile {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #414958;
+}
+body main .view-semester-container .all-registrations .student .student-profile .info div {
   width: 100%;
   text-align: left;
 }
-body main .view-semester-container .students-list .student .info .reg-no {
+body main .view-semester-container .all-registrations .student .student-profile .info .reg-no {
   font-family: "Roboto Mono", monospace;
   font-size: 0.9rem;
   color: #9090a7;
 }
-body main .view-semester-container .students-list .student .info a {
+body main .view-semester-container .all-registrations .student .student-profile .info a {
   position: absolute;
   bottom: 0;
   right: 0;
 }
-body main .view-semester-container .students-list .student .info a i {
+body main .view-semester-container .all-registrations .student .student-profile .info a i {
   border-radius: 10px 0 0 0;
   padding: 7px;
   background-color: rgba(124, 105, 105, 0.386);
@@ -1385,9 +1397,72 @@ body main .view-semester-container .students-list .student .info a i {
   font-size: 1.3rem;
   transition: all 0.3s;
 }
-body main .view-semester-container .students-list .student .info a i:hover {
+body main .view-semester-container .all-registrations .student .student-profile .info a i:hover {
   background-color: rgb(197, 81, 71);
   color: white;
+}
+body main .view-semester-container .all-registrations .student .btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(18, 163, 134);
+}
+body main .view-semester-container .all-registrations .student .btn-container button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  background-color: inherit;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: all 300ms;
+}
+body main .view-semester-container .all-registrations .student .btn-container button i {
+  font-size: 1.2rem;
+  margin-right: 5px;
+  transition: all 300ms;
+}
+body main .view-semester-container .all-registrations .student .btn-container button span {
+  font-size: 12px;
+  transition: all 300ms;
+}
+body main .view-semester-container .all-registrations .student .btn-container button.hold {
+  background-color: rgba(212, 255, 236, 0.3);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.hold i, body main .view-semester-container .all-registrations .student .btn-container button.hold span {
+  color: rgb(251, 255, 254);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.hold:hover {
+  background-color: rgba(212, 255, 236, 0.4);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.delete {
+  background-color: rgba(255, 252, 252, 0.9);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.delete i, body main .view-semester-container .all-registrations .student .btn-container button.delete span {
+  color: rgb(255, 55, 40);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.delete:hover {
+  background-color: rgba(255, 252, 252, 0.6);
+}
+body main .view-semester-container .all-registrations .student .btn-container button.delete:hover i, body main .view-semester-container .all-registrations .student .btn-container button.delete:hover span {
+  color: rgb(227, 52, 25);
+}
+body main .view-semester-container .all-registrations .student.on-hold .btn-container {
+  background-color: #6500cd;
+}
+body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete {
+  background-color: rgba(255, 252, 252, 0.3);
+}
+body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete i, body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete span {
+  color: rgb(255, 168, 162);
+}
+body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete:hover {
+  background-color: rgba(236, 172, 255, 0.6);
+}
+body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete:hover i, body main .view-semester-container .all-registrations .student.on-hold .btn-container button.delete:hover span {
+  color: rgb(205, 201, 255);
 }
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row {
   margin-bottom: 2rem;

@@ -325,14 +325,48 @@
         <div class="header text-center">Registrations <span class="bg-info text-dark px-2 small rounded" id="enroll-counter">{{semester.semesterenroll_set.count}}</span> </div>
         <div class="row students-list">
             {% for enroll in semester.semesterenroll_set.all %}
-            <div class="col-md-4 p-0" id="enroll-{{enroll.id}}">
-                <div class="student rounded-3">
+            <div class="col-md-4 p-0" id="{{enroll.id}}">
+            {% if enroll.is_publishable %}
+            <div class="student rounded-3">
+                <div class="student-profile bg-material py-3">
                     <img src="{{enroll.student.avatar_url}}" alt="" class="dp">
                     <div class="info">
-                        <div class="name">{{enroll.student.student_name|truncatechars:25}}</div>
-                        <div class="reg-no">{{enroll.student.registration}} {% if enroll.semester.is_running  %}<a><i style="cursor: pointer" class='bx bx-trash delete-enroll-icon' data-enrollid="{{enroll.id}}"></i></a>{% endif %}</div>
+                        <div class="name">{{enroll.student.student_name}}</div>
+                        <div class="reg-no">{{enroll.student.registration}}</div>
                     </div>
                 </div>
+                <div class="btn-container py-2 w-100">
+                    <button class="hold me-2">
+                        <i class='bx bx-stop-circle me-1' ></i>
+                        <span>Hold Result</span>
+                    </button>
+                    <button class="delete">
+                        <i class='bx bxs-trash-alt' ></i>
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="student on-hold rounded-3">
+                <div class="student-profile bg-material py-3">
+                    <img src="{{enroll.student.avatar_url}}" alt="" class="dp">
+                    <div class="info">
+                        <div class="name">{{enroll.student.student_name}}</div>
+                        <div class="reg-no">{{enroll.student.registration}}</div>
+                    </div>
+                </div>
+                <div class="btn-container py-2 w-100">
+                    <button class="hold me-2">
+                        <i class='bx bx-stop-circle me-1' ></i>
+                        <span>Publish Result</span>
+                    </button>
+                    <button class="delete">
+                        <i class='bx bxs-trash-alt' ></i>
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+            {% endif %}
             </div>
             {% endfor %}
         </div>
