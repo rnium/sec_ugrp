@@ -201,7 +201,7 @@ def get_footer_data(footer_data_raw: Dict):
   
 def render_spans(num_rows: int, num_cols: int, nth_semester: int) -> List[Tuple]:
     spans = []
-    if num_cols < 8:
+    if (nth_semester == 1 and num_cols < 7) or (nth_semester > 1 and num_cols < 9):
         raise ValueError()
     # first row static spans
     spans.append(('SPAN', (0, 0), (3,0))) 
