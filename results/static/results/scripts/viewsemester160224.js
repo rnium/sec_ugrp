@@ -500,9 +500,6 @@ function delete_semesterenroll() {
 }
 
 function change_semesterenroll_publishable_state() {
-    if (!confirm("Are you sure to change the publishable state for this entry?")) {
-        return
-    }
     let enrollment_id = $(this).data('enrollid');
     let payload = {enrollment_id: enrollment_id}
     $.ajax({
@@ -520,9 +517,13 @@ function change_semesterenroll_publishable_state() {
             if (response.is_publishable) {
                 $(`#enroll-${enrollment_id} .student`).removeClass('on-hold');
                 $(`#enroll-${enrollment_id} .student button.enroll-hold span`).text('Hold Result');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold i`).removeClass('bx-play-circle');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold i`).addClass('bx-stop-circle');
             } else {
                 $(`#enroll-${enrollment_id} .student`).addClass('on-hold');
                 $(`#enroll-${enrollment_id} .student button.enroll-hold span`).text('Publish Result');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold i`).removeClass('bx-stop-circle');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold i`).addClass('bx-play-circle');
             }
         },
         error: function(xhr, status, error) {
