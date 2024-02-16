@@ -76,6 +76,15 @@ def render_customdoc(data, admin_name):
             semester_data = map_semester_for_gradesheet(data, year_num, sem_num)
             if semester_data is not None:
                 excel_data[f'semester_{sem_num}'] = semester_data
+                semester_gs = get_gradesheet(formdata, {'semester_1': semester_data}, 1)
+                nth_sem = ((year_num - 1)*2) + sem_num
+                gs_doc = StudentCustomDocument.objects.filter(student=student, doc_type='sem_gs', sem_or_year_num=nth_sem).first()
+                if gs_doc:
+                    gs_doc.document.delete()
+                else:
+                    gs_doc = StudentCustomDocument(student=student, doc_type='sem_gs', sem_or_year_num=nth_sem)
+                gs_doc.document.save(f"{reg}_customgradesheet_sem{year_num}" + '.pdf', ContentFile(semester_gs))
+                gs_doc.save()
         if num_semesters:= len(excel_data):
                 gradesheet = get_gradesheet(formdata, excel_data, num_semesters)
                 gs_doc = StudentCustomDocument.objects.filter(student=student, doc_type='y_gs', sem_or_year_num=year_num).first()
