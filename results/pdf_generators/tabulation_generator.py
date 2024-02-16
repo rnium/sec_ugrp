@@ -50,7 +50,7 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
         if prevpoint and (semester.semester_no <= prevpoint.upto_semester_num):
             continue
         enrollment = SemesterEnroll.objects.filter(semester=semester, student=student).first()
-        if enrollment:
+        if enrollment and enrollment.is_publishable:
             total_credits += enrollment.semester_credits
             total_points += enrollment.semester_points
     result = {}
@@ -103,6 +103,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
         for student in dataContainer.students[i:i+recordPerPage]:
             # two row per record, top and bottom
             # staring with student info
+            enrollment = SemesterEnroll.objects.filter(student=student, semester=dataContainer.semester, is_publishable=True).first()
             row_top = [sl_number, student.registration, '','']
             row_bottom = ["", student.student_name, '','']
             sl_number += 1
@@ -110,6 +111,11 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             total_credits = 0
             total_points = 0
             for course in dataContainer.course_list:
+                # if enroll is not publishable, add empty records
+                if not enrollment:
+                    row_top.append("")
+                    row_bottom.append("")
+                    continue 
                 try:
                     course_result = CourseResult.objects.get(student=student, course=course)
                 except CourseResult.DoesNotExist:

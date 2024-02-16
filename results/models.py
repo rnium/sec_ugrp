@@ -186,6 +186,7 @@ class SemesterEnroll(models.Model):
     semester_credits = models.FloatField(default=0)
     semester_points = models.FloatField(default=0)
     semester_gpa = models.FloatField(null=True, blank=True)
+    is_publishable = models.BooleanField(default=True)
     
     class Meta:
         ordering = ["-student__is_regular", "student__registration"]
