@@ -336,7 +336,7 @@
                     </div>
                 </div>
                 <div class="btn-container py-2 w-100">
-                    <button class="hold me-2">
+                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Hold Result</span>
                     </button>
@@ -356,11 +356,11 @@
                     </div>
                 </div>
                 <div class="btn-container py-2 w-100">
-                    <button class="hold enroll-hold me-2">
+                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Publish Result</span>
                     </button>
-                    <button class="delete delete-enroll">
+                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
@@ -756,6 +756,7 @@
     const change_running_status_api = "{% url 'results:change_running_status' semester.id %}";
     const delete_semester_api = "{% url 'results:delete_semester' semester.id %}";
     const create_session_prevpoint_api = "{% url 'results:create_session_prevpoint_via_excel' semester.id %}";
+    const toggle_enrollment_is_publishable_api = "{% url 'results:toggle_enrollment_is_publishable' %}";
     const delete_enrollment_api = "{% url 'results:delete_enrollment' %}";
     const session_url = "{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}";
     const semesterId = {{semester.id}};

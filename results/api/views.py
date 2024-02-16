@@ -33,7 +33,7 @@ from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.tasks import restore_dept_data_task, restore_session_data_task
-from results.decorators_and_mixins import superadmin_required
+from results.decorators_and_mixins import superadmin_required, superadmin_or_deptadmin_required
 from django.conf import settings
 from io import BytesIO
 from datetime import datetime
@@ -498,6 +498,19 @@ def delete_course(request, pk):
     # delete
     course.delete()
     return Response(data={"semester_url": semester_url})
+
+
+@api_view(['POST'])
+@superadmin_or_deptadmin_required
+def toggle_enrollment_is_publishable(request):
+    enrollid = request.data.get('enrollment_id')
+    if enrollid is None:
+        return Response(data={'details': 'no enroll id provided'}, status=status.HTTP_400_BAD_REQUEST)
+    enroll = get_object_or_404(SemesterEnroll, pk=enrollid)
+    enroll.is_publishable = not enroll.is_publishable
+    enroll.save()
+    return Response(data={'is_publishable': enroll.is_publishable})
+    
 
 
 @api_view(['POST'])

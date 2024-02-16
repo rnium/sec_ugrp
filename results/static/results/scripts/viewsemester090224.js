@@ -499,6 +499,39 @@ function delete_semesterenroll() {
     });
 }
 
+function change_semesterenroll_publishable_state() {
+    if (!confirm("Are you sure to change the publishable state for this entry?")) {
+        return
+    }
+    let enrollment_id = $(this).data('enrollid');
+    let payload = {enrollment_id: enrollment_id}
+    $.ajax({
+        type: "post",
+        url: toggle_enrollment_is_publishable_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $(this).attr("disabled", true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(payload),
+        cache: false,
+        success: function(response) {
+            if (response.is_publishable) {
+                $(`#enroll-${enrollment_id} .student`).removeClass('on-hold');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold span`).text('Hold Result');
+            } else {
+                $(`#enroll-${enrollment_id} .student`).addClass('on-hold');
+                $(`#enroll-${enrollment_id} .student button.enroll-hold span`).text('Publish Result');
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("An error occured!");
+            $(this).removeAttr("disabled");
+        }
+    });
+}
+
 // Create PrevPoint via Excel
 function uploadExcel(excel_file) {
     let excel_form = new FormData
@@ -583,6 +616,7 @@ $(document).ready(function () {
     // update semester 
     $("#update-semester-btn").on('click', updateSemester);
     $(".delete-enroll").on('click', delete_semesterenroll);
+    $(".enroll-hold").on('click', change_semesterenroll_publishable_state);
     // prevpoint export
     $("#process-excel-btn").on('click', function() {
         excel_file = $("#excelFile")[0].files

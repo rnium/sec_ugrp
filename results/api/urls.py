@@ -26,6 +26,7 @@ urlpatterns = [
     path('restorebackup/', views.perform_restore, name="perform_restore"),
     path('courseresult-entry-info/', views.course_result_entry_info, name="course_result_entry_info"),
     path('courseresult-delete/', views.delete_course_result, name="delete_course_result"),
+    path('semesterenroll-change-publishable/', views.toggle_enrollment_is_publishable, name="toggle_enrollment_is_publishable"),
     path('semesterenroll-delete/', views.delete_enrollment, name="delete_enrollment"),
     path('course/<int:pk>/generate-missing', views.generate_missing_entries, name="generate_missing_entries"),
     path('generate-gradesheet', views.generate_gradesheet, name="generate_gradesheet_api"),
