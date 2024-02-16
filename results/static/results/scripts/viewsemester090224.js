@@ -582,7 +582,7 @@ $(document).ready(function () {
     $("#confirm-del-btn").on('click', delete_semester);
     // update semester 
     $("#update-semester-btn").on('click', updateSemester);
-    $(".delete-enroll-icon").on('click', delete_semesterenroll);
+    $(".delete-enroll").on('click', delete_semesterenroll);
     // prevpoint export
     $("#process-excel-btn").on('click', function() {
         excel_file = $("#excelFile")[0].files

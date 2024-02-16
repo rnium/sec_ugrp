@@ -325,7 +325,7 @@
         <div class="header text-center">Registrations <span class="bg-info text-dark px-2 small rounded" id="enroll-counter">{{semester.semesterenroll_set.count}}</span> </div>
         <div class="row students-list">
             {% for enroll in semester.semesterenroll_set.all %}
-            <div class="col-md-4 p-0" id="{{enroll.id}}">
+            <div class="col-md-4 p-0" id="enroll-{{enroll.id}}">
             {% if enroll.is_publishable %}
             <div class="student rounded-3">
                 <div class="student-profile bg-material py-3">
@@ -340,7 +340,7 @@
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Hold Result</span>
                     </button>
-                    <button class="delete">
+                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
@@ -356,11 +356,11 @@
                     </div>
                 </div>
                 <div class="btn-container py-2 w-100">
-                    <button class="hold me-2">
+                    <button class="hold enroll-hold me-2">
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Publish Result</span>
                     </button>
-                    <button class="delete">
+                    <button class="delete delete-enroll">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
