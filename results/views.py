@@ -24,7 +24,8 @@ from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
                                            superadmin_or_deptadmin_required,
-                                           DeptAdminRequiredMixin)
+                                           DeptAdminRequiredMixin,
+                                           SuperAdminRequiredMixin)
 from .data_processors import get_semester_table_data, get_courseresults_data
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment
@@ -62,13 +63,22 @@ def homepage(request):
         # SuperAdmin or dept admin
         context = {}
         context['request'] = request
-        semesters = []
+        department_semesters = []
         if request.user.adminaccount.is_super_admin:
-            semesters = Semester.objects.all().order_by("-is_running", 'session__from_year', "-added_in")[:4]
+            departments = Department.objects.all()
         else:
-            semesters = Semester.objects.filter(session__dept=request.user.adminaccount.dept).order_by("-is_running", "session__from_year", "-semester_no", "added_in")[:4]
-        if (len(semesters) > 0):
-            context['semesters'] = semesters
+            departments = [request.user.adminaccount.dept]
+        for dept in departments:
+            semesters = Semester.objects.filter(session__dept=dept).order_by("-is_running", 'session__from_year', "-added_in")[:4]
+            department_semesters.append(
+                {
+                    'name': dept.name.upper(),
+                    'semesters': semesters
+                }
+            )
+        context['departments'] = department_semesters
+        context['this_is_dept_admin'] = not request.user.adminaccount.is_super_admin
+        print(context['departments'], flush=1)
         return render(request, "results/dashboard.html", context=context)
     
     
@@ -118,7 +128,7 @@ class GradesheetMakerView(LoginRequiredMixin, TemplateView):
 class TranscriptMakerView(LoginRequiredMixin, TemplateView):
     template_name = "results/transcriptmaker.html"  
 
-class CustomdocMakerView(LoginRequiredMixin, TemplateView):
+class CustomdocMakerView(SuperAdminRequiredMixin, TemplateView):
     template_name = "results/customdocmaker.html"
     
 

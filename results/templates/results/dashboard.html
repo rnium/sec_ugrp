@@ -48,14 +48,14 @@
         <div class="h2">Result Administration System</div>
         <div class="h4">Sylhet Engineering College</div>
     </div>
-    <div class="row dashboard-content py-4 px-5">
-        <div class="col-lg-6 live-semesters title-box  me-3 ">
-            <!-- <div class="grad-top"><div class="grad-con"></div></div> -->
-            <div class="title">Recent Semesters</div>
+    <div class="row dashboard-content py-4">
+        {% for dept in departments %}
+        <div class="{% if this_is_dept_admin %}col-lg-6{% else %}col-lg-3{% endif %} live-semesters title-box  me-3 ">
+            <div class="title">{{dept.name}} Recent Semesters</div>
             <div class="content">
-                {% if semesters %}
+                {% if dept.semesters %}
                 <ul>
-                    {% for semester in semesters %}
+                    {% for semester in dept.semesters %}
                     <li>
                         <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item">
                             <div class="sem-codename">
@@ -67,7 +67,9 @@
                                 <div class="session">
                                     <span class="label">Session:&nbsp;</span>
                                     <span class="val">{{semester.session.session_code}}</span>
+                                    {% if this_is_dept_admin %}
                                     <span class="dept {% if semester.is_running %}{{semester.session.dept.name|lower}}{% else %}dept-all-offline-sem{% endif %}">{{semester.session.batch_name}}</span>
+                                    {% endif %}
                                 </div>
                                 <!-- <div class="semester-no">4th year 1st semester</div> -->
                                 <div class="exam-start-month">
@@ -82,11 +84,12 @@
                 {% else %}
                 <div class="no-content d-flex flex-column justify-content-center align-items-center">
                     <i class='bx bx-info-circle fs-1 text-warning'></i>
-                    <div class="info fs-3 mt-2 text-secondary">Not Enough Data</div>
+                    <div class="info fs-4 mt-2 text-secondary">Not Enough Data</div>
                 </div>
                 {% endif %}
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}
