@@ -11,7 +11,14 @@
   src: url("/fonts/DEADCRT.ttf");
 }
 body {
-  background-color: rgb(43, 45, 51);
+  position: relative;
+}
+body .login-bg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 body main {
   width: 100%;
@@ -29,9 +36,9 @@ body main .login-container {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(100, 118, 120, 0.4);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
+  background-color: rgba(221, 234, 229, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
   border-radius: 10px;
 }
 body main .login-container img.govt-logo {
@@ -46,12 +53,21 @@ body main .login-container .sys-info img {
 body main .login-container .sys-info .name, body main .login-container .sys-info .instituition {
   font-family: "Roboto Mono", monospace;
 }
+body main .login-container .sys-info .name {
+  color: #555870;
+}
 body main .login-container .sys-info .instituition {
   font-size: 0.9rem;
-  color: #9090a7;
+  color: #28293d;
 }
 body main .login-container .form-container {
   width: 100%;
+}
+body main .login-container .form-container label {
+  color: gray;
+}
+body main .login-container .form-container .user-types .label {
+  color: #7a939a;
 }
 body main .login-container .form-container .user-types .user-list {
   width: 100%;
@@ -65,49 +81,59 @@ body main .login-container .form-container .user-types .user-list .u-type input 
   display: none;
 }
 body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label {
-  background-color: rgba(0, 179, 179, 0.447);
+  background-color: #007bff;
   border: 1px solid rgb(0, 179, 179);
 }
-body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label i {
-  color: aquamarine;
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user {
+  background-color: #ffffff;
 }
-body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .inst {
-  color: rgb(60, 255, 193);
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user i, body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user .inst {
+  color: #007bff;
 }
 body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .title {
-  color: rgb(159, 255, 223);
+  color: white;
 }
 body main .login-container .form-container .user-types .user-list .u-type label {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 5px 10px;
+  justify-content: flex-start;
+  padding: 5px;
   border-radius: 10px;
   height: 100%;
-  background-color: rgba(123, 136, 132, 0.3);
-  border: 1px solid rgb(123, 136, 132);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgb(254, 255, 255);
   transition: all 200ms;
   position: relative;
   cursor: pointer;
 }
-body main .login-container .form-container .user-types .user-list .u-type label i {
-  position: absolute;
-  bottom: 0;
-  right: 5px;
+body main .login-container .form-container .user-types .user-list .u-type label .user {
+  background-color: rgb(222, 222, 222);
+  padding: 2px 7px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user i, body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+  color: rgb(118, 136, 132);
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user i {
   font-size: 1.5rem;
-  color: rgba(118, 136, 132, 0.6);
 }
-body main .login-container .form-container .user-types .user-list .u-type label .title {
-  font-size: 12px;
-  text-align: center;
-}
-body main .login-container .form-container .user-types .user-list .u-type label .inst {
-  font-size: 10px;
+body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+  font-size: 9px;
   font-weight: bold;
   text-align: center;
-  color: rgb(110, 201, 167);
-  text-shadow: 0 0 5px rgb(85, 88, 87);
+}
+body main .login-container .form-container .user-types .user-list .u-type label .title {
+  flex-grow: 1;
+  font-size: 12px;
+  text-align: center;
+  color: rgb(118, 136, 132);
 }
 body main .login-container .form-container .actions {
   display: flex;

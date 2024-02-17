@@ -130,11 +130,7 @@ function submitForm() {
 }
 
 
-$(document).ready(function () {
-    console.log(particlejs_config);
-    particlesJS.load('particles-js', particlejs_config, function() {
-        console.log('callback - particles.js config loaded');
-    });      
+$(document).ready(function () {    
     $("#passwordInput").on('keyup', function (e) { 
         if (e.key == 'Enter' || e.keyCode == 13) {
             submitForm()

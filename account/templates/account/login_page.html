@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'account/styles/auth1502.css' %}">
+    <link rel="stylesheet" href="{% static 'account/styles/auth1802.css' %}">
     <title>Login</title>
 </head>
 <body>
-    <main data-bs-theme="dark">
-        <div id="particles-js"></div>
+    <div class="login-bg" style="background-image: url('{% static 'account/images/login_bg.svg' %}');" alt=""></div>
+    <main>
         <div class="login-container p-5">
             <img src="{% static 'results/images/bdgovt.png' %}" alt="" class="govt-logo">
             <div class="sys-info text-center">
@@ -40,25 +40,31 @@
                         <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="principal-radio" value="principal" checked>
                             <label for="principal-radio">
-                                <i class='bx bx-user'></i>
+                                <div class="user">
+                                    <i class='bx bx-user'></i>
+                                    <div class="inst">SEC</div>
+                                </div>
                                 <div class="title">Super Admin</div>
-                                <div class="inst">SEC</div>
                             </label>
                         </div>
                         <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="deptadmin-radio" value="department">
                             <label for="deptadmin-radio">
-                                <i class='bx bx-user'></i>
+                                <div class="user">
+                                    <i class='bx bx-user'></i>
+                                    <div class="inst">SEC</div>
+                                </div>
                                 <div class="title">Department Section</div>
-                                <div class="inst">SEC</div>
                             </label>
                         </div>
                         <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="academic-radio" value="academic">
                             <label for="academic-radio">
-                                <i class='bx bx-user'></i>
+                                <div class="user">
+                                    <i class='bx bx-user'></i>
+                                    <div class="inst">SEC</div>
+                                </div>
                                 <div class="title">Academic Section</div>
-                                <div class="inst">SEC</div>
                             </label>
                         </div>
                     </div>
@@ -66,17 +72,21 @@
                         <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="sustadmin-radio" value="sustuser">
                             <label for="sustadmin-radio">
-                                <i class='bx bx-user'></i>
+                                <div class="user">
+                                    <i class='bx bx-user'></i>
+                                    <div class="inst">SUST</div>
+                                </div>
                                 <div class="title">Assistant Programmer</div>
-                                <div class="inst">SUST</div>
                             </label>
                         </div>
                         <div class="u-type col-sm-4 mb-2">
                             <input type="radio" name="user-type" id="sustadmin-radio" value="sustuser">
                             <label for="sustadmin-radio">
-                                <i class='bx bx-user'></i>
+                                <div class="user">
+                                    <i class='bx bx-user'></i>
+                                    <div class="inst">SUST</div>
+                                </div>
                                 <div class="title">Controller Section</div>
-                                <div class="inst">SUST</div>
                             </label>
                         </div>
                     </div>
@@ -102,7 +112,6 @@
         const login_api = "{% url 'account:user_login_api' %}";
         const particlejs_config = "{% static 'account/scripts/particlesjs-config.json' %}";
     </script>
-    <script src="{% static 'account/scripts/particles.min.js' %}"></script>
-    <script src="{% static 'account/scripts/login130224.js' %}"></script>
+    <script src="{% static 'account/scripts/login180224.js' %}"></script>
 </body>
 </html>
