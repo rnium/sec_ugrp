@@ -1112,7 +1112,7 @@ def get_student_customdocs(request):
     student = get_object_or_404(StudentAccount, registration=reg)
     context = {
         'title': f"Generated Documents of {reg}",
-        'documents': student.studentcustomdocument_set.all().order_by('doc_type')
+        'documents': student.studentcustomdocument_set.all().order_by('sem_or_year_num', '-doc_type')
     }
     html_text = render_to_string('results/components/student_customdocs.html', context=context)
     return Response(data={'html': html_text})
