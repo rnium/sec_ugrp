@@ -1016,8 +1016,8 @@ def academic_studentcerts_data(request):
 def render_customdoc(request):
     excel_file = request.FILES.get("file", None)
     admin_name = request.user.first_name + " " + request.user.last_name
-    doc = utils.render_and_save_customdoc(excel_file, admin_name, request.user)
-    return JsonResponse(data={'info': f'Documents Generated for: {doc.student.registration}', 'reg': doc.student.registration})
+    doc = utils.parse_and_save_customdoc(excel_file, admin_name, request.user)
+    return JsonResponse(data={'info': f'Documents Data Saved for: {doc.student.registration}', 'reg': doc.student.registration})
 
 @csrf_exempt
 @login_required

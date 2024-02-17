@@ -239,21 +239,10 @@ def parse_gradesheet_excel(excel_file, form_data, num_semesters):
     return parsed_data
 
 
-def render_and_save_customdoc(excel_file, admin_name, user):
+def parse_and_save_customdoc(excel_file, admin_name, user):
     data = excel_parsers.parse_customdoc_excel(excel_file)
-    reg = data['student_data']['registration']
-    student = get_object_or_404(StudentAccount, registration=reg)
-    document = customdoc_generator.render_customdoc(data, admin_name)
-    all_gs_customdoc = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss').first()
-    if not all_gs_customdoc:
-        customdoc = StudentCustomDocument(student=student, doc_type='all_gss')
-    else:
-        customdoc = all_gs_customdoc
-        customdoc.document.delete()
-    customdoc.added_by = user
-    customdoc.document.save(f"{reg}_customdoc"+'.pdf', ContentFile(document))
-    customdoc.save()
-    return customdoc
+    cdoc = customdoc_generator.process_and_save_customdoc_data(data, admin_name)
+    return cdoc
 
 def rank_students(students):
     return sorted(students, key=lambda student: (-student.credits_completed, -student.raw_cgpa))

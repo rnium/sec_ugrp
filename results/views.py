@@ -20,6 +20,7 @@ from results.pdf_generators.appeared_cert_generator import render_appearance_cer
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.topsheet_generator import render_topsheet
+from results.pdf_generators.customdoc_generator import render_customdoc_document
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
@@ -587,9 +588,10 @@ def download_customdoc(request, reg, doctype):
         cdoc = StudentCustomDocument.objects.filter(student__registration=reg, doc_type=doctype).first()
     if not cdoc:
         return render_error(request, "No Document Found")
-    filepath = cdoc.document.path
-    filename = cdoc.document_filename
-    return FileResponse(open(filepath, 'rb'), filename=filename)
+    if not cdoc.document_data:
+        return render_error(request, "Document data is empty")
+    doc_pdf = render_customdoc_document(cdoc)
+    return FileResponse(ContentFile(doc_pdf), filename=cdoc.filename)
 
 @admin_required
 def download_supplementarydoc(request, b64_id):

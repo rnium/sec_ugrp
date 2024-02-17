@@ -468,13 +468,8 @@ class StudentCustomDocument(models.Model):
     doc_type = models.CharField(choices=type_choices, max_length=20, default='all_gss')
     sem_or_year_num = models.IntegerField(null=True, blank=True)
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
-    document = models.FileField(upload_to=filepath, null=True, blank=True)
-    added_at = models.DateTimeField(default=timezone.now)
-    
-    @property
-    def document_filename(self):
-        name_str = basename(self.document.name)
-        return name_str
+    document_data = models.JSONField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     @property
     def url(self):
@@ -489,16 +484,22 @@ class StudentCustomDocument(models.Model):
             return 'Academic Transcript'
         elif self.doc_type == 'sem_gs':
             if num:=self.sem_or_year_num:
-                return f"{get_ordinal_number(self.sem_or_year_num)} Semester Gradesheet"
+                return f"{get_ordinal_number(num)} Semester Gradesheet"
             return "Semester Gradesheet"
         elif self.doc_type == 'y_gs':
             if num:=self.sem_or_year_num:
-                return f"{get_ordinal_number(self.sem_or_year_num)} Year Gradesheet"
+                return f"{get_ordinal_number(num)} Year Gradesheet"
             return "Year Gradesheet"
         elif self.doc_type == 'all_gss':
             return "All Gradesheets"
         else:
             return "Unknown type document"
+    
+    @property
+    def filename(self):
+        title = self.title.replace(' ', '_')
+        return f"{self.student.registration}_{title}.pdf"
+        
     
 
     
