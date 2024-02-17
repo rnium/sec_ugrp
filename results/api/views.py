@@ -928,9 +928,10 @@ def student_stats(request, registration):
 @api_view(['GET'])
 def sust_student_data(request):
     registration = request.GET.get('registration', None)
-    if registration is None or (not str(registration).isdigit()):
+    dept_name = request.GET.get('dept', None)
+    if registration is None or dept_name is None or (not str(registration).isdigit()):
         raise BadrequestException("Required data not provided")
-    student = get_object_or_404(StudentAccount, pk=registration)
+    student = get_object_or_404(StudentAccount, pk=registration, session__dept__name=dept_name)
     response_data = {}
     response_data['student'] = {
         'registration': registration,
