@@ -968,7 +968,16 @@ def sust_student_data(request):
     response_data['customdoc_url'] = False
     response_data['custom_semester_gradesheets'] = []
     response_data['custom_yearly_gradesheets'] = []
-    custom_y_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type="y_gs")
+    custom_sem_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type="sem_gs").order_by('sem_or_year_num')
+    custom_y_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type="y_gs").order_by('sem_or_year_num')
+    for sem_gs in custom_sem_gradesheets:
+        response_data['custom_semester_gradesheets'].append(
+            {
+                'url': reverse('results:download_customdoc', args=(registration,'sem_gs')) + f"?num={sem_gs.sem_or_year_num}",
+                'semester_number': sem_gs.sem_or_year_num,
+                'semester_suffix': get_ordinal_suffix(sem_gs.sem_or_year_num,),
+            }
+        )
     for y_gs in custom_y_gradesheets:
         response_data['custom_yearly_gradesheets'].append(
             {
