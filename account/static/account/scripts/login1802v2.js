@@ -17,11 +17,11 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 function showError(msg, duration=3000) {
-    $("#error-info-text").text(msg)
-    $("#error-info-text").show(0, function(){
+    $("#alert-box .alert-info").text(msg)
+    $("#alert-box").show(200, function(){
         setTimeout(function(){
-            $("#error-info-text").text(" ")
-            $("#error-info-text").hide()
+            $("#alert-box .alert-info").text(" ")
+            $("#alert-box").hide(300)
         }, duration)
     })
 }
