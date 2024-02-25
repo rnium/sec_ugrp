@@ -19,11 +19,48 @@ body.light .dashboard-container .sys-info .h2 {
   color: #555870;
 }
 body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item {
-  background-color: rgb(60, 81, 92);
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 5px 10px rgba(136, 162, 170, 0.3);
 }
 body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename {
-  background-color: rgba(15, 15, 15, 0.3);
-  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(90, 99, 112);
+  background-color: rgb(116, 156, 159);
+  box-shadow: 2px 2px 5px rgba(127, 157, 162, 0.2), -2px -3px 3px rgba(90, 99, 112, 0.2) !important;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .label {
+  color: #555870;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .val {
+  color: #6798ff;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 0 5px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.eee {
+  color: white;
+  box-shadow: none;
+  background-color: rgb(69, 228, 175);
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.cse {
+  color: white;
+  box-shadow: none;
+  background-color: #fdac41;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept.ce {
+  color: white;
+  box-shadow: none;
+  background-color: #6500cd;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .session .dept-all-offline-sem {
+  color: white;
+  box-shadow: none;
+  background-color: #9090a7;
+}
+body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month i, body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month .month {
+  color: #222325;
 }
 body.light .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item:hover {
   box-shadow: none;
@@ -593,7 +630,7 @@ body.light .view-session-container .all-registrations .student.on-hold .student-
   background-color: rgba(216, 223, 237, 0.7);
 }
 body.light header .navbar {
-  background-color: #c6d5da;
+  background-color: #c8d2df;
   box-shadow: 0 0 20px rgb(218, 218, 218);
 }
 body.light header .navbar ul.nav li a i, body.light header .navbar ul.nav li a span {
@@ -750,7 +787,7 @@ body.light span.text-white {
   box-sizing: border-box;
   color: #f2f2f4;
   margin: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 body {
@@ -778,7 +815,7 @@ body main .dashboard-container .sys-info img {
 }
 body main .dashboard-container .sys-info .h2, body main .dashboard-container .sys-info .h4 {
   color: #ebeaef;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Lato", sans-serif;
 }
 body main .dashboard-container .sys-info .h4 {
   color: #9090a7;
@@ -1845,11 +1882,14 @@ body main .student-profile-container .cert-container .cert.testimonial:hover .ti
   body main .dashboard-container .sys-info .h4 {
     font-size: 1.4rem !important;
   }
+  body main .dashboard-container .dashboard-content .live-semesters .content {
+    margin: 1rem 10px;
+  }
   body main .dashboard-container .dashboard-content .live-semesters .content ul li {
     margin-bottom: 0.5rem;
   }
   body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item {
-    padding: 10px;
+    padding: 10px 5px;
     border-radius: 7px;
   }
   body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .sem-codename {
@@ -1872,6 +1912,7 @@ body main .student-profile-container .cert-container .cert.testimonial:hover .ti
     padding: 0 5px;
     font-weight: 500;
     border-radius: 4px;
+    font-size: 0.6rem;
   }
   body main .dashboard-container .dashboard-content .live-semesters .content ul li .semester-item .info .exam-start-month {
     justify-content: flex-start;
@@ -1978,7 +2019,7 @@ body main .student-profile-container .cert-container .cert.testimonial:hover .ti
 }
 .title-box .title {
   background-color: rgba(137, 153, 149, 0.3568627451);
-  font-family: "Gemunu Libre", sans-serif;
+  font-family: "Lato", sans-serif;
   padding: 0.5rem 1rem;
   font-weight: 500;
   font-size: 1.2rem;
