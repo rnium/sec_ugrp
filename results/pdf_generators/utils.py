@@ -19,6 +19,11 @@ def merge_pdfs_from_buffers(pdf_buffers):
 
     return merged_buffer
 
+def formatFloat(f):
+    int_f = int(f)
+    if int_f == f:
+        return int_f
+    return f
 
 def get_fonts_css_txt(font_names):
     css_text = ""

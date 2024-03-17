@@ -12,8 +12,9 @@ from results.models import Semester, SemesterEnroll, CourseResult, StudentPoint
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
+from results.pdf_generators.utils import formatFloat
 
-TABLE_FONT_SIZE = 7
+TABLE_FONT_SIZE = 8
 pageSize = (8.5*inch, 14*inch)
 h, w = pageSize
 
@@ -83,17 +84,22 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
             *[f"{course.code.upper()}\n{course.course_credit}" for course in dataContainer.course_list],
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     
-    row2 = [*["SL\nNO.", "Registration", '',''], 
-            *['GP' for i in range(dataContainer.num_courses)], 
-            *["Credit", "GPA", *(["Credit", "CGPA"] if has_overall_result else [])]]
+    row2 = [*["SL\nNO.", "Registration\nStudent's Name", '',''], 
+            *['GP\nLG' for i in range(dataContainer.num_courses)], 
+            *["Credit", "GPA\nLG", *(["Credit", "CGPA\nLG"] if has_overall_result else [])]]
     
-    row3 = [*["", "Student's Name", '',''], 
-            *['LG' for i in range(dataContainer.num_courses)], 
-            *["", "LG", *(["", "LG"] if has_overall_result else [])]]
-    return [row1, row2, row3]
+    # row3 = [*["", "Student's Name", '',''], 
+    #         *['LG' for i in range(dataContainer.num_courses)], 
+    #         *["", "LG", *(["", "LG"] if has_overall_result else [])]]
+    return [row1, row2]
 
 
 def generate_table_student_data(dataContainer: SemesterDataContainer, render_config: Dict) -> List[List]:
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle("student", 
+                            styles["Normal"],
+                            fontName = "Times-Roman",
+                            fontSize = TABLE_FONT_SIZE))
     pageWise_student_data = []
     semester = dataContainer.semester
     recordPerPage = render_config["rows_per_page"]
@@ -104,8 +110,8 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             # two row per record, top and bottom
             # staring with student info
             enrollment = SemesterEnroll.objects.filter(student=student, semester=dataContainer.semester, is_publishable=True).first()
-            row_top = [sl_number, student.registration, '','']
-            row_bottom = ["", student.student_name, '','']
+            row_top = [sl_number, Paragraph(f"<b>{student.registration}</b><br/>{student.student_name}", style=styles['student']), '','']
+            # row_bottom = ["", student.student_name, '','']
             sl_number += 1
             #courses
             total_credits = 0
@@ -114,56 +120,41 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 # if enroll is not publishable, add empty records
                 if not enrollment:
                     row_top.append("")
-                    row_bottom.append("")
                     continue 
                 try:
                     course_result = CourseResult.objects.get(student=student, course=course)
                 except CourseResult.DoesNotExist:
                     row_top.append("")
-                    row_bottom.append("")
                     continue
                 gp = course_result.grade_point
                 lg = course_result.letter_grade
                 # if grade point or letter grade is not set, append a blank string to leave it empty in tabulation
                 
                 if gp is None or lg is None:
-                    if gp is None:
-                        row_top.append('Ab')
-                    if lg is None:
-                        row_bottom.append('F')
+                    row_top.append('Ab\nF')
                     continue
-                row_top.append(gp)
-                row_bottom.append(lg)
+                row_top.append(str(gp)+ '\n' + lg)
                 if gp > 0:
                     total_credits += course.course_credit
                     total_points += (course.course_credit * gp)
             # append semester result
             semester_result = cumulative_semester_result(student, [semester], False) # passing semester in a list beacuse the function expects an iterable
             if semester_result:
-                row_top.append(semester_result['total_credits'])
-                row_top.append(semester_result['grade_point'])
-                row_bottom.append("") # for the span
-                row_bottom.append(semester_result['letter_grade'])
+                row_top.append(formatFloat(semester_result['total_credits']))
+                row_top.append(str(semester_result['grade_point']) + '\n' + semester_result['letter_grade'])
             else:
                 row_top.append("")
-                row_bottom.append("") # for the span
-                row_bottom.append("")
             # append upto this semester result (the overall result) (except first semester)
             if dataContainer.semester.semester_no > 1:
                 semesters_upto_now = Semester.objects.filter(semester_no__lte=semester.semester_no, session=semester.session)
                 semester_result_all = cumulative_semester_result(student, semesters_upto_now)
                 if semester_result:
-                    row_top.append(semester_result_all['total_credits'])
-                    row_top.append(semester_result_all['grade_point'])
-                    row_bottom.append("") # for the span
-                    row_bottom.append(semester_result_all['letter_grade'])
+                    row_top.append(formatFloat(semester_result_all['total_credits']))
+                    row_top.append(str(semester_result_all['grade_point'] )+ '\n' + semester_result_all['letter_grade'])
                 else:
                     row_top.append("")
-                    row_bottom.append("") # for the span
-                    row_bottom.append("")
                 
             singlePageData.append(row_top)
-            singlePageData.append(row_bottom)
         pageWise_student_data.append(singlePageData)
     return pageWise_student_data
             
@@ -215,11 +206,11 @@ def render_spans(num_rows: int, num_cols: int, nth_semester: int) -> List[Tuple]
     if nth_semester > 1:
         spans.append(('SPAN', (-4, 0), (-3, 0))) 
     # row-wise spans 
-    for i in range(1, num_rows, 2):
-        spans.append(('SPAN', (0, i), (0, i+1)))
-        spans.append(('SPAN', (-2, i), (-2, i+1))) # 2nd rightmost col
-        if (nth_semester > 1):
-            spans.append(('SPAN', (-4, i), (-4, i+1))) # 4th rightmost col
+    # for i in range(1, num_rows, 2):
+    #     spans.append(('SPAN', (0, i), (0, i+1)))
+    #     spans.append(('SPAN', (-2, i), (-2, i+1))) # 2nd rightmost col
+    #     if (nth_semester > 1):
+    #         spans.append(('SPAN', (-4, i), (-4, i+1))) # 4th rightmost col
     # col-wise spans
     for i in range(1, num_rows):
         spans.append(('SPAN', (1, i), (3, i)))
@@ -232,16 +223,16 @@ def render_normal_font_cell_style(num_rows: int, num_cols: int, nth_semester: in
     styles = []
     for i in range(4, num_rows, 2):
         styles.append(('FONTNAME', (1, i), (1, i), 'Times-Roman'))
-    for i in range(3, num_rows, 2):
-        styles.append(('FONTNAME', (-2, i), (-2, i), 'Times-Roman'))
-        if nth_semester > 1:
-            styles.append(('FONTNAME', (-4, i), (-4, i), 'Times-Roman'))
+    # for i in range(3, num_rows, 2):
+    #     styles.append(('FONTNAME', (-2, i), (-2, i), 'Times-Roman'))
+    #     if nth_semester > 1:
+    #         styles.append(('FONTNAME', (-4, i), (-4, i), 'Times-Roman'))
     if nth_semester == 1:
         styles.append(('FONTSIZE', (2, 0), (-3, 0), TABLE_FONT_SIZE-1))
-        styles.append(('FONTSIZE', (2, 1), (-3, 2), TABLE_FONT_SIZE))
+        styles.append(('FONTSIZE', (2, 1), (-3, 1), TABLE_FONT_SIZE))
     else:
         styles.append(('FONTSIZE', (2, 0), (-5, 0), TABLE_FONT_SIZE-1))
-        styles.append(('FONTSIZE', (2, 1), (-5, 2), TABLE_FONT_SIZE))
+        styles.append(('FONTSIZE', (2, 1), (-5, 1), TABLE_FONT_SIZE))
     return styles
     
 
@@ -264,7 +255,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("topTitle", 
                             styles["Normal"],
-                            fontName = "Times-Bold",
+                            fontName = "Times-Roman",
                             fontSize = 16,
                             alignment = TA_CENTER))
 
@@ -282,7 +273,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
 
     styles.add(ParagraphStyle("exam_title", 
                             styles["Normal"],
-                            fontName = "Times-Bold",
+                            fontName = "Times-Roman",
                             fontSize = 9,
                             alignment = TA_CENTER))
 
@@ -322,7 +313,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
         Paragraph(session, style=styles["bottom_row_paragraph3"]),]
     ]
     flowables.append(Paragraph(title_text, style=styles["topTitle"]))
-    flowables.append(Spacer(1, 0.2*cm))
+    flowables.append(Spacer(1, 0.5*cm))
     flowables.append(Paragraph(tablulatio_title, style=styles["tablulatio_title"]))
     flowables.append(Spacer(1, 0.2*cm))
     table = Table(data=label_data, colWidths=calculate_column_widths(len(label_data[0])))
@@ -337,18 +328,20 @@ def insert_table(data: List[List], flowables: List, nth_semester: int):
         # ('WORDWRAP', (0, 0), (-1, -1), True),   # Enable word wrap for all cells
         # ('SHRINK', (0, 0), (-1, -1), 1), 
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
+        ('BOX', (0, 0), (-1, -1), 1.3, colors.black), 
+        ('INNERGRID', (0, 0), (-1, -1), 1.3, colors.black), 
         # ('BACKGROUND', (0, 0), (-1, 0), colors.grey),    # Header row background color
         # ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),  # Header row text color
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),            # Center align all cells
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'), # By default: all bold
         *normal_font_styles,
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 0.7),
-        ('TOPPADDING', (0, 0), (-1, -1), 0.7),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 1.5),
+        ('TOPPADDING', (0, 0), (-1, -1), 1.5),
         # ('BACKGROUND', (0, 1), (1, 2), colors.lightblue), # Background color for specific cells
         # ('SPAN', (0, 1), (1, 1)),                         # Merge cells (rowspan and columnspan)
         ('GRID', (0, 0), (-1, -1), 1, colors.black),      # Add grid lines to all cells
-        ('FONTSIZE', (2, 3), (-1, -1), TABLE_FONT_SIZE+2),
+        ('FONTSIZE', (2, 1), (-1, -1), TABLE_FONT_SIZE+2),
         ('FONTSIZE', (0, 1), (0, 1), TABLE_FONT_SIZE-2),
         *spans
     ])
@@ -367,7 +360,7 @@ def get_footer(footer_data: List[List]):
             PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 8))
     ts = TableStyle([
         # ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
+        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE+1), 
         *PADDING_STYLES
     ])
     table = Table(footer_data, colWidths=calculate_column_widths(len(footer_data[0])))
