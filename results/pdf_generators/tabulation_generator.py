@@ -7,7 +7,9 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
 import fitz
 from PIL import Image
-import math
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from django.conf import settings
 from results.models import Semester, SemesterEnroll, CourseResult, StudentPoint
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade, round_up
@@ -17,6 +19,10 @@ from results.pdf_generators.utils import formatFloat
 TABLE_FONT_SIZE = 8
 pageSize = (8.5*inch, 14*inch)
 h, w = pageSize
+
+pdfmetrics.registerFont(TTFont('texgyretermes', settings.BASE_DIR/'results/static/results/fonts/texgyretermes-regular.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('roboto-m', settings.BASE_DIR/'results/static/results/fonts/Roboto-Medium.ttf'))
 
 
 class SemesterDataContainer:
@@ -99,7 +105,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
     styles.add(ParagraphStyle("student", 
                             styles["Normal"],
                             fontName = "Times-Roman",
-                            fontSize = TABLE_FONT_SIZE))
+                            fontSize = TABLE_FONT_SIZE+1))
     pageWise_student_data = []
     semester = dataContainer.semester
     recordPerPage = render_config["rows_per_page"]
@@ -172,7 +178,8 @@ def get_footer_data(footer_data_raw: Dict):
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("topTitle", 
                             styles["Normal"],
-                            fontSize = 8))
+                            fontName = "roboto-bold",
+                            fontSize = TABLE_FONT_SIZE+1))
     main_label = Paragraph("<b>Name, Signature & Date:</b>", style=styles['topTitle'])
     chairman_name = ""
     if footer_data_raw["chairman"] is not None:
@@ -255,7 +262,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("topTitle", 
                             styles["Normal"],
-                            fontName = "Times-Roman",
+                            fontName = "texgyretermes",
                             fontSize = 16,
                             alignment = TA_CENTER))
 
@@ -273,7 +280,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
 
     styles.add(ParagraphStyle("exam_title", 
                             styles["Normal"],
-                            fontName = "Times-Roman",
+                            fontName = "texgyretermes",
                             fontSize = 9,
                             alignment = TA_CENTER))
 
@@ -361,6 +368,7 @@ def get_footer(footer_data: List[List]):
     ts = TableStyle([
         # ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE+1), 
+        ('FONTNAME', (0, 0), (-1, -1), 'roboto-m'),
         *PADDING_STYLES
     ])
     table = Table(footer_data, colWidths=calculate_column_widths(len(footer_data[0])))
