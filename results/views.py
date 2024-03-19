@@ -70,7 +70,7 @@ def homepage(request):
         else:
             departments = [request.user.adminaccount.dept]
         for dept in departments:
-            semesters = Semester.objects.filter(session__dept=dept).order_by("-is_running", 'session__from_year', "-added_in")[:4]
+            semesters = Semester.objects.filter(session__dept=dept, is_running=True).order_by('session__from_year', "-added_in")
             department_semesters.append(
                 {
                     'name': dept.name.upper(),
