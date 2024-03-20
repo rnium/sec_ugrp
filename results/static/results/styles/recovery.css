@@ -1,0 +1,213 @@
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap");
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  color: #276363;
+}
+
+body {
+  background-color: rgb(43, 45, 51);
+}
+body .container {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+body .container .site-title {
+  font-family: "Gemunu Libre", sans-serif;
+  font-size: 2rem;
+  color: #609393;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgb(201, 210, 203);
+}
+body .container .form-container {
+  width: 30rem;
+  background-color: #ebeaef;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+body .container .form-container .section-title {
+  color: white;
+  background-color: #555870;
+  width: 100%;
+  padding: 5px 0 !important;
+  text-align: center;
+}
+body .container .form-container .content {
+  padding: 3rem 1rem 2rem;
+  width: 100%;
+}
+body .container .form-container .content .error-info {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+}
+body .container .form-container .content .error-info i {
+  margin-right: 3px;
+  font-size: 1.5rem;
+}
+body .container .form-container .content .error-info i, body .container .form-container .content .error-info span {
+  color: rgb(212, 87, 87);
+}
+body .container .form-container .content .error-info span {
+  font-size: 0.9rem;
+}
+body .container .form-container .content .password i {
+  cursor: pointer;
+  font-size: 1.5rem;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(173, 173, 173);
+}
+body .container .form-container .content .submit-con {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+body .container .form-container .success-info {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 10px;
+}
+body .container .form-container .success-info i {
+  font-size: 3rem;
+  color: rgb(21, 186, 131);
+  margin-bottom: 5px;
+}
+body .container .form-container .success-info .info {
+  text-align: center;
+  padding: 0 5px;
+  font-size: 0.9rem;
+}
+
+.inset-float-textinput-no-border {
+  position: relative;
+}
+.inset-float-textinput-no-border input {
+  width: 100%;
+  background-color: inherit;
+  padding: 1.3rem 1rem 0.4rem;
+  border: 0;
+  border-bottom: 1px solid rgb(187, 186, 186);
+  font-size: 1rem;
+}
+.inset-float-textinput-no-border input:focus {
+  outline: 0;
+  border-color: teal;
+}
+.inset-float-textinput-no-border input:focus ~ label {
+  color: teal;
+}
+.inset-float-textinput-no-border input::-moz-placeholder {
+  color: rgb(158, 160, 159);
+}
+.inset-float-textinput-no-border input::placeholder {
+  color: rgb(158, 160, 159);
+}
+.inset-float-textinput-no-border input::-moz-selection {
+  background-color: rgb(36, 206, 149);
+  color: white;
+}
+.inset-float-textinput-no-border input::selection {
+  background-color: rgb(36, 206, 149);
+  color: white;
+}
+.inset-float-textinput-no-border label {
+  position: absolute;
+  font-size: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1rem;
+  transition: all 200ms;
+}
+.inset-float-textinput-no-border .inp_input:not(:-moz-placeholder-shown).inp_input:not(:focus) ~ .inp_label {
+  top: 0.6rem;
+  font-size: 0.7rem;
+  color: teal;
+}
+.inset-float-textinput-no-border .inp_input:focus ~ .inp_label,
+.inset-float-textinput-no-border .inp_input:not(:placeholder-shown).inp_input:not(:focus) ~ .inp_label {
+  top: 0.6rem;
+  font-size: 0.7rem;
+  color: teal;
+}
+
+.btn-1 {
+  border: 0;
+  padding: 0.3rem 1rem;
+  border-radius: 3px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 300ms;
+}
+.btn-1:hover {
+  background-color: rgba(0, 128, 128, 0.8);
+}
+
+.btn-1:disabled {
+  background-color: #9db1b0;
+}
+
+@media screen and (max-width: 576px) {
+  body .container .site-title {
+    font-size: 1.2rem !important;
+  }
+  body .container .form-container {
+    width: 100%;
+  }
+  body .container .form-container .section-title {
+    font-size: 0.8rem;
+  }
+  body .container .form-container .content {
+    padding: 2.5rem 0.5rem 1.5rem !important;
+  }
+  body .container .form-container .content .email i, body .container .form-container .content .password i {
+    font-size: 1.2rem !important;
+  }
+  body .container .form-container .content .email input, body .container .form-container .content .password input {
+    font-size: 0.8rem;
+    padding-left: 5px !important;
+  }
+  body .container .form-container .content .email label, body .container .form-container .content .password label {
+    font-size: 0.8rem;
+    left: 5px !important;
+  }
+  body .container .form-container .content .email .inp_input:not(:-moz-placeholder-shown).inp_input:not(:focus) ~ .inp_label, body .container .form-container .content .password .inp_input:not(:-moz-placeholder-shown).inp_input:not(:focus) ~ .inp_label {
+    top: 0.6rem;
+    font-size: 0.6rem;
+    color: teal;
+  }
+  body .container .form-container .content .email .inp_input:focus ~ .inp_label,
+  body .container .form-container .content .email .inp_input:not(:placeholder-shown).inp_input:not(:focus) ~ .inp_label, body .container .form-container .content .password .inp_input:focus ~ .inp_label,
+  body .container .form-container .content .password .inp_input:not(:placeholder-shown).inp_input:not(:focus) ~ .inp_label {
+    top: 0.6rem;
+    font-size: 0.6rem;
+    color: teal;
+  }
+  body .container .form-container .content .error-info {
+    flex-direction: column !important;
+  }
+  body .container .form-container .content .error-info span {
+    font-size: 0.8rem !important;
+    text-align: center;
+  }
+  body .container .btn-1 {
+    font-size: 0.8rem;
+  }
+}/*# sourceMappingURL=recovery.css.map */

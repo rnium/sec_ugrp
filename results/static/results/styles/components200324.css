@@ -271,6 +271,79 @@ input.score-inp.error:focus {
   color: aquamarine;
 }
 
+.themeswitch {
+  display: inline-block;
+}
+.themeswitch label {
+  background-color: rgb(255, 255, 255);
+  box-shadow: inset 0 0 3px rgb(228, 228, 228);
+  display: block;
+  position: relative;
+  width: 60px;
+  height: 31px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 100ms;
+}
+.themeswitch label::after {
+  content: "";
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-image: linear-gradient(to bottom right, rgb(0, 145, 138), rgb(7, 195, 195));
+  border-radius: 180px;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  transition: all 100ms ease-out;
+}
+.themeswitch label svg {
+  position: absolute;
+  z-index: 100;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 100ms;
+}
+.themeswitch label .sun {
+  left: 10%;
+  right: auto;
+  fill: rgb(6, 255, 214);
+}
+.themeswitch label .moon {
+  right: 11%;
+  left: auto;
+  fill: rgb(173, 173, 173);
+}
+.themeswitch label:active::after {
+  width: 35px;
+  background-color: red;
+  opacity: 0.7;
+}
+.themeswitch input {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.themeswitch input:checked + label {
+  box-shadow: none;
+}
+.themeswitch input:checked + label .moon {
+  fill: rgb(0, 255, 213);
+}
+.themeswitch input:checked + label .sun {
+  fill: rgb(231, 231, 231);
+}
+.themeswitch input:checked + label::after {
+  left: auto;
+  right: 5%;
+}
+.themeswitch input:checked + label {
+  background-color: #414958 !important;
+}
+
 .superadmin-name {
   background: -webkit-linear-gradient(rgb(3, 37, 228), rgb(169, 203, 3));
   -webkit-background-clip: text;

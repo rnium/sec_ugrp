@@ -23,6 +23,15 @@ function setupAvatar(image_file, registration) {
     });
 }
 
+function setThemeCookie(value) {
+    let date = new Date()
+    let path = "path=/"
+    date.setTime(date.getTime() + (3600 * 1000 * 24 * 7))
+    let expires = "expires=" + date.toUTCString();
+    let cookiestr = `theme=${value};${expires};${path};sameSite=lax`;
+    document.cookie = cookiestr;
+}
+
 
 function getFormData() {
     let first_name = $("#firstnameInput").val().trim();
@@ -76,4 +85,12 @@ function performUpdate() {
 
 $(document).ready(function () {
     $("#update-ac-btn").on('click', performUpdate);
+    $("#themeSwitch").on('click', function() {
+        themeToggle()
+        if ($('body').hasClass('light')) {
+            setThemeCookie("light");
+        } else {
+            setThemeCookie("dark");
+        }
+    });
 });

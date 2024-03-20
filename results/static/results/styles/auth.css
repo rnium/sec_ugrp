@@ -1,0 +1,392 @@
+@import url("https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300;400;500&family=Major+Mono+Display&family=Montserrat:wght@400;500&family=Roboto+Mono&family=Silkscreen&display=swap");
+* {
+  box-sizing: border-box;
+  color: #f2f2f4;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+@font-face {
+  font-family: "deadcrt";
+  src: url("/fonts/DEADCRT.ttf");
+}
+body {
+  position: relative;
+}
+body .login-bg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+body main {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+body main .login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 40%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(221, 234, 229, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+body main .login-container img.govt-logo {
+  width: 80px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+body main .login-container .sys-info img {
+  width: 100px;
+}
+body main .login-container .sys-info .name, body main .login-container .sys-info .instituition {
+  font-family: "Roboto Mono", monospace;
+}
+body main .login-container .sys-info .name {
+  color: #555870;
+}
+body main .login-container .sys-info .instituition {
+  font-size: 0.9rem;
+  color: #28293d;
+}
+body main .login-container .form-container {
+  width: 100%;
+}
+body main .login-container .form-container label {
+  color: gray;
+}
+body main .login-container .form-container .user-types .label {
+  color: #7a939a;
+}
+body main .login-container .form-container .user-types .user-list {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+body main .login-container .form-container .user-types .user-list .u-type {
+  height: 3.5rem;
+}
+body main .login-container .form-container .user-types .user-list .u-type input {
+  display: none;
+}
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label {
+  background-color: #007bff;
+  border: 1px solid rgb(0, 179, 179);
+}
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user {
+  background-color: #ffffff;
+}
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user i, body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .user .inst {
+  color: #007bff;
+}
+body main .login-container .form-container .user-types .user-list .u-type input:checked ~ label .title {
+  color: white;
+}
+body main .login-container .form-container .user-types .user-list .u-type label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  border-radius: 10px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgb(254, 255, 255);
+  transition: all 200ms;
+  position: relative;
+  cursor: pointer;
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user {
+  background-color: rgb(222, 222, 222);
+  padding: 2px 7px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user i, body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+  color: rgb(118, 136, 132);
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user i {
+  font-size: 1.5rem;
+}
+body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+  font-size: 9px;
+  font-weight: bold;
+  text-align: center;
+}
+body main .login-container .form-container .user-types .user-list .u-type label .title {
+  flex-grow: 1;
+  font-size: 12px;
+  text-align: center;
+  color: rgb(118, 136, 132);
+}
+body main .login-container .form-container .actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+body main .login-container .form-container .actions .forget a {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1500px) {
+  body {
+    background-color: #7a939a;
+  }
+  body main .login-container {
+    padding: 2rem !important;
+  }
+  body main .login-container img.govt-logo {
+    width: 70px;
+  }
+  body main .login-container .sys-info img {
+    width: 80px;
+  }
+  body main .login-container .sys-info .name {
+    font-size: 0.9rem;
+  }
+  body main .login-container .sys-info .instituition {
+    font-size: 0.8rem;
+  }
+  body main .login-container .form-container {
+    width: 100%;
+  }
+  body main .login-container .form-container .user-types .label {
+    font-size: 0.9rem;
+  }
+  body main .login-container .form-container .user-types .user-list {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type {
+    height: 3rem;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label {
+    padding: 5px;
+    border-radius: 10px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user {
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-right: 3px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user i {
+    font-size: 1.3rem;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+    font-size: 8px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .title {
+    font-size: 11px;
+  }
+  body main .login-container .form-container .actions .forget a {
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  body main .login-container .form-container .actions button {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 1300px) {
+  body main .login-container {
+    padding: 2rem !important;
+  }
+  body main .login-container img.govt-logo {
+    width: 60px;
+  }
+  body main .login-container .sys-info img {
+    width: 70px;
+  }
+  body main .login-container .sys-info .name {
+    font-size: 0.9rem;
+  }
+  body main .login-container .sys-info .instituition {
+    font-size: 0.8rem;
+  }
+  body main .login-container .form-container .user-types .label {
+    font-size: 0.9rem;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type {
+    height: 2.7rem;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label {
+    padding: 5px;
+    border-radius: 10px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user {
+    padding: 3px 7px;
+    border-radius: 5px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user i {
+    font-size: 1rem;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .user .inst {
+    font-size: 7px;
+  }
+  body main .login-container .form-container .user-types .user-list .u-type label .title {
+    font-size: 9px;
+  }
+  body main .login-container .form-container .actions .forget a {
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  body main .login-container .form-container .actions button {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 1200px) {
+  body main .login-container {
+    width: 50% !important;
+  }
+}
+@media screen and (max-width: 776px) {
+  body main .login-container {
+    width: 90% !important;
+  }
+  body main .login-container .actions {
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body main .login-container .actions .forget {
+    order: 2;
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+  }
+  body main .login-container .actions .btn-con {
+    order: 1;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  body main .login-container .actions .btn-con button {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 556px) {
+  body main .login-container {
+    width: 100% !important;
+    border-radius: 0;
+  }
+  body main .login-container .form-container .user-types .u-type .title {
+    font-size: 10px;
+  }
+}
+@keyframes example {
+  0% {
+    text-shadow: 0 0 30px rgb(7, 245, 166);
+  }
+  50% {
+    text-shadow: 0 0 50px rgb(7, 245, 166);
+  }
+  100% {
+    text-shadow: 0 0 30px rgb(7, 245, 166);
+  }
+}
+.dev-info {
+  margin-top: 6rem;
+}
+.dev-info a {
+  text-decoration: none;
+  font-family: "Major Mono Display", monospace;
+  font-size: 1.5rem;
+  color: rgb(0, 255, 149);
+  text-shadow: 0 0 30px rgb(7, 245, 166);
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+.alert-component {
+  position: fixed;
+  top: 2rem;
+  right: 10px;
+  z-index: 999;
+}
+.alert-component .alert-inner {
+  width: 20rem;
+}
+.alert-component .alert-inner ul {
+  padding: 0;
+  padding: 5px;
+  list-style-type: none;
+}
+.alert-component .alert-inner ul li {
+  margin-bottom: 5px;
+}
+.alert-component .alert-inner ul li:last-of-type {
+  margin-bottom: 0;
+}
+.alert-component .alert-inner ul li .alert-con {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #0496ff, #0378cc);
+  padding: 10px;
+  border-radius: 10px;
+}
+.alert-component .alert-inner ul li .alert-con img {
+  width: 3rem;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.alert-component .alert-inner ul li .alert-con i {
+  font-size: 2rem;
+  color: rgb(68, 179, 142);
+}
+.alert-component .alert-inner ul li .alert-con .alert-info {
+  font-size: 0.9rem;
+  color: white;
+}
+.alert-component .alert-inner ul li .info {
+  background: linear-gradient(to right, rgba(15, 163, 177, 0.925), #2bd2ae);
+}
+.alert-component .alert-inner ul li .info .alert-info {
+  color: rgb(255, 255, 255);
+}
+.alert-component .alert-inner ul li .dark {
+  background: linear-gradient(to right, rgba(94, 84, 142, 0.925), rgba(193, 155, 175, 0.9333333333));
+}
+.alert-component .alert-inner ul li .dark .alert-info {
+  color: rgb(255, 255, 255);
+}
+.alert-component .alert-inner ul li .with-dp .dp {
+  display: inline-block;
+  overflow: hidden;
+  border: 3px solid rgb(135, 193, 255);
+  min-width: 55px;
+  max-width: 55px;
+  min-height: 55px;
+  max-height: 55px;
+  border-radius: 180px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+@media screen and (max-width: 576px) {
+  .alert-component .alert-inner {
+    width: 15rem !important;
+  }
+  .alert-component .alert-inner img {
+    width: 2.5rem !important;
+    margin-right: 0 !important;
+  }
+  .alert-component .alert-inner .alert-info {
+    font-size: 0.8rem !important;
+  }
+}/*# sourceMappingURL=auth.css.map */

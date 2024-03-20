@@ -196,7 +196,7 @@ def get_footer_data(footer_data_raw: Dict):
         [main_label, "", "", "", ""],
         [f"Chairman of the Exam. Committee: {'.' * 100}", "", "", f"Controller of Examination: {'.'*100}", ""],
         ["", chairman_name, "", "", controller_name],
-        ["Member of the Exam. Committee", *[f"0{i}) {'.'*50}" for i in range(1,len(exam_committee_members)+1)], *exam_committee_blanks],
+        ["Member of the Exam. Committee:", *[f"0{i}) {'.'*50}" for i in range(1,len(exam_committee_members)+1)], *exam_committee_blanks],
         ["", *exam_committee_members, *exam_committee_blanks],
         ["Tabulators:", *[f"0{i}) {'.'*50}" for i in range(1,len(tabulators)+1)], *tabulator_blanks],
         ["", *tabulators, *tabulator_blanks],

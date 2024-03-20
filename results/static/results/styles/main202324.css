@@ -646,6 +646,17 @@ body.light header .navbar ul.nav li.active a {
 body.light header .navbar ul.nav li.active a i, body.light header .navbar ul.nav li.active a span {
   color: white;
 }
+body.light header .user a.logout {
+  background-color: #ffffff;
+  box-shadow: -3px -3px 5px rgba(255, 255, 255, 0.1), 3px 4px 5px rgba(187, 187, 187, 0.748);
+  transition: all 0.3s ease-out, background-color 0.5s;
+}
+body.light header .user a.logout:hover {
+  background-color: rgb(255, 234, 234);
+}
+body.light header .user a.logout:hover i, body.light header .user a.logout:hover .label {
+  color: #ff3b3b;
+}
 body.light .title-box {
   background-color: #e2e5e8;
 }
