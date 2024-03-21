@@ -89,7 +89,7 @@ def parse_course_sustdocs_excel(excel_file):
     registrations_col_idx = header.index('additional_registrations')
     total_score_col_idx = header.index('total_score')
     expelled_registrations_col_idx = header.index('expelled_registrations')
-    for i in range(4):
+    for i in range(5):
         parsed_data[data_rows[i][fields_col_idx].value] = data_rows[i][value_col_idx].value
     parsed_data['examiners'] = []
     parsed_data['external_examiners'] = []

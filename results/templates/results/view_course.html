@@ -167,6 +167,21 @@
                 </button>
             </div>
         </div>
+        {% else %}
+        <div class="col-md-12 mt-3 btn-container">
+            <div class="d-flex justify-content-between">
+                <div class="left-side-container d-flex justify-content-start">
+                    <a href="{% url 'results:get_course_excel' course.b64_id %}?from={{from_session}}" target="_blank" class="btn btn-success btn-iconized px-4 ms-2">
+                        <i class='bx bx-table fs-3 me-2'></i>
+                        <span class="">Excel Data</span>
+                    </a>
+                    <button class="btn btn-secondary btn-iconized px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#numberlist-modal">
+                        <i class='bx bx-paperclip fs-3 me-2'></i>
+                        <span>Supplementary Documents</span>
+                    </button>
+                </div>
+            </div>
+        </div>
         {% endif %}
     </div>
     {% if course.semester.is_running %}
