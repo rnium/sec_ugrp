@@ -127,7 +127,7 @@ class Semester(models.Model):
     class Meta:
         ordering = ["year", "year_semester"]
         constraints = [
-            models.UniqueConstraint(fields=["year", "year_semester", "session", "repeat_number"], name="unique_session_semester")
+            models.UniqueConstraint(fields=["year", "year_semester", "session", "part_no", "repeat_number"], name="unique_session_per_semester")
         ]
         
         

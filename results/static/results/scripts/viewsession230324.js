@@ -24,10 +24,16 @@ function getSemesterData() {
     let yearInput = $("#yearInput").val().trim();
     let semesterInput = $("#SemesterInput").val().trim();
     let repeatCountInput = $("#repeatCount").val().trim();
+    let partNoInput = $("#semesterPartNo").val().trim();
     exam_month_array = exam_month.split(" ")
     let year_no = parseInt(yearInput)
     let year_semester_no = parseInt(semesterInput)
     let repeat_count = parseInt(repeatCountInput)
+    let part_no = parseInt(partNoInput)
+
+    if (isNaN(part_no)) {
+        part_no = 0;
+    }
 
     if (isNaN(year_no) | isNaN(year_semester_no) | exam_month_array.length != 2) {
         $("#createSemesterAlert").text("Invalid Input");
@@ -55,6 +61,7 @@ function getSemesterData() {
         "start_month": exam_month,
         "session": sessionId,
         "added_by": userId,
+        "part_no": part_no,
     }
     if (exam_duration.length > 0) {
         data.exam_duration = exam_duration;
@@ -103,12 +110,7 @@ function createSemester() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
-                if (response.repeat_number) {
-                    location.reload();
-                }
-                $("#create_sem_btn").removeAttr("disabled");
-                hideModal("newSemesterEntryModal");
-                renderAndInsertNewSemester(response, "semesterContainer")
+                location.reload();
             },
             error: function(xhr, status, error) {
                 $("#create_sem_btn").removeAttr("disabled");

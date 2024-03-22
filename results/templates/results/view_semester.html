@@ -55,9 +55,15 @@
     {% endif %}
     <div class="info">
         <div class="title fs-1 text-secondary">
-            {{semester.semester_name}} {% if semester.repeat_number %}[Repeat -{{semester.repeat_number}}]{% endif %}
+            {{semester.semester_name}}
         </div>
-        <a class="session mt-1" href="{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}">
+        {% if semester.part_no or semester.repeat_number  %}
+        <div class="title fs-3">
+            <span class="text-secondary">{% if semester.part_no %} Part: {{semester.part_no}}{% endif %}</span>
+            <span class="ms-3 text-secondary">{% if semester.repeat_number %}Repeat: {{semester.repeat_number}}{% endif %}</span>
+        </div>
+        {% endif %}
+        <a class="session mt-2" href="{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}">
             <div class="label me-2">Session</div>
             <div class="value shadow-sm">
                 <span class="code">{{semester.session.session_code}}</span>
@@ -81,7 +87,7 @@
             {% if semester.has_courses %}
             {% for course in courses_regular %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}">
+                <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}{% if semester.part_no %}?part={{semester.part_no}}{% endif %}">
                     <div class="course-code text-center">{{course.code}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:30}}</div>
                     <div class="d-flex justify-content-center mt-2">
@@ -601,8 +607,8 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control sem_main_data" id="semesterPartNo" placeholder="">
-                                <label for="semesterPartNo">Part No.</label>
+                                <input type="text" class="form-control sem_main_data" id="semesterPartNo" value="{{semester.part_no}}" placeholder="">
+                                <label for="semesterPartNo">Partition No.</label>
                             </div>              
                         </div>
                         <div class="col-md-12">
@@ -617,12 +623,14 @@
                                 <label for="durationInput">Duration of Examination <small class="text-secondary">(e.g., 10/11/2023 to 05/12/2023)</small></label>
                             </div>            
                         </div>
+                        {% if semester.semester_no == 8 %}
                         <div class="col-md-12" id="repeatCountContainer">
                             <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="repeatCount" placeholder="" value="{{semester.repeat_number}}">
                                 <label for="repeatCount">Repeat Number</label>
                             </div>            
-                        </div>                                         
+                        </div>  
+                        {% endif %}                                       
                     </div>
                     <div id="updateSemesterAlert" class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
                     </div>   
@@ -811,6 +819,6 @@
     const semesterNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsemester220324.js' %}"></script>
+<script src="{% static 'results/scripts/viewsemester230324.js' %}"></script>
 {% endblock script %}
 

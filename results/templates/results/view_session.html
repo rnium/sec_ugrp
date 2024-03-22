@@ -66,9 +66,11 @@
             {% if session.semester_set.count %}
             {% for semester in session.semester_set.all %}
             <div class="col-md-6 p-0">
-                <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
-                    {% if semester.repeat_number %}
-                    <div class='repeatbadge'>R{{semester.repeat_number}}</div>
+                <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}{% if semester.part_no %}?part={{semester.part_no}}{% endif %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
+                    {% if semester.part_no or semester.repeat_number %}
+                    <div class='repeatbadge'>
+                        {% if semester.part_no %}P{{semester.part_no}}{% endif %}{% if semester.repeat_number %}-R{{semester.repeat_number}}{% endif %}
+                    </div>
                     {% endif %}
                     <div class="sem-codename">
                         <span class="year">{{semester.year}}</span>
@@ -213,7 +215,7 @@
                         <div class="col-md-12 mb-2">
                             <div class="form-floating">
                                 <input type="text" class="form-control sem_main_data" id="semesterPartNo" placeholder="">
-                                <label for="semesterPartNo">Part No.</label>
+                                <label for="semesterPartNo">Partition No.</label>
                             </div>              
                         </div>
                         <div class="col-md-12">
@@ -230,7 +232,7 @@
                         </div>
                         <div class="col-md-12" style="display: none;" id="repeatCountContainer">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="repeatCount" placeholder="" value="{{session.repeat_count}}">
+                                <input type="text" class="form-control" id="repeatCount" placeholder="">
                                 <label for="repeatCount">Repeat Number</label>
                             </div>            
                         </div>                                          
@@ -403,5 +405,5 @@
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsession220324.js' %}"></script>
+<script src="{% static 'results/scripts/viewsession230324.js' %}"></script>
 {% endblock script %}
