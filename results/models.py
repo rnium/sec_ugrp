@@ -197,7 +197,7 @@ class SemesterEnroll(models.Model):
     def save(self, *args, **kwargs):
         enrolls = SemesterEnroll.objects.filter(semester__semester_no=self.semester.semester_no, student=self.student).exclude(id=self.id)
         if enrolls.count():
-            raise ValidationError(f"Student already enrolled for a semester no: {self.semester.semester_no}")
+            raise ValidationError(f"Student already enrolled for the semester no: {self.semester.semester_no}")
         super().save(*args, **kwargs)
     
     

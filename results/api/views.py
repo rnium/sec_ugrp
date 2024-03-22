@@ -512,7 +512,29 @@ def toggle_enrollment_is_publishable(request):
     enroll.student.update_stats()
     return Response(data={'is_publishable': enroll.is_publishable})
     
-
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def add_enrollment(request, pk):
+    try:
+        semester = Semester.objects.get(pk=pk)
+    except Semester.DoesNotExist:
+        return Response(data={"details": "Semester Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        reg_num = int(request.data['registration_no'])
+    except Exception as e:
+        return Response(data={"details": "Invalid registration number"}, status=status.HTTP_400_BAD_REQUEST)
+    student = StudentAccount.objects.filter(registration=reg_num, session=semester.session).first()
+    if student == None:
+        return Response(data={"details": "Student not found in this session"}, status=status.HTTP_404_NOT_FOUND)
+    enroll = SemesterEnroll(semester=semester, student=student)
+    try:
+        enroll.save()
+    except Exception as e:
+        return Response(data={"details": e}, status=status.HTTP_400_BAD_REQUEST)
+    return Response(data={'info': f'{reg_num} Added'})
+    
+        
+    
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

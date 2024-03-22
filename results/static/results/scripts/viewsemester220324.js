@@ -569,6 +569,41 @@ function uploadExcel(excel_file) {
     });
 }
 
+// Add new registration
+function createRegistration() {
+    const payload = {
+        registration_no: $('#new_entry_registration').val()
+    }
+    if (payload) {
+        $.ajax({
+            url: add_new_entry_to_semester_api,
+            contentType: "application/json",
+            type: "POST",
+            beforeSend: function(xhr){
+                $("#new_entry_alert").hide();
+                $("#new_entry_add_button").attr("disabled", true)
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response){
+                showInfo('new_entry_alert', `New registration for ${payload.registration_no} under this semester has been added successfully. Reloading...`);
+                setTimeout(()=>{
+                    location.reload();
+                }, 2000)
+            },
+            error: function(xhr,status,error_thrown){
+                try {
+                    showError('new_entry_alert', xhr.responseJSON.details);
+                } catch (error) {
+                    showError('new_entry_alert', error_thrown);
+                }
+                $("#new_entry_add_button").removeAttr("disabled");
+            }
+        })
+    }
+}
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -627,4 +662,6 @@ $(document).ready(function () {
             alert("Please choose an excel file!");
         }
     })
+    // new registration
+    $("#new_registration_add_button").on('click', createRegistration)
 });

@@ -15,6 +15,7 @@ urlpatterns = [
     path('semester<int:pk>/rendertabulation/', views.render_tabulation, name="render_tabulation"),
     path('semester<int:pk>/changerunningstatus/', views.toggle_semester_is_running, name="change_running_status"),
     path('semester<int:pk>/deletesemester/', views.delete_semester, name="delete_semester"),
+    path('semester<int:pk>/addenroll/', views.add_enrollment, name="add_semester_enroll"),
     path('course/<int:pk>/courseresults/', views.CourseResultList.as_view(), name="course_results"),
     path('course/<int:pk>/courseresults/update/', views.update_course_results, name="update_course_results"),
     path('course/<int:pk>/update/', views.CourseUpdate.as_view(), name="update_course"),
