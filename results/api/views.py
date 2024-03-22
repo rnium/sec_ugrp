@@ -77,10 +77,11 @@ class SemesterCreate(CreateAPIView):
     
     def perform_create(self, serializer):
         try:
-            repeat_no = serializer.validated_data.get('repeat_count', 0)
+            repeat_no = serializer.validated_data.get('repeat_number', 0)
+            part_no = serializer.validated_data.get('part_no', 0)
             super().perform_create(serializer)
             # create enrollments.
-            if repeat_no == 0:
+            if repeat_no == 0 and part_no == 0:
                 pk = serializer.data.get('id')
                 semester = Semester.objects.get(pk=pk)
                 utils.create_course_enrollments(semester)
@@ -315,11 +316,7 @@ def session_retake_list(request, pk):
                 student_record['remaining_credits'] += retaking.course.course_credit
             student_record['records'].append({
                 'course_code': retaking.course.code,
-                'course_url': reverse('results:view_course', args=(student.session.dept.name, 
-                                                                   student.session.from_year, 
-                                                                   student.session.to_year, 
-                                                                   retaking.course.semester.year, 
-                                                                   retaking.course.semester.year_semester, retaking.course.code)),
+                'course_url': reverse('results:view_course', args=(student.session.dept.name, retaking.course.b64_id)),
                 'completed': is_retake_complete
             })
         session_retake_data[student.registration] = student_record
@@ -371,6 +368,10 @@ def render_tabulation(request, pk):
     else:
         semesterdoc = SemesterDocument.objects.create(semester=semester)
     filename = f"{get_ordinal_number(semester.semester_no)} semester ({semester.session.dept.name.upper()} {semester.session.session_code})"
+    if semester.part_no:
+        filename += f"_p{semester.part_no}"
+    if semester.repeat_number:
+        filename += f"_r{semester.repeat_number}"
     # erasing before saving
     semesterdoc.tabulation_sheet.delete(save=True)
     semesterdoc.tabulation_thumbnail.delete(save=True)
@@ -493,10 +494,7 @@ def delete_course(request, pk):
     # url to be redirected after deletion
     semester_url = reverse('results:view_semester', kwargs={
         'dept_name': course.semester.session.dept.name,
-        'from_year': course.semester.session.from_year,
-        'to_year': course.semester.session.to_year,
-        'year': course.semester.year,
-        'semester': course.semester.year_semester,
+        'b64_id': course.semester.b64_id,
     })
     # delete
     course.delete()

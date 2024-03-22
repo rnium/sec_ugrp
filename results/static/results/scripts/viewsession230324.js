@@ -68,6 +68,8 @@ function getSemesterData() {
     }
     if (nth_semester == 8 && !isNaN(repeat_count)) {
         data['repeat_number'] = repeat_count
+    } else {
+        data['repeat_number'] = 0
     }
     return data;
 }

@@ -69,7 +69,8 @@
                 <a href="{% url 'results:view_semester' semester.session.dept.name semester.b64_id %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
                     {% if semester.part_no or semester.repeat_number %}
                     <div class='repeatbadge'>
-                        {% if semester.part_no %}P{{semester.part_no}}{% endif %}{% if semester.repeat_number %}-R{{semester.repeat_number}}{% endif %}
+                        {% if semester.part_no %}P{{semester.part_no}}{% endif %}
+                        {% if semester.repeat_number %}R{{semester.repeat_number}}{% endif %}
                     </div>
                     {% endif %}
                     <div class="sem-codename">

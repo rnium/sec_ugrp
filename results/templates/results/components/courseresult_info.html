@@ -10,7 +10,7 @@
 </div>
 <div class="info text-center">
     <span class="label text-muted me-1">Enrolled In:</span> 
-    <a href="{% url "results:view_semester" enrollment.semester.session.dept.name enrollment.semester.session.from_year enrollment.semester.session.to_year enrollment.semester.year enrollment.semester.year_semester %}" target="_blank" class="value">{{enrollment.semester.semester_code}}</a> 
+    <a href="{% url 'results:view_semester' enrollment.semester.session.dept.name enrollment.semester.b64_id" target="_blank" class="value">{{enrollment.semester.semester_code}}</a> 
 </div>
 <div class="info text-center">
     <span class="label text-muted me-1">Type:</span>
@@ -23,7 +23,7 @@
 {% if course_res.retake_of %}
 <div class="info text-center">
     <span class="label text-muted me-1">Carry Course:</span> 
-    <a href="{% url "results:view_course" retake_course.semester.session.dept.name retake_course.semester.session.from_year retake_course.semester.session.to_year retake_course.semester.year enrollment.semester.year_semester course_res.course.code %}" target="_blank" class="value">{{course_res.retake_of.course.code}}</a> 
+    <a href="{% url "results:view_course" retake_course.semester.session.dept.name retake_course.b64_id %}" target="_blank" class="value">{{course_res.retake_of.course.code}}</a> 
 </div>
 {% endif %}
 {% if retakes %}
@@ -32,9 +32,9 @@
 <div class="info text-center">
     <span class="label text-muted me-1">Retake {{forloop.counter}}:</span>
     {% if retake.grade_point > 0 %}
-    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.semester.session.from_year retake.course.semester.session.to_year retake.course.semester.year retake.course.semester.year_semester retake.course.code %}" target="_blank" class="value text-success">{{retake.course.code}}</a> 
+    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.b64_id %}" target="_blank" class="value text-success">{{retake.course.code}}</a> 
     {% else %}
-    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.semester.session.from_year retake.course.semester.session.to_year retake.course.semester.year retake.course.semester.year_semester retake.course.code %}" target="_blank" class="value text-danger">{{retake.course.code}}</a> 
+    <a href="{% url "results:view_course" retake.course.semester.session.dept.name retake.course.b64_id %}" target="_blank" class="value text-danger">{{retake.course.code}}</a> 
     {% endif %}
 </div>
 {% endfor %}
