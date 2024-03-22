@@ -49,12 +49,20 @@
     <div class="info">
         <div class="semester {% if course.semester.is_running %}running{% endif %}">
             {% if from_semester %}
-            <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.session.from_year from_semester.session.to_year from_semester.year from_semester.year_semester %}{% if from_semester.repeat_number %}?repeat={{from_semester.repeat_number}}{% endif %}">
+            <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.b64_id %}">
                 {{from_semester.semester_code}}
+                {% if from_semester.part_no or from_semester.repeat_number %}
+                    {% if from_semester.part_no %}Part:{{from_semester.part_no}}{% endif %}
+                    {% if from_semester.repeat_number %}Repeat:{{from_semester.repeat_number}}{% endif %}
+                {% endif %}
             </a>
             {% else %}
-            <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}{% if course.semester.repeat_number %}?repeat={{course.semester.repeat_number}}{% endif %}">
-                {{course.semester.semester_code}} {% if course.semester.repeat_number %}Repeat - {{course.semester.repeat_number}}{% endif %}
+            <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.b64_id %}">
+                {{course.semester.semester_code}}
+                {% if course.semester.part_no or course.semester.repeat_number %}
+                    {% if course.semester.part_no %}Part:{{course.semester.part_no}}{% endif %}
+                    {% if course.semester.repeat_number %}Repeat:{{course.semester.repeat_number}}{% endif %}
+                {% endif %}
             </a>
             {% endif %}
         </div>
@@ -516,7 +524,7 @@
     const process_course_excel_api = "{% url 'results:process_course_excel' course.id %}";
     const render_course_sustdocs_api = "{% url 'results:render_course_sustdocs' course.id %}";
     const update_course_api = "{% url 'results:update_course' course.id %}";
-    const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}";
+    const semester_homepage = "{% url 'results:view_semester' course.semester.session.dept.name course.semester.b64_id %}";
     const student_retakings_api = "{% url 'results:student_retaking_list' %}";
     const course_result_entry_info_api = "{% url 'results:course_result_entry_info' %}";
     const course_result_delete_api = "{% url 'results:delete_course_result' %}";

@@ -4,7 +4,7 @@ from django.core.files.base import ContentFile
 from django.core.cache import cache
 import base64
 from typing import Any, Dict
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from results.models import (Semester, SemesterEnroll, Department, Session, Cours
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
-from results.utils import get_ordinal_number, render_error, get_ordinal_suffix
+from results.utils import get_ordinal_number, render_error, get_ordinal_suffix, get_pk_from_base64
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
@@ -172,15 +172,13 @@ class SemesterView(DeptAdminRequiredMixin, DetailView):
         return self.get_object().session.dept
     
     def get_object(self):
+        pk = get_pk_from_base64(self.kwargs.get("b64_id", ""))
+        if pk is None:
+            raise Http404()
         semester = get_object_or_404(
             Semester, 
             session__dept__name = self.kwargs.get("dept_name", ""),
-            session__from_year = self.kwargs.get("from_year", ""),
-            session__to_year = self.kwargs.get("to_year", ""),
-            year = self.kwargs.get("year", ""),
-            year_semester = self.kwargs.get("semester", ""),
-            repeat_number = self.request.GET.get('repeat', 0),
-            part_no = self.request.GET.get('part', 0)
+            id = pk,
         )
         return semester
     
@@ -211,16 +209,13 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
         return self.get_object().semester.session.dept
     
     def get_object(self):
+        pk = get_pk_from_base64(self.kwargs.get("b64_id", ""))
+        if pk is None:
+            raise Http404()
         course = get_object_or_404(
             Course, 
             semester__session__dept__name = self.kwargs.get("dept_name", ""),
-            semester__session__from_year = self.kwargs.get("from_year", ""),
-            semester__session__to_year = self.kwargs.get("to_year", ""),
-            semester__year = self.kwargs.get("year", ""),
-            semester__year_semester = self.kwargs.get("semester", ""),
-            semester__part_no = self.request.GET.get('part', 0),
-            semester__repeat_number = self.request.GET.get('repeat', 0),
-            code = self.kwargs.get("course_code", ""),
+            id = pk
         )
         return course
     

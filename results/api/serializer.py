@@ -41,10 +41,7 @@ class SemesterSerializer(ModelSerializer):
             "results:view_semester",
             kwargs = {
                 'dept_name':obj.session.dept.name,
-                'from_year':obj.session.from_year,
-                'to_year':obj.session.to_year,
-                'year':obj.year,
-                'semester':obj.year_semester,
+                'b64_id':obj.b64_id,
             }
         )
         
@@ -63,11 +60,7 @@ class CourseSerializer(ModelSerializer):
             "results:view_course",
             kwargs = {
                 'dept_name':obj.semester.session.dept.name,
-                'from_year':obj.semester.session.from_year,
-                'to_year':obj.semester.session.to_year,
-                'year':obj.semester.year,
-                'semester':obj.semester.year_semester,
-                'course_code':obj.code,
+                'b64_id':obj.b64_id,
             }
         )
 

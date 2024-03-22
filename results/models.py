@@ -139,6 +139,12 @@ class Semester(models.Model):
             enroll.update_stats()
     
     @property
+    def b64_id(self):
+        id_str_bytes = str(self.id).encode('utf-8')
+        id_b64_bytes = base64.b64encode(id_str_bytes)
+        return id_b64_bytes.decode('utf-8')
+    
+    @property
     def semester_code(self):
         return f"{self.year}-{self.year_semester} [{self.session.session_code}]"
     

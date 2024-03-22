@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from typing import Dict
 import math
+import base64
 
 SEC_GRADING_SCHEMA = {
     "A+" : {"min": 80, "max":100, "grade_point":4.0},
@@ -116,3 +117,11 @@ def render_error(request, msg=None, secondary_msg=None):
     if secondary_msg:
         context['secondary_msg'] = secondary_msg
     return render(request, "results/error_details.html", context=context)
+
+def get_pk_from_base64(b64_id):
+    str_pk = base64.b64decode(b64_id.encode('utf-8')).decode()
+    try:
+        pk = int(str(str_pk))
+    except Exception as e:
+        return None
+    return pk
