@@ -599,18 +599,30 @@
                                 <label for="SemesterInput">Semester No.</label>
                             </div>              
                         </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="form-floating">
+                                <input type="text" class="form-control sem_main_data" id="semesterPartNo" placeholder="">
+                                <label for="semesterPartNo">Part No.</label>
+                            </div>              
+                        </div>
                         <div class="col-md-12">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="monthInput" placeholder="" value="{{semester.start_month}}">
                                 <label for="monthInput">Exam Schedule (e.g., March 2023)</label>
                             </div>            
                         </div>
                         <div class="col-md-12">
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="durationInput" placeholder="" {% if semester.exam_duration %}value="{{semester.exam_duration}}"{% endif %}>
                                 <label for="durationInput">Duration of Examination <small class="text-secondary">(e.g., 10/11/2023 to 05/12/2023)</small></label>
                             </div>            
-                        </div>                                             
+                        </div>
+                        <div class="col-md-12" id="repeatCountContainer">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="repeatCount" placeholder="" value="{{semester.repeat_number}}">
+                                <label for="repeatCount">Repeat Number</label>
+                            </div>            
+                        </div>                                         
                     </div>
                     <div id="updateSemesterAlert" class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;">
                     </div>   

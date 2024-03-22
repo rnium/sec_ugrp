@@ -123,14 +123,12 @@ class StudentAccount(BaseAccount):
     
     @property
     def with_distinction(self):
-        enrollments = SemesterEnroll.objects.filter(student=self, is_publishable=True)
-        student_prevPoint = StudentPoint.objects.filter(student=self).first()
-        if (student_prevPoint == None and enrollments.count() < 8) or (student_prevPoint.with_distinction == False):
+        enrollments = SemesterEnroll.objects.filter(student=self, is_publishable=True, semester__semester_no=8).order_by('-semester__part_no')
+        last_enroll = enrollments.first()
+        if last_enroll and last_enroll.semester_gpa:
+            return last_enroll.semester_gpa >= 3.75
+        else:
             return False
-        for enroll in enrollments:
-            if enroll.semester_gpa < 3.75:
-                return False
-        return True
         
         
     @property

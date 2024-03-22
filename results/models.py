@@ -115,6 +115,7 @@ class Semester(models.Model):
         ]
     )
     repeat_number = models.IntegerField(default=0)
+    part_no = models.IntegerField(default=0)
     start_month = models.CharField(max_length=15) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
     exam_duration = models.CharField(max_length=50, null=True, blank=True)
     is_running = models.BooleanField(default=True)
@@ -248,7 +249,6 @@ class StudentPoint(models.Model):
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
     total_credits = models.FloatField(default=0)
     total_points = models.FloatField(default=0)
-    with_distinction = models.BooleanField(default=False)
     
     @property
     def cgpa_raw(self):
