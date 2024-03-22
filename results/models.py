@@ -102,6 +102,7 @@ class Semester(models.Model):
             MaxValueValidator(8, message="Semester number cannot be more than 8"),
         ]
     )
+    repeat_number = models.IntegerField(default=0)
     start_month = models.CharField(max_length=15) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
     exam_duration = models.CharField(max_length=50, null=True, blank=True)
     is_running = models.BooleanField(default=True)
@@ -113,7 +114,7 @@ class Semester(models.Model):
     class Meta:
         ordering = ["year", "year_semester"]
         constraints = [
-            models.UniqueConstraint(fields=["year", "year_semester", "session"], name="unique_session_semester")
+            models.UniqueConstraint(fields=["year", "year_semester", "session", "repeat_number"], name="unique_session_semester")
         ]
         
         
@@ -205,7 +206,6 @@ class SemesterEnroll(models.Model):
         """Updates the stats field of the object.
         Dont call this function within SemesterEnroll.save()
         """
-        
         credits_count = 0
         points_count = 0
         for course in self.courses.all():
@@ -226,6 +226,7 @@ class SemesterEnroll(models.Model):
 class PreviousPoint(models.Model):
     session = models.OneToOneField(Session, on_delete=models.CASCADE)
     upto_semester_num = models.IntegerField()
+    with_distinction = models.BooleanField(default=False)
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
 

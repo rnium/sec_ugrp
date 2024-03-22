@@ -120,6 +120,17 @@ class StudentAccount(BaseAccount):
             self.credits_completed = credits_count
             self.total_points = points_count
             self.save()
+    
+    def with_distinction(self):
+        enrollments = SemesterEnroll.objects.filter(student=self, is_publishable=True)
+        student_prevPoint = StudentPoint.objects.filter(student=self).first()
+        if (student_prevPoint == None and enrollments.count() < 8) or (student_prevPoint.with_distinction == False):
+            return False
+        for enroll in enrollments:
+            if enroll.semester_gpa < 3.75:
+                return False
+        return True
+        
         
     @property
     def student_name(self):
