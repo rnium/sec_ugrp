@@ -62,7 +62,8 @@ function getSemesterData() {
 
 function renderAndInsertNewSemester(response, containerId) {
     let session = `<div class="col-md-6 p-0">
-                        <a href="${response['view_url']}" class="semester-item shadow-sm m-1 running-semester">
+                        <a href="${response['view_url']}${response.repeat_number ? '?repeat=' + response.repeat_number: ''}" class="semester-item shadow-sm m-1 running-semester">
+                            ${response.repeat_number ? `<div class='repeatbadge'>R${response.repeat_number}</div>`: ''}
                             <div class="sem-codename">
                                 <span class="year">${response['year']}</span>
                                 <span>-</span>
@@ -97,6 +98,9 @@ function createSemester() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response) {
+                if (response.repeat_number) {
+                    location.reload();
+                }
                 $("#create_sem_btn").removeAttr("disabled");
                 hideModal("newSemesterEntryModal");
                 renderAndInsertNewSemester(response, "semesterContainer")
@@ -278,7 +282,6 @@ function render_performance_chart(data) {
     let registration = data.registration
     let cgpa = data.cgpa
     let credits = data.credits
-    console.log(cgpa);
     var ctx = document.getElementById('session_stats_chart').getContext('2d');
     let gridlinecolor = "#073b4c";
     let legendcolor = "#a5a58d"
@@ -421,6 +424,16 @@ function uploadExcel(excel_file) {
     });
 }
 
+// [Repeat Info] input tracking
+function handleChange(e) {
+    const year = parseInt($('#yearInput').val());
+    const semester = parseInt($('#SemesterInput').val());
+    if (year === 4 && semester === 2) {
+        $("#repeted_semester_info").show();
+    } else {
+        $("#repeted_semester_info").hide();
+    }
+}
 
 
 $(document).ready(function () {
@@ -438,4 +451,5 @@ $(document).ready(function () {
     loadStatsChart()
     loadCarryList();
     $("#switch-show-complete").on('click', toggle_completed_entries)
+    $(".sem_main_data").on('keyup', handleChange)
 });

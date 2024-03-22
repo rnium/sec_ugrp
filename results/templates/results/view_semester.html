@@ -54,7 +54,9 @@
     </div>
     {% endif %}
     <div class="info">
-        <div class="title fs-1 text-secondary">{{semester.semester_name}}</div>
+        <div class="title fs-1 text-secondary">
+            {{semester.semester_name}} {% if semester.repeat_number %}[Repeat -{{semester.repeat_number}}]{% endif %}
+        </div>
         <a class="session mt-1" href="{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}">
             <div class="label me-2">Session</div>
             <div class="value shadow-sm">
@@ -79,7 +81,7 @@
             {% if semester.has_courses %}
             {% for course in courses_regular %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}">
+                <a class="course" href="{% url 'results:view_course' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester course.code %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}">
                     <div class="course-code text-center">{{course.code}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:30}}</div>
                     <div class="d-flex justify-content-center mt-2">
@@ -215,7 +217,7 @@
                     <div class="col-md-6 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
-                            <input type="text" class="form-control py-2" value="{{semester.semester_name}} Final Examination {{semester.exam_year}}" id="tabulation-title">
+                            <input type="text" class="form-control py-2" value="{{semester.semester_name}} Final Examination {{semester.exam_year}} {% if semester.repeat_number %}Repeat {{semester.repeat_number}}{% endif %}" id="tabulation-title">
                         </div>
                     </div>
                     <div class="col-md-6 p-2">
@@ -374,7 +376,7 @@
             <span class="d-inline-block ms-auto" style="cursor: pointer">
                 <div class="d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#newRegistrationModal">
                     <i class='bx bxs-plus-circle fs-4 me-2 text-primary'></i>
-                    <span class="text-muted">Create Semester Registration</span>
+                    <span class="text-muted">Add Student Registration</span>
                 </div>
             </span>
         </div>
@@ -628,7 +630,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-material">
                 <div class="modal-header">
-                    <div class="modal-title text-info">Create Registration in {{semester.semester_code}}</div>
+                    <div class="modal-title text-info">Add Registration in {{semester.semester_code}}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">

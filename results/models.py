@@ -81,6 +81,18 @@ class Session(models.Model):
     def course_identifier_prefix(self):
         return self.dept.name.lower() + str(self.batch_no)
     
+    @property
+    def has_final_semester(self):
+        semesters = self.semester_set.filter(year=4, year_semester=2)
+        if semesters.count():
+            return True
+        return False
+    
+    @property
+    def repeat_count(self):
+        semesters = self.semester_set.filter(year=4, year_semester=2)
+        return semesters.count()
+    
        
 
 class Semester(models.Model):
@@ -131,7 +143,8 @@ class Semester(models.Model):
     
     @property
     def semester_name(self):
-        return f"{get_ordinal_number(self.year)} Year {get_ordinal_number(self.year_semester)} Semester"
+        name = f"{get_ordinal_number(self.year)} Year {get_ordinal_number(self.year_semester)} Semester"
+        return name
     
     @property
     def exam_year(self):
@@ -196,7 +209,7 @@ class SemesterEnroll(models.Model):
         ]
     
     def save(self, *args, **kwargs):
-        enrolls = SemesterEnroll.objects.filter(semester__semester_no=self.semester.semester_no, student=self.student).exclude(id=self.id)
+        enrolls = SemesterEnroll.objects.filter(semester__semester_no=self.semester.semester_no, semester__repeat_number=self.semester.repeat_number, student=self.student).exclude(id=self.id)
         if enrolls.count():
             raise ValidationError(f"Student already enrolled for the semester no: {self.semester.semester_no}")
         super().save(*args, **kwargs)
@@ -306,7 +319,7 @@ class Course(models.Model):
     
     def get_identifier_code(self):
         c = self.code.lower().replace(" ", "")
-        return  self.semester.session.course_identifier_prefix + c
+        return  self.semester.session.course_identifier_prefix + str(self.semester.repeat_number) + c
     
     def save(self, *args, **kwargs) -> None:
         if self.part_A_marks_final == 0:

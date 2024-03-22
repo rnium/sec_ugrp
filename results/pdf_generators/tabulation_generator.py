@@ -280,7 +280,7 @@ def insert_header(flowables: list, semesterData: SemesterDataContainer, render_c
 
     styles.add(ParagraphStyle("exam_title", 
                             styles["Normal"],
-                            fontName = "texgyretermes",
+                            fontName = "Times-Bold",
                             fontSize = 9,
                             alignment = TA_CENTER))
 

@@ -1596,7 +1596,7 @@ body main .view-session-container .container .semesters .semester-item {
   background-color: rgb(60, 81, 92);
   position: relative;
 }
-body main .view-session-container .container .semesters .semester-item .entrybadge {
+body main .view-session-container .container .semesters .semester-item .repeatbadge {
   position: absolute;
   top: 0;
   right: 0;
@@ -1605,9 +1605,8 @@ body main .view-session-container .container .semesters .semester-item .entrybad
   background-color: rgb(105, 139, 208);
   color: rgb(244, 244, 244);
   border-radius: 0 0 0 7px;
-}
-body main .view-session-container .container .semesters .semester-item .entrybadge.running {
-  background-color: rgb(105, 208, 121);
+  font-size: 0.9rem;
+  color: #2d2f75;
 }
 body main .view-session-container .container .semesters .semester-item .sem-codename {
   padding: 5px;
@@ -1645,6 +1644,10 @@ body main .view-session-container .container .semesters .semester-item.running-s
 }
 body main .view-session-container .container .semesters .semester-item.running-semester .info .semester-no {
   color: aquamarine;
+}
+body main .view-session-container .container .semesters .semester-item.running-semester .repeatbadge {
+  background-color: rgb(104, 204, 119);
+  color: green;
 }
 body main .view-session-container .container .semesters .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;

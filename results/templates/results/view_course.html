@@ -49,12 +49,12 @@
     <div class="info">
         <div class="semester {% if course.semester.is_running %}running{% endif %}">
             {% if from_semester %}
-            <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.session.from_year from_semester.session.to_year from_semester.year from_semester.year_semester %}">
+            <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.session.from_year from_semester.session.to_year from_semester.year from_semester.year_semester %}{% if from_semester.repeat_number %}?repeat={{from_semester.repeat_number}}{% endif %}">
                 {{from_semester.semester_code}}
             </a>
             {% else %}
-            <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}">
-                {{course.semester.semester_code}}
+            <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.session.from_year course.semester.session.to_year course.semester.year course.semester.year_semester %}{% if course.semester.repeat_number %}?repeat={{course.semester.repeat_number}}{% endif %}">
+                {{course.semester.semester_code}} {% if course.semester.repeat_number %}Repeat - {{course.semester.repeat_number}}{% endif %}
             </a>
             {% endif %}
         </div>

@@ -179,6 +179,7 @@ class SemesterView(DeptAdminRequiredMixin, DetailView):
             session__to_year = self.kwargs.get("to_year", ""),
             year = self.kwargs.get("year", ""),
             year_semester = self.kwargs.get("semester", ""),
+            repeat_number = self.request.GET.get('repeat', 0)
         )
         return semester
     
@@ -216,6 +217,7 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
             semester__session__to_year = self.kwargs.get("to_year", ""),
             semester__year = self.kwargs.get("year", ""),
             semester__year_semester = self.kwargs.get("semester", ""),
+            semester__repeat_number = self.request.GET.get('repeat', 0),
             code = self.kwargs.get("course_code", ""),
         )
         return course

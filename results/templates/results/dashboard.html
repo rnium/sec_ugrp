@@ -51,13 +51,16 @@
     <div class="row dashboard-content py-4">
         {% for dept in departments %}
         <div class="{% if this_is_dept_admin %}col-lg-6{% else %}col-lg-3{% endif %} live-semesters title-box  me-3 ">
-            <div class="title">{{dept.name}} Recent Semesters</div>
+            <div class="title">{{dept.name}} Running Semesters</div>
             <div class="content">
                 {% if dept.semesters %}
                 <ul>
                     {% for semester in dept.semesters %}
                     <li>
-                        <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item">
+                        <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}" class="semester-item position-relative overflow-hidden">
+                            {% if semester.repeat_number %}
+                            <div class='repeatbadge position-absolute top-0 end-0 px-2 py-1 bg-info text-dark' style="font-size: 0.7rem;border-radius:0 0 0 5px">R{{semester.repeat_number}}</div>
+                            {% endif %}
                             <div class="sem-codename">
                                 <span class="year">{{semester.year}}</span>
                                 <span>-</span>

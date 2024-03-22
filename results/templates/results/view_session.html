@@ -66,7 +66,10 @@
             {% if session.semester_set.count %}
             {% for semester in session.semester_set.all %}
             <div class="col-md-6 p-0">
-                <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
+                <a href="{% url 'results:view_semester' semester.session.dept.name semester.session.from_year semester.session.to_year semester.year semester.year_semester %}{% if semester.repeat_number %}?repeat={{semester.repeat_number}}{% endif %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
+                    {% if semester.repeat_number %}
+                    <div class='repeatbadge'>R{{semester.repeat_number}}</div>
+                    {% endif %}
                     <div class="sem-codename">
                         <span class="year">{{semester.year}}</span>
                         <span>-</span>
@@ -197,13 +200,13 @@
                     <div class="form-container row p-0">
                         <div class="col-md-6 mb-2 pe-1">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="yearInput" placeholder="">
+                                <input type="text" class="form-control sem_main_data" id="yearInput" placeholder="">
                                 <label for="yearInput">Year No.</label>
                             </div>              
                         </div>
                         <div class="col-md-6 mb-2 ps-1">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="SemesterInput" placeholder="">
+                                <input type="text" class="form-control sem_main_data" id="SemesterInput" placeholder="">
                                 <label for="SemesterInput">Semester No.</label>
                             </div>              
                         </div>
@@ -220,6 +223,11 @@
                             </div>            
                         </div>                                             
                     </div>
+                    {% if session.has_final_semester %}
+                    <div class="alert alert-info mb-0 text-center" role="alert" id="repeted_semester_info" style="display: none;">
+                        Semester will be added as <span class='text-primary'>Repeat {{session.repeat_count}}</span>
+                    </div>
+                    {% endif %}
                     <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;" id="createSemesterAlert">
                     </div>   
                 </div>

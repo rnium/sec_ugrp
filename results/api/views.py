@@ -77,11 +77,18 @@ class SemesterCreate(CreateAPIView):
     
     def perform_create(self, serializer):
         try:
+            print(serializer, flush=1)
+            session = self.get_queryset().first()
+            if repeat_no := session.repeat_count:
+                serializer.validated_data['repeat_number'] = repeat_no
+                print(serializer, flush=1)
+                print(f"Adding as repeat: {repeat_no}")
             super().perform_create(serializer)
-            # create enrollments. this sould be removed in future version
-            pk = serializer.data.get('id')
-            semester = Semester.objects.get(pk=pk)
-            utils.create_course_enrollments(semester)
+            # create enrollments.
+            if repeat_no == 0:
+                pk = serializer.data.get('id')
+                semester = Semester.objects.get(pk=pk)
+                utils.create_course_enrollments(semester)
         except Exception as e:
             raise BadrequestException(str(e))
 
@@ -127,6 +134,7 @@ class CourseCreate(CreateAPIView):
         try:
             super().perform_create(serializer)
         except Exception as e:
+            print("Hi", flush=1)
             raise BadrequestException(str(e))
 
 
