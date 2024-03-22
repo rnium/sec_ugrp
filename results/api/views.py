@@ -77,11 +77,7 @@ class SemesterCreate(CreateAPIView):
     
     def perform_create(self, serializer):
         try:
-            session = self.get_queryset().first()
-            repeat_no = 0
-            if serializer.validated_data['semester_no'] == 8:
-                if repeat_no := session.repeat_count:
-                    serializer.validated_data['repeat_number'] = repeat_no
+            repeat_no = serializer.validated_data.get('repeat_count', 0)
             super().perform_create(serializer)
             # create enrollments.
             if repeat_no == 0:

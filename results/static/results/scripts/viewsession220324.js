@@ -23,9 +23,11 @@ function getSemesterData() {
     let exam_duration = $("#durationInput").val().trim();
     let yearInput = $("#yearInput").val().trim();
     let semesterInput = $("#SemesterInput").val().trim();
+    let repeatCountInput = $("#repeatCount").val().trim();
     exam_month_array = exam_month.split(" ")
     let year_no = parseInt(yearInput)
     let year_semester_no = parseInt(semesterInput)
+    let repeat_count = parseInt(repeatCountInput)
 
     if (isNaN(year_no) | isNaN(year_semester_no) | exam_month_array.length != 2) {
         $("#createSemesterAlert").text("Invalid Input");
@@ -56,6 +58,9 @@ function getSemesterData() {
     }
     if (exam_duration.length > 0) {
         data.exam_duration = exam_duration;
+    }
+    if (nth_semester == 8 && !isNaN(repeat_count)) {
+        data['repeat_number'] = repeat_count
     }
     return data;
 }
@@ -429,9 +434,9 @@ function handleChange(e) {
     const year = parseInt($('#yearInput').val());
     const semester = parseInt($('#SemesterInput').val());
     if (year === 4 && semester === 2) {
-        $("#repeted_semester_info").show();
+        $("#repeatCountContainer").show();
     } else {
-        $("#repeted_semester_info").hide();
+        $("#repeatCountContainer").hide();
     }
 }
 

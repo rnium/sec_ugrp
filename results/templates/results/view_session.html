@@ -221,13 +221,17 @@
                                 <input type="text" class="form-control" id="durationInput" placeholder="">
                                 <label for="durationInput">Duration of Examination <small class="text-secondary">(e.g., 10/11/2023 to 05/12/2023)</small></label>
                             </div>            
-                        </div>                                             
+                        </div>
+                        {% if session.has_final_semester %}
+                        <div class="col-md-12" style="display: none;" id="repeatCountContainer">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="repeatCount" placeholder="" value="{{session.repeat_count}}">
+                                <label for="repeatCount">Repeat Number</label>
+                            </div>            
+                        </div>
+                        {% endif %}                                             
                     </div>
-                    {% if session.has_final_semester %}
-                    <div class="alert alert-info mb-0 text-center" role="alert" id="repeted_semester_info" style="display: none;">
-                        Semester will be added as <span class='text-primary'>Repeat {{session.repeat_count}}</span>
-                    </div>
-                    {% endif %}
+                    
                     <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" style="display: none;" id="createSemesterAlert">
                     </div>   
                 </div>
@@ -395,5 +399,5 @@
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsession070224.js' %}"></script>
+<script src="{% static 'results/scripts/viewsession220324.js' %}"></script>
 {% endblock script %}
