@@ -121,6 +121,7 @@ class StudentAccount(BaseAccount):
             self.total_points = points_count
             self.save()
     
+    @property
     def with_distinction(self):
         enrollments = SemesterEnroll.objects.filter(student=self, is_publishable=True)
         student_prevPoint = StudentPoint.objects.filter(student=self).first()

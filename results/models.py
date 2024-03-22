@@ -239,7 +239,6 @@ class SemesterEnroll(models.Model):
 class PreviousPoint(models.Model):
     session = models.OneToOneField(Session, on_delete=models.CASCADE)
     upto_semester_num = models.IntegerField()
-    with_distinction = models.BooleanField(default=False)
     added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     added_in = models.DateTimeField(auto_now_add=True)
 
@@ -249,6 +248,7 @@ class StudentPoint(models.Model):
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
     total_credits = models.FloatField(default=0)
     total_points = models.FloatField(default=0)
+    with_distinction = models.BooleanField(default=False)
     
     @property
     def cgpa_raw(self):
