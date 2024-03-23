@@ -76,8 +76,10 @@
                 <tr>
                     {% for examiner in row %}
                         {% if examiner %}
-                        <td>
+                        <td {% if examiner.chair %}class="text-center"{% endif %}>
+                            {% if not examiner.chair %}
                             <div class="exeminer-name bn-text">পরীক্ষকের নাম</div>
+                            {% endif %}
                             <div class="exeminer-name mt-2">{{examiner.name}}</div>
                             <div class="exeminer-name mt-1">{{examiner.designation}}</div>
                         </td>
@@ -87,7 +89,7 @@
                     {% endfor %}
                 </tr>
                 {% endfor %}
-                <tr>
+                <!-- <tr>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -95,7 +97,7 @@
                         <div class="exeminer-name">{{chairman_name}}</div>
                         <div class="exeminer-name mt-1">Chair</div>
                     </td>
-                </tr>
+                </tr> -->
             </table>
         </div>
     </section>

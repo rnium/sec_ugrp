@@ -12,6 +12,11 @@ entry_per_list = 35
 def get_examiner_table_rows(excel_data):
     examiners = excel_data['examiners']
     examiners_exterternal = excel_data['external_examiners']
+    exam_committee_chairman = {
+        'name': excel_data['chairman_name'],
+        'designation': 'Chair',
+        'chair': True
+    }
     table = []
     for i in range(0,max(len(examiners), len(examiners_exterternal)),2):
         e1 = examiners[i:i+2]
@@ -21,6 +26,10 @@ def get_examiner_table_rows(excel_data):
         for _ in range(2-len(e2)):
             e2.insert(0, "")
         table.append([*e1, *e2])
+    if table[-1][-1] == "":
+        table[-1][-1] = exam_committee_chairman
+    else:
+        table.append(['', '', '', exam_committee_chairman])
     return table
 
 
@@ -35,7 +44,6 @@ def render_scorelist(course, excel_data):
     pages_context = []
     sl_num = 1
     curr_page_num = 1
-    print(excel_data['chairman_name'], flush=1)
     for page in pages:
         page_context = {
             'list_items': [],
@@ -70,7 +78,6 @@ def render_scorelist(course, excel_data):
     context['year_semester_num'] = get_bangla_ordinal_upto_eight(course.semester.year_semester)
     context['held_in_year'] = get_year_number_in_bangla(course.semester.start_month.strip().split(' ')[-1])
     context['blank_table_rows'] = range(9)
-    context['chairman_name'] = excel_data['chairman_name']
     sust_logo = settings.BASE_DIR/'results/static/results/images/sust.png'
     context['sust_logo'] = sust_logo
     html_text = render_to_string('results/pdf_templates/scorelist.html', context=context)

@@ -136,6 +136,14 @@
   margin-top: 40px;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.debug-box {
+  border: 1px solid red;
+}
+
 .page-break-after {
   page-break-after: always;
 }/*# sourceMappingURL=scorelist.css.map */
