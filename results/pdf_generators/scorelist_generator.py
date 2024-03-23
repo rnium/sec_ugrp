@@ -14,7 +14,7 @@ def get_examiner_table_rows(excel_data):
     examiners_exterternal = excel_data['external_examiners']
     exam_committee_chairman = {
         'name': excel_data['chairman_name'],
-        'designation': 'Chair',
+        'designation': 'Chairman',
         'chair': True
     }
     table = []

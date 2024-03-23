@@ -82,6 +82,9 @@
                             {% endif %}
                             <div class="exeminer-name mt-2">{{examiner.name}}</div>
                             <div class="exeminer-name mt-1">{{examiner.designation}}</div>
+                            {% if examiner.chair %}
+                            <div class="exeminer-name">Exam Commmittee</div>
+                            {% endif %}
                         </td>
                         {% else %}
                         <td></td>
