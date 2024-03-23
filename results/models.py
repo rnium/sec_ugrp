@@ -1,5 +1,4 @@
 import base64
-from typing import Iterable, Optional
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -221,6 +220,14 @@ class SemesterEnroll(models.Model):
             raise ValidationError(f"Student already enrolled for the semester no: {self.semester.semester_no}")
         super().save(*args, **kwargs)
     
+    def delete(self, *args, **kwargs):
+        for course in self.courses.all():
+            course_res = CourseResult.objects.filter(course=course, student=self.student).first()
+            if course_res:
+                course_res.delete()
+        super().delete(*args, **kwargs)
+        self.student.update_stats()
+    
     
     def update_stats(self):
         """Updates the stats field of the object.
@@ -325,7 +332,7 @@ class Course(models.Model):
     
     def get_identifier_code(self):
         c = self.code.lower().replace(" ", "")
-        return  self.semester.session.course_identifier_prefix + str(self.semester.repeat_number) + c
+        return  self.semester.session.course_identifier_prefix + str(self.semester.repeat_number) + str(self.semester.part_no) + c
     
     def save(self, *args, **kwargs) -> None:
         if self.part_A_marks_final == 0:

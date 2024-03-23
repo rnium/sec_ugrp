@@ -208,9 +208,11 @@ class CourseResultList(ListAPIView):
     
     def get_queryset(self):
         course = self.get_object()
-        from_session = self.request.GET.get('from')
-        if from_session:
-            course_results = CourseResult.objects.filter(is_drop_course=True, course=course, student__session__id=from_session).order_by('-student__is_regular', 'student__registration')
+        from_semester = self.request.GET.get('sem')
+        if from_semester:
+            semester = get_object_or_404(Semester, id=from_semester)
+            students = [enrollment.student for enrollment in semester.semesterenroll_set.all()]
+            course_results = CourseResult.objects.filter(is_drop_course=True, course=course, student__in=students).order_by('-student__is_regular', 'student__registration')
         else:
             course_results = CourseResult.objects.filter(course=course, is_drop_course=False).order_by('-student__is_regular', 'student__registration')
         return course_results
@@ -554,10 +556,7 @@ def delete_enrollment(request):
     # delete
     semester = enrollment.semester
     student = enrollment.student
-    course_res = CourseResult.objects.filter(student=student, course__semester=semester)
-    course_res.delete()
     enrollment.delete()
-    student.update_stats()
     return Response(data={"info": "deleted", "id": enrollment_id, "current_enroll_count": semester.semesterenroll_set.count()})
 
 

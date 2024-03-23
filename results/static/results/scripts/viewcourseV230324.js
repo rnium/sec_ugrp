@@ -547,7 +547,7 @@ function insertTable(response) {
 function loadCourseResults() {
     let load_course_res_api = course_result_api
     if (!isNaN(FROM_SESSION)) {
-        load_course_res_api += `?from=${FROM_SESSION}`;
+        load_course_res_api += `?from=${FROM_SESSION}&sem=${FROM_SEMESTER}`;
     }
     $.ajax({
         type: "get",
