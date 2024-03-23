@@ -10,7 +10,7 @@
 </div>
 <div class="info text-center">
     <span class="label text-muted me-1">Enrolled In:</span> 
-    <a href="{% url 'results:view_semester' enrollment.semester.session.dept.name enrollment.semester.b64_id" target="_blank" class="value">{{enrollment.semester.semester_code}}</a> 
+    <a href="{% url 'results:view_semester' enrollment.semester.session.dept.name enrollment.semester.b64_id %}" target="_blank" class="value">{{enrollment.semester.semester_code}}</a> 
 </div>
 <div class="info text-center">
     <span class="label text-muted me-1">Type:</span>

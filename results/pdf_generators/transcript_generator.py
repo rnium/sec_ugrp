@@ -191,6 +191,9 @@ def get_main_table(context: Dict) -> Table:
     LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
     GRADES_COUNT = session_letter_grades_count(student.session)
     NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=SESSION_TOTAL_CREDITS).count()
+    WITH_DISTINCTION_TXT = ""
+    if student.with_distinction:
+        WITH_DISTINCTION_TXT = "(With Distinction)"
     if NUM_INCOMPLETE_STUDENTS == 0:
         NUM_INCOMPLETE_STUDENTS = 'Nil'
     if hasattr(context['last_semester'], 'semesterdocument'):
@@ -213,7 +216,7 @@ def get_main_table(context: Dict) -> Table:
         ["8.", 'Grading System', ':', get_grading_scheme_table()],
         [Spacer(1, 10)],
         ["9.", 'Credits Completed', ':', student.credits_completed],
-        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{round(STUDENT_CGPA, 2)} (With Distinction)</b>", style=normalStyle)],
+        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{round(STUDENT_CGPA, 2)} {WITH_DISTINCTION_TXT}</b>", style=normalStyle)],
         ["11.", 'Letter Grade Obtained', ':', Paragraph(f"<b>{get_letter_grade(STUDENT_CGPA)}</b>", style=normalStyle)],
         ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{LAST_SEMESTER_ENROLLS_COUNT}</b>", style=normalStyle)],
         ["13."

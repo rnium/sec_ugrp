@@ -192,6 +192,10 @@ def get_main_table(context: Dict) -> Table:
     GRADES_STATS = context['session_degrees_count']
     NUM_APPEARED_STUDENTS = context['students_appears']
     
+    WITH_DISTINCTION_TXT = ""
+    if float(STUDENT_CGPA) >= 3.75:
+        WITH_DISTINCTION_TXT = "(With Distinction)"
+    
     data = [
         ["1.", 'Name of the Student', ':', NAME.upper()],
         ["2.", 'Name of the College', ':', 'Sylhet Engineering College, Sylhet'],
@@ -203,7 +207,7 @@ def get_main_table(context: Dict) -> Table:
         ["8.", 'Grading System', ':', get_grading_scheme_table()],
         [Spacer(1, 10)],
         ["9.", 'Credits Completed', ':', CREDITS_COMPLETE],
-        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{STUDENT_CGPA} (With Distinction)</b>", style=normalStyle)],
+        ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{STUDENT_CGPA} {WITH_DISTINCTION_TXT}</b>", style=normalStyle)],
         ["11.", 'Letter Grade Obtained', ':', Paragraph(f"<b>{STUDENT_LG}</b>", style=normalStyle)],
         ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{NUM_APPEARED_STUDENTS}</b>", style=normalStyle)],
         ["13."

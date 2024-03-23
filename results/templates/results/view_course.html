@@ -51,18 +51,10 @@
             {% if from_semester %}
             <a href="{% url 'results:view_semester' from_semester.session.dept.name from_semester.b64_id %}">
                 {{from_semester.semester_code}}
-                {% if from_semester.part_no or from_semester.repeat_number %}
-                    {% if from_semester.part_no %}Part:{{from_semester.part_no}}{% endif %}
-                    {% if from_semester.repeat_number %}Repeat:{{from_semester.repeat_number}}{% endif %}
-                {% endif %}
             </a>
             {% else %}
             <a href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.b64_id %}">
                 {{course.semester.semester_code}}
-                {% if course.semester.part_no or course.semester.repeat_number %}
-                    {% if course.semester.part_no %}Part:{{course.semester.part_no}}{% endif %}
-                    {% if course.semester.repeat_number %}Repeat:{{course.semester.repeat_number}}{% endif %}
-                {% endif %}
             </a>
             {% endif %}
         </div>

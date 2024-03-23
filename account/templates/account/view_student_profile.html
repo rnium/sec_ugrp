@@ -108,7 +108,7 @@
                   </div>
                   {% endif %}
                   {% for enroll in enrollments %}
-                  <a href="{% url "results:view_semester" enroll.semester.session.dept.name enroll.semester.session.from_year enroll.semester.session.to_year enroll.semester.year enroll.semester.year_semester %}" class="semester-item {% if enroll.semester.is_running %}running-semester{% endif %} m-1">
+                  <a href="{% url "results:view_semester" enroll.semester.session.dept.name enroll.semester.b64_id %}" class="semester-item {% if enroll.semester.is_running %}running-semester{% endif %} m-1">
                     <div class="sem-codename">
                         <span class="year">{{enroll.semester.year}}</span>
                         <span>-</span>

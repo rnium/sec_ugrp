@@ -145,7 +145,12 @@ class Semester(models.Model):
     
     @property
     def semester_code(self):
-        return f"{self.year}-{self.year_semester} [{self.session.session_code}]"
+        codename = f"{self.year}-{self.year_semester} [{self.session.session_code}]"
+        if self.part_no:
+            codename += f" P-{self.part_no}"
+        if self.repeat_number:
+            codename += f" R-{self.repeat_number}"
+        return codename
     
     @property
     def semester_name(self):
