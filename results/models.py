@@ -124,7 +124,7 @@ class Semester(models.Model):
     added_in = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        ordering = ["year", "year_semester"]
+        ordering = ["semester_no", 'part_no', 'repeat_number']
         constraints = [
             models.UniqueConstraint(fields=["year", "year_semester", "session", "part_no", "repeat_number"], name="unique_session_per_semester")
         ]
