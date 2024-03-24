@@ -18,8 +18,8 @@ from results.api.utils import sort_courses
 DEBUG_MODE = False
 
 w, h = A4
-margin_X = 0.5*inch
-margin_Y = 0.5*inch
+margin_X = 0.3*inch
+margin_Y = 0.2*inch
 
 CARDINAL_NUMBERS = {1: "First", 2: "Second", 3: "Third", 4: "Fourth"}
 cardinal_repr = lambda n: CARDINAL_NUMBERS.get(n) # Cardinal representation
@@ -225,7 +225,7 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
         
         
     ])
-    table = Table(data=data, colWidths=calculate_column_widths(len(data[0]), w, margin_X+0.2*cm), rowHeights=[*header_row_heights, *course_row_heights, *bottom_row_heights])
+    table = Table(data=data, colWidths=calculate_column_widths(len(data[0]), w, margin_X), rowHeights=[*header_row_heights, *course_row_heights, *bottom_row_heights])
     table.setStyle(semester_table_style)
     flowables.append(table)
   
@@ -283,7 +283,7 @@ def get_footer(second_sem_cumulative):
     ])
     return footer_table
     
-def add_footer(canvas, doc, final_cumulative, margin_y=cm):
+def add_footer(canvas, doc, final_cumulative, margin_y=1.4*cm):
     footer = get_footer(final_cumulative)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
@@ -311,10 +311,8 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=None) 
     final_cumulative = first_sem_cumulative
     if year_second_sem_enroll:
         final_cumulative = second_sem_cumulative
-    if TOTAL_NUMBER_OF_COURSES <= 22:
+    if TOTAL_NUMBER_OF_COURSES <= 24:
         doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative))
-    elif TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, 0.4*cm))
     else:
         story.append(Spacer(1, 40))
         story.append(get_footer(final_cumulative))
