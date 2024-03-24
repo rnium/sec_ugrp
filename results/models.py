@@ -204,6 +204,15 @@ class Semester(models.Model):
             return duration
         return "<DURATION UNSPECIFIED>"
 
+
+class ExamCommittee(models.Model):
+    semester = models.OneToOneField(Semester, on_delete=models.CASCADE)
+    chairman = models.ForeignKey('account.AdminAccount', null=True, blank=True, on_delete=models.SET_NULL)
+    members = models.ManyToManyField('account.AdminAccount', related_name='committee_member')
+    tabulators = models.ManyToManyField('account.AdminAccount', related_name='committee_tabulator')
+    last_updated = models.DateTimeField(auto_now=True)
+
+
 class SemesterEnroll(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     student = models.ForeignKey("account.StudentAccount", on_delete=models.CASCADE)
