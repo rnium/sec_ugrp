@@ -139,7 +139,7 @@ def get_main_table(context: Dict) -> Table:
     NUM_APPEARED_STUDENTS = context['students_appears']
     
     WITH_DISTINCTION_TXT = ""
-    if float(STUDENT_CGPA) >= 3.75:
+    if float(STUDENT_CGPA) >= 3.75 and float(CREDITS_COMPLETE) >= 160:
         WITH_DISTINCTION_TXT = "(With Distinction)"
     
     data = [
