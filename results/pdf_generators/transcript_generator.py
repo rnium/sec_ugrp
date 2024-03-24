@@ -18,7 +18,7 @@ from results.utils import get_letter_grade, session_letter_grades_count
 
 DEBUG_MODE = False
 
-w, h = A4
+w, h = 21.6*cm, 34*cm
 margin_X = 1*cm
 margin_Y = 1*cm
 
@@ -91,62 +91,6 @@ def get_grading_scheme_table() -> Table:
     tbl = Table(data=data, rowHeights=rowHeights)
     tbl.setStyle(TableStyle(style_config));
     return tbl
-
-def get_exam_controller_table() -> Table:
-    data = [
-        ["Controller of Examinations"],
-        ['Shahjalal University of Science and'],
-        ['Technology, Post Office: Sylhet-3114'],
-        ['District: Sylhet, Bangladesh']
-    ]
-    style_config = [
-        ('FONTSIZE', (0, 0), (0, 0), 15), 
-        ('FONTSIZE', (0, 1), (0, -1), 11), 
-        ('FONTNAME', (0, 0), (0, 0), 'roboto-bold'),
-        ('FONTNAME', (0, 1), (0, -1), 'roboto'),
-    ]
-    if DEBUG_MODE:
-        style_config.extend([('GRID', (0,0), (-1,-1), 0.25, colors.royalblue)])
-    table = Table(data=data)
-    table.setStyle(TableStyle(style_config))
-    return table
-    
-
-def build_header(flowables) -> None: 
-    logo = Image(settings.BASE_DIR/'results/static/results/images/sust.png', width=55, height=60.434)
-    controller_table = get_exam_controller_table()
-    phone_icon = settings.BASE_DIR/'results/static/results/images/phone.png'
-    brown_paragraph_style = custom_style = ParagraphStyle(
-        name='brown_paragraph_style',
-        fontName = "roboto-m",
-        fontSize=10,
-        leading=14,
-        alignment=1,
-        textColor=colors.HexColor("#956b2d"),  # Set the font color
-    )
-    contact_info1 = "+880-821-7279-62, PABX +880-821- 713850/714479 /728741/ 717850 / 715393 / 716123, Ext-205"
-    contact_info2 = "Fax: +880-821-715-257, E-mail: exm@sust.edu"
-    paragraph1 =  Paragraph(f'<img src="{phone_icon}" width="10" height="10" /> : {contact_info1}<br/>{contact_info2}', brown_paragraph_style)
-    # paragraph2 =  Paragraph(contact_info2, brown_paragraph_style)
-
-    data = [
-        [logo, controller_table],
-        [paragraph1],
-    ]
-    
-    style_config = [
-        ('ALIGN', (1, 0), (1, 0), "RIGHT"),
-        ('VALIGN', (0, 1), (0, 1), "MIDDLE"),
-        ('SPAN', (0, 1), (-1, 1)),
-    ]
-    if DEBUG_MODE:
-        style_config.extend([('GRID', (0,0), (-1,-1), 0.25, colors.gray)])
-    rowsheights = [1.1*inch, 1.45*cm]
-    table = Table(data=data, colWidths=calculate_column_widths(2, w, margin_X), rowHeights=rowsheights)
-    table.setStyle(TableStyle(style_config))
-    flowables.append(table)
-    line = HorizontalLine(w)
-    flowables.append(line)
 
 def get_yearOfExamsTable(scheduled, held) -> Table:
     data = [
@@ -245,6 +189,7 @@ def get_main_table(context: Dict) -> Table:
         ('SPAN', (0, -1), (-1, -1)), # Bottom info
         ('LEFTPADDING', (0, -1), (0, -1), 20),
         ('RIGHTPADDING', (0, -1), (0, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
         ('TOPPADDING', (0, -1), (0, -1), 30),
         ('ALIGN', (0, -1), (0, -1), "CENTER"),
     ]
@@ -264,7 +209,7 @@ def build_body(flowables: List, context: Dict) -> None:
         alignment=1,
     )
     flowables.append(Paragraph("<u>TRANSCRIPT OF ACADEMIC RECORDS</u>", style=title_style))
-    flowables.append(Spacer(1, 15))
+    flowables.append(Spacer(1, 20))
     flowables.append(get_main_table(context))
 
 def get_footer(context):
@@ -288,14 +233,13 @@ def get_footer(context):
 def add_footer(canvas, doc, context):
     footer = get_footer(context)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=0.9*inch, y=0.7*inch)  
+    footer.drawOn(canvas=canvas, x=0.9*inch, y=1*inch)  
 
 def get_transcript(context: Dict):
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=margin_Y, title="Academic Transcript")
+    doc = SimpleDocTemplate(buffer, pagesize=(w,h), topMargin=margin_Y, title="Academic Transcript")
     story = []
-    build_header(story)
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 5.7*cm))
     build_body(story, context)
    
     doc.build(story, onFirstPage=lambda canv, doc: add_footer(canvas=canv, doc=doc, context=context))
