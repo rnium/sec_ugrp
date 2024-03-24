@@ -15,9 +15,9 @@ from results.utils import get_letter_grade
 
 DEBUG_MODE = False
 
-w, h = A4
-margin_X = 0.5*inch
-margin_Y = 0.5*inch
+w, h = 21.6*cm, 34*cm
+margin_X = 0.3*inch
+margin_Y = 0.2*inch
 
 CARDINAL_NUMBERS = {1: "First", 2: "Second", 3: "Third", 4: "Fourth"}
 cardinal_repr = lambda n: CARDINAL_NUMBERS.get(n) # Cardinal representation
@@ -203,7 +203,7 @@ def build_semester(flowables, semester_data) -> None:
         
         
     ])
-    table = Table(data=data, colWidths=calculate_column_widths(len(data[0]), w, margin_X+0.2*cm), rowHeights=[*header_row_heights, *course_row_heights, *bottom_row_heights])
+    table = Table(data=data, colWidths=calculate_column_widths(len(data[0]), w, margin_X), rowHeights=[*header_row_heights, *course_row_heights, *bottom_row_heights])
     table.setStyle(semester_table_style)
     flowables.append(table)
   
@@ -263,7 +263,7 @@ def get_footer(last_semester_data):
     ])
     return footer_table
     
-def add_footer(canvas, doc, last_sem_data, margin_y=cm):
+def add_footer(canvas, doc, last_sem_data, margin_y=1.4*cm):
     footer = get_footer(last_sem_data)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
@@ -286,10 +286,8 @@ def get_gradesheet(formdata, excel_data, num_semesters) -> bytes:
         build_semester(story, excel_data['semester_1'])
     last_semester_number = max([int(k.split('_')[-1]) for k in excel_data.keys()])
     last_semester_key = f"semester_{last_semester_number}"
-    if TOTAL_NUMBER_OF_COURSES <= 22:
+    if TOTAL_NUMBER_OF_COURSES <= 24:
         doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key]))
-    elif TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key], 0.4*cm))
     else:
         story.append(Spacer(1, 40))
         
