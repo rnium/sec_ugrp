@@ -215,8 +215,13 @@ def get_footer(last_semester_data):
         fontSize=9,  # Set the font size to 14 points
         alignment=1,  # Center alignment
     )
+    creadits = float(last_semester_data['cumulative_credits'])
+    cgpa = float(last_semester_data['cumulative_gp'])
+    DISTINCTION_TEXT = ""
+    if credits >= 160 and cgpa >= 3.75:
+        DISTINCTION_TEXT = "With Distinction"
     footer_top_data = [
-        ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', 'With Distinction'],
+        ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', DISTINCTION_TEXT],
         ['', 'Cumulative', 'Credit', 'CGPA', 'Letter Grade', ''],
         ['', 'Final Result', last_semester_data['cumulative_credits'], last_semester_data['cumulative_gp'], last_semester_data['cumulative_lg'], '']
     ]

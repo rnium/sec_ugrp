@@ -237,8 +237,11 @@ def get_footer(second_sem_cumulative):
         fontSize=9,  # Set the font size to 14 points
         alignment=1,  # Center alignment
     )
+    distinction_text = ""
+    if second_sem_cumulative['grade_point'] >= 3.75 and second_sem_cumulative['credit'] >= 160:
+        distinction_text = "With Distinction"
     footer_top_data = [
-        ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', 'With Distinction'],
+        ['', Paragraph('<u>Final Result</u>', style=header_style), '', '', '', distinction_text],
         ['', 'Cumulative', 'Credit', 'CGPA', 'Letter Grade', ''],
         ['', 'Final Result', second_sem_cumulative['credit'], f"{second_sem_cumulative['grade_point']:.2f}", second_sem_cumulative['letter_grade'], '']
     ]

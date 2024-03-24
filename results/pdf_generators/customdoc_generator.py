@@ -70,7 +70,7 @@ def process_and_save_customdoc_data(data, admin_name):
     transcript_context = map_context_for_transcript(data)
     transcript_context['admin_name'] = admin_name
     documents = []
-    save_customdoc(student, 'transcript', transcript_context)
+    cdoc = save_customdoc(student, 'transcript', transcript_context)
     formdata = map_formdata_for_gradesheet(data)
     for i in range(4):
         excel_data = {}
@@ -94,7 +94,8 @@ def process_and_save_customdoc_data(data, admin_name):
                 save_customdoc(student, 'y_gs', yearly_gs_data, year_num)
                 yearly_gs_data['sem_or_year_num'] = year_num
                 documents.append(yearly_gs_data)
-    cdoc = save_customdoc(student, 'all_gss', documents)
+    if len(documents):
+        cdoc = save_customdoc(student, 'all_gss', documents)
     return cdoc
 
 

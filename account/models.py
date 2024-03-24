@@ -124,7 +124,7 @@ class StudentAccount(BaseAccount):
     @property
     def with_distinction(self):
         cgpa = self.raw_cgpa
-        if cgpa and cgpa >= 3.75:
+        if cgpa and cgpa >= 3.75 and self.credits_completed >= 160:
             return True
         else:
             return False
@@ -158,8 +158,8 @@ class StudentAccount(BaseAccount):
     def gradesheet_semesters(self):
         semesters = []
         for semester_no in range(1, 9):
-            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=semester_no, semester__is_running=False, semester_gpa__isnull=False)
-            if year_enrolls.count():
+            semester_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=semester_no, semester__is_running=False, semester__repeat_number=0, semester_gpa__isnull=False)
+            if semester_enrolls.count():
                 semesters.append(semester_no)
         return semesters    
     
@@ -167,10 +167,18 @@ class StudentAccount(BaseAccount):
     def gradesheet_years(self):
         years = []
         for year in range(1, 5):
-            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__year=year, semester__is_running=False, semester_gpa__isnull=False)
+            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__year=year, semester__is_running=False, semester__repeat_number=0, semester_gpa__isnull=False)
             if year_enrolls.count() == 2:
                 years.append(year)
         return years
+    
+    @property
+    def repeat_semester_enrolls(self):
+        enrolls = []
+        semester_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=8, semester__is_running=False, semester__repeat_number__gt=0, semester_gpa__isnull=False)
+        for enroll in semester_enrolls:
+            enrolls.append(enroll)
+        return enrolls   
     
     @property
     def father_name_repr(self):

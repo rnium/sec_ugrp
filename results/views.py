@@ -322,9 +322,9 @@ def download_full_document(request, registration):
         return render_error(request, 'Forbidden')
     student = get_object_or_404(StudentAccount, registration=registration)
     docs = []
-    custom_gradesheets = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss').first()
-    if custom_gradesheets:
-        docs.append(render_customdoc_document(custom_gradesheets))
+    custom_docs = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss').first()
+    if custom_docs:
+        docs.append(render_customdoc_document(custom_docs))
     gradesheets_semesters = student.gradesheet_semesters
     gradesheets_semester_groups = [gradesheets_semesters[i:i+2] for i in range(0, len(gradesheets_semesters), 2)]
     for year_semester_list in gradesheets_semester_groups:
@@ -341,6 +341,9 @@ def download_full_document(request, registration):
             year_first_sem_enroll = year_first_semester,
             year_second_sem_enroll = year_second_semester
         ))
+    repeat_semesterenrolls = student.repeat_semester_enrolls
+    for enroll in repeat_semesterenrolls:
+        docs.append(get_gradesheet(student, year_first_sem_enroll=enroll))
     merged_pdf = merge_pdfs_from_buffers(docs).getvalue()
     filename = f"Transcript & Gradesheets - {registration}.pdf"
     return FileResponse(ContentFile(merged_pdf), filename=filename)
