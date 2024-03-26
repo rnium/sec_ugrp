@@ -656,7 +656,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-material shadow">
                 <div class="modal-header">
-                    <div class="modal-title text-info">Add New Member</div>
+                    <div class="modal-title text-info">Add Committee Member</div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
@@ -669,37 +669,13 @@
                         </select>
                         <label for="floatingSelectGrid">Commettee member type</label>
                     </div>                  
-                    <input class="form-control py-2" type="text" placeholder="Name of admin" aria-label="default input example">
+                    <input class="form-control py-2" id="adminSearchInp" type="text" placeholder="Name or email of admin" aria-label="default input example">
                     <div class="user-list mt-2">
-                        <div class="user form-check">
-                            <input class="form-check-input" type="radio" name="adminEmailRadios" id="adminNameRadio" value="some@sec.ac.bd">
-                            <label class="form-check-label small d-block" for="adminNameRadio">
-                                <div class="admin-profile d-flex px-3 py-2 w-100 rounded">
-                                    <img src="./images/blank-dp.svg" alt="" class="dp">
-                                    <div class="info ms-1">
-                                        <div class="name" >Name</div>
-                                        <div class="roboto-font email">email@sec.ac.bd</div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="user form-check">
-                            <input class="form-check-input" type="radio" name="adminEmailRadios" id="admin2NameRadio" value="some2@sec.ac.bd">
-                            <label class="form-check-label small d-block" for="admin2NameRadio">
-                                <div class="admin-profile d-flex px-3 py-2 w-100 rounded">
-                                    <img src="./images/blank-dp.svg" alt="" class="dp">
-                                    <div class="info ms-1">
-                                        <div class="name" >Name2</div>
-                                        <div class="roboto-font email">email2@sec.ac.bd</div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
                     </div>
                     <div class="d-flex mt-3 justify-content-end">
                         <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="update-semester-btn">
                             <i class='bx bx-list-plus me-2'></i>
-                            <span>Add</span>
+                            <span>Add to committee</span>
                         </button>
                     </div>
                 </div>
@@ -935,6 +911,7 @@
     const create_session_prevpoint_api = "{% url 'results:create_session_prevpoint_via_excel' semester.id %}";
     const toggle_enrollment_is_publishable_api = "{% url 'results:toggle_enrollment_is_publishable' %}";
     const add_new_entry_to_semester_api = "{% url 'results:add_semester_enroll' semester.id %}";
+    const committe_radio_html_api = "{% url 'results:committee_radios' %}";
     const delete_enrollment_api = "{% url 'results:delete_enrollment' %}";
     const session_url = "{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}";
     const semesterId = {{semester.id}};

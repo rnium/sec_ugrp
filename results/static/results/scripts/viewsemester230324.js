@@ -617,6 +617,19 @@ function createRegistration() {
     }
 }
 
+// Committee Section
+
+function load_committee_radios(e) {
+    $.ajax({
+        type: "get",
+        url: committe_radio_html_api + `?name=${e.target.value}`,
+        contentType: 'application/json',
+        success: function (response) {
+            $("#committeeModal .user-list").html(response.html);
+        }
+    });
+}
+
 $(document).ready(function () {
     showDevModal("committeeModal")
     $("#createCourseAddBtn").on('click', createCourse);
@@ -678,4 +691,7 @@ $(document).ready(function () {
     })
     // new registration
     $("#new_registration_add_button").on('click', createRegistration)
+    // Committee
+    $("#adminSearchInp").on('keyup', load_committee_radios);
+    $("#adminSearchInp").on('click', load_committee_radios);
 });

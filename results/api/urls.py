@@ -1,5 +1,6 @@
 from django.urls import path
 from results.api import views
+import results.api.committee_view as committee_views
 
 
 urlpatterns = [
@@ -41,6 +42,8 @@ urlpatterns = [
     path('sust-studentdata/', views.sust_student_data, name="sust_student_data"),
     # Academic Section
     path('academic-studentcerts/', views.academic_studentcerts_data, name="academic_studentcerts_data"),
+    # Committee
+    path('committee-radios/', committee_views.committee_radios, name="committee_radios"),
     
 ]
 
