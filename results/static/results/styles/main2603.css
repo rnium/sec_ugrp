@@ -623,11 +623,69 @@ body.light .view-session-container .session .value .batch-no, body.light .view-s
   color: #1d5461;
   background-color: #ebeaef;
 }
+body.light .view-session-container .title-main.running::after, body.light .view-semester-container .title-main.running::after {
+  background-color: rgba(4, 112, 80, 0.7) !important;
+}
+body.light .view-session-container .committee .member .member-profile, body.light .view-semester-container .committee .member .member-profile {
+  background-color: rgba(193, 208, 209, 0.3);
+}
+body.light .view-session-container .committee .member .member-profile .info .name, body.light .view-semester-container .committee .member .member-profile .info .name {
+  color: #555870;
+}
+body.light .view-session-container .committee .member .member-profile .info .email, body.light .view-semester-container .committee .member .member-profile .info .email {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  color: #9090a7;
+}
+body.light .view-session-container .committee .member .member-profile .info a, body.light .view-semester-container .committee .member .member-profile .info a {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+body.light .view-session-container .committee .member .action, body.light .view-semester-container .committee .member .action {
+  background-color: rgba(141, 163, 168, 0.4);
+}
+body.light .view-session-container .committee .member .action .designation, body.light .view-semester-container .committee .member .action .designation {
+  text-shadow: 0 0 50px;
+}
+body.light .view-session-container .committee .member .action .designation.chair, body.light .view-semester-container .committee .member .action .designation.chair {
+  color: rgb(236, 35, 79);
+}
+body.light .view-session-container .committee .member .action .designation.c-member, body.light .view-semester-container .committee .member .action .designation.c-member {
+  color: #569aad;
+}
+body.light .view-session-container .committee .member .action .designation.tabulator, body.light .view-semester-container .committee .member .action .designation.tabulator {
+  color: #4caa79;
+}
+body.light .view-session-container .committee .member .action button, body.light .view-semester-container .committee .member .action button {
+  background-color: rgba(129, 145, 154, 0.686);
+}
+body.light .view-session-container .committee .member .action button i, body.light .view-session-container .committee .member .action button span, body.light .view-semester-container .committee .member .action button i, body.light .view-semester-container .committee .member .action button span {
+  color: rgb(251, 255, 254);
+}
+body.light .view-session-container .committee .member .action button:hover, body.light .view-semester-container .committee .member .action button:hover {
+  background-color: rgba(129, 145, 154, 0.9);
+}
 body.light .view-session-container .all-registrations .student .student-profile, body.light .view-semester-container .all-registrations .student .student-profile {
   background-color: rgba(216, 237, 225, 0.7);
 }
 body.light .view-session-container .all-registrations .student.on-hold .student-profile, body.light .view-semester-container .all-registrations .student.on-hold .student-profile {
   background-color: rgba(216, 223, 237, 0.7);
+}
+body.light .view-session-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile, body.light .view-semester-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile {
+  background-color: #0d6dfd !important;
+}
+body.light .view-session-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile .name, body.light .view-semester-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile .name {
+  color: rgb(255, 255, 255) !important;
+}
+body.light .view-session-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile .email, body.light .view-semester-container .committee-modal .user-list .user .form-check-input:checked + label .admin-profile .email {
+  color: rgb(228, 250, 255) !important;
+}
+body.light .view-session-container .committee-modal .user-list .user .admin-profile, body.light .view-semester-container .committee-modal .user-list .user .admin-profile {
+  background-color: #ffffff !important;
+}
+body.light .view-session-container .committee-modal .user-list .user .admin-profile .name, body.light .view-session-container .committee-modal .user-list .user .admin-profile .email, body.light .view-semester-container .committee-modal .user-list .user .admin-profile .name, body.light .view-semester-container .committee-modal .user-list .user .admin-profile .email {
+  color: #9090a7 !important;
 }
 body.light header .navbar {
   background-color: #c8d2df;
@@ -1226,41 +1284,33 @@ body main .view-semester-container {
   overflow: hidden;
   position: relative;
 }
-body main .view-semester-container .running-sem-badge {
+body main .view-semester-container .title .title-main.running {
+  position: relative;
+}
+body main .view-semester-container .title .title-main.running::after {
+  display: block;
   position: absolute;
-}
-body main .view-semester-container .running-sem-badge .inner {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  content: "Running";
+  font-family: "Gemunu Libre", sans-serif;
+  color: #05c270;
+  font-size: 0.8rem;
+  padding: 2px 15px;
   background-color: rgba(4, 112, 80, 0.5);
-  padding: 2px 10px 2px 10px;
-  border-radius: 180px;
-}
-@keyframes glowAnimation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-body main .view-semester-container .running-sem-badge .inner .circle {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  background-color: rgb(0, 255, 191);
-  margin-right: 5px;
+  top: -30%;
+  right: -10%;
   border-radius: 180px;
   animation: glowAnimation 2s infinite;
 }
-body main .view-semester-container .running-sem-badge .inner .title {
-  font-family: "Gemunu Libre", sans-serif;
-  color: #05c270;
+@keyframes glowAnimation {
+  0% {
+    color: rgb(0, 255, 191);
+  }
+  50% {
+    color: rgba(0, 255, 191, 0.3);
+  }
+  100% {
+    color: rgb(0, 255, 191);
+  }
 }
 body main .view-semester-container .info {
   display: flex;
@@ -1300,14 +1350,14 @@ body main .view-semester-container .info .session .value .batch-no {
   color: #1d5461;
   background-color: #ebeaef;
 }
-body main .view-semester-container .all-courses .header, body main .view-semester-container .all-registrations .header {
+body main .view-semester-container .all-courses .header, body main .view-semester-container .all-registrations .header, body main .view-semester-container .committee .header {
   font-family: "Silkscreen", cursive;
   font-size: 1.5rem;
 }
-body main .view-semester-container .all-courses .courses .course-container, body main .view-semester-container .all-registrations .courses .course-container {
+body main .view-semester-container .all-courses .courses .course-container, body main .view-semester-container .all-registrations .courses .course-container, body main .view-semester-container .committee .courses .course-container {
   padding: 5px;
 }
-body main .view-semester-container .all-courses .courses .course-container .course, body main .view-semester-container .all-registrations .courses .course-container .course {
+body main .view-semester-container .all-courses .courses .course-container .course, body main .view-semester-container .all-registrations .courses .course-container .course, body main .view-semester-container .committee .courses .course-container .course {
   display: block;
   border: 1px solid #9090a7;
   border-left: 5px solid #9090a7;
@@ -1317,11 +1367,11 @@ body main .view-semester-container .all-courses .courses .course-container .cour
   padding: 1.5rem 0.5rem;
   position: relative;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .course-code, body main .view-semester-container .all-registrations .courses .course-container .course .course-code {
+body main .view-semester-container .all-courses .courses .course-container .course .course-code, body main .view-semester-container .all-registrations .courses .course-container .course .course-code, body main .view-semester-container .committee .courses .course-container .course .course-code {
   font-size: 2rem;
   font-family: "Gemunu Libre", sans-serif;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge {
+body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge, body main .view-semester-container .committee .courses .course-container .course .lab-course-badge {
   position: absolute;
   border-radius: 0 2px 0 5px;
   padding: 0 5px;
@@ -1333,51 +1383,51 @@ body main .view-semester-container .all-courses .courses .course-container .cour
   align-items: center;
   background-color: #9090a7;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge span, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge span {
+body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge span, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge span, body main .view-semester-container .committee .courses .course-container .course .lab-course-badge i, body main .view-semester-container .committee .courses .course-container .course .lab-course-badge span {
   color: #414958;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge i {
+body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge i, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge i, body main .view-semester-container .committee .courses .course-container .course .lab-course-badge i {
   font-size: 1.2rem;
 }
-body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge span, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge span {
+body main .view-semester-container .all-courses .courses .course-container .course .lab-course-badge span, body main .view-semester-container .all-registrations .courses .course-container .course .lab-course-badge span, body main .view-semester-container .committee .courses .course-container .course .lab-course-badge span {
   font-family: "Gemunu Libre", sans-serif;
 }
-body main .view-semester-container .all-courses .courses .course-container .course:hover, body main .view-semester-container .all-registrations .courses .course-container .course:hover {
+body main .view-semester-container .all-courses .courses .course-container .course:hover, body main .view-semester-container .all-registrations .courses .course-container .course:hover, body main .view-semester-container .committee .courses .course-container .course:hover {
   border-color: #00cfdd;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
   background-color: #1d5461;
 }
-body main .view-semester-container .all-courses .courses .course-container .course:hover .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course:hover .lab-course-badge {
+body main .view-semester-container .all-courses .courses .course-container .course:hover .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course:hover .lab-course-badge, body main .view-semester-container .committee .courses .course-container .course:hover .lab-course-badge {
   background-color: #00cfdd;
 }
-body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course {
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course, body main .view-semester-container .committee .courses .course-container .course.created-drop-course {
   border: 1px solid #ac5cd9;
   border-left: 5px solid #ac5cd9;
   border-right: 5px solid #ac5cd9;
   background-color: rgba(128, 30, 193, 0.1);
 }
-body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course .lab-course-badge {
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course .lab-course-badge, body main .view-semester-container .committee .courses .course-container .course.created-drop-course .lab-course-badge {
   background-color: #ac5cd9;
 }
-body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course:hover {
+body main .view-semester-container .all-courses .courses .course-container .course.created-drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.created-drop-course:hover, body main .view-semester-container .committee .courses .course-container .course.created-drop-course:hover {
   box-shadow: 0 0 10px #28293d;
   background-color: rgba(128, 30, 193, 0.3);
 }
-body main .view-semester-container .all-courses .courses .course-container .course.drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course {
+body main .view-semester-container .all-courses .courses .course-container .course.drop-course, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course, body main .view-semester-container .committee .courses .course-container .course.drop-course {
   border: 1px solid #ff8080;
   border-left: 5px solid #ff8080;
   border-right: 5px solid #ff8080;
   background-color: rgba(237, 41, 41, 0.1);
 }
-body main .view-semester-container .all-courses .courses .course-container .course.drop-course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course .lab-course-badge {
+body main .view-semester-container .all-courses .courses .course-container .course.drop-course .lab-course-badge, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course .lab-course-badge, body main .view-semester-container .committee .courses .course-container .course.drop-course .lab-course-badge {
   background-color: #ff8080;
 }
-body main .view-semester-container .all-courses .courses .course-container .course.drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course:hover {
+body main .view-semester-container .all-courses .courses .course-container .course.drop-course:hover, body main .view-semester-container .all-registrations .courses .course-container .course.drop-course:hover, body main .view-semester-container .committee .courses .course-container .course.drop-course:hover {
   border-color: #ff8080;
   box-shadow: 0 0 10px #28293d;
   background-color: rgba(237, 41, 41, 0.2);
 }
-body main .view-semester-container .all-courses .courses .course-container .adder, body main .view-semester-container .all-registrations .courses .course-container .adder {
+body main .view-semester-container .all-courses .courses .course-container .adder, body main .view-semester-container .all-registrations .courses .course-container .adder, body main .view-semester-container .committee .courses .course-container .adder {
   text-align: center;
   width: 100%;
   background-color: rgba(123, 144, 208, 0.5);
@@ -1386,10 +1436,10 @@ body main .view-semester-container .all-courses .courses .course-container .adde
   border: 0;
   transition: all 0.2s;
 }
-body main .view-semester-container .all-courses .courses .course-container .adder i, body main .view-semester-container .all-registrations .courses .course-container .adder i {
+body main .view-semester-container .all-courses .courses .course-container .adder i, body main .view-semester-container .all-registrations .courses .course-container .adder i, body main .view-semester-container .committee .courses .course-container .adder i {
   font-size: 4rem;
 }
-body main .view-semester-container .all-courses .courses .course-container .adder:hover, body main .view-semester-container .all-registrations .courses .course-container .adder:hover {
+body main .view-semester-container .all-courses .courses .course-container .adder:hover, body main .view-semester-container .all-registrations .courses .course-container .adder:hover, body main .view-semester-container .committee .courses .course-container .adder:hover {
   opacity: 0.8;
 }
 body main .view-semester-container .semester-info {
@@ -1404,6 +1454,86 @@ body main .view-semester-container .semester-info i.bg {
   position: absolute;
   bottom: -2rem;
   right: -1.5rem;
+}
+body main .view-semester-container .committee .member {
+  display: flex;
+  flex-direction: row;
+  margin: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body main .view-semester-container .committee .member .member-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: rgba(216, 237, 225, 0.2);
+  transition: all 300ms;
+}
+body main .view-semester-container .committee .member .member-profile .info div {
+  width: 100%;
+  text-align: left;
+}
+body main .view-semester-container .committee .member .member-profile .info .email {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  color: #9090a7;
+}
+body main .view-semester-container .committee .member .member-profile .info a {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+body main .view-semester-container .committee .member .action {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(141, 163, 168, 0.2);
+}
+body main .view-semester-container .committee .member .action .designation {
+  font-family: "Fraunces", sans-serif;
+}
+body main .view-semester-container .committee .member .action .designation.chair {
+  color: rgb(255, 189, 203);
+}
+body main .view-semester-container .committee .member .action .designation.c-member {
+  color: #3ab9dc;
+}
+body main .view-semester-container .committee .member .action .designation.tabulator {
+  color: #87ffc1;
+}
+body main .view-semester-container .committee .member .action button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  background-color: inherit;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: all 300ms;
+  background-color: rgba(212, 255, 236, 0.3);
+}
+body main .view-semester-container .committee .member .action button i {
+  font-size: 1.2rem;
+  margin-right: 5px;
+  transition: all 300ms;
+}
+body main .view-semester-container .committee .member .action button span {
+  font-size: 12px;
+  transition: all 300ms;
+}
+body main .view-semester-container .committee .member .action button i, body main .view-semester-container .committee .member .action button span {
+  color: rgb(251, 255, 254);
+}
+body main .view-semester-container .committee .member .action button:hover {
+  background-color: rgba(212, 255, 236, 0.4);
 }
 body main .view-semester-container .all-registrations {
   padding: 1rem;
@@ -1516,6 +1646,37 @@ body main .view-semester-container #dropCourseModal .modal-body .semester-contai
 }
 body main .view-semester-container #dropCourseModal .modal-body .semester-container .row:last-of-type {
   margin-bottom: 0;
+}
+body main .view-semester-container #committeeModal .user-list .user {
+  padding: 0;
+}
+body main .view-semester-container #committeeModal .user-list .user .form-check-input {
+  display: none;
+}
+body main .view-semester-container #committeeModal .user-list .user .form-check-input:checked + label .admin-profile {
+  background-color: rgba(0, 126, 161, 0.544);
+}
+body main .view-semester-container #committeeModal .user-list .user .form-check-input:checked + label .admin-profile .name {
+  color: rgb(0, 191, 255);
+}
+body main .view-semester-container #committeeModal .user-list .user .admin-profile {
+  background-color: rgba(79, 93, 101, 0.4);
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+body main .view-semester-container #committeeModal .user-list .user .admin-profile .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+body main .view-semester-container #committeeModal .user-list .user .admin-profile .info .name {
+  color: #bababa;
+  font-size: 1.2rem;
+}
+body main .view-semester-container #committeeModal .user-list .user .admin-profile .info .email {
+  font-size: 0.8rem;
 }
 body main .view-session-container .info {
   display: flex;

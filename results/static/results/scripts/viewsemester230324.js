@@ -618,6 +618,7 @@ function createRegistration() {
 }
 
 $(document).ready(function () {
+    showDevModal("committeeModal")
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
     $(".part-x-marks").on('keyup', function(){

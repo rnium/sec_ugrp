@@ -44,18 +44,21 @@
 {% endblock nav %}
 
 {% block content %}
-<div class="view-semester-container m-5 pt-4">
-    {% if semester.is_running %}
-    <div class="running-sem-badge">
-        <div class="inner">
-            <span class="circle"></span>
-            <span class="title">Running</span>
-        </div>
+<div class="view-semester-container m-5 pt-2">
+    <div class="btn-container col-md-9 d-flex justify-content-start mt-2">
+        <button class="btn btn- btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#carry-listing-modal">
+            <i class='bx bxs-group text-secondary me-1'></i>
+            {% comment %} <img src="{% static 'results/images/groups.png' %}" width="30px" alt=""> {% endcomment %}
+            <span class="roboto-font text-muted ms-1" style="font-size: 0.8rem;">Exam Committee</span>
+        </button>
     </div>
-    {% endif %}
     <div class="info">
-        <div class="title fs-1 text-secondary">
-            {{semester.semester_name}}
+        <div class="title">
+            {% if semester.is_running %}
+            <div class="title-main running fs-1 text-success">{{semester.semester_name}}</div>
+            {% else %}
+            <div class="title-main fs-1 text-secondary">{{semester.semester_name}}</div>
+            {% endif %}
         </div>
         {% if semester.part_no or semester.repeat_number  %}
         <div class="title fs-3">
@@ -75,6 +78,71 @@
                 <i class='bx bx-calendar fs-4 me-1 text-info'></i>
                 <span class="fs-6 text-info">{{semester.start_month}}</span>
             </div>
+        </div>
+    </div>
+    <div class="committee bg-material p-3 mt-4 rounded-3 border-b-1">
+        <div class="header text-center">Exam Committee</div>
+        <div class="row p-3 committee-list">
+            <div class="col-md-4 p-1">
+                <div class="member rounded-3">
+                    <div class="member-profile bg-material py-4">
+                        <img src="/images/blank-dp.svg" alt="" class="dp mb-2">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="email">ronyeee@sec.ac.bd</div>
+                        </div>
+                    </div>
+                    <div class="action p-2 w-100">
+                        <div class="designation chair ms-2">Chairman</div>
+                        <button class="hold me-2">
+                            <i class='bx bx-user-minus me-2'></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 p-1">
+                <div class="member rounded-3">
+                    <div class="member-profile bg-material py-4">
+                        <img src="/images/blank-dp.svg" alt="" class="dp mb-2">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="email">ronyeee@sec.ac.bd</div>
+                        </div>
+                    </div>
+                    <div class="action p-2 w-100">
+                        <div class="designation c-member ms-2">Member</div>
+                        <button class="hold me-2">
+                            <i class='bx bx-user-minus me-2'></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 p-1">
+                <div class="member rounded-3">
+                    <div class="member-profile bg-material py-4">
+                        <img src="/images/blank-dp.svg" alt="" class="dp mb-2">
+                        <div class="info">
+                            <div class="name">Md Saiful Islam Rony</div>
+                            <div class="email">ronyeee@sec.ac.bd</div>
+                        </div>
+                    </div>
+                    <div class="action p-2 w-100">
+                        <div class="designation tabulator ms-2">Tabulator</div>
+                        <!-- <button class="hold me-2">
+                            <i class='bx bx-user-minus me-2'></i>
+                            <span>Remove</span>
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="member-adder-container d-flex justify-content-end pe-2">
+            <button class="btn btn-primary btn-iconized px-4 me-1" data-bs-toggle="modal" data-bs-target="#committeeModal">
+                <i class='bx bxs-user-plus me-2'></i>
+                <span class="roboto-font">Add</span>
+            </button>
         </div>
     </div>
     <div class="all-courses bg-material p-3 mt-4 rounded-3 border-b-1">
@@ -582,6 +650,62 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- Committee Modal -->
+    <div class="modal fade" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material shadow">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Add New Member</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="form-floating mb-2">
+                        <select class="form-select" id="floatingSelectGrid">
+                            <option selected value="null">Select</option>
+                            <option value="chair">Chairman</option>
+                            <option value="member">Member</option>
+                            <option value="tabulator">Tabulator</option>
+                        </select>
+                        <label for="floatingSelectGrid">Commettee member type</label>
+                    </div>                  
+                    <input class="form-control py-2" type="text" placeholder="Name of admin" aria-label="default input example">
+                    <div class="user-list mt-2">
+                        <div class="user form-check">
+                            <input class="form-check-input" type="radio" name="adminEmailRadios" id="adminNameRadio" value="some@sec.ac.bd">
+                            <label class="form-check-label small d-block" for="adminNameRadio">
+                                <div class="admin-profile d-flex px-3 py-2 w-100 rounded">
+                                    <img src="./images/blank-dp.svg" alt="" class="dp">
+                                    <div class="info ms-1">
+                                        <div class="name" >Name</div>
+                                        <div class="roboto-font email">email@sec.ac.bd</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="user form-check">
+                            <input class="form-check-input" type="radio" name="adminEmailRadios" id="admin2NameRadio" value="some2@sec.ac.bd">
+                            <label class="form-check-label small d-block" for="admin2NameRadio">
+                                <div class="admin-profile d-flex px-3 py-2 w-100 rounded">
+                                    <img src="./images/blank-dp.svg" alt="" class="dp">
+                                    <div class="info ms-1">
+                                        <div class="name" >Name2</div>
+                                        <div class="roboto-font email">email2@sec.ac.bd</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-3 justify-content-end">
+                        <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="update-semester-btn">
+                            <i class='bx bx-list-plus me-2'></i>
+                            <span>Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Semester Update Modal -->
     <div class="modal fade" id="semesterEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
