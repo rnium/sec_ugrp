@@ -82,7 +82,8 @@
     </div>
     <div class="committee bg-material p-3 mt-4 rounded-3 border-b-1">
         <div class="header text-center">Exam Committee</div>
-        <div class="row p-3 committee-list">
+        <div class="row p-3 committee-list" id="committee-list">
+            {% if semester.committee_members %}
             {% for member in semester.committee_members %}
             <div class="col-md-4 p-1">
                 <div class="member rounded-3">
@@ -97,15 +98,22 @@
                         <div class="designation {{member.codename}} ms-2">
                             {{member.title}}
                         </div>
-                        <button class="hold me-2" data-url="{% url 'results:remove_committee_member' semester.id member.admin.id member.codename %}">
+                        {% if request.user.adminaccount.is_super_admin %}
+                        <button class="hold remove-committee-member-btn me-2" data-url="{% url 'results:remove_committee_member' semester.id member.admin.id member.codename %}">
                             <i class='bx bx-user-minus me-2'></i>
                             <span>Remove</span>
                         </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             {% endfor %}
-            
+            {% else %}
+            <div class="no-content py-3 mt-2 d-flex flex-column justify-content-center align-items-center">
+                <i class='bx bx-info-circle fs-1 text-warning'></i>
+                <div class="info fs-3 mt-2 text-secondary">No Members</div>
+            </div>
+            {% endif %}
         </div>
         {% if request.user.adminaccount.is_super_admin %}
         <div class="member-adder-container d-flex justify-content-end pe-2">

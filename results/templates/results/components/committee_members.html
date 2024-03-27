@@ -1,0 +1,31 @@
+{% if semester.committee_members %}
+{% for member in semester.committee_members %}
+<div class="col-md-4 p-1">
+    <div class="member rounded-3">
+        <div class="member-profile bg-material py-4">
+            <img src="{{member.admin.avatar_url}}" alt="" class="dp mb-2">
+            <div class="info d-flex flex-column justify-content-center align-items-center">
+                <div class="name text-center">{{member.admin.user_full_name}}</div>
+                <div class="email text-center">{{member.admin.user.email}}</div>
+            </div>
+        </div>
+        <div class="action p-2 w-100">
+            <div class="designation {{member.codename}} ms-2">
+                {{member.title}}
+            </div>
+            {% if request.user.adminaccount.is_super_admin %}
+            <button class="hold remove-committee-member-btn me-2" data-url="{% url 'results:remove_committee_member' semester.id member.admin.id member.codename %}">
+                <i class='bx bx-user-minus me-2'></i>
+                <span>Remove</span>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="no-content py-3 mt-2 d-flex flex-column justify-content-center align-items-center">
+    <i class='bx bx-info-circle fs-1 text-warning'></i>
+    <div class="info fs-3 mt-2 text-secondary">No Members</div>
+</div>
+{% endif %}

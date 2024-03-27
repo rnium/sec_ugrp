@@ -56,11 +56,12 @@ def add_committee_member(request, pk):
     else:
         return Response(data={'detail': "Undefined member type"}, status=status.HTTP_400_BAD_REQUEST)
     committee.save()
-    return Response(data={'info': 'updated'})
+    html_content = render_to_string('results/components/committee_members.html', context={'semester': semester, 'request': request})
+    return Response(data={'info': 'updated', 'html': html_content})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsSuperAdmin])
-def remove_committee_member(semester_pk, admin_pk, member_type):
+def remove_committee_member(request, semester_pk, admin_pk, member_type):
     semester = get_object_or_404(Semester, pk=semester_pk)
     committee, created = ExamCommittee.objects.get_or_create(semester=semester)
     admin = get_object_or_404(AdminAccount, id=admin_pk)
@@ -69,8 +70,10 @@ def remove_committee_member(semester_pk, admin_pk, member_type):
     elif member_type == 'c-member' and admin in committee.members.all():
         committee.members.remove(admin)
     elif member_type == 'tabulator' and admin in committee.tabulators.all():
-        committee.members.remove(admin)
+        committee.tabulators.remove(admin)
+        print('tabulator go', flush=1)
     else:
         Response(data={"detail": "Specified member type mismatch for the user"})
     committee.save()
-    return Response(data={'info': 'Member removed'})
+    html_content = render_to_string('results/components/committee_members.html', context={'semester': semester, 'request': request})
+    return Response(data={'info': 'Member removed', 'html': html_content})

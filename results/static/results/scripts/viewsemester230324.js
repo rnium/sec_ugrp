@@ -630,6 +630,10 @@ function load_committee_radios(e) {
     });
 }
 
+function bind_remove_event() {
+    $(".remove-committee-member-btn").on('click', remove_committee_member)
+}
+
 function add_committee_member() {
     let data = {
         user_pk: parseInt($("input[name='adminIdRadios']:checked").val()),
@@ -649,6 +653,8 @@ function add_committee_member() {
         cache: false,
         success: function(response) {
             showInfo('addCommitteeAlert', "Added successfully");
+            $('#committee-list').html(response.html);
+            setTimeout(bind_remove_event, 100);
         },
         error: function(xhr, status, _error) {
             try {
@@ -659,6 +665,37 @@ function add_committee_member() {
         },
         complete: function() {
             $("#addCommitteeBtn").removeAttr("disabled");
+        }
+    });
+}
+
+function remove_committee_member() {
+    if (!confirm("Are you sure to remove this member from committee?")) {
+        return;
+    }
+    const api_url = $(this).data('url');
+    $.ajax({
+        type: "POST",
+        url: api_url,
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $(this).attr("disabled", true)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        cache: false,
+        success: function(response) {
+            $('#committee-list').html(response.html);
+            setTimeout(() => bind_remove_event(), 100);
+        },
+        error: function(xhr, status, _error) {
+            try {
+                alert(JSON.stringify(xhr.responseJSON));
+            } catch (error) {
+                alert(JSON.stringify(_error))
+            }
+        },
+        complete: function() {
+            $(this).removeAttr("disabled");
         }
     });
 }
@@ -727,4 +764,5 @@ $(document).ready(function () {
     $("#adminSearchInp").on('keyup', load_committee_radios);
     $("#adminSearchInp").on('click', load_committee_radios);
     $("#addCommitteeBtn").on('click', add_committee_member);
+    bind_remove_event();
 });
