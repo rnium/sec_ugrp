@@ -44,18 +44,21 @@
 {% endblock nav %}
 
 {% block content %}
-<div class="view-semester-container m-5 pt-4">
-    {% if semester.is_running %}
-    <div class="running-sem-badge">
-        <div class="inner">
-            <span class="circle"></span>
-            <span class="title">Running</span>
-        </div>
+<div class="view-semester-container m-5 pt-2">
+    <div class="btn-container col-md-9 d-flex justify-content-start mt-2">
+        <button class="btn btn- btn-iconized px-4" {% if is_committee_shown %}data-status="shown"{% else %}data-status="hidden"{% endif %} id="committee-toggle">
+            <i class='bx bxs-group {% if is_committee_shown %}text-info{% else %}text-secondary{% endif %} me-1'></i>
+            {% comment %} <img src="{% static 'results/images/groups.png' %}" width="30px" alt=""> {% endcomment %}
+            <span class="roboto-font {% if is_committee_shown %}text-info{% else %}text-secondary{% endif %} ms-1" style="font-size: 0.8rem;">Exam Committee</span>
+        </button>
     </div>
-    {% endif %}
     <div class="info">
-        <div class="title fs-1 text-secondary">
-            {{semester.semester_name}}
+        <div class="title">
+            {% if semester.is_running %}
+            <div class="title-main running fs-1 text-success">{{semester.semester_name}}</div>
+            {% else %}
+            <div class="title-main fs-1 text-secondary">{{semester.semester_name}}</div>
+            {% endif %}
         </div>
         {% if semester.part_no or semester.repeat_number  %}
         <div class="title fs-3">
@@ -76,6 +79,51 @@
                 <span class="fs-6 text-info">{{semester.start_month}}</span>
             </div>
         </div>
+    </div>
+    <div class="committee bg-material p-3 mt-4 rounded-3 border-b-1" {% if not is_committee_shown %} style="display: none;" {% endif %} id='committee-con'>
+        <div class="header text-center">Exam Committee</div>
+        <div class="row p-3 committee-list" id="committee-list">
+            {% if semester.committee_members %}
+            {% for member in semester.committee_members %}
+            <div class="col-md-4 p-1">
+                <div class="member rounded-3">
+                    <div class="member-profile bg-material py-4">
+                        <img src="{{member.admin.avatar_url}}" alt="" class="dp mb-2">
+                        <div class="info d-flex flex-column justify-content-center align-items-center">
+                            <div class="name text-center">{{member.admin.user_full_name}}</div>
+                            <div class="email text-center">{{member.admin.user.email}}</div>
+                        </div>
+                    </div>
+                    <div class="action p-2 w-100">
+                        <div class="designation {{member.codename}} ms-2">
+                            {{member.title}}
+                        </div>
+                        {% if request.user.adminaccount.is_super_admin %}
+                        <button class="hold remove-committee-member-btn me-2" data-url="{% url 'results:remove_committee_member' semester.id member.admin.id member.codename %}">
+                            <i class='bx bx-user-minus me-2'></i>
+                            <span>Remove</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-content py-3 mt-2 d-flex flex-column justify-content-center align-items-center">
+                <i class='bx bx-info-circle fs-1 text-warning'></i>
+                <div class="info fs-3 mt-2 text-secondary">No Members</div>
+            </div>
+            {% endif %}
+        </div>
+        {% if request.user.adminaccount.is_super_admin %}
+        <div class="member-adder-container d-flex justify-content-end pe-2">
+            <button class="btn btn-primary btn-iconized px-4 me-1" data-bs-toggle="modal" data-bs-target="#committeeModal">
+                <i class='bx bxs-user-plus me-2'></i>
+                <span class="roboto-font">Add</span>
+            </button>
+        </div>
+        {% endif %}
+        
     </div>
     <div class="all-courses bg-material p-3 mt-4 rounded-3 border-b-1">
         <div class="header text-center">All Courses</div>
@@ -583,6 +631,40 @@
     </div>
     {% endif %}
 
+    <!-- Committee Modal -->
+    <div class="modal fade committee-modal" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-material shadow">
+                <div class="modal-header">
+                    <div class="modal-title text-info">Add Committee Member</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="form-floating mb-2">
+                        <select class="form-select" id="memberTypeSelect">
+                            <option selected value="null" class="text-muted">Select</option>
+                            <option value="chair" class="text-muted">Chairman</option>
+                            <option value="member" class="text-muted">Member</option>
+                            <option value="tabulator" class="text-muted">Tabulator</option>
+                        </select>
+                        <label for="memberTypeSelect">Commettee member type</label>
+                    </div>                  
+                    <input class="form-control py-2" autocomplete="off" id="adminSearchInp" type="text" placeholder="Name or email of admin" aria-label="default input example">
+                    <div class="user-list mt-2">
+                    </div>
+                    <div id="addCommitteeAlert" class="alert alert-danger mt-2 mb-2 text-center" role="alert" style="display: none;">
+                    </div>   
+                    <div class="d-flex mt-3 justify-content-end">
+                        <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="addCommitteeBtn">
+                            <i class='bx bx-list-plus me-2'></i>
+                            <span>Add to committee</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Semester Update Modal -->
     <div class="modal fade" id="semesterEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -811,8 +893,10 @@
     const create_session_prevpoint_api = "{% url 'results:create_session_prevpoint_via_excel' semester.id %}";
     const toggle_enrollment_is_publishable_api = "{% url 'results:toggle_enrollment_is_publishable' %}";
     const add_new_entry_to_semester_api = "{% url 'results:add_semester_enroll' semester.id %}";
+    const committe_radio_html_api = "{% url 'results:committee_radios' %}";
     const delete_enrollment_api = "{% url 'results:delete_enrollment' %}";
     const session_url = "{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}";
+    const add_committee_member_api = "{% url 'results:add_committee_member' semester.id %}";
     const semesterId = {{semester.id}};
     const semesterNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";

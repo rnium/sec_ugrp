@@ -1,0 +1,29 @@
+{% load static %}
+
+{% if admin_qs %}
+{% for admin in admin_qs %}
+<div class="user form-check">
+    <input class="form-check-input" type="radio" name="adminIdRadios" id="admin-{{admin.id}}Radio" value="{{admin.id}}">
+    <label class="form-check-label small d-block" for="admin-{{admin.id}}Radio">
+        <div class="admin-profile d-flex px-3 py-2 w-100 rounded">
+            <img src="{{admin.avatar_url}}" alt="" class="dp">
+            <div class="info ms-1">
+                <div class="name" >{{admin.user_full_name}}</div>
+                <div class="roboto-font email">{{admin.user.email}}</div>
+            </div>
+        </div>
+    </label>
+</div>
+{% endfor %}
+{% else %}
+<div class="user no-user">
+    <label class="form-check-label small d-block">
+        <div class="admin-profile d-flex justify-content-center p-3 w-100 rounded">
+            <img src="{% static 'results/images/warning.png' %}" width="50px" alt="">
+            <div class="info ms-2">
+                <div class="name" >No Users</div>
+            </div>
+        </div>
+    </label>
+</div>
+{% endif %}

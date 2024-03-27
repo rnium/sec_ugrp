@@ -203,6 +203,40 @@ class Semester(models.Model):
         if duration:= self.exam_duration:
             return duration
         return "<DURATION UNSPECIFIED>"
+    
+    @property
+    def committee_members(self):
+        members = []
+        if hasattr(self, 'examcommittee'):
+            committee = self.examcommittee
+            if committee.chairman:
+                members.append({
+                    'admin': committee.chairman,
+                    'title': 'Chairman',
+                    'codename': 'chair'
+                })
+            for member in committee.members.all():
+                members.append({
+                    'admin': member,
+                    'title': 'Member',
+                    'codename': 'c-member'
+                })
+            for tabulator in committee.tabulators.all():
+                members.append({
+                    'admin': tabulator,
+                    'title': 'Tabulator',
+                    'codename': 'tabulator'
+                })
+        return members
+
+
+class ExamCommittee(models.Model):
+    semester = models.OneToOneField(Semester, on_delete=models.CASCADE)
+    chairman = models.ForeignKey('account.AdminAccount', null=True, blank=True, on_delete=models.SET_NULL)
+    members = models.ManyToManyField('account.AdminAccount', related_name='committee_member')
+    tabulators = models.ManyToManyField('account.AdminAccount', related_name='committee_tabulator')
+    last_updated = models.DateTimeField(auto_now=True)
+
 
 class SemesterEnroll(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)

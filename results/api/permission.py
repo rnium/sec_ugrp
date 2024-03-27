@@ -12,3 +12,7 @@ class IsCampusAdmin(BasePermission):
             return True
         else:
             return (request.user.adminaccount.dept.name == obj.dept.name)
+        
+class IsSuperAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return (hasattr(request.user, 'adminaccount') and request.user.adminaccount.is_super_admin)
