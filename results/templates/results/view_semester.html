@@ -652,7 +652,7 @@
     {% endif %}
 
     <!-- Committee Modal -->
-    <div class="modal fade" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade committee-modal" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-material shadow">
                 <div class="modal-header">
@@ -662,10 +662,10 @@
                 <div class="modal-body">
                     <div class="form-floating mb-2">
                         <select class="form-select" id="floatingSelectGrid">
-                            <option selected value="null">Select</option>
-                            <option value="chair">Chairman</option>
-                            <option value="member">Member</option>
-                            <option value="tabulator">Tabulator</option>
+                            <option selected value="null" class="text-muted">Select</option>
+                            <option value="chair" class="text-muted">Chairman</option>
+                            <option value="member" class="text-muted">Member</option>
+                            <option value="tabulator" class="text-muted">Tabulator</option>
                         </select>
                         <label for="floatingSelectGrid">Commettee member type</label>
                     </div>                  
