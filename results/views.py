@@ -185,7 +185,7 @@ class SemesterView(DeptAdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         semester = context['semester']
-        committee = self.request.COOKIES.get("committee", "shown")
+        committee = self.request.COOKIES.get("committee", "hidden")
         if committee == "shown":
             context['is_committee_shown'] = True
         context['request'] = self.request
