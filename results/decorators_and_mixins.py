@@ -37,6 +37,15 @@ def superadmin_or_deptadmin_required(view_func):
     return wrapper
 
 
+class AdminRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("account:user_login_get")
+        if hasattr(request.user, 'adminaccount'):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return render_error(request, "Forbidden", "You must have to be a staff to access this page.")
+        
 class DeptAdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -58,3 +67,12 @@ class SuperAdminRequiredMixin:
             return super().dispatch(request, *args, **kwargs)
         else:
             return render_error(request, "Forbidden", "You must have to be SuperAdmin to access this page.")
+        
+class SuperOrDeptAdminRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("account:user_login_get")
+        if hasattr(request.user, 'adminaccount') and (request.user.adminaccount.dept is not None or (request.user.adminaccount.is_super_admin)):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return render_error(request, "Forbidden", "You must have to be Super or DeptAdmin to access this page.")

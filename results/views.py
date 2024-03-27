@@ -25,6 +25,7 @@ from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
                                            superadmin_or_deptadmin_required,
+                                           SuperOrDeptAdminRequiredMixin,
                                            DeptAdminRequiredMixin,
                                            SuperAdminRequiredMixin)
 from .data_processors import get_semester_table_data, get_courseresults_data
@@ -65,16 +66,20 @@ def homepage(request):
         context = {}
         context['request'] = request
         department_semesters = []
-        if request.user.adminaccount.is_super_admin:
-            departments = Department.objects.all()
-        else:
-            departments = [request.user.adminaccount.dept]
+        departments = Department.objects.all()
         for dept in departments:
             semesters = Semester.objects.filter(session__dept=dept, is_running=True).order_by('session__from_year', "-added_in")
+            affiliated_semester_list = []
+            for sem in semesters:
+                committe_admins = [comm_dict['admin'] for comm_dict in sem.committee_members]
+                admin_ac = request.user.adminaccount
+                if (not admin_ac.is_super_admin) and (admin_ac not in committe_admins):
+                    continue
+                affiliated_semester_list.append(sem)
             department_semesters.append(
                 {
                     'name': dept.name.upper(),
-                    'semesters': semesters
+                    'semesters': affiliated_semester_list
                 }
             )
         context['departments'] = department_semesters
@@ -104,7 +109,7 @@ class SecAcademicHome(LoginRequiredMixin, TemplateView):
         else:
             return HttpResponseForbidden("Forbidden: You must be an academic staff to access this page.")
 
-class DepartmentView(DeptAdminRequiredMixin, DetailView):
+class DepartmentView(SuperOrDeptAdminRequiredMixin, DetailView):
     template_name = "results/view_department.html"
     
     def get_dept(self):
@@ -132,19 +137,16 @@ class CustomdocMakerView(SuperAdminRequiredMixin, TemplateView):
     template_name = "results/customdocmaker.html"
     
 
-@superadmin_or_deptadmin_required 
+@superadmin_or_deptadmin_required
 def departments_all(request):
-    if request.user.adminaccount.is_super_admin:
-        context = {
+    context = {
             "departments": Department.objects.all(),
             "request": request
         }
-        return render(request, "results/departments_all.html", context=context)
-    else:
-        return redirect('results:view_department', dept_name=request.user.adminaccount.dept.name)
+    return render(request, "results/departments_all.html", context=context)
 
 
-class SessionView(DeptAdminRequiredMixin, DetailView):
+class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
     template_name = "results/view_session.html"
     
     def get_dept(self):

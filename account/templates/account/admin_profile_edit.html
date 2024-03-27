@@ -83,7 +83,7 @@
                             <div class="super-admin"></div>
                             {% endif %}
                             {% if admin.dept is not None %}
-                            <div class="dept">{{admin.dept.name}}</div>
+                            <div class="dept">{{admin.dept.name|upper}}</div>
                             {% endif %}
                           </div>
                         </div>
