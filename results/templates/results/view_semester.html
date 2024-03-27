@@ -46,10 +46,10 @@
 {% block content %}
 <div class="view-semester-container m-5 pt-2">
     <div class="btn-container col-md-9 d-flex justify-content-start mt-2">
-        <button class="btn btn- btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#carry-listing-modal">
-            <i class='bx bxs-group text-secondary me-1'></i>
+        <button class="btn btn- btn-iconized px-4" {% if is_committee_shown %}data-status="shown"{% else %}data-status="hidden"{% endif %} id="committee-toggle">
+            <i class='bx bxs-group {% if is_committee_shown %}text-info{% else %}text-secondary{% endif %} me-1'></i>
             {% comment %} <img src="{% static 'results/images/groups.png' %}" width="30px" alt=""> {% endcomment %}
-            <span class="roboto-font text-muted ms-1" style="font-size: 0.8rem;">Exam Committee</span>
+            <span class="roboto-font {% if is_committee_shown %}text-info{% else %}text-secondary{% endif %} ms-1" style="font-size: 0.8rem;">Exam Committee</span>
         </button>
     </div>
     <div class="info">
@@ -80,7 +80,7 @@
             </div>
         </div>
     </div>
-    <div class="committee bg-material p-3 mt-4 rounded-3 border-b-1">
+    <div class="committee bg-material p-3 mt-4 rounded-3 border-b-1" {% if not is_committee_shown %} style="display: none;" {% endif %} id='committee-con'>
         <div class="header text-center">Exam Committee</div>
         <div class="row p-3 committee-list" id="committee-list">
             {% if semester.committee_members %}

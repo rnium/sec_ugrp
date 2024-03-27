@@ -38,11 +38,15 @@ function showNotification(msg) {
     mBootstrap.show()
 }
 
-// const saveBtn = document.getElementById("save-btn")
-// saveBtn.addEventListener('click', ()=>{
-//     // do some saving stuff
-//     showNotification("Saved Successfully!")
-// })
+
+function setCommitteeCookie(value) {
+    let date = new Date()
+    let path = "path=/"
+    date.setTime(date.getTime() + (3600 * 1000 * 24 * 7))
+    let expires = "expires=" + date.toUTCString();
+    let cookiestr = `committee=${value};${expires};${path};sameSite=lax`;
+    document.cookie = cookiestr;
+}
 
 
 function showDevModal(id) {
@@ -619,6 +623,27 @@ function createRegistration() {
 
 // Committee Section
 
+function toggleCommittee() {
+    const committee_toggle_status = $("#committee-toggle").data('status');
+    if (committee_toggle_status === 'shown') {
+        $('#committee-con').hide(200);
+        $("#committee-toggle").data('status', 'hidden');
+        $("#committee-toggle i").removeClass('text-info');
+        $("#committee-toggle span").removeClass('text-info');
+        $("#committee-toggle i").addClass('text-secondary');
+        $("#committee-toggle span").addClass('text-secondary');
+        setCommitteeCookie('hidden')
+    } else {
+        $('#committee-con').show(200);
+        $("#committee-toggle").data('status', 'shown');
+        $("#committee-toggle i").removeClass('text-secondary');
+        $("#committee-toggle span").removeClass('text-secondary');
+        $("#committee-toggle i").addClass('text-info');
+        $("#committee-toggle span").addClass('text-info');
+        setCommitteeCookie('shown')
+    }
+}
+
 function load_committee_radios(e) {
     $.ajax({
         type: "get",
@@ -764,5 +789,6 @@ $(document).ready(function () {
     $("#adminSearchInp").on('keyup', load_committee_radios);
     $("#adminSearchInp").on('click', load_committee_radios);
     $("#addCommitteeBtn").on('click', add_committee_member);
+    $("#committee-toggle").on('click', toggleCommittee)
     bind_remove_event();
 });
