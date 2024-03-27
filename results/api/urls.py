@@ -45,6 +45,7 @@ urlpatterns = [
     # Committee
     path('committee-radios/', committee_views.committee_radios, name="committee_radios"),
     path('committee-addmember/<int:pk>/', committee_views.add_committee_member, name="add_committee_member"),
+    path('committee-removemember/<int:semester_pk>/<int:admin_pk>/<str:member_type>/', committee_views.remove_committee_member, name="remove_committee_member"),
     
 ]
 

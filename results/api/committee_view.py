@@ -1,5 +1,4 @@
 from django.core.files.base import ContentFile
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
@@ -46,7 +45,7 @@ def committee_radios(request): # Searching for an admin for the semester committ
 def add_committee_member(request, pk):
     semester = get_object_or_404(Semester, pk=pk)
     committee, created = ExamCommittee.objects.get_or_create(semester=semester)
-    user = get_object_or_404(AdminAccount, user__id=request.data.get('user_pk'))
+    user = get_object_or_404(AdminAccount, id=request.data.get('user_pk'))
     member_type = request.data.get('member_type')
     if member_type == 'chair':
         committee.chairman = user
@@ -58,3 +57,20 @@ def add_committee_member(request, pk):
         return Response(data={'detail': "Undefined member type"}, status=status.HTTP_400_BAD_REQUEST)
     committee.save()
     return Response(data={'info': 'updated'})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsSuperAdmin])
+def remove_committee_member(semester_pk, admin_pk, member_type):
+    semester = get_object_or_404(Semester, pk=semester_pk)
+    committee, created = ExamCommittee.objects.get_or_create(semester=semester)
+    admin = get_object_or_404(AdminAccount, id=admin_pk)
+    if member_type == 'chair' and committee.chairman == admin:
+        committee.chairman = None
+    elif member_type == 'c-member' and admin in committee.members.all():
+        committee.members.remove(admin)
+    elif member_type == 'tabulator' and admin in committee.tabulators.all():
+        committee.members.remove(admin)
+    else:
+        Response(data={"detail": "Specified member type mismatch for the user"})
+    committee.save()
+    return Response(data={'info': 'Member removed'})
