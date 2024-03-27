@@ -1,5 +1,5 @@
 from django.core.files.base import ContentFile
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
@@ -19,24 +19,15 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin
-from results.models import (Department, Session, Semester, Course, PreviousPoint,
-                            CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
-                            SupplementaryDocument)
+from results.models import (Department, Session, Semester, ExamCommittee)
 from account.models import StudentAccount, AdminAccount
-from . import utils
-from . import excel_parsers
-from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix
-from results.pdf_generators.tabulation_generator import get_tabulation_files
-from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
-from results.pdf_generators.transcript_generator_manual import get_transcript
-from results.pdf_generators.topsheet_generator import render_topsheet
-from results.pdf_generators.scorelist_generator import render_scorelist
-from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.tasks import restore_dept_data_task, restore_session_data_task
 from results.decorators_and_mixins import superadmin_required, superadmin_or_deptadmin_required
+from results.api.permission import IsSuperAdmin
 from django.conf import settings
 
 disallowed_committee_admin_types = ['sust', 'academic']
+
 
 @api_view()
 def committee_radios(request): # Searching for an admin for the semester committee selection
@@ -48,3 +39,22 @@ def committee_radios(request): # Searching for an admin for the semester committ
     admins_qs_final = admins_qs_firstname | admins_qs_email
     html_content = render_to_string('results/components/admin_radios.html', context={'admin_qs': admins_qs_final[:5]})
     return Response(data={'html': html_content})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsSuperAdmin])
+def add_committee_member(request, pk):
+    semester = get_object_or_404(Semester, pk=pk)
+    committee, created = ExamCommittee.objects.get_or_create(semester=semester)
+    user = get_object_or_404(AdminAccount, user__id=request.data.get('user_pk'))
+    member_type = request.data.get('member_type')
+    if member_type == 'chair':
+        committee.chairman = user
+    elif member_type == 'member':
+        committee.members.add(user)
+    elif member_type == 'tabulator':
+        committee.tabulators.add(user)
+    else:
+        return Response(data={'detail': "Undefined member type"}, status=status.HTTP_400_BAD_REQUEST)
+    committee.save()
+    return Response(data={'info': 'updated'})

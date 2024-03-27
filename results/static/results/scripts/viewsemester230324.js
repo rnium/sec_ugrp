@@ -630,6 +630,39 @@ function load_committee_radios(e) {
     });
 }
 
+function add_committee_member() {
+    let data = {
+        user_pk: parseInt($("input[name='adminIdRadios']:checked").val()),
+        member_type: $("#memberTypeSelect").val(),
+    }
+    $.ajax({
+        type: "POST",
+        url: add_committee_member_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            $("#addCommitteeAlert").hide();
+            $("#addCommitteeBtn").attr("disabled", true)
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        },
+        data: JSON.stringify(data),
+        cache: false,
+        success: function(response) {
+            showInfo('addCommitteeAlert', "Added successfully");
+        },
+        error: function(xhr, status, _error) {
+            try {
+                showError("addCommitteeAlert", JSON.stringify(xhr.responseJSON));
+            } catch (error) {
+                showError("updateSemesterAlert", _error);
+            }
+        },
+        complete: function() {
+            $("#addCommitteeBtn").removeAttr("disabled");
+        }
+    });
+}
+
 $(document).ready(function () {
     showDevModal("committeeModal")
     $("#createCourseAddBtn").on('click', createCourse);
@@ -694,4 +727,5 @@ $(document).ready(function () {
     // Committee
     $("#adminSearchInp").on('keyup', load_committee_radios);
     $("#adminSearchInp").on('click', load_committee_radios);
+    $("#addCommitteeBtn").on('click', add_committee_member);
 });
