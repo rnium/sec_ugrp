@@ -159,7 +159,7 @@
             {% endfor %}
             {% for course in courses_created_drop %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course created-drop-course" href="{% url 'results:view_course' semester.session.dept.name course.b64_id %}?from={{ semester.session.id }}&sem={{ semester.id }}">
+                <a class="course created-drop-course" href="{% url 'results:view_course' semester.session.dept.name course.b64_id %}">
                     <div class="course-code text-center">{{course.code}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:30}}</div>
                     <div class="d-flex justify-content-center mt-2">
@@ -209,7 +209,7 @@
             
             
         </div>
-        {% if semester.is_running %}
+        {% if semester.is_running and editor_access %}
         <div class="course-adder-container mt-2 d-flex justify-content-end border-top pt-3">
             <button class="btn btn-primary btn-iconized px-4 me-2" data-bs-toggle="modal" data-bs-target="#newEntryModal">
                 <i class='bx bx-list-plus me-2'></i>
@@ -392,11 +392,11 @@
                     </div>
                 </div>
                 <div class="btn-container py-2 w-100">
-                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
+                    <button {% if not editor_access %}disabled{% endif %} class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Hold Result</span>
                     </button>
-                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
+                    <button {% if not editor_access %}disabled{% endif %} class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
@@ -412,11 +412,11 @@
                     </div>
                 </div>
                 <div class="btn-container py-2 w-100">
-                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
+                    <button {% if not editor_access %}disabled{% endif %} class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-play-circle me-1' ></i>
                         <span>Publish Result</span>
                     </button>
-                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
+                    <button {% if not editor_access %}disabled{% endif %} class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
@@ -426,6 +426,7 @@
             </div>
             {% endfor %}
         </div>
+        {% if editor_access %}
         <div class="d-flex justify-content-end mt-3">
             <span class="d-inline-block ms-auto" style="cursor: pointer">
                 <div class="d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#newRegistrationModal">
@@ -434,6 +435,7 @@
                 </div>
             </span>
         </div>
+        {% endif %}
     </div>
     
     <div class="semester-info p-3 mt-5 rounded-3 shadow">

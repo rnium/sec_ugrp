@@ -61,6 +61,12 @@ def has_semester_access(semester, admin):
         return False
     return True
 
+def is_in_semester_committee(semester, admin):
+    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
+    if admin in committe_admins:
+        return True
+    return False
+
 @login_required
 def homepage(request):
     if not hasattr(request.user, 'adminaccount'):
@@ -220,6 +226,7 @@ class SemesterView(SuperOrDeptAdminRequiredMixin, DetailView):
         context['courses_regular'] = semester.course_set.filter(is_carry_course=False).order_by('id')
         context['courses_created_drop'] = semester.course_set.filter(is_carry_course=True).order_by('id')
         context['courses_drop'] = semester.drop_courses.all().order_by('id')
+        context['editor_access'] = is_in_semester_committee(semester, self.request.user.adminaccount)
         # drop courses semester for current semester
         
         if semester.is_running:
@@ -265,7 +272,8 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
             session__dept = course.semester.session.dept,
         ).order_by('session__from_year')
         context['running_semesters'] = dept_running_semesters.exclude(pk=course.semester.id)
-        context['editor_access'] = self.request.user.adminaccount in course.semester.editor_members
+        admin_ac = self.request.user.adminaccount
+        context['editor_access'] = admin_ac in course.semester.editor_members
         return context
     
 

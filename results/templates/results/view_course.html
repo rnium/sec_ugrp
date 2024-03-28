@@ -78,7 +78,7 @@
             </div>
             {% else %}
             <div class="d-flex justify-content-center align-items-center">
-                <span class="roboto-font text-gray" style="font-size: 0.9rem;">{{course.num_regular_results}} Regular</span>
+                <span class="roboto-font text-gray" style="font-size: 0.9rem;">{{course.courseresult_set.count}} Entries</span>
             </div>
             {% endif %}
             <div class="d-flex justify-content-center align-items-center">
