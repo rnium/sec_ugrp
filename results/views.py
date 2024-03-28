@@ -2,6 +2,7 @@ from django import http
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from django.core.cache import cache
+from django.core.exceptions import PermissionDenied
 import base64
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
@@ -9,7 +10,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse, HttpResponse
-from results.models import (Semester, SemesterEnroll, Department, Session, Course, Backup, StudentCustomDocument)
+from results.models import (Semester, SemesterEnroll, Department, ExamCommittee,
+                            Session, Course, Backup, StudentCustomDocument)
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
@@ -170,7 +172,8 @@ class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
-        semesters = self.get_object().semester_set.all()
+        session = self.get_object()
+        semesters = session.semester_set.all()
         semesters_context = []
         admin_ac = self.request.user.adminaccount
         for sem in semesters:
@@ -183,11 +186,12 @@ class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
                     'has_access': has_acceess
                 }
             )
+        context['edit_access'] = admin_ac.is_super_admin or (session.dept.head == admin_ac)
         context['semesters'] = semesters_context
         return context
 
 
-class SemesterView(DeptAdminRequiredMixin, DetailView):
+class SemesterView(SuperOrDeptAdminRequiredMixin, DetailView):
     template_name = "results/view_semester.html"
     
     def get_dept(self):
@@ -202,6 +206,8 @@ class SemesterView(DeptAdminRequiredMixin, DetailView):
             session__dept__name = self.kwargs.get("dept_name", ""),
             id = pk,
         )
+        if not has_semester_access(semester, self.request.user.adminaccount):
+            raise PermissionDenied
         return semester
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -242,6 +248,8 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
             semester__session__dept__name = self.kwargs.get("dept_name", ""),
             id = pk
         )
+        if not has_semester_access(course.semester, self.request.user.adminaccount):
+            raise PermissionDenied
         return course
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -257,10 +265,11 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
             session__dept = course.semester.session.dept,
         ).order_by('session__from_year')
         context['running_semesters'] = dept_running_semesters.exclude(pk=course.semester.id)
+        context['editor_access'] = self.request.user.adminaccount in course.semester.editor_members
         return context
     
 
-class StaffsView(LoginRequiredMixin, TemplateView):
+class StaffsView(SuperOrDeptAdminRequiredMixin, TemplateView):
     template_name = "results/view_staffs.html"
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)

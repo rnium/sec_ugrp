@@ -97,13 +97,15 @@
             </div>
             {% endif %}
         </div>
+        {% if edit_access %}
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
             <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newSemesterEntryModal">
                 <i class='bx bx-list-plus me-1'></i>
                 <span class="roboto-font" style="font-size: 0.8rem;">Create New Semester</span>
             </button>
         </div>
-        <div class="chart-container row col-md-9" style="height: 180px; display: none">
+        {% endif %}
+        <div class="chart-container row col-md-9 mt-4" style="height: 180px; display: none">
             <canvas id="session_stats_chart" ></canvas>
         </div>
         <div class="students-list col-md-9 rounded-2 mt-3">
@@ -128,6 +130,7 @@
             </div>
             
         </div>
+        {% if edit_access %}
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
             <button class="btn btn-secondary btn-iconized px-4 me-1" id="add-new" data-bs-toggle="modal" data-bs-target="#newStudentEntryModal">
                 <i class='bx bx-user-plus me-1'></i>
@@ -141,6 +144,7 @@
         <div class="delete-btn-container mt-4 w-100">
             <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteSessionModal">Delete Session</button>
         </div>
+        {% endif %}
     </div>
     
   

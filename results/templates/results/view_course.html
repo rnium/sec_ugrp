@@ -64,7 +64,7 @@
                 {{course.title}}
             </div>
         </div>
-        <div class="d-flex mt-1 me-5 justify-content-between">
+        <div class="d-flex mt-1 me-5 justify-content-around">
             <div class="credits d-flex justify-content-center align-items-center">
                 <i class='bx bxs-pyramid text-info fs-5 me-2'></i>
                 <span class="roboto-font text-info" style="font-size: 0.9rem;">{{course.course_credit}} Credits</span>
@@ -90,7 +90,7 @@
                     <span class="roboto-font">Report</span>
                 </a>
             </div>
-            {% if course.semester.is_running %}
+            {% if course.semester.is_running and editor_access %}
             <div class="d-flex justify-content-end align-items-center">
                 <button class="btn btn-secondary btn-iconized px-4" data-bs-toggle="modal" data-bs-target="#excelUploadModal">
                     <i class='bx bx-table me-2'></i>
@@ -138,7 +138,7 @@
     </div>
     <div class="score-board p-3 mt-4" style="display: none;" id="scoreBoard">
         <div id="tableContainer"></div>
-        {% if course.semester.is_running %}
+        {% if course.semester.is_running and editor_access %}
         <div class="col-md-12 mt-3 btn-container">
             <div class="d-flex justify-content-between">
                 <div class="left-side-container d-flex justify-content-start">
@@ -184,7 +184,7 @@
         </div>
         {% endif %}
     </div>
-    {% if course.semester.is_running %}
+    {% if course.semester.is_running and editor_access %}
     <div class="delete-btn-container mt-4">
         <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">Delete Course</button>
         <button class="btn btn-outline-info ms-2" data-bs-toggle="modal" data-bs-target="#updateCourseModal">Edit Course</button>

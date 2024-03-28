@@ -19,6 +19,7 @@ class Department(models.Model):
     fullname = models.CharField(max_length=100)
     dept_logo_name = models.CharField(max_length=50, null=True, blank=True)
     created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    head = models.ForeignKey('account.AdminAccount', blank=True, null=True, on_delete=models.SET_NULL)
     added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -227,6 +228,11 @@ class Semester(models.Model):
                     'title': 'Tabulator',
                     'codename': 'tabulator'
                 })
+        return members
+    
+    @property
+    def editor_members(self):
+        members = [committee_member['admin'] for committee_member in self.committee_members if committee_member['codename'] == 'chair' or committee_member['codename'] == 'tabulator']
         return members
 
 

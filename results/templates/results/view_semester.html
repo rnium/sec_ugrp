@@ -436,7 +436,7 @@
         </div>
     </div>
     
-    <div class="semester-info bg-dark p-3 mt-5 rounded-3 shadow">
+    <div class="semester-info p-3 mt-5 rounded-3 shadow">
         <div class="d-flex justify-content-center align-items-center mt-4">
             <i class='bx bx-history me-1 fs-5 text-secondary'></i>
             <span class="roboto-font">Created on: {{semester.added_in|date:"g:i:s A, j M o"}}</span>
@@ -445,6 +445,7 @@
             <i class='bx bx-user-check me-1 fs-4 text-secondary'></i>
             <span class="roboto-font">{{semester.added_by.adminaccount.user_full_name}}</span>
         </div>
+        {% if request.user.adminaccount.is_super_admin %}
         <div class="btn-container mt-2 d-flex justify-content-center my-4">
             {% if semester.prevpoint_applicable %}
             {% if semester.has_prevpoint_from_here %}
@@ -476,6 +477,7 @@
                 <span>Delete This Semester</span>
             </button>
         </div>
+        {% endif %}
     </div>
     
     
