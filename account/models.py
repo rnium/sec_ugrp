@@ -197,9 +197,5 @@ class StudentAccount(BaseAccount):
         
     @property
     def is_transcript_available(self):
-        semesters = 0
-        for semester_no in range(1, 9):
-            year_enrolls = SemesterEnroll.objects.filter(student=self, semester__semester_no=semester_no, semester__is_running=False, semester_gpa__isnull=False)
-            if year_enrolls.count():
-                semesters += 1
-        return True if semesters == 8 else False
+        last_enroll = SemesterEnroll.objects.filter(student=self, semester__semester_no=8, semester__is_running=False, semester_gpa__isnull=False).first()
+        return bool(last_enroll)

@@ -993,7 +993,7 @@ def sust_student_data(request):
     response_data['full_document_url'] = reverse('results:download_full_document', args=(registration,))
     response_data['transcript_url'] = reverse('results:download_transcript', args=(registration,))
     custom_transcript = StudentCustomDocument.objects.filter(student=student, doc_type="transcript").first()
-    if custom_transcript:
+    if custom_transcript and (not student.is_transcript_available):
         response_data['transcript_url'] = reverse('results:download_customdoc', args=(registration,'transcript'))
     response_data['custom_transcript_url'] = reverse('results:download_transcript', args=(registration,))
     response_data['customdoc_url'] = False

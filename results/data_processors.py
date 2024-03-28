@@ -103,7 +103,7 @@ def get_courseresults_data(course, from_session):
     course_results = course_results.order_by('-student__is_regular', 'student__registration')
     data = []
     if course.is_theory_course:
-        data.append(['Registration', 'Part A', 'Part B', 'Termtest', 'Total', 'Grade Point', 'Letter Grade'])
+        data.append(['reg', 'marks_a', 'marks_b', 'marks_tt', 'Total', 'Grade Point', 'Letter Grade'])
         for courseres in course_results:
             result_data = [
                 courseres.student.registration,
@@ -116,7 +116,7 @@ def get_courseresults_data(course, from_session):
             ]
             data.append(result_data)
     else:
-        data.append(['Registration', 'Total', 'Grade Point', 'Letter Grade'])
+        data.append(['reg', 'total', 'Grade Point', 'Letter Grade'])
         for courseres in course_results:
             result_data = [
                 courseres.student.registration,

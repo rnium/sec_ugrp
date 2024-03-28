@@ -15,6 +15,7 @@ from reportlab.platypus.flowables import Flowable
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from results.utils import get_letter_grade, session_letter_grades_count
+from results.models import Semester
 
 DEBUG_MODE = False
 
@@ -129,12 +130,11 @@ def get_main_table(context: Dict) -> Table:
     # Extracting requied data
     student = context['student']
     STUDENT_CGPA = student.total_points / student.credits_completed
-    SESSION_TOTAL_CREDITS = student.session.count_total_credits()
     PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
     GRADES_COUNT = session_letter_grades_count(student.session)
-    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=SESSION_TOTAL_CREDITS).count()
+    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=160).count()
     WITH_DISTINCTION_TXT = ""
     if student.with_distinction:
         WITH_DISTINCTION_TXT = "(With Distinction)"
@@ -148,7 +148,11 @@ def get_main_table(context: Dict) -> Table:
                 LAST_SEMESTER_HELD_TIME = held_time.split(' ')[-1]
             except KeyError:
                 pass
-    LAST_SEMESTER_ENROLLS_COUNT = context['last_semester'].semesterenroll_set.count()    
+    LAST_SEMESTER_ENROLLS_COUNT = 0
+    last_sem = context['last_semester']
+    last_semester_all_parts = Semester.objects.filter(session=last_sem.session, semester_no=last_sem.semester_no, repeat_number=last_sem.repeat_number)
+    for sem in last_semester_all_parts:
+        LAST_SEMESTER_ENROLLS_COUNT += sem.semesterenroll_set.count()    
     data = [
         ["1.", 'Name of the Student', ':', student.student_name.upper()],
         ["2.", 'Name of the College', ':', 'Sylhet Engineering College, Sylhet'],
