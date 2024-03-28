@@ -493,7 +493,12 @@ class CourseResult(models.Model):
         if enrollment:
             enrollment.update_stats()
         
-    
+    def delete(self, *args, **kwargs):
+        enrolls = SemesterEnroll.objects.filter(student=self.student, courses=self.course)
+        for e in enrolls:
+            e.courses.remove(self.course)
+        super().delete()
+        
     @property
     def course_points(self):
         return (self.grade_point * self.course.course_credit)

@@ -315,15 +315,13 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     # return JsonResponse({'status':'Complete', 'summary':summary})
     
 
-def get_or_create_entry_for_carryCourse(semester, registration, course):
-    if semester is None:
-        semester = course.semester
-    enrollment = semester.semesterenroll_set.filter(student__registration=registration).first()
-    student = StudentAccount.objects.filter(registration=registration).first()
+def get_or_create_entry_for_carryCourse(student, course):
+    # if semester is None:
+    #     semester = course.semester
+    enrollment = SemesterEnroll.objects.filter(student=student, semester__is_running=True).order_by('-semester__semester_no').first()
+    print(enrollment.semester.semester_code, flush=1)
     if (enrollment is None) or (student is None):
-        print(f'enroll: {semester} student: {registration}', flush=1)
         return None
-    
     course_res, created = CourseResult.objects.get_or_create(student=student, course=course, is_drop_course=True)
     if created:
         print(f'Adding it, enrollid: {enrollment.id}', flush=1)

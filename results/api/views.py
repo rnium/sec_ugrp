@@ -684,8 +684,12 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                if from_semester or course.is_carry_course:
-                    course_res = utils.get_or_create_entry_for_carryCourse(from_semester, reg_no, course)
+                student = StudentAccount.objects.filter(registration=reg_no).first()
+                if student == None:
+                    logs['errors']['unmatching'].append(f'Reg: {reg_no} -  student not found. Row number: {r+2}')
+                    continue
+                if student.session != course.semester.session:
+                    course_res = utils.get_or_create_entry_for_carryCourse(student, course)
                 else:
                     course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:
@@ -719,8 +723,12 @@ def process_course_excel(request, pk):
                 except Exception as e:
                     logs['errors']['parse_errors'].append(f'row: {r+2}. error: {e}')
                     continue
-                if from_semester:
-                    course_res = utils.get_or_create_entry_for_carryCourse(from_semester, reg_no, course)
+                student = StudentAccount.objects.filter(registration=reg_no).first()
+                if student == None:
+                    logs['errors']['unmatching'].append(f'Reg: {reg_no} -  student not found. Row number: {r+2}')
+                    continue
+                if student.session != course.semester.session:
+                    course_res = utils.get_or_create_entry_for_carryCourse(student, course)
                 else:
                     course_res = course_results.filter(student__registration=reg_no).first()
                 if course_res:

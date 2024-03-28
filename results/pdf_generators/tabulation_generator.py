@@ -126,7 +126,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             total_points = 0
             for course in dataContainer.course_list:
                 # if enroll is not publishable, add empty records
-                if not enrollment:
+                if not enrollment or course not in enrollment.courses.all():
                     row_top.append("")
                     continue 
                 try:
@@ -134,6 +134,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 except CourseResult.DoesNotExist:
                     row_top.append("")
                     continue
+                
                 gp = course_result.grade_point
                 lg = course_result.letter_grade
                 # if grade point or letter grade is not set, append a blank string to leave it empty in tabulation

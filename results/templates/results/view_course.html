@@ -282,13 +282,14 @@
                 <div class="modal-body" style="display: none">
                 </div>
                 <div class="modal-footer" style="display: none">
-                    <!-- <button type="button" class="btn btn-danger">Delete</button> -->
+                    {% if editor_access %}
                     <button class="ms-auto btn btn-secondary btn-iconized px-3 shadow-sm" id="confirm-entry-del-btn">
                         <div class="d-flex align-items-center ">
                             <i class="bx bxs-trash-alt me-2"></i>
                             <span class="roboto-font ">Delete</span>
                         </div>
                     </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
