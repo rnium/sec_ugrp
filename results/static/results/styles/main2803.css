@@ -214,6 +214,12 @@ body.light .view-session-container .semesters .semester-item.running-semester {
 body.light .view-session-container .semesters .semester-item.running-semester .sem-codename {
   box-shadow: 0 0 50px rgb(55, 255, 188) !important;
 }
+body.light .view-session-container .semesters .semester-item.dummy {
+  background-color: #404b52 !important;
+}
+body.light .view-session-container .semesters .semester-item.dummy .sem-codename {
+  box-shadow: 2px 2px 2px #28293d, -2px -3px 3px rgb(102, 106, 114) !important;
+}
 body.light .view-session-container #carry-listing-modal .text-info {
   color: #5b8dee !important;
 }
@@ -1812,6 +1818,26 @@ body main .view-session-container .container .semesters .semester-item.running-s
 }
 body main .view-session-container .container .semesters .semester-item.running-semester:hover {
   outline: 2px solid #57eba3;
+}
+body main .view-session-container .container .semesters .semester-item.dummy {
+  background-color: rgb(64, 69, 77);
+  cursor: default;
+}
+body main .view-session-container .container .semesters .semester-item.dummy .repeatbadge {
+  background-color: gray;
+  color: rgb(55, 55, 55);
+}
+body main .view-session-container .container .semesters .semester-item.dummy .sem-codename span {
+  color: gray;
+}
+body main .view-session-container .container .semesters .semester-item.dummy .info .semester-no {
+  color: gray;
+}
+body main .view-session-container .container .semesters .semester-item.dummy .info .exam-start-month i, body main .view-session-container .container .semesters .semester-item.dummy .info .exam-start-month .month {
+  color: gray;
+}
+body main .view-session-container .container .semesters .semester-item.dummy:hover {
+  outline: 0;
 }
 body main .admin-profile-edit .super-admin::before {
   content: "Super Admin";

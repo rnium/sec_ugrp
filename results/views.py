@@ -53,6 +53,12 @@ def user_is_super_or_sust_admin(request):
 def user_is_superAdmin(user):
     return hasattr(user, 'adminaccount') and user.adminaccount.is_super_admin
 
+def has_semester_access(semester, admin):
+    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
+    if (not admin.is_super_admin) and (admin not in committe_admins):
+        return False
+    return True
+
 @login_required
 def homepage(request):
     if not hasattr(request.user, 'adminaccount'):
@@ -164,6 +170,20 @@ class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        semesters = self.get_object().semester_set.all()
+        semesters_context = []
+        admin_ac = self.request.user.adminaccount
+        for sem in semesters:
+            has_acceess = False
+            if has_semester_access(sem, admin_ac):
+                has_acceess = True
+            semesters_context.append(
+                {
+                    'semester': sem,
+                    'has_access': has_acceess
+                }
+            )
+        context['semesters'] = semesters_context
         return context
 
 

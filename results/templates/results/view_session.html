@@ -63,10 +63,11 @@
     <div class="container d-flex flex-column  align-items-center mt-4">
         <div class="semesters row col-md-9 bg-dar p-3 rounded-2 bg-material mt-3" id="semesterContainer">
             <div class="section-title text-center mb-2">Semesters</div>
-            {% if session.semester_set.count %}
-            {% for semester in session.semester_set.all %}
+            {% if semesters %}
+            {% for semester_con in semesters %}
             <div class="col-md-6 p-0">
-                <a href="{% url 'results:view_semester' semester.session.dept.name semester.b64_id %}" class="semester-item shadow-sm m-1 {% if semester.is_running %}running-semester{% endif %}">
+                <a {% if semester_con.has_access %}href="{% url 'results:view_semester' semester_con.semester.session.dept.name semester_con.semester.b64_id %}"{% endif %} class="semester-item {% if not semester_con.has_access %}dummy{% else %}{% if semester_con.semester.is_running %}running-semester{% endif %}{% endif %} shadow-sm m-1">
+                    {% with semester=semester_con.semester %}
                     {% if semester.part_no or semester.repeat_number %}
                     <div class='repeatbadge'>
                         {% if semester.part_no %}P{{semester.part_no}}{% endif %}
@@ -84,7 +85,8 @@
                             <i class='bx bxs-calendar me-2 fs-5'></i>
                             <div class="month fs-6">{{semester.start_month}}</div>
                         </div>
-                    </div>    
+                    </div>
+                    {% endwith %}    
                 </a>
             </div>
             {% endfor %}
