@@ -187,8 +187,8 @@ function getRenderTabulationData() {
     data.render_config.tabulation_title = $("#tabulation-title").val().trim()
     data.render_config.tabulation_exam_time = $("#tabulation-exam-time").val().trim()
     // footer data
-    let chairman_name = $("#chairman").val().trim()
-    let controller_name = $("#controller").val().trim()
+    let chairman_name = $("#chairman").val().trim();
+    let controller_name = '';
     if (chairman_name.length > 0) {
         data.footer_data_raw.chairman = chairman_name
     }
@@ -725,6 +725,38 @@ function remove_committee_member() {
     });
 }
 
+function insert_committee_member_names() {
+    const insert_members = data => {
+        $('#chairman').val(data.chairman);
+        for (let i = 0; i < 4; i++) {
+            let name = ""
+            if (i+1 <= data.members.length) {
+                name = data.members[i]
+            }
+            $(`#member${i+1}`).val(name);
+        }
+        for (let i = 0; i < 4; i++) {
+            let name = ""
+            if (i+1 <= data.tabulators.length) {
+                name = data.tabulators[i]
+            }
+            $(`#tabulator${i+1}`).val(name);
+        }
+    }
+    $.ajax({
+        type: "get",
+        url: committee_member_names_api,
+        contentType: 'application/json',
+        success: function (response) {
+            insert_members(response);
+        },
+        error: function() {
+            alert("An error occured!")
+        }
+    });
+}
+
+
 $(document).ready(function () {
     $("#createCourseAddBtn").on('click', createCourse);
     $("#render-tabulation-btn").on('click', renderTabulation);
@@ -790,5 +822,6 @@ $(document).ready(function () {
     $("#adminSearchInp").on('click', load_committee_radios);
     $("#addCommitteeBtn").on('click', add_committee_member);
     $("#committee-toggle").on('click', toggleCommittee)
+    $("#autoInsertMembers").on('click', insert_committee_member_names)
     bind_remove_event();
 });

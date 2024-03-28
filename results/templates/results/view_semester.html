@@ -284,18 +284,18 @@
                 </div>
             </div>
             <div class="footer-config mt-3 px-5 pt-3 pb-5 border rounded bg-material-1">
-                <div class="label text-center">Name Signature & Date</div>
+                <div class="heading d-flex justify-content-between">
+                    <div class="label text-center fs-5">Name Signature & Date</div>
+                    <button id="autoInsertMembers" style="background-color: inherit; border: 0;" class="d-flex justify-content-center align-items-center">
+                        <i class='bx bx-refresh fs-4 me-2 text-info'></i>
+                        <span class="text-muted">Auto Insert</span>
+                    </button>
+                </div>
                 <div class="row mt-3">
-                    <div class="col-md-6 p-1">
+                    <div class="col-md-12 p-1">
                         <div class="form-floating">
                             <input type="text" autocomplete="off" class="form-control" id="chairman" placeholder="" value="{{config.footer_data.chairman}}">
                             <label for="chairman">Chairman of Exam Committee</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 p-1">
-                        <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control" id="controller" placeholder="" value="{{config.footer_data.controller}}">
-                            <label for="controller">Controller of Examination</label>
                         </div>
                     </div>
                 </div>
@@ -899,6 +899,7 @@
     const delete_enrollment_api = "{% url 'results:delete_enrollment' %}";
     const session_url = "{% url 'results:view_session' semester.session.dept.name semester.session.from_year semester.session.to_year %}";
     const add_committee_member_api = "{% url 'results:add_committee_member' semester.id %}";
+    const committee_member_names_api = "{% url 'results:committee_member_names' semester.id %}";
     const semesterId = {{semester.id}};
     const semesterNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";

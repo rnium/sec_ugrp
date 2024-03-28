@@ -17,11 +17,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
-from .permission import IsCampusAdmin
+from .permission import IsSuperOrDeptAdmin
 from results.models import (Department, Session, Semester, ExamCommittee)
 from account.models import StudentAccount, AdminAccount
 from results.tasks import restore_dept_data_task, restore_session_data_task
-from results.decorators_and_mixins import superadmin_required, superadmin_or_deptadmin_required
 from results.api.permission import IsSuperAdmin
 from django.conf import settings
 
@@ -77,3 +76,20 @@ def remove_committee_member(request, semester_pk, admin_pk, member_type):
     committee.save()
     html_content = render_to_string('results/components/committee_members.html', context={'semester': semester, 'request': request})
     return Response(data={'info': 'Member removed', 'html': html_content})
+
+
+@api_view()
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
+def committee_member_names(request, pk):
+    semester = get_object_or_404(Semester, pk=pk)
+    committee, created = ExamCommittee.objects.get_or_create(semester=semester)
+    names = {}
+    if chair:=committee.chairman:
+        names['chairman'] = chair.user_full_name
+    names['members'] = []
+    for member in committee.members.all():
+        names['members'].append(member.user_full_name)
+    names['tabulators'] = []
+    for tabulator in committee.tabulators.all():
+        names['tabulators'].append(tabulator.user_full_name)
+    return Response(data=names)
