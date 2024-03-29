@@ -17,6 +17,10 @@ class IsSuperAdmin(BasePermission):
     def has_permission(self, request, view):
         return (hasattr(request.user, 'adminaccount') and request.user.adminaccount.is_super_admin)
 
+class IsSUSTAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return (hasattr(request.user, 'adminaccount') and request.user.adminaccount.is_super_admin)
+
 class IsSuperOrDeptAdmin(BasePermission):
     def has_permission(self, request, view):
         return hasattr(request.user, 'adminaccount') and (

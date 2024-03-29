@@ -1125,11 +1125,12 @@ def create_session_prevpoint_via_excel(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return JsonResponse({'details': "Semester not found"}, status=404)
+    if not (request.user.adminaccount.is_super_admin or (semester.session.dept.head == request.user.adminaccount)):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     if not semester.prevpoint_applicable:
             return JsonResponse({'details': 'Not applicable!'}, status=400)
     if request.method == "POST" and request.FILES.get('excel'):
         excel_file = request.FILES.get('excel')
-
         if hasattr(semester.session, 'previouspoint'):
             prevPoint = semester.session.previouspoint
         else:
@@ -1171,7 +1172,7 @@ def get_customdoc_list(request):
     return Response(data={'html': list_html})
     
 @api_view()
-@superadmin_required
+@permission_classes([IsSuperAdmin])
 def get_student_customdocs(request):
     reg = request.GET.get('reg')
     if not reg:
