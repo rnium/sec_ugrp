@@ -66,15 +66,17 @@
                     {% endfor %}
                 </div>
             </div>
+            {% if session_add_access %}
             <div class="add-semester d-flex justify-content-end mt-4">
                 <button class="btn btn-outline-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newEntryModal">
                     <i class='bx bx-list-plus me-1 py-1'></i>
                     <span>Add New Session</span>
                 </button>
             </div>
+            {% endif %}
         </div>
 
-        {% if request.user.adminaccount.is_super_admin %}
+        {% if request.user.adminaccount.is_super_admin or session_add_access %}
         <!-- Backup & restore btn -->
         <div class="delete-btn-container mt-4">
             <button class="btn btn-secondary btn-iconized px-4 shadow" id="add-new" data-bs-toggle="modal" data-bs-target="#backupRestoreModal">

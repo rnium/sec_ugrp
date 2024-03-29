@@ -136,6 +136,7 @@ class DepartmentView(SuperOrDeptAdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
+        context['session_add_access'] = self.request.user.adminaccount == context['department'].head
         return context
     
 class ExtensionsView(LoginRequiredMixin, TemplateView):
@@ -255,7 +256,12 @@ class CourseView(DeptAdminRequiredMixin, DetailView):
             semester__session__dept__name = self.kwargs.get("dept_name", ""),
             id = pk
         )
-        if not has_semester_access(course.semester, self.request.user.adminaccount):
+        from_semester_pk = self.request.GET.get('sem')
+        if from_semester_pk is not None:
+            from_semester = get_object_or_404(Semester, pk=from_semester_pk)
+            if not has_semester_access(from_semester, self.request.user.adminaccount):
+                raise PermissionDenied
+        elif not has_semester_access(course.semester, self.request.user.adminaccount):
             raise PermissionDenied
         return course
     
