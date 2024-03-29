@@ -34,6 +34,7 @@ from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.utils import merge_pdfs_from_buffers
 from results.tasks import restore_dept_data_task, restore_session_data_task
 from results.decorators_and_mixins import superadmin_required, superadmin_or_deptadmin_required
+from results import copiers
 from django.conf import settings
 from io import BytesIO
 from datetime import datetime
@@ -80,11 +81,12 @@ class SemesterCreate(CreateAPIView):
             repeat_no = serializer.validated_data.get('repeat_number', 0)
             part_no = serializer.validated_data.get('part_no', 0)
             super().perform_create(serializer)
-            # create enrollments.
+            pk = serializer.data.get('id')
+            semester = Semester.objects.get(pk=pk)
             if repeat_no == 0 and part_no == 0:
-                pk = serializer.data.get('id')
-                semester = Semester.objects.get(pk=pk)
                 utils.create_course_enrollments(semester)
+            else:
+                copiers.copyCoursesAndSemesters(semester, self.request.user)
         except Exception as e:
             raise BadrequestException(str(e))
 
