@@ -1,7 +1,7 @@
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.core.cache import cache
 from django.utils import timezone
 from django.urls import reverse
@@ -18,14 +18,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
-from .permission import IsCampusAdmin
+from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin
 from results.models import (Department, Session, Semester, Course, PreviousPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
                             SupplementaryDocument)
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
-from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix
+from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix, has_semester_access, is_in_semester_committee
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
@@ -68,7 +68,7 @@ class SessionCreate(CreateAPIView):
 
 class SemesterCreate(CreateAPIView):
     serializer_class = SemesterSerializer
-    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    permission_classes = [IsAuthenticated, IsSuperAdmin]
     
     def get_queryset(self):
         pk = self.kwargs.get("pk")
@@ -91,7 +91,7 @@ class SemesterCreate(CreateAPIView):
 
 class SemesterUpdate(UpdateAPIView):
     serializer_class = SemesterSerializer
-    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    permission_classes = [IsAuthenticated, IsSuperAdmin]
     
     def get_queryset(self):
         pk = self.kwargs.get("pk")
@@ -107,14 +107,15 @@ class SemesterUpdate(UpdateAPIView):
 
 class CourseCreate(CreateAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    permission_classes = [IsAuthenticated, IsSuperOrDeptAdmin]
     queryset = Course.objects.all()
     
     def create(self, request, *args, **kwargs):
         data = request.data
         data['added_by'] = request.user.id
         serializer = self.get_serializer(data=data)
-        if serializer.is_valid():
+        semester = get_object_or_404(Semester, pk=data['semester'])
+        if serializer.is_valid() and is_in_semester_committee(semester, request.user.adminaccount):
             self.perform_create(serializer)
             course_id = serializer.data.get('id')
             course = Course.objects.get(id=course_id)
@@ -130,17 +131,18 @@ class CourseCreate(CreateAPIView):
         try:
             super().perform_create(serializer)
         except Exception as e:
-            print("Hi", flush=1)
             raise BadrequestException(str(e))
 
 
 class CourseUpdate(UpdateAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    permission_classes = [IsAuthenticated, IsSuperOrDeptAdmin]
     
     def get_queryset(self):
         pk = self.kwargs.get("pk")
         courses = Course.objects.filter(id=pk)
+        if courses.first() and (not is_in_semester_committee(courses.first().semester, self.request.user.adminaccount)):
+            raise PermissionDenied
         return courses
     
     def patch(self, request, *args, **kwargs):
@@ -159,12 +161,13 @@ class CourseUpdate(UpdateAPIView):
     
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def updateDropCourses(request, pk):
     try:
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
-    if request.user.adminaccount.is_super_admin or request.user.adminaccount.dept == semester.session.dept:
+    if is_in_semester_committee(semester, request.user.adminaccount):
         try:
             add_courses = request.data['add_courses']
             remove_courses = request.data['remove_courses']
@@ -179,6 +182,8 @@ def updateDropCourses(request, pk):
             if course in semester.drop_courses.all():
                 semester.drop_courses.remove(course)
         return Response(data={"details": "complete"})
+    else:
+        return Response(data={"detail": "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
 
 
 class SessionStudentStats(ListAPIView):

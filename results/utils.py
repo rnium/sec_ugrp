@@ -125,3 +125,16 @@ def get_pk_from_base64(b64_id):
     except Exception as e:
         return None
     return pk
+
+
+def has_semester_access(semester, admin):
+    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
+    if (not admin.is_super_admin) and (admin not in committe_admins):
+        return False
+    return True
+
+def is_in_semester_committee(semester, admin):
+    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
+    if admin in committe_admins:
+        return True
+    return False

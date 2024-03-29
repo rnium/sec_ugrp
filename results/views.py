@@ -15,7 +15,8 @@ from results.models import (Semester, SemesterEnroll, Department, ExamCommittee,
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
-from results.utils import get_ordinal_number, render_error, get_ordinal_suffix, get_pk_from_base64
+from results.utils import (get_ordinal_number, render_error, get_ordinal_suffix, get_pk_from_base64,
+                           has_semester_access, is_in_semester_committee)
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
@@ -55,17 +56,7 @@ def user_is_super_or_sust_admin(request):
 def user_is_superAdmin(user):
     return hasattr(user, 'adminaccount') and user.adminaccount.is_super_admin
 
-def has_semester_access(semester, admin):
-    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
-    if (not admin.is_super_admin) and (admin not in committe_admins):
-        return False
-    return True
 
-def is_in_semester_committee(semester, admin):
-    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
-    if admin in committe_admins:
-        return True
-    return False
 
 @login_required
 def homepage(request):
