@@ -127,7 +127,7 @@ class DepartmentView(SuperOrDeptAdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
-        context['session_add_access'] = self.request.user.adminaccount == context['department'].head
+        context['session_add_access'] = self.request.user.adminaccount.is_super_admin or (self.request.user.adminaccount == context['department'].head)
         return context
     
 class ExtensionsView(LoginRequiredMixin, TemplateView):

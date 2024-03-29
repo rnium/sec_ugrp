@@ -203,12 +203,18 @@ class SessionStudentStats(ListAPIView):
 
 class CourseResultList(ListAPIView):
     serializer_class = CourseResultSerializer
-    permission_classes = [IsAuthenticated, IsCampusAdmin]
+    permission_classes = [IsAuthenticated, IsSuperOrDeptAdmin]
     def get_object(self):
         # get the course object first before getting queryset
         pk = self.kwargs.get('pk')
         course = get_object_or_404(Course, pk=pk)
-        self.check_object_permissions(self.request, course.semester.session)
+        from_semester = self.request.GET.get('sem')
+        if from_semester:
+            semester = get_object_or_404(Semester, id=from_semester)
+            if not has_semester_access(semester, self.request.user.adminaccount):
+                raise PermissionDenied
+        elif not has_semester_access(course.semester, self.request.user.adminaccount):
+            raise PermissionDenied
         return course
     
     def get_queryset(self):
@@ -252,12 +258,14 @@ class CourseResultList(ListAPIView):
             return course_results_all
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def generate_missing_entries(request, pk):
     try:
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     course_results = course.courseresult_set.all()
     existing_students = set([course_res.student for course_res in course_results])
     session_students = set(course.semester.session.studentaccount_set.all())
@@ -280,7 +288,7 @@ def generate_missing_entries(request, pk):
     return Response(data={"info": f"{len(missing_students)} entry generated"})
       
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def student_retakings(request):
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
@@ -299,7 +307,7 @@ def student_retakings(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def session_retake_list(request, pk):
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'info': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
@@ -331,15 +339,11 @@ def session_retake_list(request, pk):
     
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def update_course_results(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != course.semester.session.dept):
-            return Response(status=status.HTTP_403_FORBIDDEN)
-    else:
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     for registration in request.data:
         course_result = get_object_or_404(CourseResult, course=course, student__registration=registration)
         for attr, value in request.data[registration].items():
@@ -360,6 +364,8 @@ def render_tabulation(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not has_semester_access(semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     try:
         render_config = request.data['render_config']
         footer_data_raw = request.data['footer_data_raw']
@@ -400,12 +406,14 @@ def render_tabulation(request, pk):
     
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def toggle_semester_is_running(request, pk):
     try:
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not request.user.adminaccount.is_super_admin:
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
         if (request.user.adminaccount.dept is not None and
@@ -422,7 +430,7 @@ def toggle_semester_is_running(request, pk):
     
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperAdmin])
 def delete_semester(request, pk):
     try:
         semester = Semester.objects.get(pk=pk)
@@ -450,19 +458,15 @@ def delete_semester(request, pk):
  
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def delete_session(request, pk):
     try:
         session = Session.objects.get(pk=pk)
     except Session.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     # cheking admin user
-    if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != session.dept):
-            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
-    else:
-        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    if not (request.user.adminaccount.is_super_admin or (session.dept.head == request.user.adminaccount)):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
@@ -476,12 +480,14 @@ def delete_session(request, pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def delete_course(request, pk):
     try:
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
         if (request.user.adminaccount.dept is not None and
@@ -509,12 +515,14 @@ def delete_course(request, pk):
 
 
 @api_view(['POST'])
-@superadmin_or_deptadmin_required
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def toggle_enrollment_is_publishable(request):
     enrollid = request.data.get('enrollment_id')
     if enrollid is None:
         return Response(data={'details': 'no enroll id provided'}, status=status.HTTP_400_BAD_REQUEST)
     enroll = get_object_or_404(SemesterEnroll, pk=enrollid)
+    if not is_in_semester_committee(enroll.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     enroll.is_publishable = not enroll.is_publishable
     enroll.save()
     enroll.student.update_stats()
@@ -527,6 +535,8 @@ def add_enrollment(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester Not Found"}, status=status.HTTP_404_NOT_FOUND)
+    if not is_in_semester_committee(semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     try:
         reg_num = int(request.data['registration_no'])
     except Exception as e:
@@ -552,6 +562,8 @@ def delete_enrollment(request):
         enrollment = SemesterEnroll.objects.get(pk=enrollment_id)
     except SemesterEnroll.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not is_in_semester_committee(enrollment.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
@@ -573,6 +585,9 @@ def delete_course_result(request):
         course_res = CourseResult.objects.get(pk=course_res_id)
     except CourseResult.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    # access
+    if not is_in_semester_committee(course_res.course.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if not user_is_super_OR_dept_admin(request):
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
@@ -599,6 +614,9 @@ def add_new_entry_to_course(request, pk):
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
+    # access
+    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     #retaking courseResult
     try:
         retaking = CourseResult.objects.get(pk=retake_for)
@@ -642,6 +660,9 @@ def process_course_excel(request, pk):
         course_results = course.courseresult_set.all()
     except Course.DoesNotExist:
         return JsonResponse({'details': "Course not found"}, status=404)
+     # access
+    if request.user.adminaccount not in course.semester.editor_members:
+        return JsonResponse(data={'details': 'Access denied'}, status=403)
     from_semester_pk = str(request.POST.get('semester_from')).strip()
     from_semester = None # For Carry Course Type
     if from_semester_pk.isdigit():

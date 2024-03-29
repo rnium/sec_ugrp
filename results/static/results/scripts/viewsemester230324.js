@@ -394,7 +394,7 @@ function delete_semester() {
                 }, 1000)
             },
             error: function(xhr, status, error) {
-                showAlert(xhr.responseJSON.details)
+                showAlert(error);
                 $("#confirm-del-btn").removeAttr('disabled');
             }
         });
