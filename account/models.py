@@ -77,7 +77,14 @@ class AdminAccount(BaseAccount):
                 return last_name
         else:
             return self.user.username
-    
+        
+    @property
+    def head_of_the_departments(self):
+        depts = self.department_set.all()
+        if depts.count():
+            return [d.name.upper() for d in depts]
+        else:
+            return False
 
 class StudentAccount(BaseAccount):
     registration = models.IntegerField(primary_key=True)

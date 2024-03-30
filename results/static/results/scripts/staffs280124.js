@@ -36,8 +36,8 @@ function getInvitationData() {
         $("#invitationModal .alert").hide();
         data.to_email = to_email;
     }
-    data.actype = actype;
-    if (actype === 'dept') {
+    data.actype = actype == undefined ? 'dept' : actype;
+    if (actype === 'dept' || actype === 'head') {
         let to_user_dept = parseInt($("#deptSelect").val().trim());
         if (isNaN(to_user_dept)) {
             $("#invitationModal .alert").text("Please select a department!");

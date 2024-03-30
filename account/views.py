@@ -30,6 +30,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UN
 from rest_framework.generics import CreateAPIView
 from . import utils
 from results.api.utils import is_confirmed_user
+from results.api.permission import IsSuperAdmin, IsSuperOrDeptAdmin
 from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
@@ -92,7 +93,7 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
 def signup_admin(request):
     # checking if user logged in or not
     if not isinstance(request.user, AnonymousUser):
-        return render_error(request, "Logged In User Cannot Perform Signup")
+        logout(request)
     # token id
     tokenId = request.GET.get('token')
     if tokenId == None:
@@ -505,6 +506,7 @@ class StudentAccountCreate(CreateAPIView):
    
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def send_signup_token(request):
     if not hasattr(request.user, 'adminaccount'):
         return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
@@ -512,24 +514,26 @@ def send_signup_token(request):
         to_user_email = request.data['to_email']
     except KeyError:
         return Response(data={'details': "No email provided"}, status=HTTP_400_BAD_REQUEST)
-    # checking if ac_type is provided or not
+    # checking ac_type
     actype = request.data.get('actype')
+    to_user_dept = request.data.get('to_user_dept')
     if actype is None:
         return Response(data={'details': "No ac type provided"}, status=HTTP_400_BAD_REQUEST)
+    elif actype == 'super' and (not request.user.adminaccount.is_super_admin):
+        return Response(data={'details': "Access denied"}, status=status.HTTP_403_FORBIDDEN)
+    elif actype != 'dept' and (not request.user.adminaccount.is_super_admin):
+        return Response(data={'details': "Access denied"}, status=status.HTTP_403_FORBIDDEN)
+    # from head to faculty
+    if actype == 'dept' and (not request.user.adminaccount.is_super_admin):
+        dept = Department.objects.filter(head=request.user.adminaccount).first()
+        if dept is None:
+            return Response(data={'details': "Access denied"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            to_user_dept = dept.id
     # checking if user exists with this email
     users = User.objects.filter(email=to_user_email)
     if users.count():
         return Response(data={'details': "User with this email already exists!"}, status=HTTP_400_BAD_REQUEST)
-    to_user_dept = request.data.get('to_user_dept')
-    is_super_admin = request.user.adminaccount.is_super_admin
-    admin_from_same_dept = False
-    if dept:=request.user.adminaccount.dept:
-        admin_from_same_dept = (to_user_dept == dept.id)
-    if to_user_dept:
-        if is_super_admin or admin_from_same_dept:
-            pass
-        else:
-            return Response(data={'details': "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
     
     expiration = timezone.now() + timedelta(days=7)
     invite_token = InviteToken(
