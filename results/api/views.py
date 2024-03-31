@@ -734,6 +734,11 @@ def process_course_excel(request, pk):
                     except Exception as e:
                         logs['errors']['save_errors'].append(f"reg. no: {reg_no}. Error: {e}")
                         continue
+                    # binding carry courseresult
+                    retaking = utils.try_get_carrycourse_retake_of(course_res)
+                    if retaking and course_res.retake_of is None:
+                        course_res.retake_of = retaking
+                        course_res.save()
                     logs['success'] += 1
                 else:
                     logs['errors']['unmatching'].append(f'Reg: {reg_no}. Row number: {r+2}')
@@ -782,6 +787,11 @@ def process_course_excel(request, pk):
                     except Exception as e:
                         logs['errors']['save_errors'].append(f"Reg. no: {reg_no}. Error: {e}")
                         continue
+                    # binding carry courseresult
+                    retaking = utils.try_get_carrycourse_retake_of(course_res)
+                    if retaking and course_res.retake_of is None:
+                        course_res.retake_of = retaking
+                        course_res.save()
                     logs['success'] += 1
                 else:
                     logs['errors']['unmatching'].append(f'Reg: {reg_no}. Row number: {r+2}')

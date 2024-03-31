@@ -327,3 +327,11 @@ def get_or_create_entry_for_carryCourse(student, course):
         print(f'Adding it, enrollid: {enrollment.id}', flush=1)
         enrollment.courses.add(course)
     return course_res
+
+def try_get_carrycourse_retake_of(course_result):
+    res = CourseResult.objects.filter(
+        student=course_result.student, 
+        course__code=course_result.course.code,
+        letter_grade='F'
+    ).exclude(id=course_result.id)
+    return res.first()
