@@ -5,7 +5,7 @@ function showDevModal(id) {
 }
 
 function activateDeptAdminRadio() {
-    $("#deptAdminRadio").on("click", function() {
+    $(".dept-admin").on("click", function() {
         let checked_status = $(this).prop("checked");
         if (checked_status) {
             $("#deptSelect").removeAttr("disabled");

@@ -641,7 +641,13 @@ def delete_admin_account(request):
     if target_usr_email == request.user.email:
         return Response(data={'details': 'You cannot delete your own account!'}, status=status.HTTP_400_BAD_REQUEST)
     user = User.objects.filter(Q(username=target_usr_email) | Q(email=target_usr_email)).first()
-    if user is None:
+    if user is None or (not hasattr(user, 'adminaccount')):
         return Response(data={'details': 'Account not found!'}, status=status.HTTP_404_NOT_FOUND)
+    admin_ac = user.adminaccount
+    if admin_ac.is_super_admin and (user.date_joined < request.user.date_joined):
+        return Response(
+            data={'details': 'You cannot delete a superadmin who joined before you'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
     user.delete()
     return Response(data={'status': 'Account Deleted'})  
