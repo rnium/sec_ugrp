@@ -83,7 +83,57 @@ function sendInvite() {
     }
 }
 
+// Delete account
+function delete_account() {
+    let showAlert = (msg)=>{
+        $("#deleteUserModal .alert").text(msg)
+        $("#deleteUserModal .alert").show()
+    }
+    let target_email = $(`#deleteUserModal input[type="email"]`).val().trim()
+    let password = $(`#deleteUserModal input[type="password"]`).val().trim()
+    if (target_email.length == 0) {
+        showAlert("Please enter the email of the account to be deleted");
+        return
+    }
+    if (password.length == 0) {
+        showAlert("Please enter your password");
+        return
+    }
+    const payload = {
+        password: password,
+        target_email: target_email
+    }
+    if (payload) {
+        $.ajax({
+            type: "post",
+            url: delete_admin_account_api,
+            dataType: "json",
+            contentType: "application/json",
+            beforeSend: function(xhr){
+                $("#confirm-del-btn").attr("disabled", true)
+                $("#deleteUserModal .alert").hide()
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            },
+            data: JSON.stringify(payload),
+            cache: false,
+            success: function(response) {
+                $('#deleteUserModal .alert').removeClass('alert-warning');
+                $('#deleteUserModal .alert').addClass('alert-info');
+                showAlert("Complete")
+                setTimeout(()=>{
+                    location.reload();
+                }, 1000)
+            },
+            error: function(xhr, status, error) {
+                showAlert(xhr.responseJSON.details)
+                $("#confirm-del-btn").removeAttr('disabled');
+            }
+        });
+    }
+}
+
 $(document).ready(function () {
     activateDeptAdminRadio()
     $("#send-invite").on('click', sendInvite)
+    $("#confirm-del-btn").on('click', delete_account)
 });

@@ -296,6 +296,7 @@
 {% block script %}
 <script>
     const send_staff_signup_token_api = "{% url 'account:send_staff_signup_token' %}";
+    const delete_admin_account_api = "{% url 'account:delete_admin_account' %}";
     const csrftoken = "{{csrf_token}}";
 </script>
 <script src="{% static 'results/scripts/staffs310324.js' %}"></script>

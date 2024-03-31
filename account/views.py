@@ -12,6 +12,7 @@ from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
+from django.db.models import Q
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -627,3 +628,20 @@ def update_admin_account(request):
     except Exception as e:
         return Response(data={'details': 'Cannot update'}, status=status.HTTP_400_BAD_REQUEST)
     return Response(data={'status': 'Changes Saved'})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsSuperAdmin])
+def delete_admin_account(request):
+    try:
+        target_usr_email = request.data['target_email'].strip()
+    except KeyError:
+        return Response(data={'details': 'Necessary data not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    if not is_confirmed_user(request, username=request.user.username):
+        return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
+    if target_usr_email == request.user.email:
+        return Response(data={'details': 'You cannot delete your own account!'}, status=status.HTTP_400_BAD_REQUEST)
+    user = User.objects.filter(Q(username=target_usr_email) | Q(email=target_usr_email)).first()
+    if user is None:
+        return Response(data={'details': 'Account not found!'}, status=status.HTTP_404_NOT_FOUND)
+    user.delete()
+    return Response(data={'status': 'Account Deleted'})  

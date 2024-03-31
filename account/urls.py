@@ -24,5 +24,6 @@ urlpatterns = [
     path('recovery/<uidb64>/<token>', views.reset_password_get, name="reset_password_get"),
     path('api/recovery/setpassword/<uidb64>/<emailb64>', views.reset_password_api, name="reset_password_api"),
     path('get-userinfo/', views.get_admin_user_info, name="get_admin_user_info"),
+    path('api/deleteaccount/', views.delete_admin_account, name="delete_admin_account"),
 ]
    

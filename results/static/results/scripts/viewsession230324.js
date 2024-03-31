@@ -365,7 +365,7 @@ function delete_session() {
         showAlert("Please enter your password");
         return
     }
-    payload = {
+    let payload = {
         password: password
     }
     if (payload) {
