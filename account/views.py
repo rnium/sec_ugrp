@@ -462,8 +462,13 @@ def create_admin_account(request, tokenId):
         except Department.DoesNotExist:
             return Response(data={"details": "Corrupted token"}, status=HTTP_400_BAD_REQUEST)
         admin_account_data['dept'] = dept
+    head_of_dept = None
     if token.actype == 'super':
         admin_account_data['is_super_admin'] = True
+    elif token.actype == 'head':
+        if admin_account_data.get('dept') is None:
+            return Response(data={"details": "Department is missing in the token"}, status=HTTP_400_BAD_REQUEST)
+        head_of_dept = dept
     elif token.actype is not None:
         admin_account_data['type'] = token.actype
     # user cration
@@ -485,6 +490,9 @@ def create_admin_account(request, tokenId):
     # creating adminaccount
     admin = AdminAccount(**admin_account_data)
     admin.save()
+    if head_of_dept:
+        head_of_dept.head = admin
+        head_of_dept.save()
     login(request, user)
     # deleting token
     token.delete()
