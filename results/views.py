@@ -171,7 +171,7 @@ class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
         context =  super().get_context_data(**kwargs)
         context['request'] = self.request
         session = self.get_object()
-        semesters = session.semester_set.all()
+        semesters = session.semester_set.all().order_by('semester_no', 'repeat_number', 'part_no')
         semesters_context = []
         admin_ac = self.request.user.adminaccount
         for sem in semesters:

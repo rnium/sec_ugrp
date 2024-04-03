@@ -87,6 +87,8 @@ class StudentProfileView(LoginRequiredMixin, DetailView):
             student_reg_year = int(str(student.registration)[:4])
         except Exception as e:
             pass
+        admin_ac = self.request.user.adminaccount
+        context['editor_access'] = admin_ac.is_super_admin or (student.session.dept.head == admin_ac)
         context['migratable_sessions'] = Session.objects.filter(from_year__gte=student_reg_year, dept=student.session.dept).exclude(id=student.session.id)
         return context
 
@@ -309,8 +311,8 @@ def delete_student(request, registration):
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != student.session.dept):
+        if (request.user.adminaccount.is_super_admin != True and
+            student.session.dept.head != request.user.adminaccount):
             return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
@@ -345,8 +347,8 @@ def migrate_sesion_of_student(request, registration):
         return Response(data={"details": "Invalid session for student"}, status=status.HTTP_406_NOT_ACCEPTABLE)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != student.session.dept):
+        if (request.user.adminaccount.is_super_admin != True and
+            student.session.dept.head != request.user.adminaccount):
             return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)

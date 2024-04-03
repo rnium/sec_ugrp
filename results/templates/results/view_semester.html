@@ -115,7 +115,7 @@
             </div>
             {% endif %}
         </div>
-        {% if request.user.adminaccount.is_super_admin %}
+        {% if semester.is_running and request.user.adminaccount.is_super_admin %}
         <div class="member-adder-container d-flex justify-content-end pe-2">
             <button class="btn btn-primary btn-iconized px-4 me-1" data-bs-toggle="modal" data-bs-target="#committeeModal">
                 <i class='bx bxs-user-plus me-2'></i>
@@ -391,16 +391,18 @@
                         <div class="reg-no">{{enroll.student.registration}}</div>
                     </div>
                 </div>
+                {% if editor_access and semester.is_running %} 
                 <div class="btn-container py-2 w-100">
-                    <button {% if not editor_access %}disabled{% endif %} class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
+                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-stop-circle me-1' ></i>
                         <span>Hold Result</span>
                     </button>
-                    <button {% if not editor_access %}disabled{% endif %} class="delete delete-enroll" data-enrollid="{{enroll.id}}">
+                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
                 </div>
+                {% endif %}
             </div>
             {% else %}
             <div class="student on-hold rounded-3">
@@ -411,22 +413,24 @@
                         <div class="reg-no">{{enroll.student.registration}}</div>
                     </div>
                 </div>
+                {% if editor_access and semester.is_running %} 
                 <div class="btn-container py-2 w-100">
-                    <button {% if not editor_access %}disabled{% endif %} class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
+                    <button class="hold enroll-hold me-2" data-enrollid="{{enroll.id}}">
                         <i class='bx bx-play-circle me-1' ></i>
                         <span>Publish Result</span>
                     </button>
-                    <button {% if not editor_access %}disabled{% endif %} class="delete delete-enroll" data-enrollid="{{enroll.id}}">
+                    <button class="delete delete-enroll" data-enrollid="{{enroll.id}}">
                         <i class='bx bxs-trash-alt' ></i>
                         <span>Delete</span>
                     </button>
                 </div>
+                {% endif %}
             </div>
             {% endif %}
             </div>
             {% endfor %}
         </div>
-        {% if editor_access %}
+        {% if editor_access and semester.is_running %}
         <div class="d-flex justify-content-end mt-3">
             <span class="d-inline-block ms-auto" style="cursor: pointer">
                 <div class="d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#newRegistrationModal">
@@ -484,7 +488,6 @@
     
     
     {% if semester.is_running %}
-    
     <!-- New Course Entry Modal -->
     <div class="modal fade" id="newEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -633,9 +636,9 @@
             </div>
         </div>
     </div>
-    {% endif %}
+    
 
-    <!-- Committee Modal -->
+    <!-- Add Committee Modal -->
     <div class="modal fade committee-modal" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-material shadow">
@@ -753,6 +756,8 @@
             </div>
         </div>
     </div>
+
+    {% endif %}
     
 
     <!-- Notification Modal -->
