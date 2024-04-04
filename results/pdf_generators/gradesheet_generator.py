@@ -87,7 +87,7 @@ def get_grading_scheme_table() -> Table:
     
      
     tbl = Table(data=data, rowHeights=rowHeights)
-    tbl.setStyle(style);
+    tbl.setStyle(style)
     return tbl
  
  
@@ -133,7 +133,7 @@ def build_header(flowables, student) -> None:
     if DEBUG_MODE:
         tblstyle_config.extend([('GRID', (0,0), (-1,-1), 0.25, colors.royalblue)])
         
-    tbl = Table(data=table_data, colWidths=[0.75*inch, 0.7*inch, 3*inch, 2.8*inch])
+    tbl = Table(data=table_data, colWidths=[0.75*inch, 0.7*inch, 3.2*inch, 2.8*inch])
     tbl.setStyle(TableStyle(tblstyle_config))
     flowables.append(tbl)
 

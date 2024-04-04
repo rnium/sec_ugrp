@@ -101,15 +101,22 @@ def process_and_save_customdoc_data(data, admin_name):
 
 def render_customdoc_document(cdoc: StudentCustomDocument):
     data = cdoc.document_data
+    is_the_last_gradesheet = False
     if cdoc.doc_type == 'transcript':
         return get_transcript(data)
     elif cdoc.doc_type == 'sem_gs':
-        return get_gradesheet(data['formdata'], data['excel_data'], 1)
+        if cdoc.sem_or_year_num == 8:
+            is_the_last_gradesheet = True
+        return get_gradesheet(data['formdata'], data['excel_data'], 1, is_the_last_gradesheet=is_the_last_gradesheet)
     elif cdoc.doc_type == 'y_gs':
-        return get_gradesheet(data['formdata'], data['excel_data'], data['num_semesters'])
+        if cdoc.sem_or_year_num == 4 and data['num_semesters'] == 2:
+            is_the_last_gradesheet = True
+        return get_gradesheet(data['formdata'], data['excel_data'], data['num_semesters'], is_the_last_gradesheet=is_the_last_gradesheet)
     elif cdoc.doc_type == 'all_gss':
         documents = []
         for doc_data in  data:
-            gradesheet = get_gradesheet(doc_data['formdata'], doc_data['excel_data'], doc_data['num_semesters'])
+            if doc_data['sem_or_year_num'] == 4 and doc_data['num_semesters'] == 2:
+                is_the_last_gradesheet = True
+            gradesheet = get_gradesheet(doc_data['formdata'], doc_data['excel_data'], doc_data['num_semesters'], is_the_last_gradesheet)
             documents.append(gradesheet)
         return merge_pdfs_from_buffers(documents).getvalue()
