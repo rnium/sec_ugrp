@@ -184,7 +184,7 @@
             {% comment %} Drop Courses {% endcomment %}
             {% for course in courses_drop %}
             <div class="col-md-6 col-lg-4 course-container">
-                <a class="course drop-course" href="{% url 'results:view_course' course.semester.session.dept.name course.b64_id %}?from={{ semester.session.id }}&sem={{ semester.id }}">
+                <a class="course drop-course">
                     <div class="course-code text-center">{{course.code|upper}}</div>
                     <div class="course-title text-center">{{course.title|truncatechars:30}}</div>
                     <div class="credits mt-1 d-flex justify-content-center align-items-center">
@@ -587,7 +587,6 @@
             </div>
         </div>
     </div>
-
     <!-- Drop Course Modal -->
     <div class="modal fade" id="dropCourseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -636,8 +635,6 @@
             </div>
         </div>
     </div>
-    
-
     <!-- Add Committee Modal -->
     <div class="modal fade committee-modal" id="committeeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -671,7 +668,6 @@
             </div>
         </div>
     </div>
-
     <!-- Semester Update Modal -->
     <div class="modal fade" id="semesterEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -731,7 +727,6 @@
             </div>
         </div>
     </div>
-
     <!-- New Entry Modal -->
     <div class="modal fade" id="newRegistrationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -756,7 +751,6 @@
             </div>
         </div>
     </div>
-
     {% endif %}
     
 

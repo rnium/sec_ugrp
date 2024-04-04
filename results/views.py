@@ -76,11 +76,8 @@ def homepage(request):
             semesters = Semester.objects.filter(session__dept=dept, is_running=True).order_by('session__from_year', "-added_in")
             affiliated_semester_list = []
             for sem in semesters:
-                committe_admins = [comm_dict['admin'] for comm_dict in sem.committee_members]
-                admin_ac = request.user.adminaccount
-                if (not admin_ac.is_super_admin) and (admin_ac not in committe_admins):
-                    continue
-                affiliated_semester_list.append(sem)
+                if has_semester_access(sem, request.user.adminaccount):
+                    affiliated_semester_list.append(sem)
             department_semesters.append(
                 {
                     'name': dept.name.upper(),
@@ -218,7 +215,7 @@ class SemesterView(SuperOrDeptAdminRequiredMixin, DetailView):
         context['courses_regular'] = semester.course_set.filter(is_carry_course=False).order_by('id')
         context['courses_created_drop'] = semester.course_set.filter(is_carry_course=True).order_by('id')
         context['courses_drop'] = semester.drop_courses.all().order_by('id')
-        context['editor_access'] = is_in_semester_committee(semester, self.request.user.adminaccount)
+        context['editor_access'] = has_semester_access(semester, self.request.user.adminaccount)
         # drop courses semester for current semester
         
         if semester.is_running:

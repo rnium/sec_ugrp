@@ -128,7 +128,7 @@ def get_pk_from_base64(b64_id):
 
 
 def has_semester_access(semester, admin):
-    committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]
+    committe_admins = semester.editor_members
     if (not admin.is_super_admin) and (admin not in committe_admins):
         return False
     return True

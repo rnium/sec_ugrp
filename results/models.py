@@ -232,9 +232,14 @@ class Semester(models.Model):
     
     @property
     def editor_members(self):
-        members = [committee_member['admin'] for committee_member in self.committee_members if committee_member['codename'] == 'chair' or committee_member['codename'] == 'tabulator']
+        members = []
+        if hasattr(self, 'examcommittee'):
+            committee = self.examcommittee
+            if committee.chairman:
+                members.append(committee.chairman)
+            for tabulator in committee.tabulators.all():
+                members.append(tabulator)
         return members
-
 
 class ExamCommittee(models.Model):
     semester = models.OneToOneField(Semester, on_delete=models.CASCADE)

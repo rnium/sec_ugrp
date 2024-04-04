@@ -25,7 +25,7 @@ from results.models import (Department, Session, Semester, Course, PreviousPoint
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
-from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix, has_semester_access, is_in_semester_committee
+from results.utils import get_ordinal_number, get_letter_grade, get_ordinal_suffix, has_semester_access
 from results.pdf_generators.tabulation_generator import get_tabulation_files
 from results.pdf_generators.gradesheet_generator_manual import get_gradesheet
 from results.pdf_generators.transcript_generator_manual import get_transcript
@@ -117,7 +117,7 @@ class CourseCreate(CreateAPIView):
         data['added_by'] = request.user.id
         serializer = self.get_serializer(data=data)
         semester = get_object_or_404(Semester, pk=data['semester'])
-        if serializer.is_valid() and is_in_semester_committee(semester, request.user.adminaccount):
+        if serializer.is_valid() and has_semester_access(semester, request.user.adminaccount):
             self.perform_create(serializer)
             course_id = serializer.data.get('id')
             course = Course.objects.get(id=course_id)
@@ -143,7 +143,7 @@ class CourseUpdate(UpdateAPIView):
     def get_queryset(self):
         pk = self.kwargs.get("pk")
         courses = Course.objects.filter(id=pk)
-        if courses.first() and (not is_in_semester_committee(courses.first().semester, self.request.user.adminaccount)):
+        if courses.first() and (not has_semester_access(courses.first().semester, self.request.user.adminaccount)):
             raise PermissionDenied
         return courses
     
@@ -169,7 +169,7 @@ def updateDropCourses(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester not found"}, status=status.HTTP_404_NOT_FOUND)
-    if is_in_semester_committee(semester, request.user.adminaccount):
+    if has_semester_access(semester, request.user.adminaccount):
         try:
             add_courses = request.data['add_courses']
             remove_courses = request.data['remove_courses']
@@ -266,7 +266,7 @@ def generate_missing_entries(request, pk):
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+    if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     course_results = course.courseresult_set.all()
     existing_students = set([course_res.student for course_res in course_results])
@@ -344,7 +344,7 @@ def session_retake_list(request, pk):
 @permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def update_course_results(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+    if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     for registration in request.data:
         course_result = get_object_or_404(CourseResult, course=course, student__registration=registration)
@@ -488,7 +488,7 @@ def delete_course(request, pk):
         course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+    if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if hasattr(request.user, 'adminaccount'):
@@ -523,7 +523,7 @@ def toggle_enrollment_is_publishable(request):
     if enrollid is None:
         return Response(data={'details': 'no enroll id provided'}, status=status.HTTP_400_BAD_REQUEST)
     enroll = get_object_or_404(SemesterEnroll, pk=enrollid)
-    if not is_in_semester_committee(enroll.semester, request.user.adminaccount):
+    if not has_semester_access(enroll.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     enroll.is_publishable = not enroll.is_publishable
     enroll.save()
@@ -537,7 +537,7 @@ def add_enrollment(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Semester Not Found"}, status=status.HTTP_404_NOT_FOUND)
-    if not is_in_semester_committee(semester, request.user.adminaccount):
+    if not has_semester_access(semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     try:
         reg_num = int(request.data['registration_no'])
@@ -564,7 +564,7 @@ def delete_enrollment(request):
         enrollment = SemesterEnroll.objects.get(pk=enrollment_id)
     except SemesterEnroll.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not is_in_semester_committee(enrollment.semester, request.user.adminaccount):
+    if not has_semester_access(enrollment.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if not user_is_super_OR_dept_admin(request):
@@ -588,7 +588,7 @@ def delete_course_result(request):
     except CourseResult.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     # access
-    if not is_in_semester_committee(course_res.course.semester, request.user.adminaccount):
+    if not has_semester_access(course_res.course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
     if not user_is_super_OR_dept_admin(request):
@@ -617,7 +617,7 @@ def add_new_entry_to_course(request, pk):
     except Course.DoesNotExist:
         return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
     # access
-    if not is_in_semester_committee(course.semester, request.user.adminaccount):
+    if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     #retaking courseResult
     try:
