@@ -319,11 +319,12 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=None) 
     if year_second_sem_enroll:
         final_cumulative = second_sem_cumulative
         last_sem_no = year_second_sem_enroll.semester.semester_no
-    if TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, last_sem_no))
-    else:
-        story.append(Spacer(1, 40))
-        story.append(get_footer(final_cumulative, last_sem_no))
-        doc.build(story)
+    # if TOTAL_NUMBER_OF_COURSES <= 24:
+    #     doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, last_sem_no))
+    # else:
+    #     story.append(Spacer(1, 40))
+    #     story.append(get_footer(final_cumulative, last_sem_no))
+    #     doc.build(story)
+    doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, last_sem_no))
     return buffer.getvalue()
     

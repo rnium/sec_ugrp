@@ -12,6 +12,7 @@ from datetime import datetime
 from io import BytesIO
 from django.conf import settings
 from results.utils import get_letter_grade
+from account.models import StudentAccount
 
 DEBUG_MODE = False
 
@@ -104,6 +105,10 @@ def build_header(flowables, formdata) -> None:
     university = Paragraph('SHAHJALAL UNIVERSITY OF SCIENCE AND TECHNOLOGY, SYLHET, BANGLADESH.', univ_style)
     dept_name_paragraph = Paragraph(f": <b>{formdata['dept']}</b>", style=bold_paragraph_style)
     grading_scheme_table = get_grading_scheme_table()
+    student_name = formdata['name']
+    student_ac = StudentAccount.objects.filter(registration=formdata['reg_num']).first()
+    if student_ac:
+        student_name = student_ac.student_name
     table_data = [
         [logo, university, '', ''],
         ['', 'Grade Certificate', '', grading_scheme_table],
@@ -113,7 +118,7 @@ def build_header(flowables, formdata) -> None:
         ['Department', '', dept_name_paragraph, ''],
         [Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), Spacer(1, 0.1*cm), ''],
         ['Registration No.', '', f": {formdata['reg_num']}", ''],
-        ['Name of the Student', '', f": {formdata['name'].upper()}", ''],
+        ['Name of the Student', '', f": {student_name.upper()}", ''],
     ]
     tblstyle_config = [
         ('SPAN', (0, 0), (0, 2)),
@@ -292,11 +297,13 @@ def get_gradesheet(formdata, excel_data, num_semesters, is_the_last_gradesheet=F
         build_semester(story, excel_data['semester_1'])
     last_semester_number = max([int(k.split('_')[-1]) for k in excel_data.keys()])
     last_semester_key = f"semester_{last_semester_number}"
-    if TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key], is_the_last_gradesheet))
-    else:
-        story.append(Spacer(1, 40))
-        story.append(get_footer(excel_data[last_semester_key], is_the_last_gradesheet))
-        doc.build(story)
+    # if TOTAL_NUMBER_OF_COURSES <= 24:
+    #     doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key], is_the_last_gradesheet))
+    # else:
+    #     story.append(Spacer(1, 40))
+    #     story.append(get_footer(excel_data[last_semester_key], is_the_last_gradesheet))
+    #     doc.build(story)
+    doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, excel_data[last_semester_key], is_the_last_gradesheet))
+
     return buffer.getvalue()
     
