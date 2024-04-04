@@ -36,14 +36,10 @@ from .models import StudentAccount, InviteToken, AdminAccount
 from .serializer import StudentAccountSerializer
 from results.utils import render_error
 from results.models import Department, Session, CourseResult, StudentPoint
+from results.decorators_and_mixins import SuperOrDeptAdminRequiredMixin
 from .tasks import send_html_email_task
 
 
-def user_is_super_OR_specific_dept_admin(request, dept):
-    if hasattr(request.user, 'adminaccount'):
-        return request.user.adminaccount.is_super_admin or (request.user.adminaccount.dept == dept)
-    else:
-        return False
         
 def login_page(request):
     if request.user.is_authenticated:
@@ -58,15 +54,8 @@ class LogoutView(View):
         return redirect("account:user_login_get")
     
 
-class StudentProfileView(LoginRequiredMixin, DetailView):
+class StudentProfileView(SuperOrDeptAdminRequiredMixin, DetailView):
     template_name = "account/view_student_profile.html"
-    
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        dept = self.get_object().session.dept
-        if user_is_super_OR_specific_dept_admin(request, dept):
-            return super().get(request, *args, **kwargs)
-        else:
-            return render_error(request, 'Forbidden', "You're not supposed to see this!")
     
     def get_object(self):
         student = get_object_or_404(
