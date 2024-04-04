@@ -90,7 +90,7 @@ def get_grading_scheme_table() -> Table:
     
      
     tbl = Table(data=data, rowHeights=rowHeights)
-    tbl.setStyle(TableStyle(style_config));
+    tbl.setStyle(TableStyle(style_config))
     return tbl
 
 def get_yearOfExamsTable(scheduled, held) -> Table:

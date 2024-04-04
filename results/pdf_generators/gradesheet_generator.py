@@ -64,15 +64,14 @@ def get_grading_scheme_table() -> Table:
         ['less than 40%', 'F', '0.00'],
     ]
     style = TableStyle([
-        *[('BOX', (0+i,0), (0+i,-1), 0.25, colors.gray) for i in range(3)],
-        ('GRID', (0,0), (-1,0), 0.25, colors.gray),
+        *[('BOX', (0+i,0), (0+i,-1), 0.5, colors.black) for i in range(3)],
+        ('GRID', (0,0), (-1,0), 0.5, colors.black),
         ('FONTSIZE', (0, 0), (-1, -1), 7), 
         ('FONTNAME', (0, 0), (-1, -1), 'roboto-m'),
-        # ('LINEABOVE', (0, 0), (-1, -1), 0.1, colors.white),  # Remove top row separator line
-        # ('LINEBELOW', (0, 0), (-1, -1), 0.1, colors.white),
-        # ('BOX', (0, 0), (-1, -1), 0.25, colors.gray),
         ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+        ('LEFTPADDING', (-2, 1), (-2, -1), 22),
     ])
 
     # Create a Table
@@ -96,12 +95,12 @@ def build_header(flowables, student) -> None:
     logo = Image(settings.BASE_DIR/'results/static/results/images/sust.png', width=45.5, height=50)
     bold_paragraph_style = ParagraphStyle(
         name='bold_paragraph_style',
-        fontSize=10,  # Set the font size to 14 points
+        fontSize=10,
     )
     univ_style = ParagraphStyle(
         name='bold_paragraph_style',
-        fontName='roboto-bold',  # Specify the bold font
-        fontSize=11,  # Set the font size to 14 points
+        fontName='roboto-bold', 
+        fontSize=11,
         alignment=0,  # Center alignment
     )
     university = Paragraph('SHAHJALAL UNIVERSITY OF SCIENCE AND TECHNOLOGY, SYLHET, BANGLADESH.', univ_style)
@@ -122,7 +121,8 @@ def build_header(flowables, student) -> None:
         ('SPAN', (0, 0), (0, 2)),
         ('SPAN', (1, 0), (-1, 0)), # university
         ('FONTSIZE', (1, 1), (1, 1), 11), # grade cert. fontsize
-        ('FONTNAME', (1, 1), (1, 1), 'roboto'), # grade cert. font name
+        ('FONTNAME', (0, 0), (-1, -1), 'roboto-m'), # grade cert. font name
+        ('FONTNAME', (1, 1), (1, 1), 'roboto-bold'),
         
         ('SPAN', (-1, 1), (-1, -1)),
         *[('SPAN', (1, 1+i), (2, 1+i)) for i in range(2)],
@@ -193,8 +193,8 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     course_row_heights = [14] * num_courses
     bottom_row_heights = [14] * 2
     semester_table_style = TableStyle([
-        ('GRID', (0,1), (-1,-3), 0.15, colors.gray),
-        ('GRID', (-5,-2), (-1,-1), 0.15, colors.gray),
+        ('GRID', (0,1), (-1,-3), 0.7, colors.black),
+        ('GRID', (-5,-2), (-1,-1), 0.7, colors.black),
         # top header spans
         ('SPAN', (0, 0), (-5, 0)),
         ('SPAN', (-4, 0), (-1, 0)),
@@ -213,7 +213,7 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
         ('FONTSIZE', (-2, 2), (-1, 2), 7),
         *[('SPAN', (1, 3+i), (-4, 3+i)) for i in range(num_courses)], # course title spans
         ('ALIGN', (-3, 3), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 3), (-1, -3), 'roboto'), # course about
+        ('FONTNAME', (0, 3), (-1, -1), 'roboto-m'), # course about
         ('FONTSIZE', (0, 3), (-1, -3), 9),
         ('VALIGN', (0, 3), (-1, -1), 'MIDDLE'),
          # bottom two rows
@@ -228,9 +228,8 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     table = Table(data=data, colWidths=calculate_column_widths(len(data[0]), w, margin_X), rowHeights=[*header_row_heights, *course_row_heights, *bottom_row_heights])
     table.setStyle(semester_table_style)
     flowables.append(table)
-  
-    
-def get_footer(second_sem_cumulative):
+
+def get_footer_top_table(second_sem_cumulative):
     header_style = ParagraphStyle(
         name='bold_paragraph_style',
         fontName='roboto-bold',  # Specify the bold font
@@ -258,6 +257,12 @@ def get_footer(second_sem_cumulative):
     colwidths = [1.4*inch, inch, inch, inch, inch, 1.5*inch]
     top_table = Table(data=footer_top_data, colWidths=colwidths)
     top_table.setStyle(TableStyle(footer_top_style_config))
+    return top_table
+    
+def get_footer(second_sem_cumulative, last_semeste_no):
+    top_table = None
+    if last_semeste_no == 8:
+        top_table = get_footer_top_table(second_sem_cumulative)
     # signature table
     datenow = datetime.now()
     footer_bottom_data = [
@@ -276,15 +281,16 @@ def get_footer(second_sem_cumulative):
     row_heights = [10] * 2
     signature_table = Table(data=footer_bottom_data, colWidths=calculate_column_widths(len(footer_bottom_data[0]), w, 1.2*cm), rowHeights=row_heights)
     signature_table.setStyle(TableStyle(footer_bottom_tbl_style_config))
-    footer_table = Table(data=[
-        [top_table],
-        [Spacer(1, 18)],
-        [signature_table]
-    ])
+    data = []
+    if top_table:
+        data.append([top_table])
+        data.append([Spacer(1, 18)])
+    data.append([signature_table])
+    footer_table = Table(data=data)
     return footer_table
     
-def add_footer(canvas, doc, final_cumulative, margin_y=1.4*cm):
-    footer = get_footer(final_cumulative)
+def add_footer(canvas, doc, final_cumulative, last_sem_no, margin_y=1.4*cm):
+    footer = get_footer(final_cumulative, last_sem_no)
     footer.wrapOn(canvas, 0, 0)
     footer.drawOn(canvas=canvas, x=cm, y=margin_y)
 
@@ -309,13 +315,15 @@ def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=None) 
         build_semester(story, year_first_sem_enroll, first_sem_cumulative)
         
     final_cumulative = first_sem_cumulative
+    last_sem_no = year_first_sem_enroll.semester.semester_no
     if year_second_sem_enroll:
         final_cumulative = second_sem_cumulative
+        last_sem_no = year_second_sem_enroll.semester.semester_no
     if TOTAL_NUMBER_OF_COURSES <= 24:
-        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative))
+        doc.build(story, onFirstPage=lambda canv, doc: add_footer(canv, doc, final_cumulative, last_sem_no))
     else:
         story.append(Spacer(1, 40))
-        story.append(get_footer(final_cumulative))
+        story.append(get_footer(final_cumulative, last_sem_no))
         doc.build(story)
     return buffer.getvalue()
     
