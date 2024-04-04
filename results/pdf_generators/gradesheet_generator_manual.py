@@ -85,7 +85,7 @@ def get_grading_scheme_table() -> Table:
     
      
     tbl = Table(data=data, rowHeights=rowHeights)
-    tbl.setStyle(style);
+    tbl.setStyle(style)
     return tbl
  
  
