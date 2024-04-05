@@ -134,7 +134,10 @@ def get_main_table(context: Dict) -> Table:
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
     GRADES_COUNT = session_letter_grades_count(student.session)
-    NUM_INCOMPLETE_STUDENTS = student.session.studentaccount_set.filter(credits_completed__lt=160).count()
+    NUM_INCOMPLETE_STUDENTS = 0
+    final_semesters = Semester.objects.filter(session=student.session, semester_no=8, repeat_number=0)
+    for semester in final_semesters:
+        NUM_INCOMPLETE_STUDENTS += semester.semesterenroll_set.filter(student__credits_completed__lt=160).count()
     WITH_DISTINCTION_TXT = ""
     if student.with_distinction:
         WITH_DISTINCTION_TXT = "(With Distinction)"
