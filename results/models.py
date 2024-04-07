@@ -116,7 +116,8 @@ class Semester(models.Model):
     )
     repeat_number = models.IntegerField(default=0)
     part_no = models.IntegerField(default=0)
-    start_month = models.CharField(max_length=15) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
+    start_month = models.CharField(max_length=50) # IT is the SCHEDULE time of the exam, another one is HELD IN time 
+    held_in = models.CharField(max_length=50, default='')
     exam_duration = models.CharField(max_length=50, null=True, blank=True)
     is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)

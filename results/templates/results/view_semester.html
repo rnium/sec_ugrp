@@ -277,7 +277,7 @@
                     <div class="col-md-6 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Exam Held in</span>
-                            <input type="text" class="form-control py-2" value="{{semester.start_month}}" id="tabulation-exam-time">
+                            <input type="text" class="form-control py-2" value="{{semester.held_in}}" id="tabulation-heldin-time">
                         </div>
                     </div>
                     {% endif %}
@@ -471,14 +471,14 @@
                 <i class='bx bx-lock-alt me-2 py-1'></i>
                 <span>Close This Semester</span>
             </button>
+            <button class="btn btn-outline-warning ms-2" data-bs-toggle="modal" data-bs-target="#semesterEditModal">Edit Semester</button>
             {% else %}
             <button class="btn btn-success btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#changeWithPasswordModal">
                 <i class='bx bx-play me-2 py-1'></i>
                 <span>Run This Semester</span>
             </button>
             {% endif %}
-            <button class="btn btn-outline-warning ms-2 me-2" data-bs-toggle="modal" data-bs-target="#semesterEditModal">Edit Semester</button>
-            <button class="btn btn-danger btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteSemesterModal">
+            <button class="btn btn-danger ms-2 btn-iconized px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteSemesterModal">
                 <i class='bx bxs-trash-alt me-2 py-1'></i>
                 <span>Delete This Semester</span>
             </button>
@@ -704,6 +704,12 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="heldInInput" placeholder="" value="{{semester.held_in}}">
+                                <label for="heldInInput">Held in (e.g., April 2023)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="durationInput" placeholder="" {% if semester.exam_duration %}value="{{semester.exam_duration}}"{% endif %}>
                                 <label for="durationInput">Duration of Examination <small class="text-secondary">(e.g., 10/11/2023 to 05/12/2023)</small></label>
                             </div>            
@@ -905,6 +911,6 @@
     const semesterNumber = {{semester.semester_no}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsemester290324.js' %}"></script>
+<script src="{% static 'results/scripts/viewsemester070424.js' %}"></script>
 {% endblock script %}
 

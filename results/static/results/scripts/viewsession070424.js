@@ -20,12 +20,12 @@ function showError(errorContainer, msg) {
 
 function getSemesterData() {
     let exam_month = $("#monthInput").val().trim();
+    let exam_held_in_month = $("#heldInInput").val().trim();
     let exam_duration = $("#durationInput").val().trim();
     let yearInput = $("#yearInput").val().trim();
     let semesterInput = $("#SemesterInput").val().trim();
     let repeatCountInput = $("#repeatCount").val().trim();
     let partNoInput = $("#semesterPartNo").val().trim();
-    exam_month_array = exam_month.split(" ")
     let year_no = parseInt(yearInput)
     let year_semester_no = parseInt(semesterInput)
     let repeat_count = parseInt(repeatCountInput)
@@ -35,7 +35,7 @@ function getSemesterData() {
         part_no = 0;
     }
 
-    if (isNaN(year_no) | isNaN(year_semester_no) | exam_month_array.length != 2) {
+    if (isNaN(year_no) | isNaN(year_semester_no)) {
         $("#createSemesterAlert").text("Invalid Input");
         $("#createSemesterAlert").show()
         return false;
@@ -54,11 +54,12 @@ function getSemesterData() {
         $("#createSemesterAlert").hide()
     }
     const nth_semester = ((year_no - 1)*2) + year_semester_no;
-    data = {
+    let data = {
         "year": year_no,
         "year_semester": year_semester_no,
         "semester_no": nth_semester,
         "start_month": exam_month,
+        "held_in": exam_held_in_month,
         "session": sessionId,
         "added_by": userId,
         "part_no": part_no,
@@ -67,9 +68,9 @@ function getSemesterData() {
         data.exam_duration = exam_duration;
     }
     if (nth_semester == 8 && !isNaN(repeat_count)) {
-        data['repeat_number'] = repeat_count
+        data['repeat_number'] = repeat_count;
     } else {
-        data['repeat_number'] = 0
+        data['repeat_number'] = 0;
     }
     return data;
 }

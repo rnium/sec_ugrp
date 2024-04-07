@@ -230,7 +230,13 @@
                                 <input type="text" class="form-control" id="monthInput" placeholder="">
                                 <label for="monthInput">Schedule of Examination (e.g., March 2023)</label>
                             </div>            
-                        </div> 
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="heldInInput" placeholder="">
+                                <label for="heldInInput">Held in (e.g., April 2023)</label>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="durationInput" placeholder="">
@@ -412,5 +418,5 @@
     const userId = {{request.user.id}};
     const csrftoken = "{{csrf_token}}";
 </script>
-<script src="{% static 'results/scripts/viewsession230324.js' %}"></script>
+<script src="{% static 'results/scripts/viewsession070424.js' %}"></script>
 {% endblock script %}
