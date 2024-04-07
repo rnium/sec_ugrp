@@ -132,7 +132,8 @@ def get_main_table(context: Dict) -> Table:
     STUDENT_CGPA = student.total_points / student.credits_completed
     PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
-    LAST_SEMESTER_HELD_TIME = LAST_SEMESTER_SHEDULE_TIME
+    LAST_SEMESTER_HELD_TIME = context['last_semester'].held_in.split(' ')[-1]
+    print(LAST_SEMESTER_HELD_TIME, flush=1)
     GRADES_COUNT = session_letter_grades_count(student.session)
     NUM_INCOMPLETE_STUDENTS = 0
     final_semesters = Semester.objects.filter(session=student.session, semester_no=8, repeat_number=0)
@@ -143,14 +144,6 @@ def get_main_table(context: Dict) -> Table:
         WITH_DISTINCTION_TXT = "(With Distinction)"
     if NUM_INCOMPLETE_STUDENTS == 0:
         NUM_INCOMPLETE_STUDENTS = 'Nil'
-    if hasattr(context['last_semester'], 'semesterdocument'):
-        semesterDoc = context['last_semester'].semesterdocument
-        if semesterDoc.tabulatiobn_sheet_render_config is not None:
-            try:
-                held_time = semesterDoc.tabulatiobn_sheet_render_config['render_config']['tabulation_exam_time']
-                LAST_SEMESTER_HELD_TIME = held_time.split(' ')[-1]
-            except KeyError:
-                pass
     LAST_SEMESTER_ENROLLS_COUNT = 0
     last_sem = context['last_semester']
     last_semester_all_parts = Semester.objects.filter(session=last_sem.session, semester_no=last_sem.semester_no, repeat_number=last_sem.repeat_number)

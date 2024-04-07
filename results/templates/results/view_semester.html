@@ -255,26 +255,26 @@
             <div class="layout-config mt-3">
                 <div class="row mt-1">
                     {% if config %}
-                    <div class="col-md-6 p-2">
+                    <div class="col-md-12 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
                             <input type="text" class="form-control py-2" value="{{config.render_config.tabulation_title}}" id="tabulation-title">
                         </div>
                     </div>
-                    <div class="col-md-6 p-2">
+                    <div class="col-md-6 p-2" style="display: none;">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Held in</span>
                             <input type="text" class="form-control py-2" value="{{config.render_config.tabulation_exam_time}}" id="tabulation-exam-time">
                         </div>
                     </div>
                     {% else %}
-                    <div class="col-md-6 p-2">
+                    <div class="col-md-12 p-2">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Tabulation Title</span>
                             <input type="text" class="form-control py-2" value="{{semester.semester_name}} Final Examination {{semester.exam_year}} {% if semester.repeat_number %}Repeat {{semester.repeat_number}}{% endif %}" id="tabulation-title">
                         </div>
                     </div>
-                    <div class="col-md-6 p-2">
+                    <div class="col-md-6 p-2" style="display: none;">
                         <div class="input-group">
                             <span class="input-group-text bg-material-1 roboto-font">Exam Held in</span>
                             <input type="text" class="form-control py-2" value="{{semester.held_in}}" id="tabulation-heldin-time">
