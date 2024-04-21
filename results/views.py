@@ -30,7 +30,7 @@ from results.decorators_and_mixins import (admin_required,
                                            superadmin_or_deptadmin_required,
                                            SuperOrDeptAdminRequiredMixin,
                                            DeptAdminRequiredMixin,
-                                           SuperAdminRequiredMixin)
+                                           SuperAdminRequiredMixin, SuperAdminOrDeptHeadsRequiredMixin)
 from .data_processors import get_semester_table_data, get_courseresults_data
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Alignment
@@ -136,7 +136,7 @@ class GradesheetMakerView(LoginRequiredMixin, TemplateView):
 class TranscriptMakerView(LoginRequiredMixin, TemplateView):
     template_name = "results/transcriptmaker.html"  
 
-class CustomdocMakerView(SuperAdminRequiredMixin, TemplateView):
+class CustomdocMakerView(SuperAdminOrDeptHeadsRequiredMixin, TemplateView):
     template_name = "results/customdocmaker.html"
     
 

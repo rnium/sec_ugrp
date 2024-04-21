@@ -68,6 +68,16 @@ class SuperAdminRequiredMixin:
         else:
             return render_error(request, "Forbidden", "You must have to be SuperAdmin to access this page.")
         
+
+class SuperAdminOrDeptHeadsRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("account:user_login_get")
+        if hasattr(request.user, 'adminaccount') and (request.user.adminaccount.is_super_admin or request.user.adminaccount.department_set.count()):
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return render_error(request, "Forbidden", "You must have to be SuperAdmin to access this page.")
+        
 class SuperOrDeptAdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
