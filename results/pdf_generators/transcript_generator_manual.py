@@ -134,7 +134,17 @@ def get_main_table(context: Dict) -> Table:
     DEGREE = context['degree']
     DURARTION_ATTENDED = context['duration']
     LAST_SEMESTER_SHEDULE_TIME = context['exam_scheduled']
+    try:
+        ls_sh_time_int = int(LAST_SEMESTER_SHEDULE_TIME)
+        LAST_SEMESTER_SHEDULE_TIME = ls_sh_time_int
+    except:
+        pass
     LAST_SEMESTER_HELD_TIME = context['exam_held']
+    try:
+        ls_held_time_int = int(LAST_SEMESTER_HELD_TIME)
+        LAST_SEMESTER_HELD_TIME = ls_held_time_int
+    except:
+        pass
     GRADES_STATS = context['session_degrees_count']
     NUM_APPEARED_STUDENTS = context['students_appears']
     
