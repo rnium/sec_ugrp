@@ -127,7 +127,7 @@ def get_main_table(context: Dict) -> Table:
     Additional sheets containing the subject studied, course number and grade obtained in each course<br/>are enclosed."""
     # Extracting requied data
     NAME = context['name']
-    REGISTRATION = context['reg_num']
+    REGISTRATION = int(context['reg_num'])
     STUDENT_CGPA = context['cgpa']
     STUDENT_LG = context['letter_grade']
     CREDITS_COMPLETE = context['credits_complete']
