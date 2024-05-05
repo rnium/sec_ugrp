@@ -6,3 +6,4 @@ RUN apt-get update && \
     pip install --upgrade pip setuptools &&\
     pip install -r requirements.txt
 RUN pip install django-cors-headers
+RUN pip install sendgrid

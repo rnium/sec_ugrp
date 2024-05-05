@@ -9,8 +9,26 @@ from pathlib import Path
 from PIL import Image
 from io import BytesIO
 from urllib.parse import urlencode
-from .tasks import send_html_email_task
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
+
+sendgrid_api_key = settings.SG_API_KEY_1
+sendgrid_from_email = settings.SG_FROM_EMAIL
+
+
+def send_html_email(receiver, subject, body):
+    message = Mail(
+        from_email=(sendgrid_from_email, "SEC UGRP"),
+        to_emails=receiver,
+        subject=subject,
+        html_content=body)
+
+    sg = SendGridAPIClient(sendgrid_api_key)
+    response = sg.send(message)
+    status = response.status_code
+    if status >= 400:
+        raise ValidationError("API Error")
 
 
 def send_signup_email(request, invitation):
@@ -23,7 +41,7 @@ def send_signup_email(request, invitation):
         "signup_url": signup_url,
         "invitation": invitation
     })
-    send_html_email_task.delay(receiver, email_subject, email_body)
+    send_html_email(receiver, email_subject, email_body)
     
 
 

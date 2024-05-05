@@ -18,10 +18,8 @@ AUTH_KEY = env('AUTH_KEY')
 
 
 # Email configuration
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+SG_API_KEY_1 = env('SG_API_KEY_1')
+SG_FROM_EMAIL = env('SG_FROM_EMAIL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -37,7 +37,6 @@ from .serializer import StudentAccountSerializer
 from results.utils import render_error
 from results.models import Department, Session, CourseResult, StudentPoint
 from results.decorators_and_mixins import SuperOrDeptAdminRequiredMixin
-from .tasks import send_html_email_task
 
 
         
@@ -573,7 +572,7 @@ def send_recovery_email_api(request):
         "recovery_url": recovery_url
     })
     try:
-        send_html_email_task.delay(user.email, email_subject, email_body)
+        utils.send_html_email(user.email, email_subject, email_body)
     except Exception as e:
         return Response(data={'info':'cannot send email'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     return Response(data={"info":"email sent"}, status=status.HTTP_200_OK)
