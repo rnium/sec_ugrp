@@ -179,9 +179,11 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     course_title_extras = ['', '', '', '']
     course_dataset = get_courses_data(semester_enroll, course_title_extras)
     num_courses = len(course_dataset)
-    
+    semester_title = f'{cardinal_repr(semester_enroll.semester.year)} Year {cardinal_repr(semester_enroll.semester.year_semester)} Semester'
+    if semester_enroll.semester.repeat_number:
+        semester_title += f" (Repeat: {semester_enroll.semester.repeat_number})"
     data = [
-        [f'{cardinal_repr(semester_enroll.semester.year)} Year {cardinal_repr(semester_enroll.semester.year_semester)} Semester', *course_title_extras, f'Held in: {semester_enroll.semester.start_month}', '', '', ''],
+        [semester_title, *course_title_extras, f'Held in: {semester_enroll.semester.start_month}', '', '', ''],
         ['Course No.', 'Course Title', *course_title_extras, 'Credit', 'Grade Obtained', ''],
         ['', '', '', *course_title_extras, 'Grade Point', 'Letter Grade'],
         # courses
