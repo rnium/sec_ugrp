@@ -51,7 +51,7 @@ def user_is_super_OR_dept_admin(request):
         return False
     
 class BadrequestException(APIException):
-    status_code = 403
+    status_code = 400
     default_detail = 'Bad Request'
     
 

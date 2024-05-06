@@ -133,7 +133,12 @@ class Semester(models.Model):
         
         
     def __str__(self) -> str:
-        return f"{self.session}, {self.semester_name}"
+        name = f"{self.session}, {self.semester_name}"
+        if self.part_no:
+            name += f", part: {self.part_no}"
+        if self.repeat_number:
+            name += f", repeat: {self.repeat_number}"
+        return name
     
     def update_enrollments(self):
         for enroll in self.semesterenroll_set.all():

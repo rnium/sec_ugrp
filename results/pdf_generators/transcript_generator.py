@@ -249,7 +249,7 @@ def get_transcript(context: Dict):
 def render_transcript_for_student(request, registration, student=None):
     if student is None:
         student = get_object_or_404(StudentAccount, registration=registration)
-    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no', '-semester__part_no', '-semester__repeat_number').first()
     if last_enroll is not None:
         context = {
             'admin_name': request.user.adminaccount.user_full_name,

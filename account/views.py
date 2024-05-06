@@ -414,7 +414,6 @@ def api_login(request):
     user = authenticate(username=request.data['email'], password=request.data['password'])
     if user:
         if not hasattr(user, 'adminaccount'):
-            print(dir(user), flush=1)
             return Response({'status':'Access Denied'}, status=status.HTTP_403_FORBIDDEN)
         actype = request.data.get('actype')
         adminac = user.adminaccount
