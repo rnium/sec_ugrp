@@ -25,3 +25,7 @@ class IsSuperOrDeptAdmin(BasePermission):
     def has_permission(self, request, view):
         return hasattr(request.user, 'adminaccount') and (
             request.user.adminaccount.is_super_admin or request.user.adminaccount.dept != None)
+
+class IsSuperAdminOrDeptHead(BasePermission):
+    def has_permission(self, request, view):
+        return hasattr(request.user, 'adminaccount') and (request.user.adminaccount.is_super_admin or request.user.adminaccount.department_set.count())

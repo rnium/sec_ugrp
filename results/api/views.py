@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
-from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin
+from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin, IsSuperAdminOrDeptHead
 from results.models import (Department, Session, Semester, Course, PreviousPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
                             SupplementaryDocument)
@@ -1159,7 +1159,7 @@ def create_session_prevpoint_via_excel(request, pk):
 
 
 @api_view(['GET'])
-@superadmin_required
+@permission_classes([IsSuperAdminOrDeptHead])
 def get_customdoc_list(request):
     depts_qs = Department.objects.all()
     all_dept_context = []
@@ -1184,7 +1184,7 @@ def get_customdoc_list(request):
     return Response(data={'html': list_html})
     
 @api_view()
-@permission_classes([IsSuperAdmin])
+@permission_classes([IsSuperAdminOrDeptHead])
 def get_student_customdocs(request):
     reg = request.GET.get('reg')
     if not reg:
