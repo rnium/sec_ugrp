@@ -133,8 +133,6 @@ def get_main_table(context: Dict) -> Table:
     PERIOD_ATTENDED_FROM_YEAR = str(student.registration)[:4]
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = context['last_semester'].held_in.split(' ')[-1]
-    print(LAST_SEMESTER_HELD_TIME, flush=1)
-    GRADES_COUNT = session_letter_grades_count(student.session)
     NUM_INCOMPLETE_STUDENTS = 0
     final_semesters = Semester.objects.filter(session=student.session, semester_no=8, repeat_number=0)
     for semester in final_semesters:
@@ -147,8 +145,11 @@ def get_main_table(context: Dict) -> Table:
     LAST_SEMESTER_ENROLLS_COUNT = 0
     last_sem = context['last_semester']
     last_semester_all_parts = Semester.objects.filter(session=last_sem.session, semester_no=last_sem.semester_no, repeat_number=last_sem.repeat_number)
+    last_semester_enrolled_students = []
     for sem in last_semester_all_parts:
-        LAST_SEMESTER_ENROLLS_COUNT += sem.semesterenroll_set.count()    
+        LAST_SEMESTER_ENROLLS_COUNT += sem.semesterenroll_set.count()
+        last_semester_enrolled_students.extend([enroll.student for enroll in sem.semesterenroll_set.all()])
+    GRADES_COUNT = session_letter_grades_count(last_semester_enrolled_students)
     data = [
         ["1.", 'Name of the Student', ':', student.student_name.upper()],
         ["2.", 'Name of the College', ':', 'Sylhet Engineering College, Sylhet'],

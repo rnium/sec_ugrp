@@ -85,13 +85,12 @@ def round_up(n, decimals=0):
     return math.floor(n*multiplier + 0.5) / multiplier
 
 
-def session_letter_grades_count(session) -> Dict[str, str]:
-    student_list = session.studentaccount_set.all()
+def session_letter_grades_count(last_semester_enrolled_students) -> Dict[str, str]:
     grades_count = {
         "A+" : 0, "A" : 0, "A-" : 0, "B+" : 0, "B" : 0, "B-" : 0,
         "C+" : 0, "C" : 0, "C-" : 0, "F" : 0,
     }
-    for student in student_list:
+    for student in last_semester_enrolled_students:
         points = student.total_points
         credits_count = student.credits_completed
         if points and credits_count:
