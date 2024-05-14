@@ -35,6 +35,15 @@ def create_course_results(course: Course):
         object_prototypes.append(CourseResult(student=enroll.student, course=course))
     
     CourseResult.objects.bulk_create(object_prototypes)
+    
+
+def add_course_and_create_courseresults(enroll: SemesterEnroll):
+    courses = enroll.semester.course_set.all()
+    object_prototypes = []
+    for course in courses:
+        enroll.courses.add(course)
+        object_prototypes.append(CourseResult(student=enroll.student, course=course))
+    CourseResult.objects.bulk_create(object_prototypes)
 
 
 def format_render_config(request):

@@ -269,16 +269,12 @@ def generate_missing_entries(request, pk):
     if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     course_results = course.courseresult_set.all()
-    existing_students = set([course_res.student for course_res in course_results])
-    session_students = set(course.semester.session.studentaccount_set.all())
-    missing_students = list(session_students.symmetric_difference(existing_students))
+    existing_students = set([course_res.student for course_res in course_results if course_res.student.session == course.semester.session])
+    enrolled_students = set([enroll.student for enroll in course.semester.semesterenroll_set.all()])
+    missing_students = list(enrolled_students.symmetric_difference(existing_students))
     for student in missing_students:
         semester_enroll = SemesterEnroll.objects.filter(semester=course.semester, student=student).first()
         if (semester_enroll is None):
-            try:
-                semester_enroll = SemesterEnroll(semester=course.semester, student=student)
-                semester_enroll.save()
-            except ValidationError:
                 continue
         try:
             course_res = CourseResult(student=student, course=course)
@@ -551,6 +547,7 @@ def add_enrollment(request, pk):
         enroll.save()
     except Exception as e:
         return Response(data={"details": e}, status=status.HTTP_400_BAD_REQUEST)
+    utils.add_course_and_create_courseresults(enroll)
     return Response(data={'info': f'{reg_num} Added'})
     
         

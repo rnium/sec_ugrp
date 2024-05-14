@@ -139,10 +139,10 @@
         <div class="col-md-12 mt-3 btn-container">
             <div class="d-flex justify-content-between">
                 <div class="left-side-container d-flex justify-content-start">
-                    {% if course.num_missing_entries_for_session %}
+                    {% if course.num_missing_entries_for_semesterenrolls %}
                     <button class="add-new-btn btn btn-secondary btn-iconized px-4" id="generate_missing_btn">
                         <i class='bx bx-list-plus fs-3 text-info me-2'></i>
-                        <span class="text-info">Insert Remaining {{course.num_missing_entries_for_session}} entry of this session</span>
+                        <span class="text-info">Insert Remaining {{course.num_missing_entries_for_semesterenrolls}} entry of this semester</span>
                     </button>
                     {% endif %}
                     <a href="{% url 'results:get_course_excel' course.b64_id %}?from={{from_session}}" target="_blank" class="btn btn-success btn-iconized px-4 ms-2">

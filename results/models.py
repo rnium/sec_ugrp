@@ -424,7 +424,7 @@ class Course(models.Model):
         return self.courseresult_set.filter(total_score=None, is_drop_course=False).count()
     
     @property
-    def num_missing_entries_for_session(self):
+    def num_missing_entries_for_semesterenrolls(self):
         if self.is_carry_course:
             return 0
         # num_enrolled_regular = self.courseresult_set.filter(student__session=self.semester.session).count()
@@ -434,7 +434,7 @@ class Course(models.Model):
             course__semester__semester_no = self.semester.semester_no,
             course__semester__repeat_number = self.semester.repeat_number
         ).count()
-        return (self.semester.session.studentaccount_set.count() - num_enrolled_regular)
+        return (self.semester.semesterenroll_set.count() - num_enrolled_regular)
     
     
 class CourseResult(models.Model):
