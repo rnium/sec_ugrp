@@ -18,6 +18,7 @@ DEBUG_MODE = False
 w, h = 21.6*cm, 34*cm
 margin_X = 1*cm
 margin_Y = 1*cm
+TABLE_FONT_SIZE = 10
 
 pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
@@ -62,7 +63,7 @@ def get_grading_scheme_table() -> Table:
         ['less than 40%', 'F', '0.00'],
     ]
     style_config = [
-        ('FONTSIZE', (0, 0), (-1, -1), 7), 
+        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE-2), 
         ('FONTNAME', (0, 0), (-1, -1), 'Times-Bold'),
         ('ALIGN', (2, 0), (2, -1), 'CENTER'),
         ('ALIGN', (1, 0), (1, -1), 'LEFT'),
@@ -100,7 +101,7 @@ def get_yearOfExamsTable(scheduled, held) -> Table:
         ('ALIGN', (0, 0), (0, -1), 'LEFT'),
         ('FONTNAME', (0, 0), (0, -1), 'Times-Roman'), 
         ('FONTNAME', (-1, 0), (-1, -1), 'Times-Bold'), 
-        ('FONTSIZE', (0, 0), (-1, -1), 9), 
+        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
         ('LEFTPADDING', (0, 0), (0, -1), 0),
         ('LEFTPADDING', (-1, 0), (-1, -1), 10),
         ('TOPPADDING', (0, 0), (-1, -1), 0),
@@ -113,7 +114,7 @@ def get_yearOfExamsTable(scheduled, held) -> Table:
     return table
         
 def get_main_table(context: Dict) -> Table:
-    table_fontSize = 9
+    table_fontSize = TABLE_FONT_SIZE
     table_fontName_normal = 'Times-Roman'
     table_fontName_bold = 'Times-Bold'
     normalStyle = ParagraphStyle(
@@ -123,8 +124,8 @@ def get_main_table(context: Dict) -> Table:
         textColor=colors.black,
     )
     university_paragraph = Paragraph("Shahjalal University of Science & Technology<br/>P.O.: University, Sylhet, Bangladesh.", style=normalStyle)
-    bottom_info = """The results of the student mentioned above are compiled considering aggregated of <u>four years for B. Sc. (Engg.)</u><br/>examinations.
-    Additional sheets containing the subject studied, course number and grade obtained in each course<br/>are enclosed."""
+    bottom_info = """The results of the student mentioned above are compiled considering aggregated of <u>four years for B. Sc. (Engg.)</u> examinations.
+    Additional sheets containing the subject studied, course number and grade obtained in each course are enclosed."""
     # Extracting requied data
     NAME = context['name']
     REGISTRATION = int(context['reg_num'])
@@ -220,7 +221,7 @@ def get_footer(context):
         [f"Prepared by: {context['admin_name']}", 'Compared by:', 'Deputy Controller of Examinations']
     ]
     style_config = [
-        ('FONTSIZE', (0, 0), (-1, -1), 10), 
+        ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE), 
         ('FONTNAME', (0, 0), (-1, -1), 'Times-Roman'),
         ('LEFTPADDING', (0, 0), (0, 0), 0),
         ('ALIGN', (-1, 0), (-1, 0), 'CENTER'),
