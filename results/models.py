@@ -32,8 +32,8 @@ class Department(models.Model):
     @property
     def dept_title_full(self):
         return f"Department of {self.fullname}"
-    
-    
+
+
 class Session(models.Model):
     from_year = models.IntegerField()
     to_year = models.IntegerField()
@@ -94,7 +94,6 @@ class Session(models.Model):
         return semesters.count()
     
        
-
 class Semester(models.Model):
     year = models.IntegerField(
         validators = [
@@ -246,6 +245,7 @@ class Semester(models.Model):
             for tabulator in committee.tabulators.all():
                 members.append(tabulator)
         return members
+
 
 class ExamCommittee(models.Model):
     semester = models.OneToOneField(Semester, on_delete=models.CASCADE)
