@@ -171,7 +171,7 @@ def get_main_table(context: Dict) -> Table:
          )
          , ':'
          , Paragraph(
-            f"<b>A+ = {GRADES_COUNT['A+']}, A = {GRADES_COUNT['A']}, A- = {GRADES_COUNT['A-']}, B+ = {GRADES_COUNT['B+']}, B = {GRADES_COUNT['B']}, B- = {GRADES_COUNT['B-']}, C+ = {GRADES_COUNT['C+']} <br/>C = {GRADES_COUNT['C']}, C- = {GRADES_COUNT['C-']}, Withheld = Nil, Incomplete = {NUM_INCOMPLETE_STUDENTS}</b>",
+            f"<b>A+ = {GRADES_COUNT['A+']}, A = {GRADES_COUNT['A']}, A- = {GRADES_COUNT['A-']}, B+ = {GRADES_COUNT['B+']}, B = {GRADES_COUNT['B']}, B- = {GRADES_COUNT['B-']}, C+ = {GRADES_COUNT['C+']}, C = {GRADES_COUNT['C']}, C- = {GRADES_COUNT['C-']}, Withheld = Nil, Incomplete = {NUM_INCOMPLETE_STUDENTS}</b>",
             style=normalStyle
          )
         ],
