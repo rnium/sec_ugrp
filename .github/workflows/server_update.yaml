@@ -1,0 +1,21 @@
+name: Server Update and Reload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOSTNAME }}
+        username: ${{ secrets.HOST_USER }}
+        password: ${{ secrets.PASSWORD }}
+        port: 22
+        script: |
+          cd /home/rony/sec_rdb/
+          git pull origin
+          systemctl reload-or-restart uwsgi
