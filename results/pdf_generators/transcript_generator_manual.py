@@ -18,7 +18,7 @@ DEBUG_MODE = False
 w, h = 21.6*cm, 34*cm
 margin_X = 1*cm
 margin_Y = 1*cm
-TABLE_FONT_SIZE = 10
+TABLE_FONT_SIZE = 14
 
 pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
