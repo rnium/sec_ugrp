@@ -20,9 +20,9 @@ from results.models import Semester
 DEBUG_MODE = False
 
 w, h = 21.6*cm, 34*cm
-margin_X = 1*cm
+margin_X = 0.5*cm
 margin_Y = 1*cm
-TABLE_FONT_SIZE = 14
+TABLE_FONT_SIZE = 13
 
 pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
@@ -167,7 +167,7 @@ def get_main_table(context: Dict) -> Table:
         ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{LAST_SEMESTER_ENROLLS_COUNT}</b>", style=normalStyle)],
         ["13."
          , Paragraph(
-             'Total Number of  Degree Awarded<br/>this Year in Applicant\'s Academic Field', style=normalStyle
+             'Total Number of  Degree Awarded this Year in Applicant\'s Academic Field', style=normalStyle
          )
          , ':'
          , Paragraph(
@@ -197,7 +197,7 @@ def get_main_table(context: Dict) -> Table:
     ]
     if DEBUG_MODE:
         style_config.extend([('GRID', (0,0), (-1,-1), 0.25, colors.gray)])
-    colwidths = [0.6*cm, 2.5*inch, 0.5*cm, 3.5*inch]
+    colwidths = [0.8*cm, 3*inch, 1*cm, 4*inch]
     table = Table(data=data, colWidths=colwidths)
     table.setStyle(TableStyle(style_config))
     return table
@@ -206,7 +206,7 @@ def build_body(flowables: List, context: Dict) -> None:
     title_style = ParagraphStyle(
         name='TitleStyle',
         fontName='Times-Bold',
-        fontSize=11,
+        fontSize=14,
         textColor=colors.black,
         alignment=1,
     )
