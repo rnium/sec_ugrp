@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from account.models import StudentAccount
 from results.models import (Session, Course,
                             CourseResult, Semester, SemesterEnroll,
-                            Department, StudentPoint, StudentCustomDocument)
+                            Department, StudentPoint, StudentCustomDocument, StudentAcademicData)
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
@@ -344,3 +344,20 @@ def try_get_carrycourse_retake_of(course_result):
         letter_grade='F'
     ).exclude(id=course_result.id)
     return res.first()
+
+
+def save_academic_studentdata(all_data):
+    prototypes = []
+    for data in all_data:
+        session = data.get('session')
+        registration = data['registration']
+        academic_dat = StudentAcademicData.objects.filter(registration=registration).first()
+        if academic_dat is not None:
+            academic_dat.session_code = session
+            academic_dat.data = data
+            academic_dat.save()
+        else:
+            prototypes.append(StudentAcademicData(registration=registration, session_code=session, data=data))
+    StudentAcademicData.objects.bulk_create(prototypes)
+    
+    

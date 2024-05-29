@@ -534,6 +534,16 @@ def download_customdoc_template(request):
     )
     
 @admin_required
+def download_academicdoc_template(request):
+    file_name = "academic_manual_data_template.xlsx"
+    file_path = settings.BASE_DIR / ('results/template_files/'+file_name)
+    return FileResponse(
+        open(file_path, 'rb'), 
+        content_type='application/vnd.ms-excel', 
+        filename=file_name, as_attachment=True
+    )
+    
+@admin_required
 def download_sustdocs_template(request, pk):
     file_name = "supplementary_docs_template.xlsx"
     file_path = settings.BASE_DIR / ('results/template_files/'+file_name)

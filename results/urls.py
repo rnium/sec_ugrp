@@ -31,6 +31,7 @@ urlpatterns = [
     path('extensions/transcript/', views.TranscriptMakerView.as_view(), name="transcriptmaker_view"),
     path('extensions/customdocument/', views.CustomdocMakerView.as_view(), name="customdocmaker_view"),
     path('customdoc-temp/', views.download_customdoc_template, name="download_customdoc_template"),
+    path('academicdoc-temp/', views.download_academicdoc_template, name="download_academicdoc_template"),
     path('course-sustdocs-temp/<int:pk>/', views.download_sustdocs_template, name="download_sustdocs_template"),
     path('backup-<int:pk>/download/', views.download_backup, name="download_backup"),
     path('semesterexcel/<int:pk>/', views.get_semester_excel, name="get_semester_excel"),

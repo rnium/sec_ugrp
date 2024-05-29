@@ -118,4 +118,26 @@ def parse_course_sustdocs_excel(excel_file):
                 }
             )
     return parsed_data
- 
+
+
+def parse_student_academic_docs(excel_file):
+    buffer = BytesIO(excel_file.read())
+    wb = openpyxl.load_workbook(buffer)
+    parsed_data = []
+    sheet = wb[wb.sheetnames[0]]
+    rows = list(sheet.rows)
+    header = [cell.value.lower().strip() if cell.value is not None else None for cell in rows[0]]
+    data_rows = rows[1:]
+    for row in data_rows:
+        record = {}
+        for idx, cell in enumerate(row):
+            field_name = header[idx]
+            field_value = cell.value
+            if type(field_value) == datetime:
+                field_value = field_value.strftime("%B %d, %Y")
+                field_value = field_value.replace(" 0", " ")
+            record[field_name] = field_value
+        if record['registration'] in [None, '']:
+            continue
+        parsed_data.append(record)
+    return parsed_data

@@ -1193,4 +1193,30 @@ def get_student_customdocs(request):
     }
     html_text = render_to_string('results/components/student_customdocs.html', context=context)
     return Response(data={'html': html_text})
-    
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def export_student_academic_data(request):
+    excel_file = request.FILES.get('file')
+    data = excel_parsers.parse_student_academic_docs(excel_file)
+    try:
+        utils.save_academic_studentdata(data)
+    except Exception as e:
+        return Response({'details': "Error, Cannot Save Data"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'info': "Saved data"})
+
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def view_saved_student_academic_data(request):
+    data = [
+        {
+            'session': 'CSE 2018-19',
+            'students': [2018331501, 2018331502, 2018331503, 2018331504, 2018331505]
+        }, {
+            'session': 'EEE 2018-19',
+            'students': [2018331501, 2018331502, 2018331503, 2018331504, 2018331507]
+        },
+    ]
+    return Response(data)

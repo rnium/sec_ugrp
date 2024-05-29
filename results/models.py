@@ -610,4 +610,7 @@ class SupplementaryDocument(models.Model):
         return name_str
 
 
-    
+class StudentAcademicData(models.Model):
+    registration = models.IntegerField(unique=True)
+    session_code = models.CharField(max_length=10, null=True, blank=True)
+    data = models.JSONField()

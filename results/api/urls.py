@@ -42,6 +42,8 @@ urlpatterns = [
     path('sust-studentdata/', views.sust_student_data, name="sust_student_data"),
     # Academic Section
     path('academic-studentcerts/', views.academic_studentcerts_data, name="academic_studentcerts_data"),
+    path('academic-studentdata/export/', views.export_student_academic_data, name="export_student_academic_data"),
+    path('academic-studentdata/viewsaved/', views.view_saved_student_academic_data, name="view_saved_student_academic_data"),
     # Committee
     path('committee-radios/', committee_views.committee_radios, name="committee_radios"),
     path('committee-addmember/<int:pk>/', committee_views.add_committee_member, name="add_committee_member"),
