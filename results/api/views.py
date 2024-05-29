@@ -21,7 +21,7 @@ from .serializer import (SessionSerializer, SemesterSerializer,
 from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin, IsSuperAdminOrDeptHead
 from results.models import (Department, Session, Semester, Course, PreviousPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
-                            SupplementaryDocument)
+                            SupplementaryDocument, StudentAcademicData)
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
@@ -1210,13 +1210,13 @@ def export_student_academic_data(request):
 @api_view()
 @permission_classes([IsAuthenticated])
 def view_saved_student_academic_data(request):
-    data = [
-        {
-            'session': 'CSE 2018-19',
-            'students': [2018331501, 2018331502, 2018331503, 2018331504, 2018331505]
-        }, {
-            'session': 'EEE 2018-19',
-            'students': [2018331501, 2018331502, 2018331503, 2018331504, 2018331507]
-        },
-    ]
+    qs = StudentAcademicData.objects.all()
+    sessions = list(set([q.session_code for q in qs]))
+    print(sessions, flush=1)
+    data = []
+    for session in sessions:
+        data.append({
+            'session': session,
+            'students': [s.registration for s in qs.filter(session_code=session)],
+        })
     return Response(data)
