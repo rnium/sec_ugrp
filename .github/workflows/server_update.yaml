@@ -19,4 +19,6 @@ jobs:
           script: |
             cd /home/rony/sec_rdb/
             git pull origin
+            source venv/bin/activate
+            python manage.py migrate
             systemctl reload-or-restart uwsgi
