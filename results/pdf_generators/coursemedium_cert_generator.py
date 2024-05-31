@@ -75,6 +75,7 @@ def render_coursemedium_cert(context):
     )
 
     flowables = []
+    flowables.append(Spacer(1, 140))
     flowables.append(Paragraph(title_text, titleStyle))
     flowables.append(Spacer(1, 70))
     flowables.append(Paragraph(application_body, bodyStyle))
