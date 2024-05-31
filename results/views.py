@@ -11,7 +11,7 @@ from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.http.response import FileResponse, HttpResponse
 from results.models import (Semester, SemesterEnroll, Department, ExamCommittee,
-                            Session, Course, Backup, StudentCustomDocument)
+                            Session, Course, Backup, StudentCustomDocument, StudentAcademicData)
 from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
@@ -429,30 +429,35 @@ def download_appeared_cert(request, registration):
 
 @admin_required
 def download_testimonial(request, registration):
-    student = get_object_or_404(StudentAccount, registration=registration)
-    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
-    # if last_sesmester_number == 8:
-    if last_enroll is not None:
-        last_sem = last_enroll.semester
-        last_sem_no = last_sem.semester_no
-        context = {
-            'name': student.student_name,
-            'registration': student.registration,
-            'father_name': student.father_name,
-            'mother_name': student.mother_name,
-            'session': student.session.session_code_formal,
-            'dept': student.session.dept.name.upper(),
-            'years_completed': last_sem_no/2,
-            'semesters_completed': last_sem_no,
-            'exam': last_sem.semester_name,
-            'exam_held_in': last_sem.start_month,
-            'cgpa': student.student_cgpa,
-        }
-        sheet_pdf = render_testimonial(context)
-        filename = f"Testimonial - {student.registration}.pdf"
-        return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    if student_acadoc:
+        context = student_acadoc.data
+    elif student:=StudentAccount.objects.filter(pk=registration).first():
+        last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+        if last_enroll is not None:
+            last_sem = last_enroll.semester
+            last_sem_no = last_sem.semester_no
+            context = {
+                'name': student.student_name,
+                'registration': student.registration,
+                'father_name': student.father_name,
+                'mother_name': student.mother_name,
+                'session': student.session.session_code_formal,
+                'dept': student.session.dept.name.upper(),
+                'years_completed': last_sem_no/2,
+                'semesters_completed': last_sem_no,
+                'exam': last_sem.semester_name,
+                'exam_held_in': last_sem.start_month,
+                'cgpa': student.student_cgpa,
+            }
+        else:
+            return render_error(request, 'Testimonial not available without a semester participated!')
     else:
-        return render_error(request, 'Testimonial not available without a semester participated!')
+        return render_error(request, 'Testimonial not available')
+    sheet_pdf = render_testimonial(context)
+    filename = f"Testimonial - {registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
+
 
 @superadmin_required
 def download_backup(request, pk):
