@@ -388,15 +388,18 @@ def download_full_document(request, registration):
 
 @admin_required
 def download_coursemediumcert(request, registration):
-    student = get_object_or_404(StudentAccount, registration=registration)
-    info_dict = {
-        'name': student.student_name,
-        'registration': student.registration,
-        'session': student.session.session_code_formal,
-        'dept_name_full': student.session.dept.fullname,
-    }
-    sheet_pdf = render_coursemedium_cert(info_dict)
-    filename = f"CourseMedium Certificate - {student.registration}.pdf"
+    student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    if student_acadoc:
+        context = student_acadoc.data
+    elif student:=StudentAccount.objects.filter(pk=registration).first():
+        context = {
+            'name': student.student_name,
+            'registration': student.registration,
+            'session': student.session.session_code_formal,
+            'dept': student.session.dept.fullname,
+        }
+    sheet_pdf = render_coursemedium_cert(context)
+    filename = f"CourseMedium Certificate - {registration}.pdf"
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 

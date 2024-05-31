@@ -39,16 +39,16 @@ def insert_principal_table(flowables):
     flowables.append(tbl)
     
 
-def render_coursemedium_cert(info_dict):
+def render_coursemedium_cert(context):
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer, pagesize=A4, title="CourseMedium_certificate.pdf")
 
     # Sample application letter body
     title_text = "<u><b>Course Medium Certificate</b></u>"
     application_body = (
-        f"This is to certify that <i><b><font size='14'>{info_dict['name']}</font></b></i>, Registration number: {info_dict['registration']}\n"
-        f"Session: {info_dict['session']}, was awarded a <b>B.Sc. in Engineering degree</b> from the\n"
-        f"department of {info_dict['dept_name_full']} at Sylhet Engineering College under the School of\n"
+        f"This is to certify that <i><b><font size='14'>{context['name']}</font></b></i>, Registration number: {context['registration']}\n"
+        f"Session: {context['session']}, was awarded a <b>B.Sc. in Engineering degree</b> from the\n"
+        f"department of {context['dept']} at Sylhet Engineering College under the School of\n"
         "Applied Sciences & Technology, Shahjalal University of Science and Technology,\n"
         "Sylhet."
     )
