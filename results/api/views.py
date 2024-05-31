@@ -1061,28 +1061,19 @@ def academic_studentcerts_data(request):
     dept_name = request.GET.get('dept', None)
     if registration is None or dept_name is None or (not str(registration).isdigit()):
         raise BadrequestException("Required data not provided")
-    student = get_object_or_404(StudentAccount, pk=registration, session__dept__name=dept_name)
-    response_data = {
-        'registration': registration,
-        'name': student.student_name,
-        'dept': student.session.dept.fullname,
-        'session': student.session.session_code,
-        'profile_picture_url': student.avatar_url,
-        'testimonial_url': reverse('results:download_testimonial', args=(registration,)),
-        'coursemedium_url': reverse('results:download_coursemediumcert', args=(registration,)),
-        'appearedCert_url': reverse('results:download_appeared_cert', args=(registration,)),
-    }
+    student, response_data = utils.academic_student_data(registration, dept_name)
     semesters = []
-    for enrollment in student.semesterenroll_set.all():
-        semester = enrollment.semester
-        if not hasattr(semester, 'semesterdocument'):
-            continue
-        semesters.append({
-            'semester_no': semester.semester_no,
-            'semester_name': semester.semester_name,
-            'tabulation_thumb_img': semester.semesterdocument.tabulation_thumbnail.url, 
-            'tabulation_url': semester.semesterdocument.tabulation_sheet.url
-        })
+    if student:
+        for enrollment in student.semesterenroll_set.all():
+            semester = enrollment.semester
+            if not hasattr(semester, 'semesterdocument'):
+                continue
+            semesters.append({
+                'semester_no': semester.semester_no,
+                'semester_name': semester.semester_name,
+                'tabulation_thumb_img': semester.semesterdocument.tabulation_thumbnail.url, 
+                'tabulation_url': semester.semesterdocument.tabulation_sheet.url
+            })
     response_data['semesters'] = semesters
     return Response(data=response_data)
 

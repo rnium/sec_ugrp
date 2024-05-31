@@ -9,11 +9,14 @@ from results.models import (Session, Course,
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
+from django.http import Http404
 from io import StringIO, BytesIO
 from . import excel_parsers
 from results.pdf_generators import customdoc_generator
 from results.tasks import update_student_accounts
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.templatetags.static import static
 import openpyxl
 
 
@@ -360,4 +363,30 @@ def save_academic_studentdata(all_data):
             prototypes.append(StudentAcademicData(registration=registration, session_code=session, data=data))
     StudentAcademicData.objects.bulk_create(prototypes)
     
-    
+
+def academic_student_data(registration, dept_name):
+    student_ac = StudentAccount.objects.filter(pk=registration, session__dept__name=dept_name).first()
+    student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    if not student_ac and not student_acadoc:
+        raise Http404()
+    response_data = {
+        'registration': registration,
+        'testimonial_url': reverse('results:download_testimonial', args=(registration,)),
+        'coursemedium_url': reverse('results:download_coursemediumcert', args=(registration,)),
+        'appearedCert_url': reverse('results:download_appeared_cert', args=(registration,)),
+    }
+    if student_acadoc:
+        response_data['name'] = student_acadoc.data.get('name')
+        response_data['dept'] = student_acadoc.data.get('dept')
+        response_data['session'] = student_acadoc.session_code
+        response_data['profile_picture_url'] = static('results/images/blank-dp.svg')
+    else:
+        student_data = {
+            'name': student_ac.student_name,
+            'dept': student_ac.session.dept.fullname,
+            'session': student_ac.session.session_code,
+            'profile_picture_url': student_ac.avatar_url
+        }
+        response_data = {**response_data, **student_data}
+    return (student_ac, response_data)
+        
