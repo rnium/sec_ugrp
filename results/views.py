@@ -405,29 +405,38 @@ def download_coursemediumcert(request, registration):
 
 @admin_required
 def download_appeared_cert(request, registration):
-    student = get_object_or_404(StudentAccount, registration=registration)
-    last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
-    # if last_sesmester_number == 8:
-    if last_enroll is not None:
-        last_sesmester_number = last_enroll.semester.semester_no
-        info_dict = {
-            'name': student.student_name,
-            'father_name': student.father_name,
-            'mother_name': student.mother_name,
-            'registration': student.registration,
-            'session': student.session.session_code_formal,
-            'dept': student.session.dept.name.upper(),
-            'completed_years': last_sesmester_number//2,
-            'semester_no': last_sesmester_number,
-            'semester_suffix': get_ordinal_suffix(last_sesmester_number),
-            'exam_duration': last_enroll.semester.duration_info,
-            'ref': request.GET.get('ref')
-        }
-        sheet_pdf = render_appearance_certificate(info_dict)
-        filename = f"Appeared Certificate - {student.registration}.pdf"
-        return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    if student_acadoc:
+        context = student_acadoc.data
+        context['semester_no'] = context['semesters_completed']
+        context['semester_suffix'] = get_ordinal_suffix(context['semester_no'])
+        context['completed_years'] = context['years_completed']
+        context['ref'] = request.GET.get('ref')
+    elif student:=StudentAccount.objects.filter(pk=registration).first():
+        last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
+        if last_enroll is not None:
+            last_sesmester_number = last_enroll.semester.semester_no
+            context = {
+                'name': student.student_name,
+                'father_name': student.father_name,
+                'mother_name': student.mother_name,
+                'registration': student.registration,
+                'session': student.session.session_code_formal,
+                'dept': student.session.dept.name.upper(),
+                'completed_years': last_sesmester_number//2,
+                'semester_no': last_sesmester_number,
+                'semester_suffix': get_ordinal_suffix(last_sesmester_number),
+                'exam_duration': last_enroll.semester.duration_info,
+                'ref': request.GET.get('ref')
+            }
+        else:
+            return render_error(request, 'Appearance Certificate not available without a semester participated!')    
     else:
-        return render_error(request, 'Appearance Certificate not available without a semester participated!')    
+        return render_error(request, 'Appearance Certificate not available')
+    sheet_pdf = render_appearance_certificate(context)
+    filename = f"Appeared Certificate - {registration}.pdf"
+    return FileResponse(ContentFile(sheet_pdf), filename=filename)
+    
 
 
 @admin_required

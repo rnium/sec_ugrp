@@ -70,7 +70,7 @@ def insert_principal_table(flowables):
     flowables.append(tbl)
     
 
-def render_appearance_certificate(info_dict):
+def render_appearance_certificate(context):
     buffer = BytesIO()
     pdf = SimpleDocTemplate(buffer, pagesize=pageSize,
         topMargin=marginTop,
@@ -81,12 +81,12 @@ def render_appearance_certificate(info_dict):
     # Sample application letter body
     title_text = "<u><b>APPEARED CERTIFICATE</b></u>"
     body_text = (
-        f"This is to certify that {info_dict['name']} son/daughter of "
-        f"{info_dict['father_name']} and {info_dict['mother_name']} bearing "
-        f"Registration No. {info_dict['registration']} and Session {info_dict['session']} "
-        f"completed {info_dict['completed_years']} years academic program of B. Sc Engg. ({info_dict['dept']}) "
-        f"and appeared the {info_dict['semester_no']}<super><font size=14>{info_dict['semester_suffix']}</font></super> semester final examination held on "
-        f"{info_dict['exam_duration']}. "
+        f"This is to certify that {context['name']} son/daughter of "
+        f"{context['father_name']} and {context['mother_name']} bearing "
+        f"Registration No. {context['registration']} and Session {context['session']} "
+        f"completed {context['completed_years']} years academic program of B. Sc Engg. ({context['dept']}) "
+        f"and appeared the {context['semester_no']}<super><font size=14>{context['semester_suffix']}</font></super> semester final examination held on "
+        f"{context['exam_duration']}. "
     )
     bottom_text = "I wish him/her every success in life."
     # Define styles for the paragraph
@@ -110,7 +110,7 @@ def render_appearance_certificate(info_dict):
     )
 
     flowables = []
-    insert_top_table(flowables, info_dict.get('ref', ''))
+    insert_top_table(flowables, context.get('ref', ''))
     flowables.append(Spacer(1, 50))
     flowables.append(Paragraph(title_text, titleStyle))
     flowables.append(Spacer(1, 70))
