@@ -1,5 +1,5 @@
 @page {
-    margin: 2in 0.5in 1rem;
+    margin: 2.3in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -33,12 +33,12 @@ h2 .text {
     justify-content: space-between;
     font-family: Times-roman;
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3.5rem;
 }
 
 
 section p {
-    margin-top: 5rem;
+    margin-top: 4rem;
     text-align: justify;
     font-size: 20px;
     font-family: ScriptMT;
@@ -64,7 +64,7 @@ section p {
 }
 
 .bottom {
-    margin-top: 6rem;
+    margin-top: 5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
