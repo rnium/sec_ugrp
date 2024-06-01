@@ -19,7 +19,7 @@ from rest_framework import status
 from .serializer import (SessionSerializer, SemesterSerializer,
                          CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
 from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin, IsSuperAdminOrDeptHead
-from results.models import (Department, Session, Semester, Course, PreviousPoint,
+from results.models import (Department, Session, Semester, Course, PreviousPoint, StudentPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
                             SupplementaryDocument, StudentAcademicData)
 from account.models import StudentAccount
@@ -1211,3 +1211,13 @@ def view_saved_student_academic_data(request):
             'students': [s.registration for s in qs.filter(session_code=session)],
         })
     return Response(data)
+
+
+@api_view(['POST'])
+@permission_classes([IsSuperAdminOrDeptHead])
+def update_student_prev_record(request, registration):
+    try:
+        utils.update_student_prevrecord(registration, request.data)
+    except Exception as e:
+        return Response({'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"info": "Updated"})

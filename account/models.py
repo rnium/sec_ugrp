@@ -206,3 +206,8 @@ class StudentAccount(BaseAccount):
     def is_transcript_available(self):
         last_enroll = SemesterEnroll.objects.filter(student=self, semester__semester_no=8, semester__is_running=False, semester_gpa__isnull=False).first()
         return bool(last_enroll)
+    
+    @property
+    def prevpoint_applicable(self):
+        first_enroll = self.semesterenroll_set.all().order_by('semester__semester_no').first()
+        return first_enroll and first_enroll.semester.semester_no != 1

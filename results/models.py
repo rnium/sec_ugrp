@@ -321,7 +321,9 @@ class StudentPoint(models.Model):
     
     @property
     def cgpa_raw(self):
-        return (self.total_points / self.total_credits)
+        if self.total_credits:
+            return (self.total_points / self.total_credits)
+        return 0
     
     @property
     def cgpa(self):

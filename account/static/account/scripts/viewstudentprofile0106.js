@@ -1,3 +1,12 @@
+function showError(errorContainer, msg) {
+    $(`#${errorContainer}`).text(msg)
+    $(`#${errorContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
 // Delete
 function delete_student() {
     let showAlert = (msg)=>{
@@ -111,7 +120,6 @@ function initiate_chart(data) {
             bgColors.push("rgba(0, 150, 155, 0.9)")
         }
     }
-    console.log(counts);
     // Chart creation
     const ctx = document.getElementById('cgpaChart').getContext('2d');
     const cgpaChart = new Chart(ctx, {
@@ -171,6 +179,39 @@ function get_student_stats() {
     });
 }
 
+// PrevRecord
+function updateStudentPrevRecord(){
+    let data = {
+        upto_semester_num: parseInt($("#upto_semester_num").val().trim()),
+        total_credits: parseFloat($("#uptoCredit").val().trim()),
+        cgpa: parseFloat($("#uptoCGPA").val().trim()),
+    }
+    
+    let payload = JSON.stringify(data)
+    $.ajax({
+        type: "post",
+        url: update_student_prev_record_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            $("#confirm_update_prevrecord").attr('disabled', true);
+        },
+        data: payload,
+        cache: false,
+        success: function(response) {
+            alert("Updated Successfully, reloading page")
+            setTimeout(() => {
+                location.reload();
+            }, 1000)
+        },
+        error: function(xhr, status, error) {
+            $("#confirm_update_prevrecord").removeAttr("disabled");
+            showError("update_prevrecord_alert", JSON.stringify(xhr.responseJSON));
+        },
+    });
+}
+
 
 
 
@@ -178,4 +219,5 @@ $(document).ready(function () {
     get_student_stats();
     $("#confirm-del-btn").on('click', delete_student);
     $("#confirm_change_session").on('click', change_session);
+    $("#confirm_update_prevrecord").on('click', updateStudentPrevRecord);
 });

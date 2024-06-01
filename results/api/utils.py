@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from account.models import StudentAccount
-from results.models import (Session, Course,
+from results.models import (Session, Course, PreviousPoint,
                             CourseResult, Semester, SemesterEnroll,
                             Department, StudentPoint, StudentCustomDocument, StudentAcademicData)
 from results.utils import get_letter_grade
@@ -390,3 +390,17 @@ def academic_student_data(registration, dept_name):
         response_data = {**response_data, **student_data}
     return (student_ac, response_data)
         
+
+def update_student_prevrecord(reg, data):
+    student = get_object_or_404(StudentAccount, registration=reg)
+    session = student.session
+    if not hasattr(session, 'previouspoint'):
+        prev_p = PreviousPoint.objects.create(session=session, upto_semester_num=data['upto_semester_num'])
+    else: 
+        prev_p = session.previouspoint
+    if prev_p.upto_semester_num != data['upto_semester_num']:
+        raise ValidationError(f"Session Previous Point is bound to semester {prev_p.upto_semester_num}")
+    student_point, _ = StudentPoint.objects.get_or_create(student=student, prev_point=prev_p)
+    student_point.total_credits = data['total_credits']
+    student_point.total_points = data['total_credits'] * data['cgpa']
+    student_point.save()
