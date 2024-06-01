@@ -27,18 +27,18 @@ h2 .text {
 }
 
 .ref-container {
-    padding-left: 0.5in;
+    padding-left: 0.3in;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-family: Times-roman;
     font-size: 1rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
 }
 
 
 section p {
-    margin-top: 4rem;
+    margin-top: 5rem;
     text-align: justify;
     font-size: 20px;
     font-family: ScriptMT;
@@ -63,15 +63,22 @@ section p {
     padding: 0 2rem;
 }
 
-.bottom {
+.principal {
     margin-top: 5rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
 }
 
-.bottom .info {
+.container .info {
     text-align: center;
     font-family: Times-roman
+}
+
+.preparedby {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
