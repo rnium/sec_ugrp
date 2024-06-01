@@ -54,8 +54,8 @@ def insert_principal_table(flowables):
     paraStyle = ParagraphStyle(
         'paraStyle',
         parent=styles['Normal'],
-        fontName='BookAntiqua',
-        fontSize=14,
+        fontName='BodoniMT',
+        fontSize=16,
         textColor=colors.black,
         alignment=TA_CENTER,
     )
@@ -110,6 +110,7 @@ def render_appearance_certificate(context):
     )
 
     flowables = []
+    flowables.append(Spacer(1, 20))
     insert_top_table(flowables, context.get('ref', ''))
     flowables.append(Spacer(1, 50))
     flowables.append(Paragraph(title_text, titleStyle))
