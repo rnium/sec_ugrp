@@ -404,3 +404,4 @@ def update_student_prevrecord(reg, data):
     student_point.total_credits = data['total_credits']
     student_point.total_points = data['total_credits'] * data['cgpa']
     student_point.save()
+    student.update_stats()
