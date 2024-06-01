@@ -1,5 +1,5 @@
 @page {
-    margin: 2.5in 1in 1in;
+    margin: 2in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -12,6 +12,11 @@ body {
     width: 100%;
 }
 
+.container {
+    margin-left: 0.5in;
+    margin-right: 0.5in;
+}
+
 h2 {
     text-align: center;
 }
@@ -20,6 +25,17 @@ h2 .text {
     border-bottom: 1px solid;
     font-family: Bodoni;
 }
+
+.ref-container {
+    padding-left: 0.5in;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: Times-roman;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
 
 section p {
     margin-top: 5rem;
@@ -47,13 +63,15 @@ section p {
     padding: 0 2rem;
 }
 
-.principal-info {
-    width: 45%;
-    margin-top: 10rem;
-    margin-left: auto;
+.bottom {
+    margin-top: 6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
-.principal-info .info {
+.bottom .info {
     text-align: center;
     font-family: Times-roman
 }

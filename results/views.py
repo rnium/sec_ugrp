@@ -1,4 +1,5 @@
 from django import http
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
 from django.core.cache import cache
@@ -442,8 +443,13 @@ def download_appeared_cert(request, registration):
 @admin_required
 def download_testimonial(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    extra_info = {
+        'ref': request.GET.get('ref'),
+        'date_today': timezone.now(),
+        'admin_name': request.user.adminaccount.user_full_name
+    }
     if student_acadoc:
-        context = student_acadoc.data
+        context = {**student_acadoc.data, **extra_info}
     elif student:=StudentAccount.objects.filter(pk=registration).first():
         last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
         if last_enroll is not None:
@@ -461,6 +467,7 @@ def download_testimonial(request, registration):
                 'exam': last_sem.semester_name,
                 'exam_held_in': last_sem.start_month,
                 'cgpa': student.student_cgpa,
+                **extra_info
             }
         else:
             return render_error(request, 'Testimonial not available without a semester participated!')
