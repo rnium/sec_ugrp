@@ -7,6 +7,17 @@ function showError(errorContainer, msg) {
     })
 }
 
+function showInfo(alertContainer, msg) {
+    $(`#${alertContainer}`).removeClass("alert-danger");
+    $(`#${alertContainer}`).addClass("alert-warning");
+    $(`#${alertContainer}`).text(msg)
+    $(`#${alertContainer}`).show(200,()=>{
+        setTimeout(()=>{
+            $(`#${errorContainer}`).hide()
+        }, 60000)
+    })
+}
+
 // Delete
 function delete_student() {
     let showAlert = (msg)=>{
@@ -200,7 +211,7 @@ function updateStudentPrevRecord(){
         data: payload,
         cache: false,
         success: function(response) {
-            alert("Updated Successfully, reloading page")
+            showInfo("update_prevrecord_alert", "Updated Successfully, reloading page")
             setTimeout(() => {
                 location.reload();
             }, 1000)

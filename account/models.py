@@ -208,6 +208,10 @@ class StudentAccount(BaseAccount):
         return bool(last_enroll)
     
     @property
+    def prev_point(self):
+        return self.studentpoint_set.all().first()
+    
+    @property
     def prevpoint_applicable(self):
         first_enroll = self.semesterenroll_set.all().order_by('semester__semester_no').first()
         return first_enroll and first_enroll.semester.semester_no != 1
