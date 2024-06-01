@@ -27,7 +27,7 @@ h2 .text {
 }
 
 .ref-container {
-    padding-left: 0.3in;
+    padding-left: 0.1in;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -38,7 +38,7 @@ h2 .text {
 
 
 section p {
-    margin-top: 5rem;
+    margin-top: 3rem;
     text-align: justify;
     font-size: 20px;
     font-family: ScriptMT;
@@ -64,7 +64,7 @@ section p {
 }
 
 .principal {
-    margin-top: 5rem;
+    margin-top: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
