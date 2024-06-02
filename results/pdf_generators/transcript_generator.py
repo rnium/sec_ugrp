@@ -122,8 +122,12 @@ def get_main_table(context: Dict) -> Table:
     normalStyle = ParagraphStyle(
         name='normalStyle',
         fontName='Times',
-        fontSize=table_fontSize,
+        fontSize=table_fontSize-1,
         textColor=colors.black,
+        leftIndent=0,
+        rightIndent = 0,
+        spaceBefore=0,
+        spaceAfter=0,
     )
     university_paragraph = Paragraph("Shahjalal University of Science & Technology<br/>P.O.: University, Sylhet, Bangladesh.", style=normalStyle)
     bottom_info = """The results of the student mentioned above are compiled considering aggregated of <u>four years for B. Sc. (Engg.)</u> examinations.
@@ -191,7 +195,7 @@ def get_main_table(context: Dict) -> Table:
         ('SPAN', (0, -1), (-1, -1)), # Bottom info
         ('LEFTPADDING', (0, -1), (0, -1), 20),
         ('RIGHTPADDING', (0, -1), (0, -1), 0),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('TOPPADDING', (0, 0), (-1, -1), 11),
         ('TOPPADDING', (0, -1), (0, -1), 30),
         ('ALIGN', (0, -1), (0, -1), "CENTER"),
     ]
@@ -235,7 +239,7 @@ def get_footer(context):
 def add_footer(canvas, doc, context):
     footer = get_footer(context)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=0.9*inch, y=1*inch)  
+    footer.drawOn(canvas=canvas, x=0.9*inch, y=0.7*inch)  
 
 def get_transcript(context: Dict):
     buffer = BytesIO()
