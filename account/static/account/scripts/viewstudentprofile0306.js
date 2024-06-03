@@ -223,6 +223,49 @@ function updateStudentPrevRecord(){
     });
 }
 
+// Update Info
+function updateStudentInfo() {
+    const father_name = $("#fatherInput").val().trim();
+    const mother_name = $("#motherInput").val().trim();
+    let data = {
+        first_name: $("#firstNameInput").val().trim(),
+        last_name: $("#lastNameInput").val().trim(),
+    }
+
+    if (father_name.length > 0) {
+        data.father_name = father_name;
+    }
+
+    if (mother_name.length > 0) {
+        data.mother_name = mother_name;
+    }
+
+    
+    
+    let payload = JSON.stringify(data)
+    $.ajax({
+        type: "patch",
+        url: update_student_info_api,
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function(xhr){
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            $("#updateStudentBtn").attr('disabled', true);
+        },
+        data: payload,
+        cache: false,
+        success: function(response) {
+            showInfo("updateStudentAlert", "Updated Successfully, reloading page")
+            setTimeout(() => {
+                location.reload();
+            }, 1000)
+        },
+        error: function(xhr, status, error) {
+            $("#updateStudentBtn").removeAttr("disabled");
+            showError("updateStudentAlert", JSON.stringify(xhr.responseJSON));
+        },
+    });
+}
 
 
 
@@ -231,4 +274,5 @@ $(document).ready(function () {
     $("#confirm-del-btn").on('click', delete_student);
     $("#confirm_change_session").on('click', change_session);
     $("#confirm_update_prevrecord").on('click', updateStudentPrevRecord);
+    $("#updateStudentBtn").on('click', updateStudentInfo);
 });

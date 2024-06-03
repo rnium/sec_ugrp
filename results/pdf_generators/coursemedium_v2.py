@@ -14,8 +14,8 @@ def get_fonts_css_txt(font_names):
                         src: url(file://{font_path});}}"""
     return css_text
 
-def render_testimonial(context):
-    html_text = render_to_string('results/pdf_templates/testimonial.html', context=context)
+def render_coursemedium_cert(context):
+    html_text = render_to_string('results/pdf_templates/coursemedium.html', context=context)
     fonts = {
         'Times-roman': 'timesnewroman.ttf',
         'Bodoni': 'BOD_B.TTF',
@@ -23,7 +23,7 @@ def render_testimonial(context):
     }
     font_config = FontConfiguration()
     fonts_css = get_fonts_css_txt(fonts)
-    css_filepath = settings.BASE_DIR/f"results/pdf_generators/styles/testimonial.css"
+    css_filepath = settings.BASE_DIR/f"results/pdf_generators/styles/coursemedium.css"
     with open(css_filepath, 'r') as f:
         css_text = f.read()
     html = HTML(string=html_text)

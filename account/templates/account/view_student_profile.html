@@ -215,6 +215,11 @@
                       <p class="text-muted mb-0">{% if student.data.address %}{{student.data.address}} {% else %}[empty]{% endif %}</p>
                     </div>
                   </div>
+                  {% if editor_access %}
+                  <div class="row px-3 mt-3">
+                    <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#updateStudentInfoModal">Edit Student Info</button>
+                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -341,6 +346,53 @@
       </div>
   </div>
 </div>
+
+<!-- Edit Student Info Modal -->
+<div class="modal fade" id="updateStudentInfoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content bg-material">
+          <div class="modal-header">
+              <div class="modal-title text-info">Edit Info for {{student.registration}}</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="form-container row p-0">
+                  <div class="col-md-12 mb-2">
+                      <div class="form-floating">
+                          <input type="text" value="{{student.first_name}}" class="form-control studentinput-must" id="firstNameInput" placeholder="">
+                          <label for="firstNameInput">First Name</label>
+                      </div>              
+                  </div>
+                  <div class="col-md-12 mb-2">
+                      <div class="form-floating">
+                          <input type="text" value="{% if student.last_name %}{{student.last_name}}{% endif %}" class="form-control" id="lastNameInput" placeholder="">
+                          <label for="lastNameInput">Last Name</label>
+                      </div>              
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-floating mb-3">
+                          <input type="text" value="{{student.father_name}}" class="form-control studentinput-must" id="fatherInput" placeholder="">
+                          <label for="fatherInput">Father Name</label>
+                      </div>              
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-floating mb-3">
+                          <input type="text" value="{{student.mother_name}}"  class="form-control studentinput-must" id="motherInput" placeholder="">
+                          <label for="motherInput">Mother Name</label>
+                      </div>              
+                  </div>
+              </div>
+              <div class="alert alert-danger mt-3 mb-0 text-center" role="alert" id="updateStudentAlert" style="display: none;"></div>   
+          </div>
+          <div class="d-flex p-3 pt-0 justify-content-end">
+              <button class="btn btn-primary btn-iconized px-4 shadow-sm" id="updateStudentBtn">
+                  <i class='bx bx-save me-1'></i>
+                  <span>Update</span>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
 {% endblock content %}
 
 {% block script %}
@@ -350,7 +402,8 @@
     const change_session_api = "{% url 'account:migrate_sesion_of_student' student.registration %}";
     const student_stats_api = "{% url 'results:student_stats_api' student.registration %}";
     const delete_student_api = "{% url 'account:delete_student' student.registration %}";
+    const update_student_info_api = "{% url 'account:update_student_info' student.registration %}";
     const update_student_prev_record_api = "{% url 'results:update_student_prev_record' student.registration %}";
 </script>
-<script src="{% static 'account/scripts/viewstudentprofile0106.js' %}"></script>
+<script src="{% static 'account/scripts/viewstudentprofile0306.js' %}"></script>
 {% endblock script %}

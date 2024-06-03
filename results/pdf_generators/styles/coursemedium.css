@@ -45,6 +45,11 @@ section p {
     line-height: 2;
 }
 
+span.name {
+    font-style: italic;
+    font-weight: bold;
+}
+
 .bottom-p {
     margin-top: 1.5rem;
     line-height: 1.5;

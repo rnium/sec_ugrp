@@ -28,7 +28,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from . import utils
 from results.api.utils import is_confirmed_user
 from results.api.permission import IsSuperAdmin, IsSuperOrDeptAdmin
@@ -79,6 +79,12 @@ class StudentProfileView(SuperOrDeptAdminRequiredMixin, DetailView):
         context['editor_access'] = admin_ac.is_super_admin or (student.session.dept.head == admin_ac)
         context['migratable_sessions'] = Session.objects.filter(from_year__gte=student_reg_year, dept=student.session.dept).exclude(id=student.session.id)
         return context
+
+
+class StudentInfoUpdate(UpdateAPIView):
+    permission_classes = [IsSuperOrDeptAdmin]
+    serializer_class = StudentAccountSerializer
+    queryset = StudentAccount.objects.all()
 
 
 def signup_admin(request):
