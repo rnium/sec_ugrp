@@ -14,6 +14,7 @@ urlpatterns = [
     path('student/<int:registration>/', views.StudentProfileView.as_view(), name="view_student_profile"),
     path('student/<int:registration>/migratesession', views.migrate_sesion_of_student, name="migrate_sesion_of_student"),
     path('student/<int:registration>/delete', views.delete_student, name="delete_student"),
+    path('student/<int:pk>/updateinfo/', views.StudentInfoUpdate.as_view(), name="update_student_info"),
     path('sendstaffsignuptoken', views.send_signup_token, name="send_staff_signup_token"),
     path('admin/signup/', views.signup_admin, name="signupadmin"),
     path('admin/update/', views.update_admin_account, name="update_admin_account"),

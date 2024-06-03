@@ -21,4 +21,5 @@ jobs:
             git pull origin
             source venv/bin/activate
             python manage.py migrate
+            python manage.py collectstatic --noinput
             systemctl reload-or-restart uwsgi
