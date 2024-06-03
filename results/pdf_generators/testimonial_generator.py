@@ -19,7 +19,7 @@ def render_testimonial(context):
     fonts = {
         'Times-roman': 'timesnewroman.ttf',
         'Bodoni': 'BOD_B.TTF',
-        'ScriptMT': 'SCRIPT_MT_BOLD.TTF',
+        'Invitation': 'invitation.ttf',
     }
     font_config = FontConfiguration()
     fonts_css = get_fonts_css_txt(fonts)
