@@ -19,7 +19,7 @@ from results.pdf_generators.transcript_generator import render_transcript_for_st
 from results.utils import (get_ordinal_number, render_error, get_ordinal_suffix, get_pk_from_base64,
                            has_semester_access, is_in_semester_committee)
 from results.pdf_generators.course_report_generator import render_coursereport
-from results.pdf_generators.coursemedium_cert_generator import render_coursemedium_cert
+from results.pdf_generators.coursemedium_v2 import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
 from results.pdf_generators.testimonial_generator import render_testimonial
 from results.pdf_generators.scorelist_generator import render_scorelist
@@ -390,14 +390,20 @@ def download_full_document(request, registration):
 @admin_required
 def download_coursemediumcert(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    extra_info = {
+        'ref': request.GET.get('ref'),
+        'date_today': timezone.now(),
+        'admin_name': request.user.adminaccount.user_full_name
+    }
     if student_acadoc:
-        context = student_acadoc.data
+        context = {**student_acadoc.data, **extra_info}
     elif student:=StudentAccount.objects.filter(pk=registration).first():
         context = {
             'name': student.student_name,
             'registration': student.registration,
             'session': student.session.session_code_formal,
             'dept': student.session.dept.fullname,
+            **extra_info
         }
     sheet_pdf = render_coursemedium_cert(context)
     filename = f"CourseMedium Certificate - {registration}.pdf"
