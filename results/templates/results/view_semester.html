@@ -294,7 +294,7 @@
                 <div class="row mt-3">
                     <div class="col-md-12 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control" id="chairman" placeholder="" value="{{config.footer_data.chairman}}">
+                            <input type="text" readonly onfocus="this.removeAttribute('readonly');" class="form-control" id="chairman" placeholder="" value="{{config.footer_data.chairman}}">
                             <label for="chairman">Chairman of Exam Committee</label>
                         </div>
                     </div>
@@ -302,25 +302,25 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control member" id="member1" placeholder="" value="{{config.footer_data.committee_mem_1}}">
+                            <input type="text" readonly onfocus="this.removeAttribute('readonly');" class="form-control member" id="member1" placeholder="" value="{{config.footer_data.committee_mem_1}}">
                             <label for="member1">Exam Committee Member 1</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control member" id="member2" placeholder="" value="{{config.footer_data.committee_mem_2}}">
+                            <input type="text" readonly onfocus="this.removeAttribute('readonly');" class="form-control member" id="member2" placeholder="" value="{{config.footer_data.committee_mem_2}}">
                             <label for="member2">Exam Committee Member 2</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control member" id="member3" placeholder="" value="{{config.footer_data.committee_mem_3}}">
+                            <input type="text" readonly onfocus="this.removeAttribute('readonly');" class="form-control member" id="member3" placeholder="" value="{{config.footer_data.committee_mem_3}}">
                             <label for="member3">Exam Committee Member 3</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control member" id="member4" placeholder="" value="{{config.footer_data.committee_mem_4}}">
+                            <input type="text" readonly onfocus="this.removeAttribute('readonly');" class="form-control member" id="member4" placeholder="" value="{{config.footer_data.committee_mem_4}}">
                             <label for="member4">Exam Committee Member 4</label>
                         </div>
                     </div>
@@ -328,25 +328,25 @@
                 <div class="row mt-3">
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator1" placeholder="" value="{{config.footer_data.tabulator_1}}">
+                            <input type="text"  readonly onfocus="this.removeAttribute('readonly');" class="form-control tabulator" id="tabulator1" placeholder="" value="{{config.footer_data.tabulator_1}}">
                             <label for="tabulator1">Tabulator 1</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator2" placeholder="" value="{{config.footer_data.tabulator_2}}">
+                            <input type="text"  readonly onfocus="this.removeAttribute('readonly');" class="form-control tabulator" id="tabulator2" placeholder="" value="{{config.footer_data.tabulator_2}}">
                             <label for="tabulator2">Tabulator 2</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator3" placeholder="" value="{{config.footer_data.tabulator_3}}">
+                            <input type="text"  readonly onfocus="this.removeAttribute('readonly');" class="form-control tabulator" id="tabulator3" placeholder="" value="{{config.footer_data.tabulator_3}}">
                             <label for="tabulator3">Tabulator 3</label>
                         </div>
                     </div>
                     <div class="col-md-6 p-1">
                         <div class="form-floating">
-                            <input type="text" autocomplete="off" class="form-control tabulator" id="tabulator4" placeholder="" value="{{config.footer_data.tabulator_4}}">
+                            <input type="text"  readonly onfocus="this.removeAttribute('readonly');" class="form-control tabulator" id="tabulator4" placeholder="" value="{{config.footer_data.tabulator_4}}">
                             <label for="tabulator4">Tabulator 4</label>
                         </div>
                     </div>
@@ -606,12 +606,12 @@
                                 {% for course in d_semester.course_set.all %}
                                 {% if course in semester.drop_courses.all %}
                                 <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check existing" id="{{course.id}}" autocomplete="off" checked>
+                                    <input type="checkbox" class="btn-check existing" id="{{course.id}}"  readonly onfocus="this.removeAttribute('readonly');" checked>
                                     <label class="btn btn-outline-success w-100" for="{{course.id}}">{{course.code}}</label><br>
                                 </div>
                                 {% else %}
                                 <div class="col-md-4 py-2 m-0">
-                                    <input type="checkbox" class="btn-check" id="{{course.id}}" autocomplete="off">
+                                    <input type="checkbox" class="btn-check" id="{{course.id}}"  readonly onfocus="this.removeAttribute('readonly');">
                                     <label class="btn btn-outline-success w-100" for="{{course.id}}">{{course.code}}</label><br>
                                 </div>
                                 {% endif %}
@@ -653,7 +653,7 @@
                         </select>
                         <label for="memberTypeSelect">Commettee member type</label>
                     </div>                  
-                    <input class="form-control py-2" autocomplete="off" id="adminSearchInp" type="text" placeholder="Name or email of admin" aria-label="default input example">
+                    <input class="form-control py-2"  readonly onfocus="this.removeAttribute('readonly');" id="adminSearchInp" type="text" placeholder="Name or email of admin" aria-label="default input example">
                     <div class="user-list mt-2">
                     </div>
                     <div id="addCommitteeAlert" class="alert alert-danger mt-2 mb-2 text-center" role="alert" style="display: none;">
