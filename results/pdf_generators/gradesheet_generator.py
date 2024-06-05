@@ -14,6 +14,7 @@ from django.conf import settings
 from results.utils import get_letter_grade, get_ordinal_number, round_up
 from results.models import SemesterEnroll, StudentPoint
 from results.api.utils import sort_courses
+import math
 
 DEBUG_MODE = False
 
@@ -158,14 +159,19 @@ def cumulative_semester_data(student, semester_upto):
     return data
         
 
-def get_courses_data(semester_enroll, blank_list):
+def get_courses_data(courses, student, blank_list):
+    coursetitle_style = ParagraphStyle(
+        name='bold_paragraph_style',
+        fontName='roboto-bold',  # Specify the bold font
+        fontSize=9,  # Set the font size to 14 points
+        alignment=0,
+    )
     dataset = []
-    courses = sort_courses(semester_enroll.courses.all(), 'eee')
     for course in courses:
-        record = course.courseresult_set.filter(student=semester_enroll.student).first()
+        record = course.courseresult_set.filter(student=student).first()
         data = [
             course.code,
-            course.title,
+            Paragraph(course.title, coursetitle_style),
             *blank_list,
             course.course_credit if record.grade_point else 0,
             record.grade_point,
@@ -177,7 +183,8 @@ def get_courses_data(semester_enroll, blank_list):
 
 def build_semester(flowables, semester_enroll, cumulative_data) -> None:
     course_title_extras = ['', '', '', '']
-    course_dataset = get_courses_data(semester_enroll, course_title_extras)
+    courses = sort_courses(semester_enroll.courses.all(), semester_enroll.semester.session.dept.name)
+    course_dataset = get_courses_data(courses, semester_enroll.student, course_title_extras)
     num_courses = len(course_dataset)
     semester_title = f'{cardinal_repr(semester_enroll.semester.year)} Year {cardinal_repr(semester_enroll.semester.year_semester)} Semester'
     if semester_enroll.semester.repeat_number:
@@ -192,8 +199,10 @@ def build_semester(flowables, semester_enroll, cumulative_data) -> None:
         [*course_title_extras, 'Cumulative:', '', cumulative_data['credit'], f"{cumulative_data['grade_point']}", cumulative_data['letter_grade']],
     ]
     header_row_heights = [15] * 3
-    course_row_heights = [14] * num_courses
+    course_row_heights = []
     bottom_row_heights = [14] * 2
+    for course in courses:
+        course_row_heights.append(14 * math.ceil(len(course.title)/70))
     semester_table_style = TableStyle([
         ('GRID', (0,1), (-1,-3), 0.7, colors.black),
         ('GRID', (-5,-2), (-1,-1), 0.7, colors.black),
@@ -294,7 +303,7 @@ def get_footer(second_sem_cumulative, last_semeste_no):
 def add_footer(canvas, doc, final_cumulative, last_sem_no, margin_y=1.4*cm):
     footer = get_footer(final_cumulative, last_sem_no)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=cm, y=margin_y)
+    footer.drawOn(canvas=canvas, x=cm, y=0.5*cm)
 
 def get_gradesheet(student, year_first_sem_enroll, year_second_sem_enroll=None) -> bytes:
     buffer = BytesIO()

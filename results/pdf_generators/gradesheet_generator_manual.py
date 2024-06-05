@@ -13,6 +13,7 @@ from io import BytesIO
 from django.conf import settings
 from results.utils import get_letter_grade
 from account.models import StudentAccount
+import math
 
 DEBUG_MODE = False
 
@@ -142,13 +143,19 @@ def build_header(flowables, formdata) -> None:
         
 
 def get_courses_data(semester_data, blank_list):
+    coursetitle_style = ParagraphStyle(
+        name='bold_paragraph_style',
+        fontName='roboto-bold',  # Specify the bold font
+        fontSize=9,  # Set the font size to 14 points
+        alignment=0,
+    )
     dataset = []
     # courses = sort_courses(semester_enroll.courses.all(), 'eee')
     courses = semester_data['courses']
     for course in courses:
         data = [
             course['code'],
-            course['title'],
+            Paragraph(course['title'], coursetitle_style),
             *blank_list,
             course['credit'] if course['gp'] else 0,
             course['gp'],
@@ -173,8 +180,10 @@ def build_semester(flowables, semester_data) -> None:
         [*course_title_extras, 'Cumulative:', '', semester_data['cumulative_credits'], f"{semester_data['cumulative_gp']}", semester_data['cumulative_lg']],
     ]
     header_row_heights = [15] * 3
-    course_row_heights = [14] * num_courses
+    course_row_heights = []
     bottom_row_heights = [14] * 2
+    for course in semester_data['courses']:
+        course_row_heights.append(14 * math.ceil(len(course['title'])/70))
     semester_table_style = TableStyle([
         ('GRID', (0,1), (-1,-3), 0.7, colors.black),
         ('GRID', (-5,-2), (-1,-1), 0.7, colors.black),
@@ -277,7 +286,7 @@ def get_footer(last_semester_data, include_overall_result):
 def add_footer(canvas, doc, last_sem_data, include_overall_result, margin_y=1.4*cm):
     footer = get_footer(last_sem_data, include_overall_result)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=cm, y=margin_y)
+    footer.drawOn(canvas=canvas, x=cm, y=0.5*cm)
 
 def get_gradesheet(formdata, excel_data, num_semesters, is_the_last_gradesheet=False) -> bytes:
     buffer = BytesIO()
