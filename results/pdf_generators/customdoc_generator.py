@@ -99,11 +99,11 @@ def process_and_save_customdoc_data(data, admin_name):
     return cdoc
 
 
-def render_customdoc_document(cdoc: StudentCustomDocument):
+def render_customdoc_document(cdoc: StudentCustomDocument, request):
     data = cdoc.document_data
     is_the_last_gradesheet = False
     if cdoc.doc_type == 'transcript':
-        return get_transcript(data)
+        return get_transcript(data, request)
     elif cdoc.doc_type == 'sem_gs':
         if cdoc.sem_or_year_num == 8:
             is_the_last_gradesheet = True

@@ -215,3 +215,9 @@ class StudentAccount(BaseAccount):
     def prevpoint_applicable(self):
         first_enroll = self.semesterenroll_set.all().order_by('semester__semester_no').first()
         return first_enroll and first_enroll.semester.semester_no != 1
+    
+    @property
+    def credits_completed_formatted(self):
+        cc = self.credits_completed
+        cc_int = int(cc)
+        return cc_int if cc == cc_int else cc

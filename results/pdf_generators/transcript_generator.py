@@ -165,7 +165,7 @@ def get_main_table(context: Dict) -> Table:
         ["7.", 'Degree(s) Awarded', ':', f'B.Sc. (Engg.) in {student.session.dept.fullname}'],
         ["8.", 'Grading System', ':', get_grading_scheme_table()],
         [Spacer(1, 10)],
-        ["9.", 'Credits Completed', ':', student.credits_completed],
+        ["9.", 'Credits Completed', ':', student.credits_completed_formatted],
         ["10.", 'Cumulative  Grade Point Obtained', ':', Paragraph(f"CGPA: <b>{round(STUDENT_CGPA, 2)} {WITH_DISTINCTION_TXT}</b>", style=normalStyle)],
         ["11.", 'Letter Grade Obtained', ':', Paragraph(f"<b>{get_letter_grade(STUDENT_CGPA)}</b>", style=normalStyle)],
         ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{LAST_SEMESTER_ENROLLS_COUNT}</b>", style=normalStyle)],

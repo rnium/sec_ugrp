@@ -18,7 +18,7 @@ DEBUG_MODE = False
 w, h = 21.6*cm, 34*cm
 margin_X = 1*cm
 margin_Y = 1*cm
-TABLE_FONT_SIZE = 14
+TABLE_FONT_SIZE = 13
 
 pdfmetrics.registerFont(TTFont('roboto', settings.BASE_DIR/'results/static/results/fonts/Roboto-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('roboto-bold', settings.BASE_DIR/'results/static/results/fonts/Roboto-Bold.ttf'))
@@ -120,8 +120,12 @@ def get_main_table(context: Dict) -> Table:
     normalStyle = ParagraphStyle(
         name='normalStyle',
         fontName='Times',
-        fontSize=table_fontSize,
+        fontSize=table_fontSize-1,
         textColor=colors.black,
+        leftIndent=0,
+        rightIndent = 0,
+        spaceBefore=0,
+        spaceAfter=0,
     )
     university_paragraph = Paragraph("Shahjalal University of Science & Technology<br/>P.O.: University, Sylhet, Bangladesh.", style=normalStyle)
     bottom_info = """The results of the student mentioned above are compiled considering aggregated of <u>four years for B. Sc. (Engg.)</u> examinations.
@@ -169,7 +173,7 @@ def get_main_table(context: Dict) -> Table:
         ["12.", 'Total Number of Students Appeared', ':', Paragraph(f"<b>{NUM_APPEARED_STUDENTS}</b>", style=normalStyle)],
         ["13."
          , Paragraph(
-             'Total Number of  Degree Awarded<br/>this Year in Applicant\'s Academic Field', style=normalStyle
+             'Total Number of  Degree Awarded this Year in Applicant\'s Academic Field', style=normalStyle
          )
          , ':'
          , Paragraph(
@@ -193,13 +197,13 @@ def get_main_table(context: Dict) -> Table:
         ('SPAN', (0, -1), (-1, -1)), # Bottom info
         ('LEFTPADDING', (0, -1), (0, -1), 20),
         ('RIGHTPADDING', (0, -1), (0, -1), 0),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('TOPPADDING', (0, 0), (-1, -1), 11),
         ('TOPPADDING', (0, -1), (0, -1), 30),
         ('ALIGN', (0, -1), (0, -1), "CENTER"),
     ]
     if DEBUG_MODE:
         style_config.extend([('GRID', (0,0), (-1,-1), 0.25, colors.gray)])
-    colwidths = [0.6*cm, 2.5*inch, 0.5*cm, 3.5*inch]
+    colwidths = [0.8*cm, 3*inch, 1*cm, 4*inch]
     table = Table(data=data, colWidths=colwidths)
     table.setStyle(TableStyle(style_config))
     return table
@@ -208,7 +212,7 @@ def build_body(flowables: List, context: Dict) -> None:
     title_style = ParagraphStyle(
         name='TitleStyle',
         fontName='Times-Bold',
-        fontSize=11,
+        fontSize=14,
         textColor=colors.black,
         alignment=1,
     )
@@ -237,9 +241,11 @@ def get_footer(context):
 def add_footer(canvas, doc, context):
     footer = get_footer(context)
     footer.wrapOn(canvas, 0, 0)
-    footer.drawOn(canvas=canvas, x=0.9*inch, y=1*inch)  
+    footer.drawOn(canvas=canvas, x=0.9*inch, y=0.7*inch)
 
-def get_transcript(context: Dict):
+def get_transcript(context: Dict, request):
+    if hasattr(request.user, 'adminaccount'):
+        context['admin_name'] = request.user.adminaccount.user_full_name
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=(w,h), topMargin=margin_Y, title="Academic Transcript")
     story = []

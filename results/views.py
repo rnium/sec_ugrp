@@ -361,7 +361,7 @@ def download_full_document(request, registration):
     docs = []
     custom_docs = StudentCustomDocument.objects.filter(student=student, doc_type='all_gss').first()
     if custom_docs:
-        docs.append(render_customdoc_document(custom_docs))
+        docs.append(render_customdoc_document(custom_docs, request))
     gradesheets_semesters = student.gradesheet_semesters
     gradesheets_semester_groups = [gradesheets_semesters[i:i+2] for i in range(0, len(gradesheets_semesters), 2)]
     for year_semester_list in gradesheets_semester_groups:
@@ -666,7 +666,7 @@ def download_customdoc(request, reg, doctype):
         return render_error(request, "No Document Found")
     if not cdoc.document_data:
         return render_error(request, "Document data is empty")
-    doc_pdf = render_customdoc_document(cdoc)
+    doc_pdf = render_customdoc_document(cdoc, request)
     return FileResponse(ContentFile(doc_pdf), filename=cdoc.filename)
 
 @admin_required
