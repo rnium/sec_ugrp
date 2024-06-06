@@ -472,7 +472,7 @@ def download_testimonial(request, registration):
                 'years_completed': last_sem_no/2,
                 'semesters_completed': last_sem_no,
                 'exam': last_sem.semester_name,
-                'exam_held_in': last_sem.start_month,
+                'exam_held_in': last_sem.held_in,
                 'cgpa': student.student_cgpa,
                 **extra_info
             }
