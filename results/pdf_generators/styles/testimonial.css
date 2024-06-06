@@ -1,5 +1,5 @@
 @page {
-    margin: 2.22in 0.5in 1rem;
+    margin: 2.23in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -73,7 +73,8 @@ section p {
 
 .container .info {
     text-align: center;
-    font-family: Times-roman
+    font-family: Invitation;
+    font-size: 1.4rem;
 }
 
 .preparedby {

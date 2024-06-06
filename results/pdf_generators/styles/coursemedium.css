@@ -70,7 +70,8 @@ span.name {
 
 .container .info {
     text-align: center;
-    font-family: Times-roman
+    font-family: Invitation;
+    font-size: 1.4rem;
 }
 
 .preparedby {
