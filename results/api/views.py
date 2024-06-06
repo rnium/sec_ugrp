@@ -69,7 +69,7 @@ class SessionCreate(CreateAPIView):
 
 class SemesterCreate(CreateAPIView):
     serializer_class = SemesterSerializer
-    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    permission_classes = [IsAuthenticated, IsSuperOrDeptAdmin]
     
     def get_queryset(self):
         pk = self.kwargs.get("pk")
@@ -93,7 +93,7 @@ class SemesterCreate(CreateAPIView):
 
 class SemesterUpdate(UpdateAPIView):
     serializer_class = SemesterSerializer
-    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    permission_classes = [IsAuthenticated, IsSuperOrDeptAdmin]
     
     def get_queryset(self):
         pk = self.kwargs.get("pk")
@@ -410,36 +410,29 @@ def toggle_semester_is_running(request, pk):
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not request.user.adminaccount.is_super_admin:
-        return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
     # cheking admin user
-    if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != semester.session.dept):
-            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
-    else:
-        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    if (not request.user.adminaccount.is_super_admin and
+        (request.user.adminaccount != semester.session.dept.head)):
+        return Response(data={'details': 'forbidden'}, status=status.HTTP_403_FORBIDDEN)
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):
         return Response(data={"details": "Incorrect password"}, status=status.HTTP_403_FORBIDDEN)
     semester.is_running = not semester.is_running
+    semester.updated_by = request.user
     semester.save()
     return Response(data={"status": "ok"})    
     
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsSuperAdmin])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def delete_semester(request, pk):
     try:
         semester = Semester.objects.get(pk=pk)
     except Semester.DoesNotExist:
         return Response(data={"details": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     # cheking admin user
-    if hasattr(request.user, 'adminaccount'):
-        if (request.user.adminaccount.dept is not None and
-            request.user.adminaccount.dept != semester.session.dept):
-            return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
-    else:
+    if (not request.user.adminaccount.is_super_admin and
+        (request.user.adminaccount != semester.session.dept.head)):
         return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     # checking password
     if not utils.is_confirmed_user(request, username=request.user.username):

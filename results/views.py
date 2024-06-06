@@ -17,7 +17,7 @@ from account.models import StudentAccount, AdminAccount
 from results.pdf_generators.gradesheet_generator import get_gradesheet
 from results.pdf_generators.transcript_generator import render_transcript_for_student
 from results.utils import (get_ordinal_number, render_error, get_ordinal_suffix, get_pk_from_base64,
-                           has_semester_access, is_in_semester_committee)
+                           has_semester_access, has_semester_super_access)
 from results.pdf_generators.course_report_generator import render_coursereport
 from results.pdf_generators.coursemedium_v2 import render_coursemedium_cert
 from results.pdf_generators.appeared_cert_generator import render_appearance_certificate
@@ -217,6 +217,7 @@ class SemesterView(SuperOrDeptAdminRequiredMixin, DetailView):
         context['courses_created_drop'] = semester.course_set.filter(is_carry_course=True).order_by('id')
         context['courses_drop'] = semester.drop_courses.all().order_by('id')
         context['editor_access'] = has_semester_access(semester, self.request.user.adminaccount)
+        context['super_access'] = has_semester_super_access(semester, self.request.user.adminaccount)
         # drop courses semester for current semester
         
         if semester.is_running:

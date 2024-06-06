@@ -97,7 +97,7 @@
             </div>
             {% endif %}
         </div>
-        {% if request.user.adminaccount.is_super_admin %}
+        {% if edit_access %}
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
             <button class="btn btn-secondary btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#newSemesterEntryModal">
                 <i class='bx bx-list-plus me-1'></i>

@@ -121,8 +121,10 @@ class Semester(models.Model):
     is_running = models.BooleanField(default=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     drop_courses = models.ManyToManyField("Course", blank=True, related_name="drop_courses")
-    added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    added_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='added_by')
+    updated_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='updated_by')
     added_in = models.DateTimeField(auto_now_add=True)
+    updated_in = models.DateTimeField(auto_now=True, null=True, blank=True)
     
     class Meta:
         ordering = ["semester_no", 'part_no', 'repeat_number']
@@ -458,6 +460,7 @@ class CourseResult(models.Model):
     is_drop_course = models.BooleanField(default=False)
     retake_of = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     
     class Meta:
         ordering = ["is_drop_course", "student__registration"]
