@@ -52,16 +52,16 @@ section p {
 
 .field {
     border-bottom: 2px dotted black;
-    padding: 0 5rem;
+    padding: 0 1rem;
 }
 
-.field-medium {
+/* .field-medium {
     padding: 0 3rem;
 }
 
 .field-small {
     padding: 0 2rem;
-}
+} */
 
 .principal {
     margin-top: 3rem;

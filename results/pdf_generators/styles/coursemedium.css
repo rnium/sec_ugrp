@@ -42,7 +42,7 @@ section p {
     text-align: justify;
     font-size: 1.4rem;
     font-family: Invitation;
-    line-height: 2;
+    line-height: 1.7;
 }
 
 span.name {
@@ -57,15 +57,7 @@ span.name {
 
 .field {
     border-bottom: 2px dotted black;
-    padding: 0 5rem;
-}
-
-.field-medium {
-    padding: 0 3rem;
-}
-
-.field-small {
-    padding: 0 2rem;
+    padding: 0 1rem;
 }
 
 .principal {
