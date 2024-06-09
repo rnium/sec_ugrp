@@ -1,9 +1,3 @@
-:root {
-    --name-x: 210px;
-    --name-y: 93px;
-    --name-w: 350px;
-}
-
 @page {
     margin: 2.23in 0.5in 1rem;
     size: 'A4';
@@ -49,16 +43,38 @@
 }
 
 .abs-data.registration {
-    /* background-color: red; */
-    --width: 270px;
-    --top: 55px;
-    --left: 380px;
+    --width: 160px;
+    --top: 160px;
+    --left: 330px;
 }
+
+.abs-data.session {
+    --width: 130px;
+    --top: 194px;
+    --left: 48px;
+}
+
+.abs-data.dept {
+    --width: 23rem;
+    --top: 227px;
+    --left: 254px;
+}
+
 .abs-data.exam {
-    background-color: red;
-    --width: 270px;
-    --top: 55px;
-    --left: 380px;
+    --width: 20rem;
+    --top: 260px;
+    --left: 233px;
+}
+
+.abs-data.held-in {
+    --width: 12rem;
+    --top: 293px;
+    --left: 48px;
+}
+.abs-data.cgpa {
+    --width: 3rem;
+    --top: 293px;
+    --left: 434px;
 }
 
 body {
@@ -130,10 +146,10 @@ section p {
     --paddingX: 10rem;
 }
 .field.held-in{
-    --paddingX: 5rem;
+    --paddingX: 6rem;
 }
 .field.cgpa{
-    --paddingX: 1.2rem;
+    --paddingX: 1.5rem;
 }
 
 .principal {
