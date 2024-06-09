@@ -1,3 +1,9 @@
+:root {
+    --name-x: 210px;
+    --name-y: 93px;
+    --name-w: 350px;
+}
+
 @page {
     margin: 2.23in 0.5in 1rem;
     size: 'A4';
@@ -6,6 +12,18 @@
 * {
     margin: 0;
     box-sizing: border-box;
+}
+
+.abs-data {
+    position: absolute;
+}
+
+.abs-data.name {
+    width: var(--name-w);
+    /* background-color: red; */
+    top: var(--name-y);
+    left: var(--name-x);
+    text-align: center;
 }
 
 body {
@@ -55,13 +73,13 @@ section p {
     padding: 0 1rem;
 }
 
-/* .field-medium {
-    padding: 0 3rem;
+.field.name {
+    padding: 0 10rem;
 }
 
 .field-small {
     padding: 0 2rem;
-} */
+}
 
 .principal {
     margin-top: 3rem;
