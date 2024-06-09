@@ -12,9 +12,9 @@
             <div class="ref">{{ref}}</div>
             <div class="date">{{date_today|date:"d/m/Y"}}</div>
         </div>
-        <p class="abs-data name">{{name}}</p>
-        <p class="abs-data parent father_name">{{father_name}}</p>
-        <p class="abs-data parent mother_name">{{mother_name}}</p>
+        <p class="abs-data name">{{name|title}}</p>
+        <p class="abs-data parent father_name">{{father_name|title}}</p>
+        <p class="abs-data parent mother_name">{{mother_name|title}}</p>
         <p class="abs-data registration">{{registration}}</p>
         <p class="abs-data session">{{session}}</p>
         <p class="abs-data dept">{{dept}}</p>
@@ -29,7 +29,7 @@
                 <span class="field parent"></span>&nbsp; bearing Registration No. <span class="field registration"></span>&nbsp; and Session
                 <span class="field session"></span>&nbsp;completed {{years_completed}} years ({{semesters_completed}} semester{{semesters_completed|pluralize}}) academic program of B.Sc. (Engineering) in
                 <span class="field dept"></span>&nbsp;at the examination of
-                <span class="field exam"></span>&nbsp; (held in <span class="field held-in"></span>). He/She secured CGPA 
+                <span class="field exam"></span>&nbsp;(held in <span class="field held-in"></span>). He/She secured CGPA 
                 <span class="field cgpa"></span> on a scale of 4.0.
             </p>
             <p class="bottom-p">He/She did not take part in any activity subversive of state or of college discipline. I wish him/her every success in life.</p>    

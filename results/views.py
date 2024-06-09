@@ -469,7 +469,7 @@ def download_testimonial(request, registration):
                 'mother_name': student.mother_name,
                 'session': student.session.session_code_formal,
                 'dept': student.session.dept.fullname,
-                'years_completed': last_sem_no/2,
+                'years_completed': last_sem_no//2,
                 'semesters_completed': last_sem_no,
                 'exam': last_sem.semester_name,
                 'exam_held_in': last_sem.held_in,

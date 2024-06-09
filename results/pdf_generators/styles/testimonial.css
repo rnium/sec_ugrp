@@ -1,16 +1,17 @@
 @page {
-    margin: 2.23in 0.5in 1rem;
+    margin: 2.235in 0.5in 1rem;
     size: 'A4';
 }
 
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: Invitation;
 }
 
 .abs-data {
     position: absolute;
-    /* background-color: red; */
+    /* border: 1px solid red; */
     text-align: center;
     width: var(--width);
     top: var(--top);
@@ -20,7 +21,7 @@
 .abs-data.name {
     --width: 350px;
     --left: 210px;
-    --top: 93px; 
+    --top: 92px; 
 }
 
 .abs-data.parent {
@@ -35,7 +36,7 @@
 }
 
 .abs-data.parent.father_name {
-    --left: 72px;
+    --left: 70px;
 }
 
 .abs-data.parent.mother_name {
@@ -49,7 +50,7 @@
 }
 
 .abs-data.session {
-    --width: 130px;
+    --width: 145px;
     --top: 194px;
     --left: 48px;
 }
@@ -61,20 +62,20 @@
 }
 
 .abs-data.exam {
-    --width: 20rem;
+    --width: 12rem;
     --top: 260px;
-    --left: 233px;
+    --left: 217px;
 }
 
 .abs-data.held-in {
-    --width: 12rem;
-    --top: 293px;
-    --left: 48px;
+    --width: 10rem;
+    --top: 260px;
+    --left: 485px;
 }
 .abs-data.cgpa {
-    --width: 3rem;
-    --top: 293px;
-    --left: 434px;
+    --width: 3.2rem;
+    --top: 295px;
+    --left: 225px;
 }
 
 body {
@@ -136,17 +137,17 @@ section p {
     --paddingX: 5rem;
 }
 .field.session {
-    --paddingX: 4rem;
+    --paddingX: 4.5rem;
 }
 
 .field.dept{
     --paddingX: 11.5rem;
 }
 .field.exam{
-    --paddingX: 10rem;
+    --paddingX: 6rem;
 }
 .field.held-in{
-    --paddingX: 6rem;
+    --paddingX: 4.5rem;
 }
 .field.cgpa{
     --paddingX: 1.5rem;
