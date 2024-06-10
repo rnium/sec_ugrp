@@ -135,7 +135,7 @@ def get_main_table(context: Dict) -> Table:
     # Extracting requied data
     student = context['student']
     STUDENT_CGPA = student.total_points / student.credits_completed
-    PERIOD_ATTENDED_FROM_YEAR = (student.session.to_year % 2000) + 2000
+    PERIOD_ATTENDED_FROM_YEAR = (student.session.from_year % 2000) + 2000
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = context['last_semester'].held_in.split(' ')[-1]
     NUM_INCOMPLETE_STUDENTS = 0
