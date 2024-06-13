@@ -13,7 +13,7 @@
             <div class="designation {{member.codename}} ms-2">
                 {{member.title}}
             </div>
-            {% if request.user.adminaccount.is_super_admin %}
+            {% if editor_access %}
             <button class="hold remove-committee-member-btn me-2" data-url="{% url 'results:remove_committee_member' semester.id member.admin.id member.codename %}">
                 <i class='bx bx-user-minus me-2'></i>
                 <span>Remove</span>
