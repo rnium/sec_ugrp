@@ -31,9 +31,42 @@ h2 .text {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-family: Times-roman;
+    font-family: Invitation;
     font-size: 1rem;
     margin-bottom: 3rem;
+}
+
+.abs-data {
+    position: absolute;
+    /* border: 1px solid red; */
+    text-align: center;
+    width: var(--width);
+    top: var(--top);
+    left: var(--left);
+}
+
+.abs-data.name {
+    --top: 5.65rem;
+    --left: 14.2rem;
+    --width: 26.3rem;
+}
+
+.abs-data.registration {
+    --top: 8.1rem;
+    --left: 14.5rem;
+    --width: 10.1rem;
+}
+
+.abs-data.session {
+    --top: 8.1rem;
+    --left: 29.7rem;
+    --width: 8.2rem;
+}
+
+.abs-data.dept {
+    --top: 12.8rem;
+    --left: 3rem;
+    --width: 20.2rem;
 }
 
 
@@ -45,11 +78,6 @@ section p {
     line-height: 1.7;
 }
 
-span.name {
-    font-style: italic;
-    font-weight: bold;
-}
-
 .bottom-p {
     margin-top: 1.5rem;
     line-height: 1.5;
@@ -57,7 +85,22 @@ span.name {
 
 .field {
     border-bottom: 2px dotted black;
-    padding: 0 1rem;
+    padding: 0 var(--paddingX);
+}
+
+.field.name {
+    --paddingX: 13rem;
+}
+
+.field.registration {
+    --paddingX: 5rem;
+}
+.field.session {
+    --paddingX: 4rem;
+}
+
+.field.dept {
+    --paddingX: 10rem;
 }
 
 .principal {
