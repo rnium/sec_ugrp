@@ -281,7 +281,6 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     except Exception as e:
         logs['errors']['parse_errors'].append(f'Error: {e}')
         data_rows = [] # Stopping the loop
-    update_list = [] # For updating stats of studentAccounts
     for r in range(len(data_rows)):
         try:
             registration = int(data_rows[r][reg_col_idx].value)
@@ -309,7 +308,7 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
             existing_point.total_points = student_entrypoint_kwargs['total_points']
             existing_point.save()
             logs['success'] += 1
-            update_list.append(registration)
+            student_ac.update_stats()
             continue
         try:
             StudentPoint.objects.create(**student_entrypoint_kwargs)
@@ -317,11 +316,10 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
             logs['errors']['save_errors'].append(f'Registration: {registration}. Errors: {e}')
             continue
         logs['success'] += 1
-        update_list.append(registration)
+        student_ac.update_stats()
     
     logs['has_parse_errors'] = bool(len(logs['errors']['parse_errors']))    
     logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
-    update_student_accounts.delay(update_list)
     summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
     return summary
     # return JsonResponse({'status':'Complete', 'summary':summary})

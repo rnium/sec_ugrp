@@ -21,7 +21,6 @@ from .permission import IsSuperOrDeptAdmin
 from results.models import (Department, Session, Semester, ExamCommittee)
 from account.models import StudentAccount, AdminAccount
 from results.tasks import restore_dept_data_task, restore_session_data_task
-from results.api.permission import IsSuperAdmin
 from django.conf import settings
 
 disallowed_committee_admin_types = ['sust', 'academic']
@@ -40,9 +39,13 @@ def committee_radios(request): # Searching for an admin for the semester committ
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsSuperAdmin])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def add_committee_member(request, pk):
     semester = get_object_or_404(Semester, pk=pk)
+    # cheking admin user
+    if (not request.user.adminaccount.is_super_admin and
+        (request.user.adminaccount != semester.session.dept.head)):
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     committee, created = ExamCommittee.objects.get_or_create(semester=semester)
     user = get_object_or_404(AdminAccount, id=request.data.get('user_pk'))
     member_type = request.data.get('member_type')
@@ -55,13 +58,19 @@ def add_committee_member(request, pk):
     else:
         return Response(data={'detail': "Undefined member type"}, status=status.HTTP_400_BAD_REQUEST)
     committee.save()
-    html_content = render_to_string('results/components/committee_members.html', context={'semester': semester, 'request': request})
+    context = {'semester': semester, 'request': request}
+    context['editor_access'] = request.user.adminaccount in semester.editor_members
+    html_content = render_to_string('results/components/committee_members.html', context=context)
     return Response(data={'info': 'updated', 'html': html_content})
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsSuperAdmin])
+@permission_classes([IsAuthenticated, IsSuperOrDeptAdmin])
 def remove_committee_member(request, semester_pk, admin_pk, member_type):
     semester = get_object_or_404(Semester, pk=semester_pk)
+    # cheking admin user
+    if (not request.user.adminaccount.is_super_admin and
+        (request.user.adminaccount != semester.session.dept.head)):
+        return Response(data={'details': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
     committee, created = ExamCommittee.objects.get_or_create(semester=semester)
     admin = get_object_or_404(AdminAccount, id=admin_pk)
     if member_type == 'chair' and committee.chairman == admin:
@@ -70,9 +79,8 @@ def remove_committee_member(request, semester_pk, admin_pk, member_type):
         committee.members.remove(admin)
     elif member_type == 'tabulator' and admin in committee.tabulators.all():
         committee.tabulators.remove(admin)
-        print('tabulator go', flush=1)
     else:
-        Response(data={"detail": "Specified member type mismatch for the user"})
+        Response(data={"detail": "Specified member type mismatch for the user"}, status=status.HTTP_400_BAD_REQUEST)
     committee.save()
     html_content = render_to_string('results/components/committee_members.html', context={'semester': semester, 'request': request})
     return Response(data={'info': 'Member removed', 'html': html_content})

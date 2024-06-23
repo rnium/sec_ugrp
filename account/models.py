@@ -157,7 +157,7 @@ class StudentAccount(BaseAccount):
     def student_cgpa(self):
         if self.total_points:
             cgpa = self.raw_cgpa
-            return "{}".format(round_up(cgpa, 2))
+            return "%.2f" % round_up(cgpa, 2)
         else:
             return None
     
