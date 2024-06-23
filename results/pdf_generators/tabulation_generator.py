@@ -150,7 +150,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
             semester_result = cumulative_semester_result(student, [semester], False) # passing semester in a list beacuse the function expects an iterable
             if semester_result:
                 row_top.append(formatFloat(semester_result['total_credits']))
-                row_top.append(str(semester_result['grade_point']) + '\n' + semester_result['letter_grade'])
+                row_top.append("{:.2f}".format(semester_result['grade_point']) + '\n' + semester_result['letter_grade'])
             else:
                 row_top.append("")
             # append upto this semester result (the overall result) (except first semester)
@@ -159,7 +159,7 @@ def generate_table_student_data(dataContainer: SemesterDataContainer, render_con
                 semester_result_all = cumulative_semester_result(student, semesters_upto_now)
                 if semester_result:
                     row_top.append(formatFloat(semester_result_all['total_credits']))
-                    row_top.append(str(semester_result_all['grade_point'] )+ '\n' + semester_result_all['letter_grade'])
+                    row_top.append("{:.2f}".format(semester_result_all['grade_point']) + '\n' + semester_result_all['letter_grade'])
                 else:
                     row_top.append("")
             # append remarks in 8th semester
