@@ -102,7 +102,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
 
 def format_cgpa(cgpa) -> str:
     if type(cgpa) not in [int, float]:
-        return ''
+        return cgpa
     return "{:.2f}".format(cgpa)
 
 def generate_table_student_data(dataContainer: SemesterDataContainer, render_config: Dict) -> List[List]:
