@@ -47,6 +47,7 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
     total_points = 0
     # PreviousPoint data
     prevpoint = None
+    student_point = None
     if (pure_cumulative) and hasattr(student.session, 'previouspoint'):
         prevpoint = student.session.previouspoint
         student_point = StudentPoint.objects.filter(student=student, prev_point=prevpoint).first()
@@ -54,7 +55,7 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
             total_credits += student_point.total_credits
             total_points += student_point.total_points
     for semester in semesters:
-        if prevpoint and (semester.semester_no <= prevpoint.upto_semester_num):
+        if student_point and (semester.semester_no <= student_point.prev_point.upto_semester_num):
             continue
         enrollment = SemesterEnroll.objects.filter(semester=semester, student=student).first()
         if enrollment and enrollment.is_publishable:
