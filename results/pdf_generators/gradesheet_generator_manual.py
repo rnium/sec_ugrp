@@ -107,9 +107,6 @@ def build_header(flowables, formdata) -> None:
     dept_name_paragraph = Paragraph(f": <b>{formdata['dept']}</b>", style=bold_paragraph_style)
     grading_scheme_table = get_grading_scheme_table()
     student_name = formdata['name']
-    student_ac = StudentAccount.objects.filter(registration=formdata['reg_num']).first()
-    if student_ac:
-        student_name = student_ac.student_name
     table_data = [
         [logo, university, '', ''],
         ['', 'Grade Certificate', '', grading_scheme_table],
