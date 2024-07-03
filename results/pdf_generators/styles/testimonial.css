@@ -13,6 +13,8 @@
     position: absolute;
     /* display: none; */
     /* border: 1px solid red; */
+    font-family: Bodoni;
+    font-size: 1.2rem;
     text-align: center;
     width: var(--width);
     top: var(--top);
@@ -22,12 +24,12 @@
 .abs-data.name {
     --width: 330px;
     --left: 220px;
-    --top: 90px; 
+    --top: 95px; 
 }
 
 .abs-data.parent {
     --width: 270px;
-    --top: 120px; 
+    --top: 125px; 
 }
 
 .abs-data.parent.father_name {
@@ -40,30 +42,30 @@
 
 .abs-data.registration {
     --width: 160px;
-    --top: 150px;
+    --top: 160px;
     --left: 330px;
 }
 
 .abs-data.session {
     --width: 145px;
-    --top: 178px;
+    --top: 190px;
     --left: 48px;
 }
 
 .abs-data.dept {
     --width: 23rem;
-    --top: 265px;
+    --top: 282px;
     --left: 80px;
 }
 
 .abs-data.held-in {
     --width: 9.5rem;
-    --top: 295px;
+    --top: 315px;
     --left: 42px;
 }
 .abs-data.cgpa {
     --width: 3.2rem;
-    --top: 295px;
+    --top: 315px;
     --left: 377px;
 }
 
@@ -101,7 +103,7 @@ section p {
     text-align: justify;
     font-size: 1.4rem;
     font-family: Invitation;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 .bottom-p {
@@ -161,4 +163,8 @@ section p {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+}
+
+.preparedby .info {
+    font-size: 1.2rem;
 }
