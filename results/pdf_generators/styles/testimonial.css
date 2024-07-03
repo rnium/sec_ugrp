@@ -1,5 +1,5 @@
 @page {
-    margin: 2.27in 0.5in 1rem;
+    margin: 2.5in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -11,10 +11,10 @@
 
 .abs-data {
     position: absolute;
-    /* display: none; */
-    /* border: 1px solid red; */
+    display: none;
+    border: 1px solid red;
     font-family: Bodoni;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     text-align: center;
     width: var(--width);
     top: var(--top);
@@ -66,7 +66,7 @@
 .abs-data.cgpa {
     --width: 3.2rem;
     --top: 315px;
-    --left: 377px;
+    --left: 385px;
 }
 
 body {
@@ -159,7 +159,7 @@ section p {
 }
 
 .preparedby {
-    margin-top: 6rem;
+    margin-top: 4rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
