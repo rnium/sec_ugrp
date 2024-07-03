@@ -1,5 +1,5 @@
 @page {
-    margin: 2.5in 0.5in 1rem;
+    margin: 2.55in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -103,7 +103,7 @@ section p {
     text-align: justify;
     font-size: 1.4rem;
     font-family: Invitation;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 .bottom-p {
@@ -138,10 +138,10 @@ section p {
     --paddingX: 6rem;
 }
 .field.held-in{
-    --paddingX: 4.5rem;
+    --paddingX: 6.3rem;
 }
 .field.cgpa{
-    --paddingX: 1.5rem;
+    --paddingX: 2rem;
 }
 
 .principal {
