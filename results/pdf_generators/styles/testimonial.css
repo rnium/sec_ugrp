@@ -1,5 +1,5 @@
 @page {
-    margin: 2.55in 0.5in 1rem;
+    margin: 2.57in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -93,7 +93,7 @@ h2 .text {
     flex-direction: row;
     justify-content: space-between;
     font-family: Times-roman;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-bottom: 3rem;
 }
 
@@ -159,7 +159,7 @@ section p {
 }
 
 .preparedby {
-    margin-top: 4rem;
+    margin-top: 2.5rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
