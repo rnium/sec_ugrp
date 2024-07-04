@@ -1,5 +1,5 @@
 @page {
-    margin: 2.57in 0.5in 1rem;
+    margin: 2.25in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -138,7 +138,7 @@ section p {
     --paddingX: 6rem;
 }
 .field.held-in{
-    --paddingX: 6.3rem;
+    --paddingX: 6rem;
 }
 .field.cgpa{
     --paddingX: 2rem;
