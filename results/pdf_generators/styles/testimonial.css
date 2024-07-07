@@ -1,5 +1,5 @@
 @page {
-    margin: 2.28in 0.5in 1rem;
+    margin: 2.27in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -88,7 +88,7 @@ h2 .text {
 }
 
 .ref-container {
-    padding-left: 0.1in;
+    /* padding-left: 0.1in; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
