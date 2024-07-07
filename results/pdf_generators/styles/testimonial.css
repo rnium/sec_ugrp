@@ -11,8 +11,8 @@
 
 .abs-data {
     position: absolute;
-    display: none;
-    border: 1px solid red;
+    /* display: none; */
+    /* border: 1px solid red; */
     font-family: Bodoni;
     font-size: 1.3rem;
     text-align: center;
@@ -24,12 +24,12 @@
 .abs-data.name {
     --width: 330px;
     --left: 220px;
-    --top: 95px; 
+    --top: 97px; 
 }
 
 .abs-data.parent {
     --width: 270px;
-    --top: 125px; 
+    --top: 132px; 
 }
 
 .abs-data.parent.father_name {
@@ -37,36 +37,36 @@
 }
 
 .abs-data.parent.mother_name {
-    --left: 380px;
+    --left: 385px;
 }
 
 .abs-data.registration {
     --width: 160px;
-    --top: 160px;
+    --top: 168px;
     --left: 330px;
 }
 
 .abs-data.session {
     --width: 145px;
-    --top: 190px;
+    --top: 202px;
     --left: 48px;
 }
 
 .abs-data.dept {
     --width: 23rem;
-    --top: 282px;
+    --top: 305px;
     --left: 80px;
 }
 
 .abs-data.held-in {
     --width: 9.5rem;
-    --top: 315px;
+    --top: 339px;
     --left: 42px;
 }
 .abs-data.cgpa {
-    --width: 3.2rem;
-    --top: 315px;
-    --left: 385px;
+    --width: 3.8rem;
+    --top: 339px;
+    --left: 450px;
 }
 
 body {
