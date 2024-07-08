@@ -39,6 +39,8 @@ h2 .text {
 .abs-data {
     position: absolute;
     /* border: 1px solid red; */
+    font-family: Bodoni;
+    font-size: 1.3rem;
     text-align: center;
     width: var(--width);
     top: var(--top);
