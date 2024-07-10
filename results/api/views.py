@@ -1184,10 +1184,11 @@ def get_student_customdocs(request):
 def export_student_academic_data(request):
     excel_file = request.FILES.get('file')
     data = excel_parsers.parse_student_academic_docs(excel_file)
-    try:
-        utils.save_academic_studentdata(data)
-    except Exception as e:
-        return Response({'details': f"Error, Cannot Save Data error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    utils.save_academic_studentdata(data)
+    # try:
+    #     utils.save_academic_studentdata(data)
+    # except Exception as e:
+    #     return Response({'details': f"Error, Cannot Save Data error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'info': "Saved data"})
 
 
