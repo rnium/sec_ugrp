@@ -1187,7 +1187,7 @@ def export_student_academic_data(request):
     try:
         utils.save_academic_studentdata(data)
     except Exception as e:
-        return Response({'details': "Error, Cannot Save Data"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'details': f"Error, Cannot Save Data error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'info': "Saved data"})
 
 
