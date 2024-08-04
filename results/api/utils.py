@@ -354,11 +354,8 @@ def save_academic_studentdata(all_data):
         registration = data['registration']
         academic_dat = StudentAcademicData.objects.filter(registration=registration).first()
         if academic_dat is not None:
-            academic_dat.session_code = session
-            academic_dat.data = data
-            academic_dat.save()
-        else:
-            prototypes.append(StudentAcademicData(registration=registration, session_code=session, data=data))
+            academic_dat.delete()
+        prototypes.append(StudentAcademicData(registration=registration, session_code=session, data=data))
     StudentAcademicData.objects.bulk_create(prototypes)
     
 

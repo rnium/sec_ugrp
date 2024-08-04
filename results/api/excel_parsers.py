@@ -133,6 +133,8 @@ def parse_student_academic_docs(excel_file):
         for idx, cell in enumerate(row):
             field_name = header[idx]
             field_value = cell.value
+            if type(field_value) == str:
+                field_value = field_value.strip()
             if type(field_value) == datetime:
                 field_value = field_value.strftime("%B %d, %Y")
                 field_value = field_value.replace(" 0", " ")

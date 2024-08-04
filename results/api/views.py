@@ -1187,7 +1187,7 @@ def export_student_academic_data(request):
     try:
         utils.save_academic_studentdata(data)
     except Exception as e:
-        return Response({'details': "Error, Cannot Save Data"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'details': f"Error, Cannot Save Data error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'info': "Saved data"})
 
 
@@ -1196,7 +1196,6 @@ def export_student_academic_data(request):
 def view_saved_student_academic_data(request):
     qs = StudentAcademicData.objects.all()
     sessions = list(set([q.session_code for q in qs]))
-    print(sessions, flush=1)
     data = []
     for session in sessions:
         data.append({
