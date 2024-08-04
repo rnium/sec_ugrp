@@ -27,7 +27,7 @@ h2 .text {
 }
 
 .ref-container {
-    padding-left: 0.1in;
+    /* padding-left: 0.1in; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
