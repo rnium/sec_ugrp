@@ -12,7 +12,7 @@
 .abs-data {
     position: absolute;
     /* display: none; */
-    /* border: 1px solid red; */
+    border: 1px solid red;
     font-family: Bodoni;
     font-size: 1.3rem;
     text-align: center;
@@ -24,12 +24,12 @@
 .abs-data.name {
     --width: 330px;
     --left: 220px;
-    --top: 97px; 
+    --top: 93px; 
 }
 
 .abs-data.parent {
     --width: 270px;
-    --top: 132px; 
+    --top: 128px; 
 }
 
 .abs-data.parent.father_name {
@@ -42,36 +42,36 @@
 
 .abs-data.registration {
     --width: 160px;
-    --top: 166px;
+    --top: 164px;
     --left: 350px;
 }
 
 .abs-data.session {
     --width: 145px;
-    --top: 202px;
+    --top: 197px;
     --left: 48px;
 }
 
 .abs-data.dept {
     --width: 23rem;
-    --top: 235px;
+    --top: 231px;
     --left: 48px;
 }
 
 .abs-data.duration-from {
     --width: 10rem;
-    --top: 270px;
+    --top: 268px;
     --left: 438px;
 }
 .abs-data.duration-to {
     --width: 9.5rem;
-    --top: 305px;
+    --top: 303px;
     --left: 48px;
 }
 
 .abs-data.publication-date {
     --width: 12rem;
-    --top: 338px;
+    --top: 336px;
     --left: 48px;
 }
 
