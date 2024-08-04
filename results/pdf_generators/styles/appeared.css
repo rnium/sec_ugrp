@@ -1,0 +1,181 @@
+@page {
+    margin: 2.27in 0.5in 1rem;
+    size: 'A4';
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Invitation;
+}
+
+.abs-data {
+    position: absolute;
+    /* display: none; */
+    /* border: 1px solid red; */
+    font-family: Bodoni;
+    font-size: 1.3rem;
+    text-align: center;
+    width: var(--width);
+    top: var(--top);
+    left: var(--left);
+}
+
+.abs-data.name {
+    --width: 330px;
+    --left: 220px;
+    --top: 97px; 
+}
+
+.abs-data.parent {
+    --width: 270px;
+    --top: 132px; 
+}
+
+.abs-data.parent.father_name {
+    --left: 70px;
+}
+
+.abs-data.parent.mother_name {
+    --left: 385px;
+}
+
+.abs-data.registration {
+    --width: 160px;
+    --top: 166px;
+    --left: 350px;
+}
+
+.abs-data.session {
+    --width: 145px;
+    --top: 202px;
+    --left: 48px;
+}
+
+.abs-data.dept {
+    --width: 23rem;
+    --top: 235px;
+    --left: 48px;
+}
+
+.abs-data.duration-from {
+    --width: 10rem;
+    --top: 270px;
+    --left: 438px;
+}
+.abs-data.duration-to {
+    --width: 9.5rem;
+    --top: 305px;
+    --left: 48px;
+}
+
+.abs-data.publication-date {
+    --width: 12rem;
+    --top: 338px;
+    --left: 48px;
+}
+
+body {
+    width: 100%;
+}
+
+.container {
+    margin-left: 0.5in;
+    margin-right: 0.5in;
+}
+
+h2 {
+    text-align: center;
+}
+
+h2 .text {
+    border-bottom: 1px solid;
+    font-family: Bodoni;
+}
+
+.ref-container {
+    /* padding-left: 0.1in; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: Times-roman;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+
+section p {
+    margin-top: 3rem;
+    text-align: justify;
+    font-size: 1.4rem;
+    font-family: Invitation;
+    line-height: 1.55;
+}
+
+.bottom-p {
+    margin-top: 1.5rem;
+    line-height: 1.3;
+}
+
+.field {
+    border-bottom: 2px dotted black;
+    padding: 0 var(--paddingX);
+}
+
+.field.name {
+    --paddingX: 10rem;
+}
+
+.field.parent {
+    --paddingX: 8.2rem;
+}
+
+.field.registration {
+    --paddingX: 5rem;
+}
+.field.session {
+    --paddingX: 4.5rem;
+}
+
+.field.dept{
+    --paddingX: 11.5rem;
+}
+.field.exam {
+    --paddingX: 6rem;
+}
+
+.field.duration-from {
+    --paddingX: 5rem;
+}
+
+.field.duration-to {
+    --paddingX: 5rem;
+}
+.field.publication-date {
+    --paddingX: 6rem;
+}
+
+.principal {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.container .info {
+    text-align: center;
+    font-family: Invitation;
+    font-size: 1.4rem;
+}
+
+.preparedby {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.preparedby .info {
+    font-size: 1.2rem;
+}

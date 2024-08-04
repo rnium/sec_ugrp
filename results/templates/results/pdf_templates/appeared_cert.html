@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appeared Certificate - {{registration}}</title>
+</head>
+<body>
+    <section id="container">
+        <div class="ref-container">
+            <div class="ref">{{ref}}</div>
+            <div class="date">{{date_today|date:"d/m/Y"}}</div>
+        </div>
+        <p class="abs-data name">{{name|title}}</p>
+        <p class="abs-data parent father_name">{{father_name|title}}</p>
+        <p class="abs-data parent mother_name">{{mother_name|title}}</p>
+        <p class="abs-data registration">{{registration}}</p>
+        <p class="abs-data session">{{session}}</p>
+        <p class="abs-data dept">{{dept}}</p>
+        <p class="abs-data duration-from">{{duration_from}}</p>
+        <p class="abs-data duration-to">{{duration_to}}</p>
+        <p class="abs-data publication-date">{{publication_date}}</p>
+        <h2 id="dept"><span class="text">APPEARED CERTIFICATE</span></h2>
+        <div class="container">
+            <p>
+                This is to certify that <span class="field name"></span>
+                son/daughter of <span class="field parent"></span>&nbsp;and&nbsp;
+                <span class="field parent"></span>&nbsp; bearing Registration No. <span class="field registration"></span>&nbsp;and Session
+                <span class="field session"></span>,&nbsp;completed 4 years academic program of B.Sc. in <span class="field dept"></span>
+                and appeared in the 8th semester final examination held from <span class="field duration-from"></span>&nbsp; to <span class="field duration-to"></span>
+                , the result of which is expected to be published by <span class="field publication-date"></span>.
+            </p>
+            <p class="bottom-p">During his/her stay in this college, there is nothing on record against his/her character or college discipline.</p>  
+            <p class="bottom-p">I wish him/her every success in life.</p>
+        </div>
+        <div class="container principal">
+            <div class="prepared-by">
+                <div class="info"></div>
+            </div>
+            <div class="principal-info">
+                <div class="info">(Abdur Rouf)</div>
+                <div class="info">Principal in Charge</div>
+                <div class="info">Sylhet Engineering College</div>
+                <div class="info">Sylhet</div>
+            </div>
+        </div>
+        <div class="container preparedby">
+            <div class="info">
+                Prepared and Checked by: {{admin_name}}
+            </div>
+        </div>
+    </section>
+</body>
+</html>
