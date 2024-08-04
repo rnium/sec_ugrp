@@ -404,6 +404,7 @@ def download_coursemediumcert(request, registration):
             'registration': student.registration,
             'session': student.session.session_code_formal,
             'dept': student.session.dept.fullname,
+            'cgpa': student.student_cgpa,
             **extra_info
         }
     sheet_pdf = render_coursemedium_cert(context)

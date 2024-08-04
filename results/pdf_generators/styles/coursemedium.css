@@ -39,6 +39,7 @@ h2 .text {
 .abs-data {
     position: absolute;
     /* border: 1px solid red; */
+    /* display: none; */
     font-family: Bodoni;
     font-size: 1.3rem;
     text-align: center;
@@ -65,10 +66,16 @@ h2 .text {
     --width: 8.2rem;
 }
 
+.abs-data.cgpa {
+    --top: 13rem;
+    --left: 10rem;
+    --width: 3.8rem;
+}
+
 .abs-data.dept {
-    --top: 12.8rem;
+    --top: 15.2rem;
     --left: 3rem;
-    --width: 20.2rem;
+    --width: 22rem;
 }
 
 
@@ -101,8 +108,12 @@ section p {
     --paddingX: 4rem;
 }
 
+.field.cgpa {
+    --paddingX: 2rem;
+}
+
 .field.dept {
-    --paddingX: 10rem;
+    --paddingX: 11rem;
 }
 
 .principal {
