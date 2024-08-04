@@ -420,8 +420,9 @@ def download_appeared_cert(request, registration):
         context = student_acadoc.data
         context['semester_no'] = context['semesters_completed']
         context['semester_suffix'] = get_ordinal_suffix(context['semester_no'])
-        context['completed_years'] = context['years_completed']
-        duration_str = context['exam_duration']
+        context['completed_years'] = context.get('years_completed', '')
+        if duration := context.get('exam_duration'):
+            duration_str = duration
     elif student:=StudentAccount.objects.filter(pk=registration).first():
         last_enroll = student.semesterenroll_set.all().order_by('-semester__semester_no').first()
         if last_enroll is not None:
