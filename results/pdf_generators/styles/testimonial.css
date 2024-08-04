@@ -24,12 +24,12 @@
 .abs-data.name {
     --width: 330px;
     --left: 220px;
-    --top: 97px; 
+    --top: 94px; 
 }
 
 .abs-data.parent {
     --width: 270px;
-    --top: 132px; 
+    --top: 128px;
 }
 
 .abs-data.parent.father_name {
@@ -42,31 +42,31 @@
 
 .abs-data.registration {
     --width: 160px;
-    --top: 168px;
+    --top: 165px;
     --left: 330px;
 }
 
 .abs-data.session {
     --width: 145px;
-    --top: 202px;
+    --top: 198px;
     --left: 48px;
 }
 
 .abs-data.dept {
     --width: 23rem;
-    --top: 305px;
+    --top: 301px;
     --left: 80px;
 }
 
 .abs-data.held-in {
     --width: 12.5rem;
-    --top: 339px;
+    --top: 337px;
     --left: 42px;
 }
 
 .abs-data.cgpa {
     --width: 3.8rem;
-    --top: 339px;
+    --top: 337px;
     --left: 450px;
 }
 

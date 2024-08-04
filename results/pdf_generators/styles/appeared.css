@@ -12,7 +12,7 @@
 .abs-data {
     position: absolute;
     /* display: none; */
-    border: 1px solid red;
+    /* border: 1px solid red; */
     font-family: Bodoni;
     font-size: 1.3rem;
     text-align: center;
