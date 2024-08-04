@@ -391,10 +391,11 @@ def download_full_document(request, registration):
 @admin_required
 def download_coursemediumcert(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    prepared_by = request.GET.get('preparedby', '')
     extra_info = {
         'ref': request.GET.get('ref'),
         'date_today': timezone.now(),
-        'admin_name': request.user.adminaccount.user_full_name
+        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name
     }
     if student_acadoc:
         context = {**student_acadoc.data, **extra_info}
@@ -444,10 +445,11 @@ def download_appeared_cert(request, registration):
             return render_error(request, 'Appearance Certificate not available without a semester participated!')    
     else:
         return render_error(request, 'Appearance Certificate not available')
-    context['admin_name'] = request.user.adminaccount.user_full_name
+    prepared_by = request.GET.get('preparedby', '')
+    context['admin_name'] = prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name
     context['date_today'] = timezone.now()
     context['ref'] = request.GET.get('ref')
-    context['publication_date'] = request.GET.get('pub_date', 'April 30, 2024')
+    context['publication_date'] = request.GET.get('pub_date', '')
     duration_from = duration_str.split('to')[0].strip()
     duration_to = duration_str.split('to')[-1].strip()
     context['duration_from'] = duration_from
@@ -458,13 +460,15 @@ def download_appeared_cert(request, registration):
     
 
 
-@admin_required
+# @admin_required
 def download_testimonial(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    prepared_by = request.GET.get('preparedby', '')
     extra_info = {
         'ref': request.GET.get('ref'),
+        'publication_date': request.GET.get('pub_date', ''),
         'date_today': timezone.now(),
-        'admin_name': request.user.adminaccount.user_full_name
+        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name
     }
     if student_acadoc:
         context = {**student_acadoc.data, **extra_info}
@@ -483,7 +487,6 @@ def download_testimonial(request, registration):
                 'years_completed': last_sem_no//2,
                 'semesters_completed': last_sem_no,
                 'exam': last_sem.semester_name,
-                'exam_held_in': last_sem.held_in,
                 'cgpa': student.student_cgpa,
                 **extra_info
             }
