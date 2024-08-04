@@ -136,3 +136,7 @@ section p {
     flex-direction: row;
     justify-content: flex-start;
 }
+
+.preparedby .info {
+    font-size: 1.2rem;
+}
