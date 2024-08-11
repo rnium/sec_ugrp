@@ -1,3 +1,5 @@
+// I know it's bad code :| Reviewing after a year
+
 const SEC_GRADING_SCHEMA = {
     "A+": {"min": 80, "max":100, "grade_point":4.0},
     "A": {"min": 75, "max":79.999, "grade_point":3.75},
@@ -838,38 +840,19 @@ function get_student_retakigs() {
 }
 
 function get_entry_data() {
-    const show_error = msg => {
-        $("#new_entry_alert").removeClass("alert-info");
-        $("#new_entry_alert").addClass("alert-danger");
-        $("#new_entry_alert").text(msg);
-        $("#new_entry_alert").show();
-    }
     let registration = parseInt($("#new_entry_registration").val().trim());
-    let semester = parseInt($("#new_entry_semester_selection").val());
-    if ( isNaN(registration) | registration.length == 0) {
-        show_error("Enter valid registration number");
+    if ( isNaN(registration) || registration.length == 0) {
+        showError('new_entry_alert', "Enter valid registration number")
         return false;
     }
-    if (isNaN(semester)) {
-        show_error("Select a semester");
-        return false;
-    } else {
-        $("#new_entry_alert").hide()
-    }
-    data = {
+    return {
         registration: registration,
-        semester_id: semester,
-        retake_for: retaking_courseresult_id
-    }
-    return data;
+    };
 }
 
 function addNewEntry() {
     const show_error = msg => {
-        $("#new_entry_alert").removeClass("alert-info");
-        $("#new_entry_alert").addClass("alert-danger");
-        $("#new_entry_alert").text(msg);
-        $("#new_entry_alert").show();
+        showError('new_entry_alert', msg);
     }
     let payload = get_entry_data()
     if (payload) {
@@ -887,11 +870,7 @@ function addNewEntry() {
                 location.reload()
             },
             error: function(xhr,status,error_thrown){
-                try {
-                    show_error(xhr.responseJSON.details);
-                } catch (error) {
-                    show_error(error_thrown);
-                }
+                show_error(xhr.responseJSON?.detail || error_thrown || 'Error')
                 $("#new_entry_add_button").removeAttr("disabled");
             }
         })

@@ -153,6 +153,10 @@
                         <i class='bx bx-paperclip fs-3 me-2'></i>
                         <span>Supplementary Documents</span>
                     </button>
+                    {% comment %} <button class="btn btn-secondary btn-iconized px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#newEntryModal">
+                        <i class='bx bx-list-plus fs-3 me-2'></i>
+                        <span>Add Registration</span>
+                    </button> {% endcomment %}
                 </div>
 
                 <button class="btn btn-primary btn-iconized px-4" id="table-save-btn">
@@ -216,7 +220,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-material">
                 <div class="modal-header">
-                    <div class="modal-title text-info">Add Entry</div>
+                    <div class="modal-title text-info">Add Registration Entry</div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
@@ -225,34 +229,10 @@
                             <span class="input-group-text bg-material-1" id="basic-addon1">Reg. No.</span>
                             <input type="text" class="form-control text-center" placeholder="" aria-label="Registration" id="new_entry_registration">
                         </div>
-                        <select class="form-select mt-3 bg-material-1" aria-label="Default select example" id="new_entry_semester_selection">
-                            <option selected>Select Running Semester</option>
-                            {% for semester in running_semesters %}
-                            <option value="{{semester.id}}">{{semester}}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="courses-container p-2 mt-3 container"> 
-                            <div class="loader-container" id="newentry-loader" style="display: none;">
-                                <div class="inner d-flex justify-content-center align-items-center">
-                                    <div class="spinner-grow me-2" role="status">
-                                        <span class="visually-hidden">Loading Courses</span>
-                                      </div>
-                                    <div class="text-muted roboto-font">Loading Courses</div>
-                                </div>
-                            </div>
-                            <div class="courses-info" id="retaking-info">
-                                <div class="inner d-flex justify-content-center align-items-center">
-                                    <i class='bx bx-info-circle fs-3 me-2 text-warning'></i>
-                                    <span class="text-muted roboto-font info-text">Carry courses will appear here</span>
-                                </div>
-                            </div>
-                            <div class="row g-3 mt-0 p-1 bg-material-1 rounded shadow" id="retakings-container" style="display: none;">
-                            </div>
-                        </div>
                         <div class="alert alert-danger mt-3 text-center" role="alert" style="display: none;" id="new_entry_alert">
                         </div>
                         <div class="d-flex justify-center justify-content-end">
-                            <button type="button" class="btn btn-primary px-4 mt-2" id="new_entry_add_button" style="display: none;">Add</button>
+                            <button type="button" class="btn btn-primary px-4 mt-2" id="new_entry_add_button">Add</button>
                         </div>
                     </div>
                 </div>

@@ -594,55 +594,15 @@ def delete_course_result(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_new_entry_to_course(request, pk):
-    # checking posted data
-    try:
-        reg_no = request.data['registration']
-        semester_id = request.data['semester_id']
-        retake_for = request.data['retake_for']
-    except KeyError:
-        return Response(data={"details":"Data is missing"}, status=status.HTTP_400_BAD_REQUEST)
-    # course
-    try:
-        course = Course.objects.get(pk=pk)
-    except Course.DoesNotExist:
-        return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
-    # access
+    course = get_object_or_404(Course, pk=pk)
     if not has_semester_access(course.semester, request.user.adminaccount):
         return Response(data={'details': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
-    #retaking courseResult
+    reg_no = request.data.get('registration')
+    student = get_object_or_404(StudentAccount, registration=reg_no)
     try:
-        retaking = CourseResult.objects.get(pk=retake_for)
-    except CourseResult.DoesNotExist:
-        return Response(data={"details":"Course not found"}, status=status.HTTP_404_NOT_FOUND)
-    # finding student
-    try:
-        student = StudentAccount.objects.get(registration=reg_no)
-    except StudentAccount.DoesNotExist:
-        return Response(data={"details":"Invalid Registration Number"}, status=status.HTTP_400_BAD_REQUEST)
-    # finding enrollment of the specified semester
-    try:
-        enroll = SemesterEnroll.objects.get(semester__id=semester_id, semester__is_running=True, student=student)
-    except SemesterEnroll.DoesNotExist:
-        return Response(data={"details":"Student didn't enrolled for this semester, or the semester is not running"}, status=status.HTTP_400_BAD_REQUEST)
-    # checking if this course is already in the enrollment
-    if course in enroll.courses.all():
-        return Response(data={"details":"Student already registered for this course"}, status=status.HTTP_400_BAD_REQUEST)
-    # checking wheather this semester has included this course in the drop courses, then add it if not included
-    if course not in enroll.semester.drop_courses.all():
-        enroll.semester.drop_courses.add(course)
-    # creating course result
-    try:
-        CourseResult.objects.create(
-            student = student,
-            course = course,
-            retake_of = retaking,
-            is_drop_course = True
-        )
+        utils.add_student_to_course(student, course)
     except Exception as e:
-        return Response(data={"details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    # adding course to enrollment
-    enroll.courses.add(course)
-    
+        return Response(data={"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(data={'status': 'Course Result for the student has been created'})
 
 @csrf_exempt

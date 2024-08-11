@@ -121,7 +121,6 @@ def create_backup(dept: Department, session_id):
                 semester_doc_dict.pop('tabulation_thumbnail')
                 semester_doc_dict['tabulation_sheet_render_time'] = None
                 semester_doc_dict['tabulation_sheet_render_by'] = None
-                print(semester_doc_dict, flush=1)
             semester_data = {
                 'semester_meta': model_to_dict(semester),
                 'semester_doc': semester_doc_dict,
@@ -329,12 +328,10 @@ def get_or_create_entry_for_carryCourse(student, course):
     # if semester is None:
     #     semester = course.semester
     enrollment = SemesterEnroll.objects.filter(student=student, semester__is_running=True).order_by('-semester__semester_no').first()
-    print(enrollment.semester.semester_code, flush=1)
-    if (enrollment is None) or (student is None):
+    if not enrollment:
         return None
     course_res, created = CourseResult.objects.get_or_create(student=student, course=course, is_drop_course=True)
     if created:
-        print(f'Adding it, enrollid: {enrollment.id}', flush=1)
         enrollment.courses.add(course)
     return course_res
 
@@ -400,3 +397,28 @@ def update_student_prevrecord(reg, data):
     student_point.total_points = data['total_credits'] * data['cgpa']
     student_point.save()
     student.update_stats()
+
+
+def add_student_to_course(student: StudentAccount, course: Course):
+    semester: Semester = course.semester
+    if not student.session != semester.session:
+        course_result = get_or_create_entry_for_carryCourse(student, course)
+        if not course_result:
+            raise ValidationError('Student is not enrolled in a running semester')
+        retaking = try_get_carrycourse_retake_of(course_result)
+        if retaking and course_result.retake_of is None:
+            course_result.retake_of = retaking
+            course_result.save()
+        return
+    semesterenroll = SemesterEnroll.objects.filter(semester=semester).first()
+    if not semesterenroll:
+        raise ValidationError('Student is not enrolled in this running semester')
+    try:
+        CourseResult.objects.create(
+            student = student,
+            course = course,
+        )
+    except Exception as e:
+        return ValidationError(str(e))
+    semesterenroll.courses.add(course)
+    
