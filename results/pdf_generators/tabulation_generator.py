@@ -385,7 +385,10 @@ def get_footer(footer_data: List[List]):
         for row in range(2, len(footer_data), 2):
             PADDING_STYLES.append(('BOTTOMPADDING', (0, row), (-1, row), 8))
     ts = TableStyle([
-        # ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        # ('GRID', (1, 0), (-1, -1), 1, colors.black),
+        ('ALIGN', (1, 2), (-1, 2), 'CENTER'),
+        ('ALIGN', (1, 4), (-1, 4), 'CENTER'),
+        ('ALIGN', (1, 6), (-1, 6), 'CENTER'),
         ('FONTSIZE', (0, 0), (-1, -1), TABLE_FONT_SIZE+1), 
         ('FONTNAME', (0, 0), (-1, -1), 'roboto-m'),
         *PADDING_STYLES

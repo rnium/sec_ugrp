@@ -45,12 +45,14 @@
 
 {% block content %}
 <div class="view-session-container m-5 mt-2 pt-4">
+    {% if detailview_access %}
     <div class="btn-container col-md-9 d-flex justify-content-start mt-2">
         <button class="btn btn- btn-iconized px-4" id="add-new" data-bs-toggle="modal" data-bs-target="#carry-listing-modal">
             <i class='bx bx-transfer me-2 text-warning'></i>
             <span class="roboto-font" style="font-size: 0.8rem;">Carry Records</span>
         </button>
     </div>
+    {% endif %}
     <div class="info">
         <a href="{% url 'results:view_department' session.dept.name %}" class="batch-no fs-1 text-secondary">{{session.batch_name}}</a>
         <div class="session mt-1">
@@ -108,6 +110,7 @@
         <div class="chart-container row col-md-9 mt-4" style="height: 180px; display: none">
             <canvas id="session_stats_chart" ></canvas>
         </div>
+        {% if detailview_access %}
         <div class="students-list col-md-9 rounded-2 mt-3">
             <div class="section-title text-center mb-2 d-flex justify-content-center align-items-center">
                 <span class="title-text me-2 section-title">Students</span>
@@ -130,6 +133,11 @@
             </div>
             
         </div>
+        {% else %}
+        <div class="alert alert-danger col-md-9 mt-3 text-center" role="alert">
+            As you're not from this Department, you can only access the semesters you're affiliated with.
+        </div>
+        {% endif %}
         {% if edit_access %}
         <div class="add-btn-container col-md-9 d-flex justify-content-end mt-2">
             <button class="btn btn-secondary btn-iconized px-4 me-1" id="add-new" data-bs-toggle="modal" data-bs-target="#newStudentEntryModal">

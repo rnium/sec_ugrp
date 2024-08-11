@@ -183,6 +183,7 @@ class SessionView(SuperOrDeptAdminRequiredMixin, DetailView):
                 }
             )
         context['edit_access'] = admin_ac.is_super_admin or (session.dept.head == admin_ac)
+        context['detailview_access'] = admin_ac.is_super_admin or session.dept.head == admin_ac or admin_ac.dept == session.dept
         context['semesters'] = semesters_context
         return context
 
