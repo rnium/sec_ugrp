@@ -85,7 +85,7 @@ function showError(alertContainer, msg) {
 
 function showInfo(alertContainer, msg) {
     $(`#${alertContainer}`).removeClass("alert-danger");
-    $(`#${alertContainer}`).addClass("alert-warning");
+    $(`#${alertContainer}`).addClass("alert-info");
     $(`#${alertContainer}`).text(msg)
     $(`#${alertContainer}`).show(200,()=>{
         setTimeout(()=>{
@@ -867,10 +867,14 @@ function addNewEntry() {
             data: JSON.stringify(payload),
             cache: false,
             success: function(response){
-                location.reload()
+                showInfo('new_entry_alert', 'Entry Added Successfully')
+                loadCourseResults();
             },
             error: function(xhr,status,error_thrown){
                 show_error(xhr.responseJSON?.detail || error_thrown || 'Error')
+                $("#new_entry_add_button").removeAttr("disabled");
+            },
+            complete: function() {
                 $("#new_entry_add_button").removeAttr("disabled");
             }
         })

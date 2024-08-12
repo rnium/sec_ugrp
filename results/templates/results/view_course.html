@@ -153,10 +153,10 @@
                         <i class='bx bx-paperclip fs-3 me-2'></i>
                         <span>Supplementary Documents</span>
                     </button>
-                    {% comment %} <button class="btn btn-secondary btn-iconized px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#newEntryModal">
+                    <button class="btn btn-secondary btn-iconized px-4 ms-2" id="numberList" data-bs-toggle="modal" data-bs-target="#newEntryModal">
                         <i class='bx bx-list-plus fs-3 me-2'></i>
-                        <span>Add Registration</span>
-                    </button> {% endcomment %}
+                        <span>Add Entry</span>
+                    </button>
                 </div>
 
                 <button class="btn btn-primary btn-iconized px-4" id="table-save-btn">
@@ -220,13 +220,24 @@
         <div class="modal-dialog">
             <div class="modal-content bg-material">
                 <div class="modal-header">
-                    <div class="modal-title text-info">Add Registration Entry</div>
+                    <div class="modal-title text-info">Add New Entry</div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
                     <div class="col-md-12 p-2">
+                        <div class="alert alert-primary mb-2 " role="alert" >
+                            <ul>
+                                <li class='text-primary'>
+                                    Students participating from this session must be enrolled in <a target="_blank" href="{% url 'results:view_semester' course.semester.session.dept.name course.semester.b64_id %}">
+                                    <span class="badge text-bg-primary">{{course.semester.semester_code}}</span></a> semester.
+                                </li>
+                                <li class='text-primary'>
+                                    For the students taking carry in this course, must be enrolled in their own running semester.
+                                </li>
+                            </ul>
+                        </div>
                         <div class="input-group">
-                            <span class="input-group-text bg-material-1" id="basic-addon1">Reg. No.</span>
+                            <span class="input-group-text bg-material-1" id="basic-addon1">Registration No.</span>
                             <input type="text" class="form-control text-center" placeholder="" aria-label="Registration" id="new_entry_registration">
                         </div>
                         <div class="alert alert-danger mt-3 text-center" role="alert" style="display: none;" id="new_entry_alert">
@@ -508,6 +519,6 @@
     const FROM_SESSION = parseInt("{{from_session}}")
     const FROM_SEMESTER = parseInt("{{from_semester.id}}")
 </script>
-<script src="{% static 'results/scripts/viewcourseV040624.js' %}"></script>
+<script src="{% static 'results/scripts/viewcourseV120824.js' %}"></script>
 {% endblock script %}
 

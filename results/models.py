@@ -51,6 +51,9 @@ class Session(models.Model):
     def __str__(self):
         return f"{self.dept.name.upper()} {self.session_code}"
     
+    def __gt__(self, other):
+        return self.from_year > other.from_year
+    
     def count_total_credits(self):
         credits_count = 0
         for semester in self.semester_set.all():
@@ -429,7 +432,7 @@ class Course(models.Model):
     
     @property
     def num_missing_entries_for_semesterenrolls(self):
-        if self.is_carry_course:
+        if self.is_carry_course or self.semester.repeat_number or self.semester.part_no:
             return 0
         # num_enrolled_regular = self.courseresult_set.filter(student__session=self.semester.session).count()
         num_enrolled_regular = CourseResult.objects.filter(

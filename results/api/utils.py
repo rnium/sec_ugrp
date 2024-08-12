@@ -321,18 +321,19 @@ def createStudentPointsFromExcel(excel_file, prevPoint, session):
     logs['has_save_errors'] = bool(len(logs['errors']['save_errors']))
     summary = render_to_string('results/components/excel_summary_list.html', context={'logs': logs})
     return summary
-    # return JsonResponse({'status':'Complete', 'summary':summary})
     
 
-def get_or_create_entry_for_carryCourse(student, course):
-    # if semester is None:
-    #     semester = course.semester
+def get_or_create_entry_for_carryCourse(student, course, create_only=False, add_course_to_semester=False):
     enrollment = SemesterEnroll.objects.filter(student=student, semester__is_running=True).order_by('-semester__semester_no').first()
     if not enrollment:
         return None
     course_res, created = CourseResult.objects.get_or_create(student=student, course=course, is_drop_course=True)
     if created:
         enrollment.courses.add(course)
+    elif create_only:
+        raise ValidationError('Entry already exists')
+    if add_course_to_semester:
+        enrollment.semester.drop_courses.add(course)
     return course_res
 
 def try_get_carrycourse_retake_of(course_result):
@@ -401,8 +402,10 @@ def update_student_prevrecord(reg, data):
 
 def add_student_to_course(student: StudentAccount, course: Course):
     semester: Semester = course.semester
-    if not student.session != semester.session:
-        course_result = get_or_create_entry_for_carryCourse(student, course)
+    if student.session != semester.session:
+        if student.session > semester.session:
+            raise ValidationError('Cannot create entry under the senior\'s semester')
+        course_result = get_or_create_entry_for_carryCourse(student, course, True, True)
         if not course_result:
             raise ValidationError('Student is not enrolled in a running semester')
         retaking = try_get_carrycourse_retake_of(course_result)
@@ -410,9 +413,11 @@ def add_student_to_course(student: StudentAccount, course: Course):
             course_result.retake_of = retaking
             course_result.save()
         return
-    semesterenroll = SemesterEnroll.objects.filter(semester=semester).first()
+    semesterenroll = SemesterEnroll.objects.filter(semester=semester, student=student).first()
     if not semesterenroll:
-        raise ValidationError('Student is not enrolled in this running semester')
+        raise ValidationError('Student is not enrolled in this semester')
+    if CourseResult.objects.filter(student=student, course=course).first():
+        raise ValidationError('Entry already in this course for this registration')
     try:
         CourseResult.objects.create(
             student = student,
