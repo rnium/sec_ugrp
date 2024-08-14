@@ -108,6 +108,10 @@ class StudentStatsSerializer(ModelSerializer):
             return 0
         
 class DocHistorySerializer(ModelSerializer):
+    doc_type = serializers.SerializerMethodField()
     class Meta:
         model = DocHistory
         fields = '__all__'
+    
+    def get_doc_type(self, obj):
+        return obj.get_doc_type_display()

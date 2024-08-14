@@ -631,4 +631,5 @@ class DocHistory(models.Model):
     doc_type = models.CharField(max_length=20, choices=doc_type_choices)
     registration = models.CharField(max_length=50)
     reference = models.CharField(max_length=200)
+    accessed_by = models.CharField(max_length=200, default='')
     added = models.DateTimeField(auto_now_add=True)

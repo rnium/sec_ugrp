@@ -1177,7 +1177,6 @@ def update_student_prev_record(request, registration):
 
 class DocHistoryList(ListAPIView):
     serializer_class = DocHistorySerializer
-    # permission_classes = [IsSECAcademic]
 
     def get_queryset(self):
         return DocHistory.objects.all().order_by('-added')

@@ -428,9 +428,10 @@ def add_student_to_course(student: StudentAccount, course: Course):
     semesterenroll.courses.add(course)
  
 
-def create_dochistory(reg, doctype, ref):
+def create_dochistory(reg, doctype, ref, by):
     return DocHistory.objects.create(
         doc_type = doctype,
         registration = reg,
-        reference = ref
+        reference = ref,
+        accessed_by = by
     )

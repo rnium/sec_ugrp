@@ -412,7 +412,7 @@ def download_coursemediumcert(request, registration):
         }
     sheet_pdf = render_coursemedium_cert(context)
     filename = f"CourseMedium Certificate - {registration}.pdf"
-    create_dochistory(registration, 'c', extra_info['ref'])
+    create_dochistory(registration, 'c', extra_info['ref'], extra_info['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 
@@ -459,7 +459,7 @@ def download_appeared_cert(request, registration):
     context['duration_to'] = duration_to
     sheet_pdf = render_appeared_cert(context)
     filename = f"Appeared Certificate - {registration}.pdf"
-    create_dochistory(registration, 'a', context['ref'])
+    create_dochistory(registration, 'a', context['ref'], context['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 
@@ -500,7 +500,7 @@ def download_testimonial(request, registration):
         return render_error(request, 'Testimonial not available')
     sheet_pdf = render_testimonial(context)
     filename = f"Testimonial - {registration}.pdf"
-    create_dochistory(registration, 't', extra_info['ref'])
+    create_dochistory(registration, 't', extra_info['ref'], extra_info['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
 
