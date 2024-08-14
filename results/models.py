@@ -601,8 +601,6 @@ class StudentCustomDocument(models.Model):
     def filename(self):
         title = self.title.replace(' ', '_')
         return f"{self.student.registration}_{title}.pdf"
-        
-    
 
     
 class SupplementaryDocument(models.Model):
@@ -622,3 +620,15 @@ class StudentAcademicData(models.Model):
     registration = models.IntegerField(unique=True)
     session_code = models.CharField(max_length=20, null=True, blank=True)
     data = models.JSONField()
+
+
+class DocHistory(models.Model):
+    doc_type_choices = (
+        ('t', 'Testimonial'),
+        ('c', 'Coursemedium Certificate'),
+        ('a', 'Appeared Certificate'),
+    )
+    doc_type = models.CharField(max_length=20, choices=doc_type_choices)
+    registration = models.CharField(max_length=50)
+    reference = models.CharField(max_length=200)
+    added = models.DateTimeField(auto_now_add=True)

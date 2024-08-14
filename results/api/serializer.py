@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from results.models import Department, Session, Semester, Course, CourseResult
+from results.models import Department, Session, Semester, Course, CourseResult, DocHistory
 from account.models import StudentAccount
 
 class SessionSerializer(ModelSerializer):
@@ -105,4 +105,9 @@ class StudentStatsSerializer(ModelSerializer):
         if cgpa := obj.student_cgpa:
             return float(cgpa)
         else:
-            return 0 
+            return 0
+        
+class DocHistorySerializer(ModelSerializer):
+    class Meta:
+        model = DocHistory
+        fields = '__all__'

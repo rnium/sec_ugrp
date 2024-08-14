@@ -45,11 +45,11 @@ urlpatterns = [
     path('academic-studentcerts/', views.academic_studentcerts_data, name="academic_studentcerts_data"),
     path('academic-studentdata/export/', views.export_student_academic_data, name="export_student_academic_data"),
     path('academic-studentdata/viewsaved/', views.view_saved_student_academic_data, name="view_saved_student_academic_data"),
+    path('academic/history/', views.DocHistoryList.as_view(), name="historylist"),
     # Committee
     path('committee-radios/', committee_views.committee_radios, name="committee_radios"),
     path('committee-addmember/<int:pk>/', committee_views.add_committee_member, name="add_committee_member"),
     path('committee-membernames/<int:pk>/', committee_views.committee_member_names, name="committee_member_names"),
     path('committee-removemember/<int:semester_pk>/<int:admin_pk>/<str:member_type>/', committee_views.remove_committee_member, name="remove_committee_member"),
-    
 ]
 
