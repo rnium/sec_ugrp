@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /home/rony/sec_rdb/
+            cd /home/rony/sec_ugrp/
             git pull origin
             source venv/bin/activate
             python manage.py migrate
