@@ -132,10 +132,12 @@ def has_semester_access(semester, admin):
         return True
     return False
 
+
 def has_semester_super_access(semester, admin):
     if admin.is_super_admin or semester.session.dept.head == admin:
         return True
     return False
+
 
 def is_in_semester_committee(semester, admin):
     committe_admins = [comm_dict['admin'] for comm_dict in semester.committee_members]

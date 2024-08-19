@@ -26,6 +26,7 @@ from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.customdoc_generator import render_customdoc_document
 from results.pdf_generators.utils import merge_pdfs_from_buffers
+from results.api.utils import create_dochistory
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
                                            superadmin_or_deptadmin_required,
@@ -411,6 +412,7 @@ def download_coursemediumcert(request, registration):
         }
     sheet_pdf = render_coursemedium_cert(context)
     filename = f"CourseMedium Certificate - {registration}.pdf"
+    create_dochistory(registration, 'c', extra_info['ref'], extra_info['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 
@@ -457,6 +459,7 @@ def download_appeared_cert(request, registration):
     context['duration_to'] = duration_to
     sheet_pdf = render_appeared_cert(context)
     filename = f"Appeared Certificate - {registration}.pdf"
+    create_dochistory(registration, 'a', context['ref'], context['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
     
 
@@ -497,6 +500,7 @@ def download_testimonial(request, registration):
         return render_error(request, 'Testimonial not available')
     sheet_pdf = render_testimonial(context)
     filename = f"Testimonial - {registration}.pdf"
+    create_dochistory(registration, 't', extra_info['ref'], extra_info['admin_name'])
     return FileResponse(ContentFile(sheet_pdf), filename=filename)
 
 

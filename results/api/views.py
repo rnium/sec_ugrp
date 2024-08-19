@@ -16,12 +16,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from .serializer import (SessionSerializer, SemesterSerializer,
-                         CourseSerializer, CourseResultSerializer, StudentStatsSerializer)
-from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin, IsSuperAdminOrDeptHead
+from .serializer import (SessionSerializer, SemesterSerializer, CourseSerializer,
+                         CourseResultSerializer, StudentStatsSerializer, DocHistorySerializer)
+from .permission import IsCampusAdmin, IsSuperAdmin, IsSuperOrDeptAdmin, IsSuperAdminOrDeptHead, IsSECAcademic
 from results.models import (Department, Session, Semester, Course, PreviousPoint, StudentPoint,
                             CourseResult, SemesterDocument, SemesterEnroll, Backup, StudentCustomDocument,
-                            SupplementaryDocument, StudentAcademicData)
+                            SupplementaryDocument, StudentAcademicData, DocHistory)
 from account.models import StudentAccount
 from . import utils
 from . import excel_parsers
@@ -1173,3 +1173,10 @@ def update_student_prev_record(request, registration):
     except Exception as e:
         return Response({'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response({"info": "Updated"})
+
+
+class DocHistoryList(ListAPIView):
+    serializer_class = DocHistorySerializer
+
+    def get_queryset(self):
+        return DocHistory.objects.all().order_by('-added')

@@ -4,8 +4,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from account.models import StudentAccount
 from results.models import (Session, Course, PreviousPoint,
-                            CourseResult, Semester, SemesterEnroll,
-                            Department, StudentPoint, StudentCustomDocument, StudentAcademicData)
+                            CourseResult, Semester, SemesterEnroll, Department,
+                            StudentPoint, StudentCustomDocument, StudentAcademicData, DocHistory)
 from results.utils import get_letter_grade
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
@@ -426,4 +426,12 @@ def add_student_to_course(student: StudentAccount, course: Course):
     except Exception as e:
         return ValidationError(str(e))
     semesterenroll.courses.add(course)
-    
+ 
+
+def create_dochistory(reg, doctype, ref, by):
+    return DocHistory.objects.create(
+        doc_type = doctype,
+        registration = reg,
+        reference = ref,
+        accessed_by = by
+    )
