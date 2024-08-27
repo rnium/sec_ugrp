@@ -36,6 +36,22 @@ h2 .text {
     margin-bottom: 3rem;
 }
 
+.abs-ref {
+    position: absolute;
+    top: -70px;
+    left: 0;
+    font-size: 1rem;
+    /* background-color: red; */
+}
+
+.abs-date {
+    position: absolute;
+    top: -70px;
+    right: 0;
+    font-size: 1rem;
+    /* background-color: red; */
+}
+
 .abs-data {
     position: absolute;
     /* border: 1px solid red; */

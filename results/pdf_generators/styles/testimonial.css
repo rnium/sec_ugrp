@@ -90,12 +90,31 @@ h2 .text {
 
 .ref-container {
     /* padding-left: 0.1in; */
+    /* position: relative; */
+    /* top: 100mm; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-family: Times-roman;
     font-size: 1rem;
     margin-bottom: 3rem;
+    /* border: 1px solid red; */
+}
+
+.abs-ref {
+    position: absolute;
+    top: -70px;
+    left: 0;
+    font-size: 1rem;
+    /* background-color: red; */
+}
+
+.abs-date {
+    position: absolute;
+    top: -70px;
+    right: 0;
+    font-size: 1rem;
+    /* background-color: red; */
 }
 
 
