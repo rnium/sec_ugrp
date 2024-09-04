@@ -173,7 +173,7 @@ def get_courses_data(courses, student, blank_list):
             course.code,
             Paragraph(course.title, coursetitle_style),
             *blank_list,
-            course.course_credit if record.grade_point else 0,
+            course.course_credit,
             record.grade_point,
             record.letter_grade
         ]
