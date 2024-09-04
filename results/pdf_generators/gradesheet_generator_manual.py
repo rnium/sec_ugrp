@@ -154,7 +154,7 @@ def get_courses_data(semester_data, blank_list):
             course['code'],
             Paragraph(course['title'], coursetitle_style),
             *blank_list,
-            course['credit'] if course['gp'] else 0,
+            course['credit'],
             course['gp'],
             course['lg']
         ]
