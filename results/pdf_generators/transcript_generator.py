@@ -14,7 +14,7 @@ from reportlab.platypus import Image
 from reportlab.platypus.flowables import Flowable
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from results.utils import get_letter_grade, session_letter_grades_count
+from results.utils import get_letter_grade, session_letter_grades_count, round_up
 from results.models import Semester
 
 DEBUG_MODE = False
@@ -134,7 +134,7 @@ def get_main_table(context: Dict) -> Table:
     Additional sheets containing the subject studied, course number and grade obtained in each course are enclosed."""
     # Extracting requied data
     student = context['student']
-    STUDENT_CGPA = student.total_points / student.credits_completed
+    STUDENT_CGPA = round_up(student.raw_cgpa, 2)
     PERIOD_ATTENDED_FROM_YEAR = (student.session.from_year % 2000) + 2000
     LAST_SEMESTER_SHEDULE_TIME = context['last_semester'].start_month.split(' ')[-1]
     LAST_SEMESTER_HELD_TIME = context['last_semester'].held_in.split(' ')[-1]
