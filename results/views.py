@@ -26,7 +26,7 @@ from results.pdf_generators.scorelist_generator import render_scorelist
 from results.pdf_generators.topsheet_generator import render_topsheet
 from results.pdf_generators.customdoc_generator import render_customdoc_document
 from results.pdf_generators.utils import merge_pdfs_from_buffers
-from results.api.utils import create_dochistory
+from results.api.utils import create_dochistory, get_principal_context
 from results.decorators_and_mixins import (admin_required, 
                                            superadmin_required, 
                                            superadmin_or_deptadmin_required,
@@ -394,10 +394,15 @@ def download_full_document(request, registration):
 def download_coursemediumcert(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
     prepared_by = request.GET.get('preparedby', '')
+    try:
+        principal_data = get_principal_context(request)
+    except Exception as e:
+        return render_error(request, "Invalid Principal Info", str(e))
     extra_info = {
         'ref': request.GET.get('ref'),
         'date_today': timezone.now(),
-        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name
+        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name,
+        **principal_data
     }
     if student_acadoc:
         context = {**student_acadoc.data, **extra_info}
@@ -419,6 +424,10 @@ def download_coursemediumcert(request, registration):
 @admin_required
 def download_appeared_cert(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
+    try:
+        principal_data = get_principal_context(request)
+    except Exception as e:
+        return render_error(request, "Invalid Principal Info", str(e))
     duration_str = ''
     if student_acadoc:
         context = student_acadoc.data
@@ -457,6 +466,10 @@ def download_appeared_cert(request, registration):
     duration_to = duration_str.split('to')[-1].strip()
     context['duration_from'] = duration_from
     context['duration_to'] = duration_to
+    context = {
+        **context,
+        **principal_data
+    }
     sheet_pdf = render_appeared_cert(context)
     filename = f"Appeared Certificate - {registration}.pdf"
     create_dochistory(registration, 'a', context['ref'], context['admin_name'])
@@ -464,15 +477,20 @@ def download_appeared_cert(request, registration):
     
 
 
-# @admin_required
+@admin_required
 def download_testimonial(request, registration):
     student_acadoc = StudentAcademicData.objects.filter(registration=registration).first()
     prepared_by = request.GET.get('preparedby', '')
+    try:
+        principal_data = get_principal_context(request)
+    except Exception as e:
+        return render_error(request, "Invalid Principal Info", str(e))
     extra_info = {
         'ref': request.GET.get('ref'),
         'publication_date': request.GET.get('pub_date', ''),
         'date_today': timezone.now(),
-        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name
+        'admin_name': prepared_by if len(prepared_by) else request.user.adminaccount.user_full_name,
+        **principal_data
     }
     if student_acadoc:
         context = {**student_acadoc.data, **extra_info}

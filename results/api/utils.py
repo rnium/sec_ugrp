@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
-from account.models import StudentAccount
+from account.models import StudentAccount, AdminAccount
 from results.models import (Session, Course, PreviousPoint,
                             CourseResult, Semester, SemesterEnroll, Department,
                             StudentPoint, StudentCustomDocument, StudentAcademicData, DocHistory)
@@ -435,3 +435,24 @@ def create_dochistory(reg, doctype, ref, by):
         reference = ref,
         accessed_by = by
     )
+    
+           
+def get_principal_context(request):
+    data = {
+        'principal_name': '<Unspecified>',
+        'principal_designation': 'Principal'
+    } 
+
+    if data_str:=request.GET.get('principal'):
+        splits = data_str.split(',')
+        if len(splits) < 2:
+            raise ValidationError("Principal Info should be comma separated string")
+        data['principal_name'] = splits[0]
+        data['principal_designation'] = ','.join(splits[1:]).strip()     
+    else:
+        super_admin_1 = AdminAccount.objects.filter(
+            is_super_admin = True
+        ).first()
+        if super_admin_1:
+            data['principal_name'] = super_admin_1.user_full_name
+    return data
