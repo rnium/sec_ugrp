@@ -276,7 +276,6 @@ function updateLG(registration, total=null, isLabCourse=true, iscarry=false) {
         total_score = roundUpPointFive(total_score);
     }
     if (total_score && !isNaN(total_score)) {
-        console.log(total_score);
         let total = convertFloat(total_score);
         let letter_grade = calculateLetterGrade(total, course_total_marks, iscarry);
         let grade_point = calculateGradePoint(total, course_total_marks, iscarry);
@@ -284,7 +283,6 @@ function updateLG(registration, total=null, isLabCourse=true, iscarry=false) {
         $(`#letter-grade-${registration}`).text(letter_grade);
         $(`#grade-point-${registration}`).text(grade_point);
     } else {
-        console.log('adsa');
         $(`#grade-point-${registration}`).text("---");
         $(`#letter-grade-${registration}`).text('---');
         $(`#letter-grade-${registration}`).addClass('pending');
@@ -636,7 +634,6 @@ function getCourseData() {
     let is_theory_course = (selectedCourseType == 'theory')
 
     let courseCodeArray = courseCodeIn.split(" ")
-    let courseCodeNumber = parseInt(courseCodeArray[1])
     
     if (is_theory_course) {
         if (isNaN(totalMarksIn)
@@ -668,7 +665,7 @@ function getCourseData() {
         $("#editCourseAlert").show()
         return false;
     }
-    if (courseCodeArray.length != 2 | isNaN(courseCodeNumber)) {
+    if (courseCodeArray.length > 3) {
         $("#editCourseAlert").text("Invalid Course code! Please enter correctly.");
         $("#editCourseAlert").show()
         return false;

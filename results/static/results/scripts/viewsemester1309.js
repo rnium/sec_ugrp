@@ -102,7 +102,6 @@ function getNewCourseData() {
     let selectedCourseType = $('input[name="courseTypeOptions"]:checked').val();
     let is_theory_course = (selectedCourseType == 'theory')
     let courseCodeArray = courseCodeIn.split(" ")
-    let courseCodeNumber = parseInt(courseCodeArray[1])
     
     if (is_theory_course) {
         if (isNaN(totalMarksIn)
@@ -129,12 +128,12 @@ function getNewCourseData() {
         incourseMarksIn = 0;
     }
 
-    if (courseCodeIn.length == 0 | courseTitleIn.length == 0 | selectedCourseType.length == 0) {
+    if (courseCodeIn.length == 0 || courseTitleIn.length == 0 || selectedCourseType.length == 0) {
         $("#createCourseAlert").text("Please fill all the fields");
         $("#createCourseAlert").show()
         return false;
     }
-    if (courseCodeArray.length != 2 | isNaN(courseCodeNumber)) {
+    if (courseCodeArray.length > 3) {
         $("#createCourseAlert").text("Invalid Course code! Please enter correctly.");
         $("#createCourseAlert").show()
         return false;

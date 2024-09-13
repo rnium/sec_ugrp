@@ -103,7 +103,7 @@ h2 .text {
 
 .abs-ref {
     position: absolute;
-    top: -70px;
+    top: -75px;
     left: 0;
     font-size: 1rem;
     /* background-color: red; */
@@ -111,7 +111,7 @@ h2 .text {
 
 .abs-date {
     position: absolute;
-    top: -70px;
+    top: -75px;
     right: 0;
     font-size: 1rem;
     /* background-color: red; */

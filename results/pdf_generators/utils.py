@@ -25,6 +25,14 @@ def formatFloat(f):
         return int_f
     return f
 
+def format_course_code(code: str):
+    code = code.strip().upper()
+    code_lst = code.split(" ")
+    if len(code_lst) == 3:
+        return f"{' '.join(code_lst[:2])}\n{code_lst[2]}"
+    else:
+        return code
+
 def get_fonts_css_txt(font_names):
     css_text = ""
     for font_name in font_names.keys():

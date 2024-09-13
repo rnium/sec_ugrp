@@ -1,5 +1,5 @@
 @page {
-    margin: 2.27in 0.5in 1rem;
+    margin: 2.26in 0.5in 1rem;
     size: 'A4';
 }
 
@@ -38,7 +38,7 @@ h2 .text {
 
 .abs-ref {
     position: absolute;
-    top: -70px;
+    top: -75px;
     left: 0;
     font-size: 1rem;
     /* background-color: red; */
@@ -46,7 +46,7 @@ h2 .text {
 
 .abs-date {
     position: absolute;
-    top: -70px;
+    top: -75px;
     right: 0;
     font-size: 1rem;
     /* background-color: red; */

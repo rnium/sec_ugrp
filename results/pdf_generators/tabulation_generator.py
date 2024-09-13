@@ -14,7 +14,7 @@ from results.models import Semester, SemesterEnroll, CourseResult, StudentPoint
 from typing import List, Tuple, Dict
 from results.utils import get_ordinal_number, get_letter_grade, round_up
 from results.api.utils import sort_courses
-from results.pdf_generators.utils import formatFloat
+from results.pdf_generators.utils import formatFloat, format_course_code
 
 TABLE_FONT_SIZE = 8
 pageSize = (8.5*inch, 14*inch)
@@ -77,7 +77,7 @@ def cumulative_semester_result(student, semesters, pure_cumulative=True):
  
 def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[List]:
     """
-    will return a list of three lists for top three rows of the tabulation table
+    will return a list of two lists for top two rows of the tabulation table
     """
     has_overall_result =  dataContainer.has_overall_result_coulumn
     title_semester_from_to = ""
@@ -88,7 +88,7 @@ def generate_table_header_data(dataContainer: SemesterDataContainer) -> List[Lis
             sem_from_num = 1
         title_semester_from_to = f"{get_ordinal_number(sem_from_num)} to {get_ordinal_number(dataContainer.semester.semester_no)}\nSemester"
     row1 = [ *['Course Number \u2192\nCredit of the course \u2192', '', '', ''] ,
-            *[f"{course.code.upper()}\n{course.course_credit}" for course in dataContainer.course_list],
+            *[f"{format_course_code(course.code)}\n{course.course_credit}" for course in dataContainer.course_list],
             *[f"{get_ordinal_number(dataContainer.semester.semester_no)} Semester", "", *([title_semester_from_to, ""] if has_overall_result else [])]]
     row2 = [*["SL\nNO.", "Registration\nStudent's Name", '',''], 
             *['GP\nLG' for i in range(dataContainer.num_courses)], 
